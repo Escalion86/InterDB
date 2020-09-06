@@ -18,6 +18,10 @@ export const dbGenerator = (table = "events") => {
     return addZero(Math.floor(Math.random() * 5) * 10)
   }
 
+  const rndTime = () => {
+    return rndHours() + ":" + rndMinutes()
+  }
+
   switch (table) {
     case "events":
       return {
@@ -30,10 +34,37 @@ export const dbGenerator = (table = "events") => {
           "Другое",
         ]),
         date: new Date().toJSON(),
-        time: rndHours() + ":" + rndMinutes(),
         duration: rndArray([20, 30, 40, 60]),
-        location: rndArray([
-          { town: "Красноярск", street: "Линейная", house: "109", room: "293" },
+        location_town: rndArray(["Красноярск", "Сосновоборск"]),
+        location_street: rndArray([
+          "Линейная",
+          "Высотная",
+          "9 мая",
+          "Караульная",
+          "Робиспьера",
+        ]),
+        location_house: Math.floor(Math.random() * 100) + 1,
+        location_room: Math.floor(Math.random() * 300) + 1,
+        location_comment: "",
+        finance_price: rndArray([5000, 6000, 7000, 8000, 9000, 10000]),
+        finance_status: rndArray([
+          "Бесплатное",
+          "Не оплачено",
+          "Авансировано",
+          "Оплачено",
+        ]),
+        finance_avans: rndArray([0, 2000, 3000]),
+        finance_road: rndArray([0, 0, 1000]),
+        finance_organizator: rndArray([0, 1000, 2000]),
+        finance_comment: "",
+        status: rndArray([
+          "Заметка",
+          "Есть вопросы",
+          "Назначена встреча",
+          "Принято",
+          "Передано",
+          "Отменено",
+          "Выполнено",
         ]),
       }
     case "clients":
@@ -73,16 +104,8 @@ dbTemplate.events = [
   },
   {
     db_name: "date",
-    desc: "Дата начала",
+    desc: "Дата и время начала",
     type: "date",
-    db_type: "TEXT",
-    not_null: true,
-    default: "",
-  },
-  {
-    db_name: "time",
-    desc: "Время начала",
-    type: "time",
     db_type: "TEXT",
     not_null: true,
     default: "",
@@ -94,6 +117,102 @@ dbTemplate.events = [
     db_type: "INTEGER",
     not_null: true,
     default: 30,
+  },
+  {
+    db_name: "location_town",
+    desc: "Локация - город",
+    type: "text",
+    db_type: "TEXT",
+    not_null: true,
+    default: "Красноярск",
+  },
+  {
+    db_name: "location_street",
+    desc: "Локация - улица",
+    type: "text",
+    db_type: "TEXT",
+    not_null: false,
+    default: "",
+  },
+  {
+    db_name: "location_house",
+    desc: "Локация - дом",
+    type: "text",
+    db_type: "TEXT",
+    not_null: false,
+    default: "",
+  },
+  {
+    db_name: "location_room",
+    desc: "Локация - комната",
+    type: "text",
+    db_type: "TEXT",
+    not_null: false,
+    default: "",
+  },
+  {
+    db_name: "location_comment",
+    desc: "Локация - комментарий",
+    type: "text",
+    db_type: "TEXT",
+    not_null: false,
+    default: "",
+  },
+  {
+    db_name: "finance_price",
+    desc: "Финансы - цена",
+    type: "integer",
+    db_type: "INTEGER",
+    not_null: true,
+    default: 0,
+  },
+  {
+    db_name: "finance_status",
+    desc: "Финансы - статус",
+    type: "list",
+    db_type: "TEXT",
+    not_null: true,
+    default: "Не оплачено",
+  },
+  {
+    db_name: "finance_avans",
+    desc: "Финансы - аванс",
+    type: "integer",
+    db_type: "INTEGER",
+    not_null: true,
+    default: 0,
+  },
+  {
+    db_name: "finance_road",
+    desc: "Финансы - за дорогу",
+    type: "integer",
+    db_type: "INTEGER",
+    not_null: true,
+    default: 0,
+  },
+  {
+    db_name: "finance_organizator",
+    desc: "Финансы - организатору",
+    type: "integer",
+    db_type: "INTEGER",
+    not_null: true,
+    default: 0,
+  },
+  {
+    db_name: "finance_comment",
+    desc: "Финансы - комментарий",
+    type: "text",
+    db_type: "TEXT",
+    not_null: false,
+    default: "",
+  },
+  {
+    db_name: "status",
+    desc: "Статус выполнения",
+    type: "text",
+    db_type: "TEXT",
+    not_null: true,
+    default: "Заметка",
   },
 ]
 

@@ -40,7 +40,9 @@ export const MainScreen = ({ navigation, route }) => {
           title="Add rondom event"
           iconName="ios-add-circle-outline"
           onPress={() => {
-            dispatch(addEvent(dbGenerator("events")))
+            const tmp = dbGenerator("events")
+            console.log('dbGenerator("events")', tmp)
+            dispatch(addEvent(tmp))
           }}
           // onPress={() => navigation.navigate("Create")}
         />

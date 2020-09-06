@@ -10,3 +10,13 @@ export const formatDate = (date) => {
 
   return dd + "." + mm + "." + yy
 }
+
+export const formatTime = (date) => {
+  var hh = date.getHours()
+  if (hh < 10) hh = "0" + hh
+
+  var mm = date.getMinutes() + 1
+  if (mm < 10) mm = "0" + mm
+
+  return hh + ":" + mm
+}

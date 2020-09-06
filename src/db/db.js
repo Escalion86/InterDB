@@ -4,7 +4,6 @@ import dbTemplate from "./dbTemplate"
 const db = SQLite.openDatabase("events.db")
 
 const dbTemplateToSql = (table = "events") => {
-  // console.log("dbTemplate", dbTemplate)
   let colSql, sql
   // dbTemplate.forEach((table) => {
   sql = `CREATE TABLE IF NOT EXISTS ${table} (id INTEGER PRIMARY KEY NOT NULL`
@@ -15,7 +14,6 @@ const dbTemplateToSql = (table = "events") => {
     }`
   })
   sql += `${colSql})`
-  console.log("sql", sql)
   return sql
 
   // })
@@ -45,12 +43,16 @@ export class DB {
     })
   }
 
-  static addEvent({ auditory, event, date, duration }) {
+  static addEvent(event) {
     return new Promise((resolve, reject) => {
+      const eventKeys = Object.keys(event)
+
       db.transaction((tx) => {
         tx.executeSql(
-          `INSERT INTO events (auditory , event, date , duration) VALUES (?, ?, ? ,?)`,
-          [auditory, event, date, duration],
+          `INSERT INTO events (${eventKeys.join(", ")}) VALUES (${"?, "
+            .repeat(eventKeys.length)
+            .slice(0, -2)})`,
+          Object.values(event),
           (_, result) => resolve(result.insertId),
           (_, error) => reject(error)
         )
@@ -61,9 +63,10 @@ export class DB {
   static deleteAllEvents() {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
-        tx.executeSql(`DELETE FROM events`, [], resolve, (_, error) =>
-          reject(error)
-        )
+        tx.executeSql(`DROP TABLE events`, [], resolve, (
+          _,
+          error //DELETE FROM events
+        ) => reject(error))
       })
     })
   }
