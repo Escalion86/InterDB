@@ -10,11 +10,12 @@ import {
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import { loadEvents, addEvent, deleteAllEvents } from "../store/actions/event"
-import THEME from "../theme"
 import { EventCard } from "../components/EventCard"
 import { dbGenerator } from "../db/dbTemplate"
+import { useTheme } from "@react-navigation/native"
 
 export const MainScreen = ({ navigation, route }) => {
+  const { colors } = useTheme()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export const MainScreen = ({ navigation, route }) => {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator color={THEME.MAIN_COLOR} />
+        <ActivityIndicator color={colors.text} />
       </View>
     )
   }
@@ -80,7 +81,8 @@ export const MainScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    padding: 10,
+    padding: 0,
+    margin: 0,
   },
   noItems: {
     fontFamily: "open-regular",
@@ -95,5 +97,7 @@ const styles = StyleSheet.create({
   },
   list: {
     width: "100%",
+    padding: 0,
+    margin: 0,
   },
 })

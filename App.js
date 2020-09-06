@@ -32,7 +32,7 @@ export default function App() {
     <Provider store={store}>
       <MenuProvider>
         <AppNavigation />
-        {/* <StatusBar style="auto" /> */}
+        <StatusBar style="light" />
       </MenuProvider>
     </Provider>
   )

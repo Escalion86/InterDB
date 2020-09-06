@@ -19,6 +19,7 @@ export const MainIcon = ({
   status,
   size = 36,
   showtext = false,
+  textcolor = null,
 }) => {
   return (
     <View style={styles.container}>
@@ -44,6 +45,7 @@ export const MainIcon = ({
           style={{
             ...styles.text,
             fontSize: 10 + Math.floor(size / 3),
+            color: textcolor,
           }}
         >
           {status}
@@ -53,24 +55,36 @@ export const MainIcon = ({
   )
 }
 
-export const StatusIcon = ({ status, size = 36, showtext = false }) => {
+export const StatusIcon = ({
+  status,
+  size = 36,
+  showtext = false,
+  textcolor = null,
+}) => {
   return (
     <MainIcon
       dependencies={statusIconDependencies}
       status={status}
       size={size}
       showtext={showtext}
+      textcolor={textcolor}
     />
   )
 }
 
-export const FinanceIcon = ({ status, size = 36, showtext = false }) => {
+export const FinanceIcon = ({
+  status,
+  size = 36,
+  showtext = false,
+  textcolor = null,
+}) => {
   return (
     <MainIcon
       dependencies={financeIconDependencies}
       status={status}
       size={size}
       showtext={showtext}
+      textcolor={textcolor}
     />
   )
 }

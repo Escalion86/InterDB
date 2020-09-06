@@ -10,7 +10,19 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { createDrawerNavigator } from "@react-navigation/drawer"
 import { Ionicons } from "@expo/vector-icons"
 import { MainScreen } from "../screens/MainScreen"
-import THEME from "../theme"
+import { useTheme } from "@react-navigation/native"
+
+const darkTheme = {
+  colors: {
+    background: "rgb(1, 1, 1)",
+    border: "rgb(39, 39, 41)",
+    card: "rgb(18, 18, 18)",
+    notification: "rgb(255, 69, 58)",
+    primary: "rgb(229, 229, 231)",
+    text: "rgb(229, 229, 231)",
+  },
+  dark: true,
+}
 
 const Stack = createStackNavigator()
 const MainStack = createStackNavigator()
@@ -25,18 +37,23 @@ const burgerButton = (navigation) => (
   </HeaderButtons>
 )
 
-const StackNavigator = ({ children }) => (
-  <Stack.Navigator
-    screenOptions={{
-      headerTintColor: Platform.OS === "android" ? "white" : THEME.MAIN_COLOR,
-      headerStyle: {
-        backgroundColor: Platform.OS === "android" ? THEME.MAIN_COLOR : "white",
-      },
-    }}
-  >
-    {children}
-  </Stack.Navigator>
-)
+const StackNavigator = ({ children }) => {
+  const { colors } = useTheme()
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor:
+          Platform.OS === "android" ? "white" : colors.background,
+        headerStyle: {
+          backgroundColor:
+            Platform.OS === "android" ? colors.background : "white",
+        },
+      }}
+    >
+      {children}
+    </Stack.Navigator>
+  )
+}
 
 const MainStackScreen = ({ navigation }) => (
   <StackNavigator navigation={navigation}>
@@ -66,50 +83,56 @@ const ActualStackScreen = ({ navigation }) => (
 
 const Tabs = createMaterialBottomTabNavigator()
 
-const TabsScreen = () => (
-  <Tabs.Navigator
-  // activeColor={"#fff"}
-  // barStyle={{ backgroundColor: THEME.MAIN_COLOR }}
-  // // shifting={true}
-  // tabBarOptions={{
-  //   activeTintColor: THEME.MAIN_COLOR,
-  // }}
-  >
-    <Tabs.Screen
-      name="Main"
-      component={MainStackScreen}
-      options={{
-        tabBarLabel: "Все",
-        tabBarIcon: (info) => (
-          <Ionicons name="ios-albums" size={25} color={info.color} />
-        ),
-      }}
-    />
-    <Tabs.Screen
-      name="Actual"
-      component={ActualStackScreen}
-      options={{
-        tabBarLabel: "Актуальные",
-        tabBarIcon: (info) => (
-          <Ionicons name="ios-albums" size={25} color={info.color} />
-        ),
-      }}
-    />
-  </Tabs.Navigator>
-)
+const TabsScreen = () => {
+  const { colors } = useTheme()
+  return (
+    <Tabs.Navigator
+      // activeColor={"#fff"}
+      // barStyle={{ backgroundColor: THEME.MAIN_COLOR }}
+      // tabBarOptions={{
+      //   activeTintColor: "#fff",
+      // }}
+      barStyle={{ backgroundColor: colors.card }}
+    >
+      <Tabs.Screen
+        name="Main"
+        component={MainStackScreen}
+        options={{
+          tabBarLabel: "Все",
+          tabBarIcon: (info) => (
+            <Ionicons name="ios-albums" size={25} color={info.color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Actual"
+        component={ActualStackScreen}
+        options={{
+          tabBarLabel: "Актуальные",
+          tabBarIcon: (info) => (
+            <Ionicons name="ios-albums" size={25} color={info.color} />
+          ),
+        }}
+      />
+    </Tabs.Navigator>
+  )
+}
 
 const Drawer = createDrawerNavigator()
 
 const DrawerScreen = () => {
+  const { colors } = useTheme()
   return (
     <Drawer.Navigator
       drawerType="slide"
-      drawerContentOptions={{
-        activeTintColor: THEME.MAIN_COLOR,
-        // labelStyle: {
-        //   fontFamily: "open-bold",
-        // },
-      }}
+      drawerContentOptions={
+        {
+          // activeTintColor: "#fff",
+          // labelStyle: {
+          //   fontFamily: "open-bold",
+          // },
+        }
+      }
     >
       <Drawer.Screen
         name="Main"
@@ -117,7 +140,7 @@ const DrawerScreen = () => {
         options={{
           drawerLabel: "Заявки",
           drawerIcon: () => (
-            <Ionicons name="ios-albums" size={24} color={THEME.MAIN_COLOR} />
+            <Ionicons name="ios-albums" size={24} color={colors.text} />
           ),
         }}
       />
@@ -127,7 +150,7 @@ const DrawerScreen = () => {
 
 export const AppNavigation = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={darkTheme}>
       <DrawerScreen />
     </NavigationContainer>
   )
