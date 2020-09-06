@@ -1,6 +1,9 @@
 import React from "react"
 import { Ionicons } from "@expo/vector-icons"
-import { statusIcon } from "../db/dependencies"
+import {
+  statusIconDependencies,
+  financeIconDependencies,
+} from "../db/dependencies"
 import { IconButton } from "react-native-paper"
 import {
   TouchableHighlight,
@@ -11,30 +14,76 @@ import {
 } from "react-native"
 // import { Button, Icon } from "react-native-elements"
 
-export const StatusIcon = ({ status, size = 36 }) => {
+export const MainIcon = ({
+  dependencies = statusIconDependencies,
+  status,
+  size = 36,
+  showtext = false,
+}) => {
   return (
-    <View
-      style={{
-        ...styles.button,
-        width: size + Math.floor(size / 4),
-        height: size + Math.floor(size / 4),
-        padding: Math.floor(size / 16),
-      }}
-    >
-      <Ionicons
-        name={statusIcon[status].name}
-        size={size}
-        color={statusIcon[status].color}
-      />
+    <View style={styles.container}>
+      <View
+        style={{
+          ...styles.button,
+          width: size + Math.floor(size / 2),
+          height: size + Math.floor(size / 2),
+          padding: Math.floor(size / 16),
+          backgroundColor: dependencies[status].color,
+        }}
+      >
+        <Ionicons
+          name={
+            dependencies[status].name ? dependencies[status].name : "ios-bug"
+          }
+          size={size}
+          color={dependencies[status].color ? "white" : "black"}
+        />
+      </View>
+      {showtext ? (
+        <Text
+          style={{
+            ...styles.text,
+            fontSize: 10 + Math.floor(size / 3),
+          }}
+        >
+          {status}
+        </Text>
+      ) : null}
     </View>
   )
 }
 
+export const StatusIcon = ({ status, size = 36, showtext = false }) => {
+  return (
+    <MainIcon
+      dependencies={statusIconDependencies}
+      status={status}
+      size={size}
+      showtext={showtext}
+    />
+  )
+}
+
+export const FinanceIcon = ({ status, size = 36, showtext = false }) => {
+  return (
+    <MainIcon
+      dependencies={financeIconDependencies}
+      status={status}
+      size={size}
+      showtext={showtext}
+    />
+  )
+}
+
 const styles = StyleSheet.create({
+  container: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+  },
   button: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#ffffff",
     // borderColor: "#666",
     // borderWidth: 1,
     borderRadius: 200,
@@ -47,5 +96,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.39,
     shadowRadius: 8.3,
     elevation: 13,
+  },
+  text: {
+    marginLeft: 6,
   },
 })

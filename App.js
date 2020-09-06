@@ -5,6 +5,7 @@ import { AppLoading } from "expo"
 import { AppNavigation } from "./src/navigation/AppNavigation"
 import { MainScreen } from "./src/screens/MainScreen"
 import { bootstrap } from "./src/bootstrap"
+import { MenuProvider } from "react-native-popup-menu"
 import {
   StyleSheet,
   Text,
@@ -29,8 +30,10 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <AppNavigation />
-      {/* <StatusBar style="auto" /> */}
+      <MenuProvider>
+        <AppNavigation />
+        {/* <StatusBar style="auto" /> */}
+      </MenuProvider>
     </Provider>
   )
 }
