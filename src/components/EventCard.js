@@ -69,11 +69,15 @@ export const EventCard = ({ event }) => {
             {menu(StatusIcon, statusIconDependencies, event.status)}
           </MenuOptions>
         </Menu>
-        <Menu>
+        <Menu style={{ marginTop: 5 }}>
           <MenuTrigger
             children={<FinanceIcon status={event.finance_status} size={24} />}
           />
-          <MenuOptions>
+          <MenuOptions
+            customStyles={{
+              optionWrapper: { padding: 5, backgroundColor: colors.background },
+            }}
+          >
             {menu(FinanceIcon, financeIconDependencies, event.finance_status)}
           </MenuOptions>
         </Menu>
@@ -94,7 +98,7 @@ export const EventCard = ({ event }) => {
 const styles = StyleSheet.create({
   card: {
     width: "100%",
-    marginVertical: 1,
+    marginVertical: 2,
     // backgroundColor: THEME.SECONDARY_COLOR,
     borderColor: "black",
     borderWidth: 1,
