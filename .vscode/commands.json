@@ -1,0 +1,16 @@
+{
+  "commands": [
+    {
+      "command": "commands.refresh",
+      "text": "$(sync)",
+      "tooltip": "Refresh commands",
+      "color": "#FFCC00"
+    },
+    {
+      "text": "$(terminal) Android Start",
+      "command": "terminals.runTerminalByName",
+      "arguments": ["Android Start"],
+      "tooltip": "Android Start"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "autorun": false,
+  "terminals": [
+    {
+      "name": "Android Start",
+      "focus": true,
+      "command": "expo start --android"
+    }
+  ]
+}
