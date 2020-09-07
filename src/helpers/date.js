@@ -24,3 +24,8 @@ export const formatTime = (date) => {
 export const formatDateTime = (date) => {
   return `${formatDate(date)} ${formatTime(date)}`
 }
+
+export const getWeekDay = (date) => {
+  let days = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"]
+  return days[date.getDay()]
+}

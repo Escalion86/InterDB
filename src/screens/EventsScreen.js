@@ -48,10 +48,10 @@ const EventsScreen = ({ navigation, route }) => {
           // onPress={() => navigation.navigate("Create")}
         />
         <Item
-          title="Add rondom event"
+          title="Add event"
           iconName="ios-add-circle"
           onPress={() => {
-            navigation.navigate("Event")
+            navigation.navigate("CreateEvent")
           }}
           // onPress={() => navigation.navigate("Create")}
         />
@@ -62,7 +62,7 @@ const EventsScreen = ({ navigation, route }) => {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator color={colors.text} />
+        <ActivityIndicator size="large" color={colors.text} />
       </View>
     )
   }

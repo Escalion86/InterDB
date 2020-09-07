@@ -11,8 +11,10 @@ import { createDrawerNavigator } from "@react-navigation/drawer"
 import { Ionicons } from "@expo/vector-icons"
 import EventsScreen from "../screens/EventsScreen"
 import EventScreen from "../screens/EventScreen"
+import CreateEventScreen from "../screens/CreateEventScreen"
 import ClientsScreen from "../screens/ClientsScreen"
 import ClientScreen from "../screens/ClientScreen"
+import CreateClientScreen from "../screens/CreateClientScreen"
 import { useTheme } from "@react-navigation/native"
 import { darkTheme } from "../theme"
 
@@ -60,6 +62,7 @@ const EventsStackScreen = ({ navigation }) => (
       }}
     />
     <EventsStack.Screen name="Event" component={EventScreen} />
+    <EventsStack.Screen name="CreateEvent" component={CreateEventScreen} />
   </StackNavigator>
 )
 

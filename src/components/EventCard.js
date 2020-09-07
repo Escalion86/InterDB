@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
-import { formatDate, formatTime } from "../helpers/date"
+import { formatDate, formatTime, getWeekDay } from "../helpers/date"
 import { StatusIcon, FinanceIcon } from "./icons"
 import { useTheme } from "@react-navigation/native"
 import { setEventStatus, setFinanceStatus } from "../store/actions/event"
@@ -16,6 +16,7 @@ import {
   statusIconDependencies,
   financeIconDependencies,
 } from "../db/dependencies"
+import * as Animatable from "react-native-animatable"
 import IconMenu from "./IconMenu"
 
 const showEventLog = (event) => {
@@ -36,13 +37,19 @@ export const EventCard = ({ navigation, event }) => {
           minHeight: 90,
         }}
       >
-        <ActivityIndicator color={colors.text} />
+        {event.loading ? (
+          <ActivityIndicator size="large" color={colors.text} />
+        ) : (
+          <Ionicons name={"ios-trash"} size={32} color={colors.notification} />
+        )}
       </View>
     )
   }
 
   return (
     <TouchableOpacity
+      // activeOpacity={1}
+      delayPressIn={50}
       style={{ ...styles.card, backgroundColor: colors.card, minHeight: 90 }}
       onPress={() => navigation.navigate("Event", { event: event })}
     >
@@ -80,6 +87,7 @@ export const EventCard = ({ navigation, event }) => {
             {formatDate(new Date(event.date))}
           </Text>
           <Text style={{ ...styles.datetime, color: colors.text }}>
+            {getWeekDay(new Date(event.date))}{" "}
             {formatTime(new Date(event.date))}
           </Text>
         </View>
@@ -123,7 +131,7 @@ const styles = StyleSheet.create({
   },
   cardtitle: {
     fontFamily: "open-bold",
-    fontSize: 17,
+    fontSize: 16,
   },
   carddesc: {
     fontFamily: "open-regular",
