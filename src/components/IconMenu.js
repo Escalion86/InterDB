@@ -7,6 +7,7 @@ import {
 } from "react-native-popup-menu"
 import { StatusIcon } from "./icons"
 import { statusIconDependencies } from "../db/dependencies"
+import { useDispatch } from "react-redux"
 
 const IconMenu = ({
   IconComponent,
@@ -14,13 +15,20 @@ const IconMenu = ({
   activeStatus,
   themeStyle,
   style = {},
+  eventId = null,
+  actionOnSelect = () => {},
 }) => {
+  const dispatch = useDispatch()
   let menu = []
   for (let key in dependencies) {
     menu.push(
       <MenuOption
         key={key}
-        onSelect={() => (activeStatus === key ? null : alert(`Save`))}
+        onSelect={
+          () =>
+            activeStatus === key ? null : dispatch(actionOnSelect(eventId, key))
+          //alert(`cardId: ${eventId} (${key})`)
+        }
         style={
           activeStatus === key
             ? { backgroundColor: themeStyle.colors.border }

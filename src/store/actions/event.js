@@ -1,4 +1,13 @@
-import { LOAD_EVENTS, ADD_EVENT, LOADING, DELETE_ALL_EVENTS } from "../types"
+import {
+  LOAD_EVENTS,
+  ADD_EVENT,
+  LOADING,
+  DELETE_ALL_EVENTS,
+  SET_EVENT_STATUS,
+  LOADING_EVENT,
+  LOADING_EVENT_COMPLITE,
+  SET_FINANCE_STATUS,
+} from "../types"
 import { DB } from "../../db/db"
 
 export const loadEvents = () => {
@@ -7,7 +16,7 @@ export const loadEvents = () => {
 
     dispatch({
       type: LOAD_EVENTS,
-      payload: events,
+      events,
     })
   }
 }
@@ -18,6 +27,20 @@ export const loading = () => {
   }
 }
 
+export const loadingEvent = (id) => {
+  return {
+    type: LOADING_EVENT,
+    id,
+  }
+}
+
+export const loadingEventComplite = (id) => {
+  return {
+    type: LOADING_EVENT_COMPLITE,
+    id,
+  }
+}
+
 export const addEvent = (event) => {
   return async (dispatch) => {
     await dispatch(loading())
@@ -25,7 +48,7 @@ export const addEvent = (event) => {
     event.id = eventId
     dispatch({
       type: ADD_EVENT,
-      payload: event,
+      event,
     })
   }
 }
@@ -36,6 +59,30 @@ export const deleteAllEvents = () => {
     await DB.deleteAllEvents()
     dispatch({
       type: DELETE_ALL_EVENTS,
+    })
+  }
+}
+
+export const setEventStatus = (id, status) => {
+  return async (dispatch) => {
+    await dispatch(loadingEvent(id))
+    await DB.setEventStatus(id, status)
+    dispatch({
+      type: SET_EVENT_STATUS,
+      id,
+      status,
+    })
+  }
+}
+
+export const setFinanceStatus = (id, status) => {
+  return async (dispatch) => {
+    await dispatch(loadingEvent(id))
+    await DB.setFinanceStatus(id, status)
+    dispatch({
+      type: SET_FINANCE_STATUS,
+      id,
+      status,
     })
   }
 }

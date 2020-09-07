@@ -81,7 +81,7 @@ const TabsScreen = () => {
       // tabBarOptions={{
       //   activeTintColor: "#fff",
       // }}
-      barStyle={{ backgroundColor: colors.card }}
+      barStyle={{ backgroundColor: colors.background }}
     >
       <Tabs.Screen
         name="Main"

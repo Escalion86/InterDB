@@ -71,18 +71,31 @@ export class DB {
     })
   }
 
-  // static updatePost(post) {
-  //   return new Promise((resolve, reject) =>
-  //     db.transaction((tx) => {
-  //       tx.executeSql(
-  //         "UPDATE posts SET booked = ? WHERE id = ?",
-  //         [post.booked ? 0 : 1, post.id],
-  //         resolve,
-  //         (_, error) => reject(error)
-  //       )
-  //     })
-  //   )
-  // }
+  static setEventStatus(id, status) {
+    return new Promise((resolve, reject) =>
+      db.transaction((tx) => {
+        tx.executeSql(
+          "UPDATE events SET status = ? WHERE id = ?",
+          [status, id],
+          resolve,
+          (_, error) => reject(error)
+        )
+      })
+    )
+  }
+
+  static setFinanceStatus(id, status) {
+    return new Promise((resolve, reject) =>
+      db.transaction((tx) => {
+        tx.executeSql(
+          "UPDATE events SET finance_status = ? WHERE id = ?",
+          [status, id],
+          resolve,
+          (_, error) => reject(error)
+        )
+      })
+    )
+  }
 
   // static deletePost(id) {
   //   return new Promise((resolve, reject) =>

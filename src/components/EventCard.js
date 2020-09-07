@@ -1,9 +1,10 @@
 import React from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import { formatDate, formatTime } from "../helpers/date"
 import { StatusIcon, FinanceIcon } from "./icons"
 import { useTheme } from "@react-navigation/native"
+import { setEventStatus, setFinanceStatus } from "../store/actions/event"
 
 import {
   statusIconDependencies,
@@ -19,9 +20,24 @@ export const EventCard = ({ event }) => {
   const theme = useTheme()
   const colors = theme.colors
 
+  if (event.loading) {
+    return (
+      <View
+        style={{
+          ...styles.center,
+          ...styles.card,
+          backgroundColor: colors.card,
+          minHeight: 90,
+        }}
+      >
+        <ActivityIndicator color={colors.text} />
+      </View>
+    )
+  }
+
   return (
     <View
-      style={{ ...styles.card, backgroundColor: colors.card }}
+      style={{ ...styles.card, backgroundColor: colors.card, minHeight: 90 }}
       onPress={showEventLog(event)}
     >
       <View style={{ ...styles.left, borderRightColor: colors.background }}>
@@ -30,6 +46,8 @@ export const EventCard = ({ event }) => {
           dependencies={statusIconDependencies}
           activeStatus={event.status}
           themeStyle={theme}
+          eventId={event.id}
+          actionOnSelect={setEventStatus}
         />
         <IconMenu
           IconComponent={FinanceIcon}
@@ -37,6 +55,8 @@ export const EventCard = ({ event }) => {
           activeStatus={event.finance_status}
           themeStyle={theme}
           style={{ marginTop: 6 }}
+          eventId={event.id}
+          actionOnSelect={setFinanceStatus}
         />
       </View>
       <View style={styles.right}>
@@ -78,5 +98,10 @@ const styles = StyleSheet.create({
   carddesc: {
     fontFamily: "open-regular",
     fontSize: 12,
+  },
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 })
