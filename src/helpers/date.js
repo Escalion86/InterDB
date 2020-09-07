@@ -20,3 +20,7 @@ export const formatTime = (date) => {
 
   return hh + ":" + mm
 }
+
+export const formatDateTime = (date) => {
+  return `${formatDate(date)} ${formatTime(date)}`
+}

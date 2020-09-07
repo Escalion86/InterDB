@@ -2,8 +2,10 @@ import {
   LOAD_EVENTS,
   ADD_EVENT,
   LOADING,
+  DELETE_EVENT,
   DELETE_ALL_EVENTS,
   SET_EVENT_STATUS,
+  DELETING_EVENT,
   LOADING_EVENT,
   LOADING_EVENT_COMPLITE,
   SET_FINANCE_STATUS,
@@ -30,6 +32,13 @@ export const loading = () => {
 export const loadingEvent = (id) => {
   return {
     type: LOADING_EVENT,
+    id,
+  }
+}
+
+export const deletingEvent = (id) => {
+  return {
+    type: DELETING_EVENT,
     id,
   }
 }
@@ -83,6 +92,17 @@ export const setFinanceStatus = (id, status) => {
       type: SET_FINANCE_STATUS,
       id,
       status,
+    })
+  }
+}
+
+export const deleteEvent = (id) => {
+  return async (dispatch) => {
+    await dispatch(deletingEvent(id))
+    await DB.deleteEvent()
+    dispatch({
+      type: DELETE_EVENT,
+      id,
     })
   }
 }

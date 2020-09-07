@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { Provider } from "react-redux"
 import { AppLoading } from "expo"
 import { AppNavigation } from "./src/navigation/AppNavigation"
-import { MainScreen } from "./src/screens/MainScreen"
+import { EventsScreen } from "./src/screens/EventsScreen"
 import { bootstrap } from "./src/bootstrap"
 import { MenuProvider } from "react-native-popup-menu"
 import {

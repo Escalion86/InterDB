@@ -2,7 +2,9 @@ import {
   LOAD_EVENTS,
   ADD_EVENT,
   LOADING,
+  DELETE_EVENT,
   DELETE_ALL_EVENTS,
+  DELETING_EVENT,
   SET_EVENT_STATUS,
   LOADING_EVENT,
   LOADING_EVENT_COMPLITE,
@@ -50,6 +52,7 @@ export const eventReducer = (state = initialState, action) => {
       events = state.events.map((event) => {
         if (event.id === action.id) {
           event.loading = false
+          event.deleting = false
         }
         return event
       })
@@ -69,6 +72,24 @@ export const eventReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         events: [],
+      }
+    case DELETE_EVENT:
+      return {
+        ...state,
+        events: state.events.filter((event) => event.id !== action.id),
+      }
+
+    case DELETING_EVENT:
+      events = state.events.map((event) => {
+        if (event.id === action.id) {
+          event.deleting = true
+        }
+        return event
+      })
+
+      return {
+        ...state,
+        events,
       }
 
     case SET_EVENT_STATUS:

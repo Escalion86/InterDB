@@ -63,9 +63,9 @@ export class DB {
   static deleteAllEvents() {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
-        tx.executeSql(`DROP TABLE events`, [], resolve, (
+        tx.executeSql(`DELETE FROM events`, [], resolve, (
           _,
-          error //DELETE FROM events
+          error //DROP TABLE events
         ) => reject(error))
       })
     })
@@ -97,16 +97,16 @@ export class DB {
     )
   }
 
-  // static deletePost(id) {
-  //   return new Promise((resolve, reject) =>
-  //     db.transaction((tx) => {
-  //       tx.executeSql(
-  //         "DELETE FROM posts WHERE id = ?",
-  //         [id],
-  //         resolve,
-  //         (_, error) => reject(error)
-  //       )
-  //     })
-  //   )
-  // }
+  static deleteEvent(id) {
+    return new Promise((resolve, reject) =>
+      db.transaction((tx) => {
+        tx.executeSql(
+          "DELETE FROM events WHERE id = ?",
+          [id],
+          resolve,
+          (_, error) => reject(error)
+        )
+      })
+    )
+  }
 }

@@ -14,7 +14,7 @@ import { EventCard } from "../components/EventCard"
 import { dbGenerator } from "../db/dbTemplate"
 import { useTheme } from "@react-navigation/native"
 
-const MainScreen = ({ navigation, route }) => {
+const EventsScreen = ({ navigation, route }) => {
   const { colors } = useTheme()
   const dispatch = useDispatch()
 
@@ -44,6 +44,14 @@ const MainScreen = ({ navigation, route }) => {
             const tmp = dbGenerator("events")
             console.log('dbGenerator("events")', tmp)
             dispatch(addEvent(tmp))
+          }}
+          // onPress={() => navigation.navigate("Create")}
+        />
+        <Item
+          title="Add rondom event"
+          iconName="ios-add-circle"
+          onPress={() => {
+            navigation.navigate("Event")
           }}
           // onPress={() => navigation.navigate("Create")}
         />
@@ -81,7 +89,7 @@ const MainScreen = ({ navigation, route }) => {
   )
 }
 
-export default MainScreen
+export default EventsScreen
 
 const styles = StyleSheet.create({
   wrapper: {

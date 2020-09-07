@@ -9,13 +9,16 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"
 import { createDrawerNavigator } from "@react-navigation/drawer"
 import { Ionicons } from "@expo/vector-icons"
-import MainScreen from "../screens/MainScreen"
+import EventsScreen from "../screens/EventsScreen"
 import EventScreen from "../screens/EventScreen"
+import ClientsScreen from "../screens/ClientsScreen"
+import ClientScreen from "../screens/ClientScreen"
 import { useTheme } from "@react-navigation/native"
 import { darkTheme } from "../theme"
 
 const Stack = createStackNavigator()
-const MainStack = createStackNavigator()
+const EventsStack = createStackNavigator()
+const ClientsStack = createStackNavigator()
 
 const burgerButton = (navigation) => (
   <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
@@ -46,31 +49,39 @@ const StackNavigator = ({ children, navigation, initialRouteName }) => {
   )
 }
 
-const MainStackScreen = ({ navigation }) => (
+const EventsStackScreen = ({ navigation }) => (
   <StackNavigator navigation={navigation} initialRouteName="Main">
-    <MainStack.Screen
-      name="Main"
-      component={MainScreen}
+    <EventsStack.Screen
+      name="Events"
+      component={EventsScreen}
       initialParams={{ actual: false }}
       options={{
         headerLeft: () => burgerButton(navigation),
       }}
     />
-    <MainStack.Screen
-      name="Event"
-      component={EventScreen}
+    <EventsStack.Screen name="Event" component={EventScreen} />
+  </StackNavigator>
+)
+
+const ClientsStackScreen = ({ navigation }) => (
+  <StackNavigator navigation={navigation} initialRouteName="Main">
+    <ClientsStack.Screen
+      name="Clients"
+      component={ClientsScreen}
+      initialParams={{ actual: false }}
       options={{
         headerLeft: () => burgerButton(navigation),
       }}
     />
+    <ClientsStack.Screen name="Client" component={ClientScreen} />
   </StackNavigator>
 )
 
 const ActualStackScreen = ({ navigation }) => (
   <StackNavigator navigation={navigation}>
-    <MainStack.Screen
-      name="Main"
-      component={MainScreen}
+    <EventsStack.Screen
+      name="Events"
+      component={EventsScreen}
       initialParams={{ actual: true }}
       options={{
         headerLeft: () => burgerButton(navigation),
@@ -81,7 +92,7 @@ const ActualStackScreen = ({ navigation }) => (
 
 const Tabs = createMaterialBottomTabNavigator()
 
-const TabsScreen = () => {
+const EventsTabsScreen = () => {
   const { colors } = useTheme()
   return (
     <Tabs.Navigator
@@ -93,8 +104,8 @@ const TabsScreen = () => {
       barStyle={{ backgroundColor: colors.background }}
     >
       <Tabs.Screen
-        name="Main"
-        component={MainStackScreen}
+        name="Events"
+        component={EventsStackScreen}
         options={{
           tabBarLabel: "Все",
           tabBarIcon: (info) => (
@@ -133,12 +144,22 @@ const DrawerScreen = () => {
       }
     >
       <Drawer.Screen
-        name="Main"
-        component={TabsScreen}
+        name="Events"
+        component={EventsTabsScreen}
         options={{
           drawerLabel: "Заявки",
           drawerIcon: () => (
             <Ionicons name="ios-albums" size={24} color={colors.text} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Clients"
+        component={ClientsStackScreen}
+        options={{
+          drawerLabel: "Клиенты",
+          drawerIcon: () => (
+            <Ionicons name="md-people" size={24} color={colors.text} />
           ),
         }}
       />

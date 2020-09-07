@@ -26,7 +26,7 @@ export const EventCard = ({ navigation, event }) => {
   const theme = useTheme()
   const colors = theme.colors
 
-  if (event.loading) {
+  if (event.loading || event.deleting) {
     return (
       <View
         style={{
@@ -44,7 +44,7 @@ export const EventCard = ({ navigation, event }) => {
   return (
     <TouchableOpacity
       style={{ ...styles.card, backgroundColor: colors.card, minHeight: 90 }}
-      onPress={() => alert(`cardId: `)}
+      onPress={() => navigation.navigate("Event", { event: event })}
     >
       <View style={{ ...styles.left, borderRightColor: colors.background }}>
         <IconMenu
@@ -65,7 +65,7 @@ export const EventCard = ({ navigation, event }) => {
           actionOnSelect={setFinanceStatus}
         />
       </View>
-      <View style={styles.right}>
+      <View style={styles.middle}>
         <Text style={{ ...styles.cardtitle, color: colors.text }}>
           {event.auditory}, {event.event}
         </Text>
@@ -73,6 +73,26 @@ export const EventCard = ({ navigation, event }) => {
           {event.location_town}, {event.location_street},{" "}
           {Math.trunc(event.location_house)} - {Math.trunc(event.location_room)}
         </Text>
+      </View>
+      <View style={styles.right}>
+        <View style={{ height: 52, padding: 5 }}>
+          <Text style={{ ...styles.datetime, color: colors.text }}>
+            {formatDate(new Date(event.date))}
+          </Text>
+          <Text style={{ ...styles.datetime, color: colors.text }}>
+            {formatTime(new Date(event.date))}
+          </Text>
+        </View>
+        <View
+          style={{
+            ...styles.finance,
+            borderTopColor: colors.background,
+            borderLeftColor: colors.background,
+            backgroundColor: colors.border,
+          }}
+        >
+          <Text style={styles.profit}>{event.finance_price}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   )
@@ -94,20 +114,42 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     justifyContent: "space-around",
   },
-  right: {
+  middle: {
     padding: 5,
+    flex: 1,
+  },
+  right: {
+    alignItems: "flex-end",
   },
   cardtitle: {
     fontFamily: "open-bold",
-    fontSize: 14,
+    fontSize: 17,
   },
   carddesc: {
     fontFamily: "open-regular",
-    fontSize: 12,
+    fontSize: 15,
   },
   center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  datetime: {
+    fontSize: 14,
+    textAlign: "right",
+  },
+  finance: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderTopLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+  profit: {
+    fontSize: 14,
+    color: "#ffff99",
   },
 })
