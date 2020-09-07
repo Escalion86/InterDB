@@ -1,5 +1,11 @@
 import React from "react"
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native"
+import {
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import { formatDate, formatTime } from "../helpers/date"
 import { StatusIcon, FinanceIcon } from "./icons"
@@ -16,7 +22,7 @@ const showEventLog = (event) => {
   console.log("event", event)
 }
 
-export const EventCard = ({ event }) => {
+export const EventCard = ({ navigation, event }) => {
   const theme = useTheme()
   const colors = theme.colors
 
@@ -36,9 +42,9 @@ export const EventCard = ({ event }) => {
   }
 
   return (
-    <View
+    <TouchableOpacity
       style={{ ...styles.card, backgroundColor: colors.card, minHeight: 90 }}
-      onPress={showEventLog(event)}
+      onPress={() => alert(`cardId: `)}
     >
       <View style={{ ...styles.left, borderRightColor: colors.background }}>
         <IconMenu
@@ -68,7 +74,7 @@ export const EventCard = ({ event }) => {
           {Math.trunc(event.location_house)} - {Math.trunc(event.location_room)}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

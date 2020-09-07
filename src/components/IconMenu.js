@@ -24,10 +24,8 @@ const IconMenu = ({
     menu.push(
       <MenuOption
         key={key}
-        onSelect={
-          () =>
-            activeStatus === key ? null : dispatch(actionOnSelect(eventId, key))
-          //alert(`cardId: ${eventId} (${key})`)
+        onSelect={() =>
+          activeStatus === key ? null : dispatch(actionOnSelect(eventId, key))
         }
         style={
           activeStatus === key

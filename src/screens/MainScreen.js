@@ -14,7 +14,7 @@ import { EventCard } from "../components/EventCard"
 import { dbGenerator } from "../db/dbTemplate"
 import { useTheme } from "@react-navigation/native"
 
-export const MainScreen = ({ navigation, route }) => {
+const MainScreen = ({ navigation, route }) => {
   const { colors } = useTheme()
   const dispatch = useDispatch()
 
@@ -73,11 +73,15 @@ export const MainScreen = ({ navigation, route }) => {
         style={styles.list}
         data={events}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <EventCard event={item} />}
+        renderItem={({ item }) => (
+          <EventCard navigation={navigation} event={item} />
+        )}
       />
     </View>
   )
 }
+
+export default MainScreen
 
 const styles = StyleSheet.create({
   wrapper: {

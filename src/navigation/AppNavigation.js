@@ -9,7 +9,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"
 import { createDrawerNavigator } from "@react-navigation/drawer"
 import { Ionicons } from "@expo/vector-icons"
-import { MainScreen } from "../screens/MainScreen"
+import MainScreen from "../screens/MainScreen"
+import EventScreen from "../screens/EventScreen"
 import { useTheme } from "@react-navigation/native"
 import { darkTheme } from "../theme"
 
@@ -26,10 +27,11 @@ const burgerButton = (navigation) => (
   </HeaderButtons>
 )
 
-const StackNavigator = ({ children }) => {
+const StackNavigator = ({ children, navigation, initialRouteName }) => {
   const { colors } = useTheme()
   return (
     <Stack.Navigator
+      initialRouteName="Main"
       screenOptions={{
         headerTintColor:
           Platform.OS === "android" ? "white" : colors.background,
@@ -45,11 +47,18 @@ const StackNavigator = ({ children }) => {
 }
 
 const MainStackScreen = ({ navigation }) => (
-  <StackNavigator navigation={navigation}>
+  <StackNavigator navigation={navigation} initialRouteName="Main">
     <MainStack.Screen
       name="Main"
       component={MainScreen}
       initialParams={{ actual: false }}
+      options={{
+        headerLeft: () => burgerButton(navigation),
+      }}
+    />
+    <MainStack.Screen
+      name="Event"
+      component={EventScreen}
       options={{
         headerLeft: () => burgerButton(navigation),
       }}
