@@ -64,8 +64,8 @@ export const EventCard = ({ event }) => {
           {event.auditory}, {event.event}
         </Text>
         <Text style={{ ...styles.carddesc, color: colors.text }}>
-          {event.location_town}, {event.location_street}, {event.location_house}{" "}
-          - {event.location_room}
+          {event.location_town}, {event.location_street},{" "}
+          {Math.trunc(event.location_house)} - {Math.trunc(event.location_room)}
         </Text>
       </View>
     </View>
