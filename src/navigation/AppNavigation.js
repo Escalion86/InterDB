@@ -11,18 +11,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer"
 import { Ionicons } from "@expo/vector-icons"
 import { MainScreen } from "../screens/MainScreen"
 import { useTheme } from "@react-navigation/native"
-
-const darkTheme = {
-  colors: {
-    background: "rgb(1, 1, 1)",
-    border: "rgb(46, 46, 48)",
-    card: "rgb(30, 30, 30)",
-    notification: "rgb(255, 69, 58)",
-    primary: "rgb(229, 229, 231)",
-    text: "rgb(229, 229, 231)",
-  },
-  dark: true,
-}
+import { darkTheme } from "../theme"
 
 const Stack = createStackNavigator()
 const MainStack = createStackNavigator()

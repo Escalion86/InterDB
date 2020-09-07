@@ -4,52 +4,20 @@ import { Ionicons } from "@expo/vector-icons"
 import { formatDate, formatTime } from "../helpers/date"
 import { StatusIcon, FinanceIcon } from "./icons"
 import { useTheme } from "@react-navigation/native"
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from "react-native-popup-menu"
+
 import {
   statusIconDependencies,
   financeIconDependencies,
 } from "../db/dependencies"
-import { colors } from "react-native-elements"
+import IconMenu from "./IconMenu"
 
 const showEventLog = (event) => {
   console.log("event", event)
 }
 
-const menu = (
-  IconComponent = StatusIcon,
-  dependencies = statusIconDependencies,
-  activeStatus
-) => {
-  const { colors } = useTheme()
-
-  let menu = []
-  for (let key in dependencies) {
-    menu.push(
-      <MenuOption
-        key={key}
-        onSelect={() => (activeStatus === key ? null : alert(`Save`))}
-        style={activeStatus === key ? { backgroundColor: colors.border } : null}
-        children={
-          <IconComponent
-            status={key}
-            size={20}
-            showtext={true}
-            textcolor={colors.text}
-          />
-        }
-      />
-    )
-  }
-  return menu
-}
-
 export const EventCard = ({ event }) => {
-  const { colors } = useTheme()
+  const theme = useTheme()
+  const colors = theme.colors
 
   return (
     <View
@@ -57,30 +25,19 @@ export const EventCard = ({ event }) => {
       onPress={showEventLog(event)}
     >
       <View style={{ ...styles.left, borderRightColor: colors.background }}>
-        <Menu>
-          <MenuTrigger
-            children={<StatusIcon status={event.status} size={24} />}
-          />
-          <MenuOptions
-            customStyles={{
-              optionWrapper: { padding: 5, backgroundColor: colors.background },
-            }}
-          >
-            {menu(StatusIcon, statusIconDependencies, event.status)}
-          </MenuOptions>
-        </Menu>
-        <Menu style={{ marginTop: 5 }}>
-          <MenuTrigger
-            children={<FinanceIcon status={event.finance_status} size={24} />}
-          />
-          <MenuOptions
-            customStyles={{
-              optionWrapper: { padding: 5, backgroundColor: colors.background },
-            }}
-          >
-            {menu(FinanceIcon, financeIconDependencies, event.finance_status)}
-          </MenuOptions>
-        </Menu>
+        <IconMenu
+          IconComponent={StatusIcon}
+          dependencies={statusIconDependencies}
+          activeStatus={event.status}
+          themeStyle={theme}
+        />
+        <IconMenu
+          IconComponent={FinanceIcon}
+          dependencies={financeIconDependencies}
+          activeStatus={event.finance_status}
+          themeStyle={theme}
+          style={{ marginTop: 6 }}
+        />
       </View>
       <View style={styles.right}>
         <Text style={{ ...styles.cardtitle, color: colors.text }}>
