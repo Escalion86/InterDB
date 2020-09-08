@@ -1,11 +1,13 @@
 import React, { useState } from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native"
 import { useDispatch } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import DropDownPicker from "react-native-dropdown-picker"
 import { useTheme } from "@react-navigation/native"
 import { addEvent } from "../store/actions/event"
+import DateTimePicker from "@react-native-community/datetimepicker"
+import { formatDate, formatTime } from "../helpers/date"
 import {
   statusIconDependencies,
   financeIconDependencies,
@@ -24,6 +26,8 @@ import { dbDefault } from "../db/dbTemplate"
 const CreateEventScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const [newEvent, setNewEvent] = useState(dbDefault)
+  const [datePickerShow, setDatePickerShow] = useState(null)
+  const [timePickerShow, setTimePickerShow] = useState(null)
 
   const { colors } = useTheme()
 
@@ -146,11 +150,10 @@ const CreateEventScreen = ({ navigation, route }) => {
           //   textAlign: "left",
           //   color: colors.text,
           // }}
-          containerStyle={{ height: 50, marginTop: 5, flex: 1 }}
+          containerStyle={{ height: 44, flex: 1 }}
           style={{
             backgroundColor: colors.card,
             borderColor: colors.border,
-            marginTop: 5,
           }}
           dropDownMaxHeight={350}
           itemStyle={{
@@ -169,7 +172,78 @@ const CreateEventScreen = ({ navigation, route }) => {
   }
 
   return (
-    <>
+    <View style={styles.container}>
+      <View style={styles.row}>
+        <Text style={{ ...styles.text, color: colors.text }}>
+          Дата и время начала
+        </Text>
+        <View style={styles.datetimecontainer}>
+          <TouchableOpacity
+            // activeOpacity={1}
+            delayPressIn={50}
+            onPress={() => setDatePickerShow("eventDateStart")}
+          >
+            <Text
+              style={{
+                ...styles.datetime,
+                color: colors.text,
+                backgroundColor: colors.card,
+                borderColor: colors.border,
+              }}
+            >
+              {formatDate(new Date(newEvent.date), true, true)}
+            </Text>
+            {datePickerShow === "eventDateStart" ? (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={new Date(newEvent.date)}
+                mode={"date"}
+                is24Hour={true}
+                display="default"
+                onChange={(event, selectedDate) => {
+                  setDatePickerShow(null)
+                  if (selectedDate)
+                    setEventItem({ date: new Date(selectedDate) })
+                }}
+              />
+            ) : null}
+          </TouchableOpacity>
+          <TouchableOpacity
+            // activeOpacity={1}
+
+            delayPressIn={50}
+            onPress={() => setTimePickerShow("eventTimeStart")}
+          >
+            <Text
+              style={{
+                ...styles.datetime,
+                color: colors.text,
+                backgroundColor: colors.card,
+                borderColor: colors.border,
+              }}
+            >
+              {formatTime(new Date(newEvent.date), true, true)}
+            </Text>
+            {timePickerShow === "eventTimeStart" ? (
+              <DateTimePicker
+                testID="timeTimePicker"
+                value={new Date(newEvent.date)}
+                mode={"time"}
+                is24Hour={true}
+                display="default"
+                onChange={(event, selectedDate) => {
+                  setTimePickerShow(null)
+                  if (selectedDate)
+                    setEventItem({
+                      date: Date.parse(selectedDate),
+                    })
+                }}
+              />
+            ) : null}
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <EventRowDropDownPicker
         dependencies={statusIconDependencies}
         name="Статус события"
@@ -202,20 +276,40 @@ const CreateEventScreen = ({ navigation, route }) => {
         placeholder={"Выберите аудиторию"}
         onChangeItem={(item) => setEventItem({ auditory: item.value })}
       />
-    </>
+    </View>
   )
 }
 
 export default CreateEventScreen
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 5,
+  },
   text: {
     fontSize: 18,
-    padding: 5,
     width: 170,
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 6,
+  },
+  datetime: {
+    fontSize: 18,
+    // flex: 1,
+    height: "100%",
+    paddingHorizontal: 12,
+    textAlign: "center",
+    textAlignVertical: "center",
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  datetimecontainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    // paddingLeft: 5,
+    height: 44,
+    flex: 1,
   },
 })

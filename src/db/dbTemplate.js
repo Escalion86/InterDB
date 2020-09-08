@@ -24,7 +24,7 @@ const rndTime = () => {
 export const dbDefault = {
   auditory: "Взрослые",
   event: "Юбилей",
-  date: new Date().toJSON(),
+  date: new Date().setSeconds(0, 0),
   duration: 30,
   location_town: "Красноярск",
   location_street: null,
