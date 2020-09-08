@@ -55,7 +55,7 @@ const EventsStackScreen = ({ navigation }) => (
   <StackNavigator navigation={navigation} initialRouteName="Main">
     <EventsStack.Screen
       name="Events"
-      component={EventsScreen}
+      component={EventsTabsScreen}
       initialParams={{ actual: false }}
       options={{
         headerLeft: () => burgerButton(navigation),
@@ -108,7 +108,7 @@ const EventsTabsScreen = () => {
     >
       <Tabs.Screen
         name="Events"
-        component={EventsStackScreen}
+        component={EventsScreen}
         options={{
           tabBarLabel: "Все",
           tabBarIcon: (info) => (
@@ -148,7 +148,7 @@ const DrawerScreen = () => {
     >
       <Drawer.Screen
         name="Events"
-        component={EventsTabsScreen}
+        component={EventsStackScreen}
         options={{
           drawerLabel: "Заявки",
           drawerIcon: () => (
