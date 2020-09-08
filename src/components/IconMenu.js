@@ -4,6 +4,7 @@ import {
   MenuOptions,
   MenuOption,
   MenuTrigger,
+  // renderers,
 } from "react-native-popup-menu"
 import { StatusIcon } from "./icons"
 import { statusIconDependencies } from "../db/dependencies"
@@ -18,6 +19,8 @@ const IconMenu = ({
   eventId = null,
   actionOnSelect = () => {},
 }) => {
+  // const { Popover } = renderers
+  // const { SlideInMenu } = renderers
   const dispatch = useDispatch()
   let menu = []
   for (let key in dependencies) {
@@ -45,12 +48,23 @@ const IconMenu = ({
   }
 
   return (
-    <Menu style={style}>
+    <Menu
+
+    // renderer={SlideInMenu}
+    // rendererProps={{ preferredPlacement: "bottom" }}
+    >
       <MenuTrigger
+        // style={{ marginLeft: 20 }}
         children={<IconComponent status={activeStatus} size={24} />}
       />
       <MenuOptions
+        // style={{  }}
+
         customStyles={{
+          optionsContainer: {
+            // marginLeft: 40,
+            width: 220,
+          },
           optionWrapper: {
             padding: 5,
             backgroundColor: themeStyle.colors.background,

@@ -6,17 +6,24 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native"
+import {
+  Menu,
+  MenuProvider,
+  MenuOptions,
+  MenuTrigger,
+  renderers,
+} from "react-native-popup-menu"
 import { Ionicons } from "@expo/vector-icons"
 import { formatDate, formatTime, getWeekDay } from "../helpers/date"
 import { StatusIcon, FinanceIcon } from "./icons"
 import { useTheme } from "@react-navigation/native"
 import { setEventStatus, setFinanceStatus } from "../store/actions/event"
+import { Root, Toast } from "popup-ui"
 
 import {
   statusIconDependencies,
   financeIconDependencies,
 } from "../db/dependencies"
-import * as Animatable from "react-native-animatable"
 import IconMenu from "./IconMenu"
 
 const showEventLog = (event) => {
@@ -24,6 +31,7 @@ const showEventLog = (event) => {
 }
 
 export const EventCard = ({ navigation, event }) => {
+  const { Popover } = renderers
   const theme = useTheme()
   const colors = theme.colors
   const profit =
@@ -96,21 +104,93 @@ export const EventCard = ({ navigation, event }) => {
             {formatTime(new Date(event.date))}
           </Text>
         </View>
-        <TouchableOpacity
-          style={{
-            ...styles.finance,
-            borderTopColor: colors.background,
-            borderLeftColor: colors.background,
-            backgroundColor: colors.border,
-          }}
-          onPress={() =>
-            alert(
-              `price = ${event.finance_price}\nroad = ${event.finance_road}\norganizator = ${event.finance_organizator}\nassistants = ${event.finance_assistants}`
-            )
-          }
+        <Menu
+          style={styles.finance}
+          renderer={Popover}
+          rendererProps={{ preferredPlacement: "left" }}
         >
-          <Text style={styles.profit}>{profit}</Text>
-        </TouchableOpacity>
+          <MenuTrigger style={{ width: "100%", height: "100%" }}>
+            {/* <TouchableOpacity style={styles.finance}> */}
+            <Text
+              style={{
+                ...styles.profit,
+                borderTopColor: colors.background,
+                borderLeftColor: colors.background,
+                backgroundColor: colors.border,
+              }}
+            >
+              {profit}
+            </Text>
+            {/* </TouchableOpacity> */}
+          </MenuTrigger>
+          <MenuOptions
+            style={{
+              ...styles.menuOptions,
+              borderColor: "#ffff99",
+              borderWidth: 1,
+              // borderRadius: 20,
+              backgroundColor: colors.card,
+            }}
+          >
+            <View style={styles.row}>
+              <Text style={{ fontSize: 16, color: colors.text }}>
+                Цена клиента
+              </Text>
+              <Text
+                style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+              >
+                {event.finance_price}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={{ fontSize: 16, color: colors.text }}>
+                За дорогу
+              </Text>
+              <Text
+                style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+              >
+                {-event.finance_road}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={{ fontSize: 16, color: colors.text }}>
+                Организатору
+              </Text>
+              <Text
+                style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+              >
+                {-event.finance_organizator}
+              </Text>
+            </View>
+            <View
+              style={{
+                ...styles.row,
+                borderBottomColor: colors.text,
+                borderBottomWidth: 1,
+                paddingBottom: 5,
+              }}
+            >
+              <Text style={{ fontSize: 16, color: colors.text }}>
+                Ассистентам
+              </Text>
+              <Text
+                style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+              >
+                {-event.finance_assistants}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={{ paddingTop: 5, fontSize: 16, color: colors.text }}>
+                ИТОГО
+              </Text>
+              <Text
+                style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+              >
+                {profit}
+              </Text>
+            </View>
+          </MenuOptions>
+        </Menu>
       </View>
     </TouchableOpacity>
   )
@@ -159,15 +239,28 @@ const styles = StyleSheet.create({
   finance: {
     flex: 1,
     width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
+    // height: "100%",
+    // alignItems: "center",
+    // justifyContent: "center",
+  },
+  profit: {
+    flex: 1,
+    fontSize: 14,
+    width: "100%",
+    height: "100%",
+    textAlignVertical: "center",
+    textAlign: "center",
+    color: "#ffff99",
     borderTopWidth: 1,
     borderLeftWidth: 1,
     borderTopLeftRadius: 10,
     borderBottomRightRadius: 10,
   },
-  profit: {
-    fontSize: 14,
-    color: "#ffff99",
+  menuOptions: {
+    padding: 20,
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 })

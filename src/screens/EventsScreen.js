@@ -13,6 +13,7 @@ import { loadEvents, addEvent, deleteAllEvents } from "../store/actions/event"
 import { EventCard } from "../components/EventCard"
 import { dbGenerator } from "../db/dbTemplate"
 import { useTheme } from "@react-navigation/native"
+import { Root, Popup } from "popup-ui"
 
 const EventsScreen = ({ navigation, route }) => {
   const { colors } = useTheme()
@@ -75,16 +76,18 @@ const EventsScreen = ({ navigation, route }) => {
   }
 
   return (
-    <View style={styles.wrapper}>
-      <FlatList
-        style={styles.list}
-        data={events}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <EventCard navigation={navigation} event={item} />
-        )}
-      />
-    </View>
+    <Root>
+      <View style={styles.wrapper}>
+        <FlatList
+          style={styles.list}
+          data={events}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <EventCard navigation={navigation} event={item} />
+          )}
+        />
+      </View>
+    </Root>
   )
 }
 
