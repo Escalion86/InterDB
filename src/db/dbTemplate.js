@@ -31,11 +31,12 @@ export const dbDefault = {
   location_house: null,
   location_room: null,
   location_comment: "",
-  finance_price: 0,
+  finance_price: 0, // profit = price - road - organizator - assistants
   finance_status: "Не оплачено",
   finance_avans: 0,
   finance_road: 0,
   finance_organizator: 0,
+  finance_assistants: 0,
   finance_comment: "",
   status: "Заметка",
 }
@@ -75,6 +76,7 @@ export const dbGenerator = (table = "events") => {
         finance_avans: rndArray([0, 2000, 3000]),
         finance_road: rndArray([0, 0, 1000]),
         finance_organizator: rndArray([0, 1000, 2000]),
+        finance_assistants: rndArray([0, 500, 1000, 1500, 2000]),
         finance_comment: "",
         status: rndArray([
           "Заметка",
@@ -212,6 +214,14 @@ dbTemplate.events = [
   {
     db_name: "finance_organizator",
     desc: "Финансы - организатору",
+    type: "integer",
+    db_type: "INTEGER",
+    not_null: true,
+    default: 0,
+  },
+  {
+    db_name: "finance_assistants",
+    desc: "Финансы - ассистентам",
     type: "integer",
     db_type: "INTEGER",
     not_null: true,

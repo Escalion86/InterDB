@@ -26,8 +26,7 @@ import { dbDefault } from "../db/dbTemplate"
 const CreateEventScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const [newEvent, setNewEvent] = useState(dbDefault)
-  const [datePickerShow, setDatePickerShow] = useState(null)
-  const [timePickerShow, setTimePickerShow] = useState(null)
+  const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
 
   const { colors } = useTheme()
 
@@ -181,7 +180,7 @@ const CreateEventScreen = ({ navigation, route }) => {
           <TouchableOpacity
             // activeOpacity={1}
             delayPressIn={50}
-            onPress={() => setDatePickerShow("eventDateStart")}
+            onPress={() => setDateTimePickerShow("eventDateStart")}
           >
             <Text
               style={{
@@ -193,7 +192,7 @@ const CreateEventScreen = ({ navigation, route }) => {
             >
               {formatDate(new Date(newEvent.date), true, true)}
             </Text>
-            {datePickerShow === "eventDateStart" ? (
+            {dateTimePickerShow === "eventDateStart" ? (
               <DateTimePicker
                 testID="dateTimePicker"
                 value={new Date(newEvent.date)}
@@ -201,9 +200,9 @@ const CreateEventScreen = ({ navigation, route }) => {
                 is24Hour={true}
                 display="default"
                 onChange={(event, selectedDate) => {
-                  setDatePickerShow(null)
+                  setDateTimePickerShow(null)
                   if (selectedDate)
-                    setEventItem({ date: new Date(selectedDate) })
+                    setEventItem({ date: Date.parse(selectedDate) })
                 }}
               />
             ) : null}
@@ -212,7 +211,7 @@ const CreateEventScreen = ({ navigation, route }) => {
             // activeOpacity={1}
 
             delayPressIn={50}
-            onPress={() => setTimePickerShow("eventTimeStart")}
+            onPress={() => setDateTimePickerShow("eventTimeStart")}
           >
             <Text
               style={{
@@ -224,7 +223,7 @@ const CreateEventScreen = ({ navigation, route }) => {
             >
               {formatTime(new Date(newEvent.date), true, true)}
             </Text>
-            {timePickerShow === "eventTimeStart" ? (
+            {dateTimePickerShow === "eventTimeStart" ? (
               <DateTimePicker
                 testID="timeTimePicker"
                 value={new Date(newEvent.date)}
@@ -232,7 +231,7 @@ const CreateEventScreen = ({ navigation, route }) => {
                 is24Hour={true}
                 display="default"
                 onChange={(event, selectedDate) => {
-                  setTimePickerShow(null)
+                  setDateTimePickerShow(null)
                   if (selectedDate)
                     setEventItem({
                       date: Date.parse(selectedDate),

@@ -4,6 +4,7 @@ import dbTemplate from "./dbTemplate"
 const db = SQLite.openDatabase("events.db")
 
 const dbTemplateToSql = (table = "events") => {
+  //TODO Добавить указание дефолтных значений
   let colSql, sql
   // dbTemplate.forEach((table) => {
   sql = `CREATE TABLE IF NOT EXISTS ${table} (id INTEGER PRIMARY KEY NOT NULL`
@@ -63,9 +64,10 @@ export class DB {
   static deleteAllEvents() {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
-        tx.executeSql(`DELETE FROM events`, [], resolve, (
+        tx.executeSql(`DROP TABLE events`, [], resolve, (
+          // tx.executeSql(`DELETE FROM events`, [], resolve, (
           _,
-          error //DROP TABLE events
+          error
         ) => reject(error))
       })
     })

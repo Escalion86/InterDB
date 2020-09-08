@@ -26,6 +26,11 @@ const showEventLog = (event) => {
 export const EventCard = ({ navigation, event }) => {
   const theme = useTheme()
   const colors = theme.colors
+  const profit =
+    event.finance_price -
+    event.finance_road -
+    event.finance_organizator -
+    event.finance_assistants
 
   if (event.loading || event.deleting) {
     return (
@@ -91,16 +96,21 @@ export const EventCard = ({ navigation, event }) => {
             {formatTime(new Date(event.date))}
           </Text>
         </View>
-        <View
+        <TouchableOpacity
           style={{
             ...styles.finance,
             borderTopColor: colors.background,
             borderLeftColor: colors.background,
             backgroundColor: colors.border,
           }}
+          onPress={() =>
+            alert(
+              `price = ${event.finance_price}\nroad = ${event.finance_road}\norganizator = ${event.finance_organizator}\nassistants = ${event.finance_assistants}`
+            )
+          }
         >
-          <Text style={styles.profit}>{event.finance_price}</Text>
-        </View>
+          <Text style={styles.profit}>{profit}</Text>
+        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   )
