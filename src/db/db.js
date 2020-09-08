@@ -44,16 +44,57 @@ export class DB {
     })
   }
 
-  static addEvent(event) {
+  static addEvent(newEvent) {
+    console.log("newEvent=>", newEvent)
+    //Вычленяем только нужные ключи (такие как loading и пр. не нужны)
+    const {
+      auditory,
+      event,
+      date,
+      duration,
+      location_town,
+      location_street,
+      location_house,
+      location_room,
+      location_comment,
+      finance_price, // profit = price - road - organizator - assistants
+      finance_status,
+      finance_avans,
+      finance_road,
+      finance_organizator,
+      finance_assistants,
+      finance_comment,
+      status,
+    } = newEvent
+    //Помещаем ключи в объект события
+    newEvent = {
+      auditory,
+      event,
+      date: date / 1000, //корректируем так, как в DB не влазит
+      duration,
+      location_town,
+      location_street,
+      location_house,
+      location_room,
+      location_comment,
+      finance_price, // profit = price - road - organizator - assistants
+      finance_status,
+      finance_avans,
+      finance_road,
+      finance_organizator,
+      finance_assistants,
+      finance_comment,
+      status,
+    }
     return new Promise((resolve, reject) => {
-      const eventKeys = Object.keys(event)
+      const eventKeys = Object.keys(newEvent)
 
       db.transaction((tx) => {
         tx.executeSql(
           `INSERT INTO events (${eventKeys.join(", ")}) VALUES (${"?, "
             .repeat(eventKeys.length)
             .slice(0, -2)})`,
-          Object.values(event),
+          Object.values(newEvent),
           (_, result) => resolve(result.insertId),
           (_, error) => reject(error)
         )

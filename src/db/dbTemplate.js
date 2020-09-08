@@ -53,7 +53,7 @@ export const dbGenerator = (table = "events") => {
           "День рождения",
           "Другое",
         ]),
-        date: new Date().toJSON(),
+        date: new Date().setSeconds(0, 0),
         duration: rndArray([20, 30, 40, 60]),
         location_town: rndArray(["Красноярск", "Сосновоборск"]),
         location_street: rndArray([

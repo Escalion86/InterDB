@@ -27,7 +27,7 @@ const EventsScreen = ({ navigation, route }) => {
   const loading = useSelector((state) => state.event.loading)
 
   navigation.setOptions({
-    title: `Заявки (${events.length})`,
+    title: `События (${events.length})`,
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
         <Item

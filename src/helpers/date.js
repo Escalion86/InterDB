@@ -1,4 +1,9 @@
-export const formatDate = (date, fullYear = false, showWeek = false) => {
+export const formatDate = (
+  date = new Date(),
+  fullYear = false,
+  showWeek = false
+) => {
+  date = new Date(date)
   var dd = date.getDate()
   if (dd < 10) dd = "0" + dd
 
@@ -20,6 +25,7 @@ export const formatDate = (date, fullYear = false, showWeek = false) => {
 }
 
 export const formatTime = (date) => {
+  date = new Date(date)
   var hh = date.getHours()
   if (hh < 10) hh = "0" + hh
 
@@ -34,6 +40,7 @@ export const formatDateTime = (date, fullYear = false, showWeek = false) => {
 }
 
 export const getWeekDay = (date) => {
+  date = new Date(date)
   let days = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"]
   return days[date.getDay()]
 }

@@ -15,7 +15,7 @@ const EventScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
 
   navigation.setOptions({
-    title: `Событие от ${formatDateTime(new Date(event.date))}`,
+    title: `Событие ${formatDateTime(new Date(event.date))}`,
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
         <Item

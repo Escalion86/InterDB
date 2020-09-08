@@ -150,7 +150,7 @@ const DrawerScreen = () => {
         name="Events"
         component={EventsStackScreen}
         options={{
-          drawerLabel: "Заявки",
+          drawerLabel: "События",
           drawerIcon: () => (
             <Ionicons name="ios-albums" size={24} color={colors.text} />
           ),

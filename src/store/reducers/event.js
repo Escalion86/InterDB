@@ -22,6 +22,7 @@ export const eventReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_EVENTS:
       events = action.events.map((event) => {
+        event.date = event.date * 1000
         event.loading = false
         return event
       })

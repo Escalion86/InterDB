@@ -63,8 +63,11 @@ export const EventCard = ({ navigation, event }) => {
     <TouchableOpacity
       // activeOpacity={1}
       delayPressIn={50}
-      style={{ ...styles.card, backgroundColor: colors.card, minHeight: 90 }}
-      onPress={() => navigation.navigate("Event", { event: event })}
+      style={{ ...styles.card, backgroundColor: colors.card, minHeight: 94 }}
+      onPress={() => {
+        console.log(event)
+        navigation.navigate("Event", { event: event })
+      }}
     >
       <View style={{ ...styles.left, borderRightColor: colors.background }}>
         <IconMenu

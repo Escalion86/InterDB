@@ -190,7 +190,7 @@ const CreateEventScreen = ({ navigation, route }) => {
                 borderColor: colors.border,
               }}
             >
-              {formatDate(new Date(newEvent.date), true, true)}
+              {formatDate(newEvent.date, true, true)}
             </Text>
             {dateTimePickerShow === "eventDateStart" ? (
               <DateTimePicker
@@ -201,8 +201,9 @@ const CreateEventScreen = ({ navigation, route }) => {
                 display="default"
                 onChange={(event, selectedDate) => {
                   setDateTimePickerShow(null)
-                  if (selectedDate)
+                  if (selectedDate) {
                     setEventItem({ date: Date.parse(selectedDate) })
+                  }
                 }}
               />
             ) : null}
@@ -221,7 +222,7 @@ const CreateEventScreen = ({ navigation, route }) => {
                 borderColor: colors.border,
               }}
             >
-              {formatTime(new Date(newEvent.date), true, true)}
+              {formatTime(newEvent.date, true, true)}
             </Text>
             {dateTimePickerShow === "eventTimeStart" ? (
               <DateTimePicker
