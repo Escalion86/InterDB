@@ -55,7 +55,7 @@ const EventsStackScreen = ({ navigation }) => (
   <StackNavigator navigation={navigation} initialRouteName="Main">
     <EventsStack.Screen
       name="Events"
-      component={EventsTabsScreen}
+      component={EventsScreen}
       initialParams={{ actual: false }}
       options={{
         headerLeft: () => burgerButton(navigation),

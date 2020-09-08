@@ -3,6 +3,8 @@ import { Ionicons } from "@expo/vector-icons"
 import {
   statusIconDependencies,
   financeIconDependencies,
+  eventIconDependencies,
+  auditoryIconDependencies,
 } from "../db/dependencies"
 import { IconButton } from "react-native-paper"
 import {
@@ -81,6 +83,40 @@ export const FinanceIcon = ({
   return (
     <MainIcon
       dependencies={financeIconDependencies}
+      status={status}
+      size={size}
+      showtext={showtext}
+      textcolor={textcolor}
+    />
+  )
+}
+
+export const EventIcon = ({
+  status,
+  size = 36,
+  showtext = false,
+  textcolor = null,
+}) => {
+  return (
+    <MainIcon
+      dependencies={eventIconDependencies}
+      status={status}
+      size={size}
+      showtext={showtext}
+      textcolor={textcolor}
+    />
+  )
+}
+
+export const AuditoryIcon = ({
+  status,
+  size = 36,
+  showtext = false,
+  textcolor = null,
+}) => {
+  return (
+    <MainIcon
+      dependencies={auditoryIconDependencies}
       status={status}
       size={size}
       showtext={showtext}

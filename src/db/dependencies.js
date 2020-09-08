@@ -14,3 +14,18 @@ export const financeIconDependencies = {
   Авансировано: { name: "ios-cash", color: "#999900" },
   Оплачено: { name: "ios-cash", color: "#006600" },
 }
+
+export const auditoryIconDependencies = {
+  Взрослые: { name: "ios-disc", color: "#880088" },
+  Дети: { name: "ios-disc", color: "#006600" },
+  Подростки: { name: "ios-disc", color: "#cc5511" },
+  Смешанная: { name: "ios-disc", color: "#000088" },
+}
+
+export const eventIconDependencies = {
+  Свадьба: { name: "ios-disc", color: "#555555" },
+  Юбилей: { name: "ios-disc", color: "#000088" },
+  Копоратив: { name: "ios-disc", color: "#880088" },
+  "День рождения": { name: "ios-disc", color: "#006600" },
+  Другое: { name: "ios-disc", color: "#999900" },
+}

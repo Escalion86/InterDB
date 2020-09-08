@@ -1,27 +1,46 @@
 let dbTemplate = ["events", "clients"]
 
+const rndArray = (array) => {
+  const rndNum = Math.floor(Math.random() * array.length)
+  return array[rndNum]
+}
+
+const addZero = (num) => {
+  return num > 9 ? num : "0" + num
+}
+
+const rndHours = () => {
+  return addZero(Math.floor(Math.random() * 23))
+}
+
+const rndMinutes = () => {
+  return addZero(Math.floor(Math.random() * 5) * 10)
+}
+
+const rndTime = () => {
+  return rndHours() + ":" + rndMinutes()
+}
+
+export const dbDefault = {
+  auditory: "Взрослые",
+  event: "Юбилей",
+  date: new Date().toJSON(),
+  duration: 30,
+  location_town: "Красноярск",
+  location_street: null,
+  location_house: null,
+  location_room: null,
+  location_comment: "",
+  finance_price: 0,
+  finance_status: "Не оплачено",
+  finance_avans: 0,
+  finance_road: 0,
+  finance_organizator: 0,
+  finance_comment: "",
+  status: "Заметка",
+}
+
 export const dbGenerator = (table = "events") => {
-  const rndArray = (array) => {
-    const rndNum = Math.floor(Math.random() * array.length)
-    return array[rndNum]
-  }
-
-  const addZero = (num) => {
-    return num > 9 ? num : "0" + num
-  }
-
-  const rndHours = () => {
-    return addZero(Math.floor(Math.random() * 23))
-  }
-
-  const rndMinutes = () => {
-    return addZero(Math.floor(Math.random() * 5) * 10)
-  }
-
-  const rndTime = () => {
-    return rndHours() + ":" + rndMinutes()
-  }
-
   switch (table) {
     case "events":
       return {

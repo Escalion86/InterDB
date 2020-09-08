@@ -42,7 +42,6 @@ const EventsScreen = ({ navigation, route }) => {
           iconName="ios-add-circle-outline"
           onPress={() => {
             const tmp = dbGenerator("events")
-            console.log('dbGenerator("events")', tmp)
             dispatch(addEvent(tmp))
           }}
           // onPress={() => navigation.navigate("Create")}
