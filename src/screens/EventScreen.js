@@ -31,7 +31,6 @@ const EventScreen = ({ navigation, route }) => {
           title="Edit Event"
           iconName="md-create"
           onPress={() => {
-            console.log(event)
             alert(`Событие ${event.auditory}, ${event.event}`)
           }}
           // onPress={() => navigation.navigate("Create")}

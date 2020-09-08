@@ -26,10 +26,6 @@ import {
 } from "../db/dependencies"
 import IconMenu from "./IconMenu"
 
-const showEventLog = (event) => {
-  console.log("event", event)
-}
-
 export const EventCard = ({ navigation, event }) => {
   const { Popover } = renderers
   const theme = useTheme()

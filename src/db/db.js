@@ -45,7 +45,6 @@ export class DB {
   }
 
   static addEvent(newEvent) {
-    console.log("newEvent=>", newEvent)
     //Вычленяем только нужные ключи (такие как loading и пр. не нужны)
     const {
       auditory,

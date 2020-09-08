@@ -36,7 +36,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 
   const saveHandler = () => {
     dispatch(addEvent(newEvent))
-    navigation.navigate("Events")
+    // navigation.navigate("Events")
   }
 
   navigation.setOptions({
