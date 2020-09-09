@@ -31,6 +31,7 @@ import {
   EventRowDropDownPicker,
   EventRowTextInput,
   EventRowDateTimePicker,
+  EventRowTitleBlock,
 } from "../components/createEventComponents"
 
 const CreateEventScreen = ({ navigation, route }) => {
@@ -126,6 +127,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <EventRowTitleBlock title="Описание" theme={useTheme()} />
       <EventRowDropDownPicker
         dependencies={statusIconDependencies}
         name="Статус события"
@@ -167,11 +169,34 @@ const CreateEventScreen = ({ navigation, route }) => {
         onChangeStoreHook={setEventItem}
         theme={useTheme()}
       />
+      <EventRowTitleBlock title="Финансы" theme={useTheme()} />
       <EventRowTextInput
         title="Цена клиента"
         value={newEvent.finance_price.toString()}
         theme={useTheme()}
         onChangeText={(text) => setEventItem({ finance_price: text })}
+        postfix="&#8381;"
+      />
+      <EventRowTextInput
+        title="За дорогу"
+        value={newEvent.finance_road.toString()}
+        theme={useTheme()}
+        onChangeText={(text) => setEventItem({ finance_road: text })}
+        postfix="&#8381;"
+      />
+      <EventRowTextInput
+        title="Организатору"
+        value={newEvent.finance_organizator.toString()}
+        theme={useTheme()}
+        onChangeText={(text) => setEventItem({ finance_organizator: text })}
+        postfix="&#8381;"
+      />
+      <EventRowTextInput
+        title="Ассистентам"
+        value={newEvent.finance_assistants.toString()}
+        theme={useTheme()}
+        onChangeText={(text) => setEventItem({ finance_assistants: text })}
+        postfix="&#8381;"
       />
     </View>
   )

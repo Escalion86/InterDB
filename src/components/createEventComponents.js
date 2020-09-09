@@ -11,9 +11,15 @@ import DropDownPicker from "react-native-dropdown-picker"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { formatDate, formatTime } from "../helpers/date"
 
+export const EventRowTitleBlock = ({ title = "", theme = useTheme() }) => {
+  const { colors } = theme
+  return <Text style={{ ...styles.title, color: colors.text }}>{title}</Text>
+}
+
 export const EventRowTextInput = ({
   title = "",
   value = "",
+  postfix = "",
   theme = useTheme(),
   onChangeText = () => {},
 }) => {
@@ -26,11 +32,15 @@ export const EventRowTextInput = ({
       <View
         style={{
           flex: 1,
+          flexDirection: "row",
           borderColor: colors.border,
           backgroundColor: colors.card,
           borderWidth: 1,
           borderRadius: 5,
-          paddingHorizontal: 10,
+          borderRadius: 5,
+          height: "100%",
+
+          // paddingHorizontal: 10,
         }}
       >
         <TextInput
@@ -39,11 +49,32 @@ export const EventRowTextInput = ({
             textAlign: "center",
             fontSize: 18,
             color: colors.text,
+            // borderWidth: 1,
+            // borderColor: "#fff",
           }}
           keyboardType="numeric"
           onChangeText={onChangeText}
           value={value}
         />
+        {postfix ? (
+          <View
+            style={{
+              minWidth: 36,
+              height: "100%",
+              borderColor: colors.border,
+              backgroundColor: colors.border,
+              borderTopWidth: 1,
+              borderBottomWidth: 1,
+              borderRightWidth: 1,
+              borderBottomRightRadius: 5,
+              borderTopRightRadius: 5,
+              paddingHorizontal: 10,
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ fontSize: 18, color: colors.text }}>{postfix}</Text>
+          </View>
+        ) : null}
       </View>
     </View>
   )
@@ -187,6 +218,15 @@ export const EventRowDateTimePicker = ({
 }
 
 const styles = StyleSheet.create({
+  title: {
+    // flex: 1,
+    width: "100%",
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    marginTop: 6,
+    height: 40,
+  },
   text: {
     fontSize: 18,
     width: 170,
