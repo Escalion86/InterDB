@@ -30,14 +30,15 @@ export const dbDefault = {
   location_street: null,
   location_house: null,
   location_room: null,
-  location_comment: "",
+  location_name: "Дом",
+  location_floor: null,
   finance_price: 0, // profit = price - road - organizator - assistants
   finance_status: "Не оплачено",
   finance_avans: 0,
   finance_road: 0,
   finance_organizator: 0,
   finance_assistants: 0,
-  finance_comment: "",
+  comment: null,
   status: "Заметка",
 }
 
@@ -65,7 +66,8 @@ export const dbGenerator = (table = "events") => {
         ]),
         location_house: Math.floor(Math.random() * 100) + 1,
         location_room: Math.floor(Math.random() * 300) + 1,
-        location_comment: "",
+        location_name: "Дом",
+        location_floor: null,
         finance_price: rndArray([5000, 6000, 7000, 8000, 9000, 10000]),
         finance_status: rndArray([
           "Бесплатное",
@@ -77,7 +79,7 @@ export const dbGenerator = (table = "events") => {
         finance_road: rndArray([0, 0, 1000]),
         finance_organizator: rndArray([0, 1000, 2000]),
         finance_assistants: rndArray([0, 500, 1000, 1500, 2000]),
-        finance_comment: "",
+        comment: null,
         status: rndArray([
           "Заметка",
           "Есть вопросы",
@@ -172,9 +174,17 @@ dbTemplate.events = [
     default: "",
   },
   {
-    db_name: "location_comment",
-    desc: "Локация - комментарий",
+    db_name: "location_name",
+    desc: "Локация - Название заведения",
     type: "text",
+    db_type: "TEXT",
+    not_null: false,
+    default: "",
+  },
+  {
+    db_name: "location_floor",
+    desc: "Локация - Этаж",
+    type: "integer",
     db_type: "TEXT",
     not_null: false,
     default: "",
@@ -228,8 +238,8 @@ dbTemplate.events = [
     default: 0,
   },
   {
-    db_name: "finance_comment",
-    desc: "Финансы - комментарий",
+    db_name: "comment",
+    desc: "Комментарий",
     type: "text",
     db_type: "TEXT",
     not_null: false,

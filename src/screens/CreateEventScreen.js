@@ -214,6 +214,12 @@ const CreateEventScreen = ({ navigation, route }) => {
       />
       <EventRowTitleBlock title="Адрес" theme={useTheme()} />
       <EventRowTextInput
+        title="Название заведения"
+        value={newEvent.location_name}
+        theme={useTheme()}
+        onChangeText={(text) => setEventItem({ location_name: text })}
+      />
+      <EventRowTextInput
         title="Город"
         value={newEvent.location_town}
         theme={useTheme()}
@@ -236,6 +242,13 @@ const CreateEventScreen = ({ navigation, route }) => {
         value={newEvent.location_room}
         theme={useTheme()}
         onChangeText={(text) => setEventItem({ location_room: text })}
+      />
+      <EventRowTextInput
+        title="Этаж"
+        value={newEvent.location_floor}
+        theme={useTheme()}
+        keyboardType="numeric"
+        onChangeText={(text) => setEventItem({ location_floor: text })}
       />
     </ScrollView>
   )

@@ -90,7 +90,9 @@ export const EventCard = ({ navigation, event }) => {
         </Text>
         <Text style={{ ...styles.carddesc, color: colors.text }}>
           {event.location_town}, {event.location_street},{" "}
-          {Math.trunc(event.location_house)} - {Math.trunc(event.location_room)}
+          {Math.trunc(event.location_house)}
+          {event.location_room ? ` - ${Math.trunc(event.location_room)}` : null}
+          {event.location_name ? ` (${event.location_name})` : null}
         </Text>
       </View>
       <View style={styles.right}>
@@ -212,7 +214,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   middle: {
-    padding: 5,
+    padding: 10,
     flex: 1,
   },
   right: {

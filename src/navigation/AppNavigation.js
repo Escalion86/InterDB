@@ -15,12 +15,14 @@ import CreateEventScreen from "../screens/CreateEventScreen"
 import ClientsScreen from "../screens/ClientsScreen"
 import ClientScreen from "../screens/ClientScreen"
 import CreateClientScreen from "../screens/CreateClientScreen"
+import DevScreen from "../screens/DevScreen"
 import { useTheme } from "@react-navigation/native"
 import { darkTheme } from "../theme"
 
 const Stack = createStackNavigator()
 const EventsStack = createStackNavigator()
 const ClientsStack = createStackNavigator()
+const DevStack = createStackNavigator()
 
 const burgerButton = (navigation) => (
   <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
@@ -77,6 +79,19 @@ const ClientsStackScreen = ({ navigation }) => (
       }}
     />
     <ClientsStack.Screen name="Client" component={ClientScreen} />
+  </StackNavigator>
+)
+
+const DevStackScreen = ({ navigation }) => (
+  <StackNavigator navigation={navigation} initialRouteName="Main">
+    <DevStack.Screen
+      name="Dev"
+      component={DevScreen}
+      initialParams={{ actual: false }}
+      options={{
+        headerLeft: () => burgerButton(navigation),
+      }}
+    />
   </StackNavigator>
 )
 
@@ -163,6 +178,16 @@ const DrawerScreen = () => {
           drawerLabel: "Клиенты",
           drawerIcon: () => (
             <Ionicons name="md-people" size={24} color={colors.text} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Dev"
+        component={DevStackScreen}
+        options={{
+          drawerLabel: "Панель разработчика",
+          drawerIcon: () => (
+            <Ionicons name="md-bug" size={24} color={colors.text} />
           ),
         }}
       />

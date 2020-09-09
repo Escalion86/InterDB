@@ -2,6 +2,7 @@ import {
   LOAD_EVENTS,
   ADD_EVENT,
   UPDATE_EVENT,
+  UPDATE_EVENT_PARTIALLY,
   LOADING,
   DELETE_EVENT,
   DELETE_ALL_EVENTS,
@@ -13,10 +14,17 @@ import {
 } from "../types"
 import { DB } from "../../db/db"
 
+export const initTable = () => {
+  return async () => {
+    const events = await DB.init()
+    alert("Таблица инициализирована")
+  }
+}
+
 export const loadEvents = () => {
   return async (dispatch) => {
     const events = await DB.getEvents()
-
+    console.log("loadEvents :>> ", events)
     dispatch({
       type: LOAD_EVENTS,
       events,
@@ -73,6 +81,18 @@ export const updateEvent = (event) => {
     })
   }
 }
+//TODO Заменить этой функцией функции такие как setEventStatus, setFinanceStatus
+export const updateEventPartially = (id, parts) => {
+  return async (dispatch) => {
+    await dispatch(loadingEvent(event.id))
+    await DB.updateEventPartially(id, parts)
+    dispatch({
+      type: UPDATE_EVENT_PARTIALLY,
+      id,
+      parts,
+    })
+  }
+}
 
 export const deleteAllEvents = () => {
   return async (dispatch) => {
@@ -116,5 +136,26 @@ export const deleteEvent = (id) => {
       type: DELETE_EVENT,
       id,
     })
+  }
+}
+
+export const deleteTable = () => {
+  return async (dispatch) => {
+    await DB.deleteTable()
+    dispatch({
+      type: DELETE_ALL_EVENTS,
+    })
+    alert("Таблица удалена")
+  }
+}
+
+export const reInitTable = () => {
+  return async (dispatch) => {
+    await DB.deleteTable()
+    dispatch({
+      type: DELETE_ALL_EVENTS,
+    })
+    await DB.init()
+    alert("Таблица перезапущена")
   }
 }

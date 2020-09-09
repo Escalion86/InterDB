@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite"
 import dbTemplate from "./dbTemplate"
 
-const db = SQLite.openDatabase("events.db")
+const db = SQLite.openDatabase("eventsss.db")
 
 const dbTemplateToSql = (table = "events") => {
   //TODO Добавить указание дефолтных значений
@@ -31,6 +31,19 @@ export class DB {
     )
   }
 
+  static getTableColumns() {
+    return new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          "SHOW COLUMNS FROM events",
+          [],
+          (_, result) => resolve(result.rows._array),
+          (_, error) => reject(error)
+        )
+      })
+    })
+  }
+
   static getEvents() {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
@@ -55,7 +68,8 @@ export class DB {
       location_street,
       location_house,
       location_room,
-      location_comment,
+      location_name,
+      location_floor,
       finance_price, // profit = price - road - organizator - assistants
       finance_status,
       finance_avans,
@@ -75,7 +89,8 @@ export class DB {
       location_street,
       location_house,
       location_room,
-      location_comment,
+      location_name,
+      location_floor,
       finance_price, // profit = price - road - organizator - assistants
       finance_status,
       finance_avans,
@@ -112,7 +127,8 @@ export class DB {
       location_street,
       location_house,
       location_room,
-      location_comment,
+      location_name,
+      location_floor,
       finance_price, // profit = price - road - organizator - assistants
       finance_status,
       finance_avans,
@@ -131,7 +147,8 @@ export class DB {
       location_street,
       location_house,
       location_room,
-      location_comment,
+      location_name,
+      location_floor,
       finance_price, // profit = price - road - organizator - assistants
       finance_status,
       finance_avans,
@@ -142,28 +159,45 @@ export class DB {
       status,
     }
     const eventKeys = Object.keys(eventToSend)
-    console.log(`UPDATE events SET ${eventKeys.join(" = ? ")} = ? WHERE id = ?`)
-    // return new Promise((resolve, reject) =>
-    //   db.transaction((tx) => {
-    //     tx.executeSql(
-    //       `UPDATE events SET ${eventKeys.join(" = ? ")} = ? WHERE id = ?`,
-    //       [...Object.values(eventToSend), id],
-    //       resolve,
-    //       (_, error) => reject(error)
-    //     )
-    //   })
-    // )
+    // console.log(`UPDATE events SET ${eventKeys.join(" = ? ")} = ? WHERE id = ?`)
+    return new Promise((resolve, reject) =>
+      db.transaction((tx) => {
+        tx.executeSql(
+          `UPDATE events SET ${eventKeys.join(" = ? ")} = ? WHERE id = ?`,
+          [...Object.values(eventToSend), id],
+          resolve,
+          (_, error) => reject(error)
+        )
+      })
+    )
   }
 
   static deleteAllEvents() {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
-        // tx.executeSql(`DROP TABLE events`, [], resolve, (
-        tx.executeSql(`DELETE FROM events`, [], resolve, (_, error) =>
-          reject(error)
+        tx.executeSql(
+          tx.executeSql(`DELETE FROM events`, [], resolve, (_, error) =>
+            reject(error)
+          )
         )
       })
     })
+  }
+
+  //XXX Нет проверки на лишние ключи
+  static updateEventPartially(id, parts) {
+    const partKeys = Object.keys(parts)
+    const partValues = Object.values(parts)
+    return new Promise((resolve, reject) =>
+      db.transaction((tx) => {
+        tx.executeSql(
+          `UPDATE events SET ${partKeys.join(" = ? ")} = ? WHERE id = ?`,
+          [...partValues, id],
+          resolve,
+          (_, error) => reject(error)
+        )
+      })
+    )
   }
 
   static setEventStatus(id, status) {
@@ -203,5 +237,18 @@ export class DB {
         )
       })
     )
+  }
+
+  static deleteTable() {
+    return new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          // `DROP TABLE events`,`DROP DATABASE events.db`
+          tx.executeSql(`DROP TABLE events`, [], resolve, (_, error) =>
+            reject(error)
+          )
+        )
+      })
+    })
   }
 }
