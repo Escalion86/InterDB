@@ -17,12 +17,15 @@ export const EventRowTitleBlock = ({ title = "", theme = useTheme() }) => {
 }
 
 export const EventRowTextInput = ({
-  title = "",
-  value = "",
+  title = null,
+  value = null,
   postfix = "",
   theme = useTheme(),
   onChangeText = () => {},
+  keyboardType = "default",
+  placeholder = "",
 }) => {
+  value = value ? value.toString() : ""
   const { colors } = theme
   return (
     <View style={styles.row}>
@@ -52,8 +55,9 @@ export const EventRowTextInput = ({
             // borderWidth: 1,
             // borderColor: "#fff",
           }}
-          keyboardType="numeric"
+          keyboardType={keyboardType}
           onChangeText={onChangeText}
+          placeholder={placeholder}
           value={value}
         />
         {postfix ? (

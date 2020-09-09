@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from "react-native"
 import { useDispatch } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
@@ -126,7 +127,7 @@ const CreateEventScreen = ({ navigation, route }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <EventRowTitleBlock title="Описание" theme={useTheme()} />
       <EventRowDropDownPicker
         dependencies={statusIconDependencies}
@@ -172,33 +173,66 @@ const CreateEventScreen = ({ navigation, route }) => {
       <EventRowTitleBlock title="Финансы" theme={useTheme()} />
       <EventRowTextInput
         title="Цена клиента"
-        value={newEvent.finance_price.toString()}
+        value={newEvent.finance_price}
         theme={useTheme()}
         onChangeText={(text) => setEventItem({ finance_price: text })}
+        keyboardType="numeric"
+        placeholder="0"
         postfix="&#8381;"
       />
       <EventRowTextInput
         title="За дорогу"
-        value={newEvent.finance_road.toString()}
+        value={newEvent.finance_road}
         theme={useTheme()}
         onChangeText={(text) => setEventItem({ finance_road: text })}
+        keyboardType="numeric"
+        placeholder="0"
         postfix="&#8381;"
       />
       <EventRowTextInput
         title="Организатору"
-        value={newEvent.finance_organizator.toString()}
+        value={newEvent.finance_organizator}
         theme={useTheme()}
         onChangeText={(text) => setEventItem({ finance_organizator: text })}
+        keyboardType="numeric"
+        placeholder="0"
         postfix="&#8381;"
       />
       <EventRowTextInput
         title="Ассистентам"
-        value={newEvent.finance_assistants.toString()}
+        value={newEvent.finance_assistants}
         theme={useTheme()}
         onChangeText={(text) => setEventItem({ finance_assistants: text })}
+        keyboardType="numeric"
+        placeholder="0"
         postfix="&#8381;"
       />
-    </View>
+      <EventRowTitleBlock title="Адрес" theme={useTheme()} />
+      <EventRowTextInput
+        title="Город"
+        value={newEvent.location_town}
+        theme={useTheme()}
+        onChangeText={(text) => setEventItem({ location_town: text })}
+      />
+      <EventRowTextInput
+        title="Улица"
+        value={newEvent.location_street}
+        theme={useTheme()}
+        onChangeText={(text) => setEventItem({ location_street: text })}
+      />
+      <EventRowTextInput
+        title="Дом"
+        value={newEvent.location_house}
+        theme={useTheme()}
+        onChangeText={(text) => setEventItem({ location_house: text })}
+      />
+      <EventRowTextInput
+        title="Квартира"
+        value={newEvent.location_room}
+        theme={useTheme()}
+        onChangeText={(text) => setEventItem({ location_room: text })}
+      />
+    </ScrollView>
   )
 }
 

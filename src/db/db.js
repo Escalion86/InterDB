@@ -104,11 +104,10 @@ export class DB {
   static deleteAllEvents() {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
-        tx.executeSql(`DROP TABLE events`, [], resolve, (
-          // tx.executeSql(`DELETE FROM events`, [], resolve, (
-          _,
-          error
-        ) => reject(error))
+        // tx.executeSql(`DROP TABLE events`, [], resolve, (
+        tx.executeSql(`DELETE FROM events`, [], resolve, (_, error) =>
+          reject(error)
+        )
       })
     })
   }
