@@ -69,7 +69,7 @@ export class DB {
     newEvent = {
       auditory,
       event,
-      date: date / 1000, //корректируем так, как в DB не влазит
+      date: Math.floor(date / 1000), //корректируем так, как в DB не влазит
       duration,
       location_town,
       location_street,
