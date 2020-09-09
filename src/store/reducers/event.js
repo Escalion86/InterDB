@@ -10,6 +10,7 @@ import {
   LOADING_EVENT,
   LOADING_EVENT_COMPLITE,
   SET_FINANCE_STATUS,
+  UPDATE_EVENT_PARTIALLY,
 } from "../types"
 
 const initialState = {
@@ -98,6 +99,19 @@ export const eventReducer = (state = initialState, action) => {
       events = state.events.map((event) => {
         if (event.id === action.event.id) {
           event = { ...event, ...action.event }
+        }
+        return event
+      })
+
+      return {
+        ...state,
+        events,
+      }
+
+    case UPDATE_EVENT_PARTIALLY:
+      events = state.events.map((event) => {
+        if (event.id === action.id) {
+          event = { ...event, ...action.parts }
         }
         return event
       })
