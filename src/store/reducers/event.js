@@ -1,6 +1,7 @@
 import {
   LOAD_EVENTS,
   ADD_EVENT,
+  UPDATE_EVENT,
   LOADING,
   DELETE_EVENT,
   DELETE_ALL_EVENTS,
@@ -84,6 +85,19 @@ export const eventReducer = (state = initialState, action) => {
       events = state.events.map((event) => {
         if (event.id === action.id) {
           event.deleting = true
+        }
+        return event
+      })
+
+      return {
+        ...state,
+        events,
+      }
+
+    case UPDATE_EVENT:
+      events = state.events.map((event) => {
+        if (event.id === action.event.id) {
+          event = { ...event, ...action.event }
         }
         return event
       })

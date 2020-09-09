@@ -1,6 +1,7 @@
 import {
   LOAD_EVENTS,
   ADD_EVENT,
+  UPDATE_EVENT,
   LOADING,
   DELETE_EVENT,
   DELETE_ALL_EVENTS,
@@ -57,6 +58,17 @@ export const addEvent = (event) => {
     event.id = eventId
     dispatch({
       type: ADD_EVENT,
+      event,
+    })
+  }
+}
+
+export const updateEvent = (event) => {
+  return async (dispatch) => {
+    await dispatch(loadingEvent(event.id))
+    await DB.updateEvent(event)
+    dispatch({
+      type: UPDATE_EVENT,
       event,
     })
   }

@@ -12,7 +12,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import DropDownPicker from "react-native-dropdown-picker"
 import { useTheme } from "@react-navigation/native"
-import { addEvent } from "../store/actions/event"
+import { addEvent, updateEvent } from "../store/actions/event"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { formatDate, formatTime } from "../helpers/date"
 import {
@@ -36,8 +36,13 @@ import {
 } from "../components/createEventComponents"
 
 const CreateEventScreen = ({ navigation, route }) => {
+  const event =
+    route.params !== undefined && route.params.event !== undefined
+      ? route.params.event
+      : dbDefault
+
   const dispatch = useDispatch()
-  const [newEvent, setNewEvent] = useState(dbDefault)
+  const [newEvent, setNewEvent] = useState(event)
   // const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
 
   const { colors } = useTheme()
@@ -47,8 +52,8 @@ const CreateEventScreen = ({ navigation, route }) => {
   }
 
   const saveHandler = () => {
-    dispatch(addEvent(newEvent))
-    setNewEvent(dbDefault)
+    event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
+    // setNewEvent(dbDefault)
     navigation.navigate("Events")
   }
 

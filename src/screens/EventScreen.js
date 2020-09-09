@@ -59,7 +59,7 @@ const EventScreen = ({ navigation, route }) => {
           title="Edit Event"
           iconName="md-create"
           onPress={() => {
-            alert(`Событие ${event.auditory}, ${event.event}`)
+            navigation.navigate("CreateEvent", { event: event })
           }}
           // onPress={() => navigation.navigate("Create")}
         />

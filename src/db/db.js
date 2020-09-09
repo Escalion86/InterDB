@@ -101,6 +101,60 @@ export class DB {
     })
   }
 
+  static updateEvent(updateEvent) {
+    const {
+      id,
+      auditory,
+      event,
+      date,
+      duration,
+      location_town,
+      location_street,
+      location_house,
+      location_room,
+      location_comment,
+      finance_price, // profit = price - road - organizator - assistants
+      finance_status,
+      finance_avans,
+      finance_road,
+      finance_organizator,
+      finance_assistants,
+      finance_comment,
+      status,
+    } = updateEvent
+    eventToSend = {
+      auditory,
+      event,
+      date: Math.floor(date / 1000), //корректируем так, как в DB не влазит
+      duration,
+      location_town,
+      location_street,
+      location_house,
+      location_room,
+      location_comment,
+      finance_price, // profit = price - road - organizator - assistants
+      finance_status,
+      finance_avans,
+      finance_road,
+      finance_organizator,
+      finance_assistants,
+      finance_comment,
+      status,
+    }
+    const eventKeys = Object.keys(eventToSend)
+    console.log(`UPDATE events SET ${eventKeys.join(" = ? ")} = ? WHERE id = ?`)
+    // return new Promise((resolve, reject) =>
+    //   db.transaction((tx) => {
+    //     tx.executeSql(
+    //       `UPDATE events SET ${eventKeys.join(" = ? ")} = ? WHERE id = ?`,
+    //       [...Object.values(eventToSend), id],
+    //       resolve,
+    //       (_, error) => reject(error)
+    //     )
+    //   })
+    // )
+  }
+
   static deleteAllEvents() {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
