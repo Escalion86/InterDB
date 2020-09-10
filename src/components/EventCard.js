@@ -43,7 +43,7 @@ export const EventCard = ({ navigation, event }) => {
           ...styles.center,
           ...styles.card,
           backgroundColor: colors.card,
-          minHeight: 90,
+          minHeight: 94,
         }}
       >
         {event.loading ? (
@@ -67,21 +67,17 @@ export const EventCard = ({ navigation, event }) => {
     >
       <View style={{ ...styles.left, borderRightColor: colors.background }}>
         <IconMenu
-          IconComponent={StatusIcon}
-          dependencies={statusIconDependencies}
-          activeStatus={event.status}
-          themeStyle={theme}
-          eventId={event.id}
-          actionOnSelect={setEventStatus}
+          event={event}
+          theme={theme}
+          eventPartName="status"
+          // actionOnSelect={setEventStatus}
         />
         <IconMenu
-          IconComponent={FinanceIcon}
-          dependencies={financeIconDependencies}
-          activeStatus={event.finance_status}
-          themeStyle={theme}
+          event={event}
+          theme={theme}
           style={{ marginTop: 6 }}
-          eventId={event.id}
-          actionOnSelect={setFinanceStatus}
+          eventPartName="finance_status"
+          // actionOnSelect={setFinanceStatus}
         />
       </View>
       <View style={styles.middle}>
@@ -110,7 +106,7 @@ export const EventCard = ({ navigation, event }) => {
           renderer={Popover}
           rendererProps={{ preferredPlacement: "left" }}
         >
-          <MenuTrigger style={{ width: "100%", height: "100%" }}>
+          <MenuTrigger>
             {/* <TouchableOpacity style={styles.finance}> */}
             <Text
               style={{
@@ -239,16 +235,20 @@ const styles = StyleSheet.create({
   },
   finance: {
     flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-end",
     width: "100%",
+    // borderColor: "#fff",
+    // borderWidth: 2,
     // height: "100%",
     // alignItems: "center",
     // justifyContent: "center",
   },
   profit: {
-    flex: 1,
+    // flex: 1,
     fontSize: 14,
     width: "100%",
-    height: "100%",
+    height: 40,
     textAlignVertical: "center",
     textAlign: "center",
     color: "#ffff99",

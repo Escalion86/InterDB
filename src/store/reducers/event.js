@@ -98,7 +98,7 @@ export const eventReducer = (state = initialState, action) => {
     case UPDATE_EVENT:
       events = state.events.map((event) => {
         if (event.id === action.event.id) {
-          event = { ...event, ...action.event }
+          event = { ...event, ...action.event, loading: false }
         }
         return event
       })
@@ -108,10 +108,10 @@ export const eventReducer = (state = initialState, action) => {
         events,
       }
 
-    case UPDATE_EVENT_PARTIALLY:
+    case UPDATE_EVENT_PARTIALLY: //action (id, parts)
       events = state.events.map((event) => {
         if (event.id === action.id) {
-          event = { ...event, ...action.parts }
+          event = { ...event, ...action.parts, loading: false }
         }
         return event
       })

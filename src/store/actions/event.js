@@ -84,7 +84,7 @@ export const updateEvent = (event) => {
 //TODO Заменить этой функцией функции такие как setEventStatus, setFinanceStatus
 export const updateEventPartially = (id, parts) => {
   return async (dispatch) => {
-    await dispatch(loadingEvent(event.id))
+    await dispatch(loadingEvent(id))
     await DB.updateEventPartially(id, parts)
     dispatch({
       type: UPDATE_EVENT_PARTIALLY,

@@ -12,48 +12,49 @@ const DevScreen = ({ navigation, route }) => {
     title: `Панель разработчика`,
   })
 
+  const DevBtn = ({ title = "", onPress = null }) => (
+    <TouchableOpacity
+      style={{
+        ...styles.button,
+        borderColor: colors.border,
+        backgroundColor: colors.card,
+      }}
+      onPress={onPress}
+    >
+      <Text style={{ color: colors.text, fontSize: 16 }}>{title}</Text>
+    </TouchableOpacity>
+  )
+
   return (
     <View>
-      <TouchableOpacity
-        style={{
-          ...styles.button,
-          borderColor: colors.border,
-          backgroundColor: colors.card,
-        }}
+      <DevBtn
+        title="Очистить и перезапустить БД"
         onPress={() => {
           dispatch(reInitTable())
         }}
-      >
-        <Text style={{ color: colors.text, fontSize: 16 }}>
-          Очистить и перезапустить БД
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          ...styles.button,
-          borderColor: colors.border,
-          backgroundColor: colors.card,
-        }}
+      />
+
+      <DevBtn
+        title="Инициализировать БД"
         onPress={() => {
           dispatch(initTable())
         }}
-      >
-        <Text style={{ color: colors.text, fontSize: 16 }}>
-          Инициализировать БД
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          ...styles.button,
-          borderColor: colors.border,
-          backgroundColor: colors.card,
-        }}
+      />
+      <DevBtn
+        title="Удалить БД"
         onPress={() => {
           dispatch(deleteTable())
         }}
-      >
-        <Text style={{ color: colors.text, fontSize: 16 }}>Удалить БД</Text>
-      </TouchableOpacity>
+      />
+      <DevBtn
+        title="Тест"
+        onPress={() => {
+          const status = "тест"
+          const obj = {}
+          obj["status"] = status
+          console.log("obj :>> ", obj)
+        }}
+      />
     </View>
   )
 }

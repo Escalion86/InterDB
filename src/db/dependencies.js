@@ -29,3 +29,10 @@ export const eventIconDependencies = {
   "День рождения": { name: "ios-disc", color: "#006600" },
   Другое: { name: "ios-disc", color: "#999900" },
 }
+
+export const iconDependencies = {
+  status: statusIconDependencies,
+  finance_status: financeIconDependencies,
+  auditory: auditoryIconDependencies,
+  event: eventIconDependencies,
+}

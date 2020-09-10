@@ -18,111 +18,47 @@ import {
 
 export const MainIcon = ({
   dependencies = statusIconDependencies,
-  status,
+  status = null,
   size = 36,
   showtext = false,
   textcolor = null,
 }) => {
-  return (
-    <View style={styles.container}>
-      <View
-        style={{
-          ...styles.button,
-          width: size + Math.floor(size / 2),
-          height: size + Math.floor(size / 2),
-          padding: Math.floor(size / 16),
-          backgroundColor: dependencies[status].color,
-        }}
-      >
-        <Ionicons
-          name={
-            dependencies[status].name ? dependencies[status].name : "ios-bug"
-          }
-          size={size}
-          color={dependencies[status].color ? "white" : "black"}
-        />
-      </View>
-      {showtext ? (
-        <Text
+  if (!status) {
+    return null
+  } else {
+    return (
+      <View style={styles.container}>
+        <View
           style={{
-            ...styles.text,
-            fontSize: 12 + Math.floor(size / 3),
-            color: textcolor,
+            ...styles.button,
+            width: size + Math.floor(size / 2),
+            height: size + Math.floor(size / 2),
+            padding: Math.floor(size / 16),
+            backgroundColor: dependencies[status].color,
           }}
         >
-          {status}
-        </Text>
-      ) : null}
-    </View>
-  )
-}
-
-export const StatusIcon = ({
-  status,
-  size = 36,
-  showtext = false,
-  textcolor = null,
-}) => {
-  return (
-    <MainIcon
-      dependencies={statusIconDependencies}
-      status={status}
-      size={size}
-      showtext={showtext}
-      textcolor={textcolor}
-    />
-  )
-}
-
-export const FinanceIcon = ({
-  status,
-  size = 36,
-  showtext = false,
-  textcolor = null,
-}) => {
-  return (
-    <MainIcon
-      dependencies={financeIconDependencies}
-      status={status}
-      size={size}
-      showtext={showtext}
-      textcolor={textcolor}
-    />
-  )
-}
-
-export const EventIcon = ({
-  status,
-  size = 36,
-  showtext = false,
-  textcolor = null,
-}) => {
-  return (
-    <MainIcon
-      dependencies={eventIconDependencies}
-      status={status}
-      size={size}
-      showtext={showtext}
-      textcolor={textcolor}
-    />
-  )
-}
-
-export const AuditoryIcon = ({
-  status,
-  size = 36,
-  showtext = false,
-  textcolor = null,
-}) => {
-  return (
-    <MainIcon
-      dependencies={auditoryIconDependencies}
-      status={status}
-      size={size}
-      showtext={showtext}
-      textcolor={textcolor}
-    />
-  )
+          <Ionicons
+            name={
+              dependencies[status].name ? dependencies[status].name : "ios-bug"
+            }
+            size={size}
+            color={dependencies[status].color ? "white" : "black"}
+          />
+        </View>
+        {showtext ? (
+          <Text
+            style={{
+              ...styles.text,
+              fontSize: 12 + Math.floor(size / 3),
+              color: textcolor,
+            }}
+          >
+            {status}
+          </Text>
+        ) : null}
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
