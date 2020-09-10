@@ -24,7 +24,6 @@ export const initTable = () => {
 export const loadEvents = () => {
   return async (dispatch) => {
     const events = await DB.getEvents()
-    console.log("loadEvents :>> ", events)
     dispatch({
       type: LOAD_EVENTS,
       events,
@@ -136,16 +135,6 @@ export const deleteEvent = (id) => {
       type: DELETE_EVENT,
       id,
     })
-  }
-}
-
-export const deleteTable = () => {
-  return async (dispatch) => {
-    await DB.deleteTable()
-    dispatch({
-      type: DELETE_ALL_EVENTS,
-    })
-    alert("Таблица удалена")
   }
 }
 

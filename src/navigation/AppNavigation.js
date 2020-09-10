@@ -16,12 +16,14 @@ import ClientsScreen from "../screens/ClientsScreen"
 import ClientScreen from "../screens/ClientScreen"
 import CreateClientScreen from "../screens/CreateClientScreen"
 import DevScreen from "../screens/DevScreen"
+import ProgramsScreen from "../screens/ProgramsScreen"
 import { useTheme } from "@react-navigation/native"
 import { darkTheme } from "../theme"
 
 const Stack = createStackNavigator()
 const EventsStack = createStackNavigator()
 const ClientsStack = createStackNavigator()
+const ProgramsStack = createStackNavigator()
 const DevStack = createStackNavigator()
 
 const burgerButton = (navigation) => (
@@ -88,6 +90,18 @@ const DevStackScreen = ({ navigation }) => (
       name="Dev"
       component={DevScreen}
       initialParams={{ actual: false }}
+      options={{
+        headerLeft: () => burgerButton(navigation),
+      }}
+    />
+  </StackNavigator>
+)
+
+const ProgramsStackScreen = ({ navigation }) => (
+  <StackNavigator navigation={navigation} initialRouteName="Main">
+    <ProgramsStack.Screen
+      name="Programs"
+      component={ProgramsScreen}
       options={{
         headerLeft: () => burgerButton(navigation),
       }}
@@ -178,6 +192,16 @@ const DrawerScreen = () => {
           drawerLabel: "Клиенты",
           drawerIcon: () => (
             <Ionicons name="md-people" size={24} color={colors.text} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Programs"
+        component={ProgramsStackScreen}
+        options={{
+          drawerLabel: "Программы",
+          drawerIcon: () => (
+            <Ionicons name="ios-flame" size={24} color={colors.text} />
           ),
         }}
       />

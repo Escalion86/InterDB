@@ -1,7 +1,9 @@
 import * as SQLite from "expo-sqlite"
 import dbTemplate from "./dbTemplate"
 
-const db = SQLite.openDatabase("eventsss.db")
+const DBName = "events.db"
+
+let db = SQLite.openDatabase(DBName)
 
 const dbTemplateToSql = (table = "events") => {
   //TODO Добавить указание дефолтных значений
@@ -9,12 +11,16 @@ const dbTemplateToSql = (table = "events") => {
   // dbTemplate.forEach((table) => {
   sql = `CREATE TABLE IF NOT EXISTS ${table} (id INTEGER PRIMARY KEY NOT NULL`
   colSql = ""
+  uniq = []
   dbTemplate[table].forEach((col) => {
     colSql += `, ${col.db_name} ${col.db_type}${
       col.not_null ? " NOT NULL" : ""
     }`
+    uniq.push(col.db_name)
   })
-  sql += `${colSql})`
+
+  sql += `${colSql}, UNIQUE (${uniq.join(", ")}) ON CONFLICT REPLACE)`
+  console.log("sql :>> ", sql)
   return sql
 
   // })
@@ -31,11 +37,93 @@ export class DB {
     )
   }
 
-  static getTableColumns() {
+  static addColumn(colName, type = "TEXT", notNull = false) {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
-          "SHOW COLUMNS FROM events",
+          // `IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'events' AND COLUMN_NAME = 'events.db') BEGIN ADD ${colName} ${type}${
+          //   notNull ? " NOT NULL" : ""
+          // } END`,
+          `ALTER TABLE events ADD OR ABORT COLUMN ${colName} ${type}${
+            notNull ? " NOT NULL" : ""
+          }`,
+          [],
+          (_, result) => resolve(result.rows._array),
+          (_, error) => reject(error)
+        )
+      })
+    })
+  }
+
+  // WARNING это невозможно
+  // static removeColumn(colName) {
+  //   return new Promise((resolve, reject) => {
+  //     db.transaction((tx) => {
+  //       tx.executeSql(
+  //         `ALTER TABLE events DROP COLUMN ${colName}`,
+  //         [],
+  //         (_, result) => resolve(result.rows._array),
+  //         (_, error) => reject(error)
+  //       )
+  //     })
+  //   })
+  // }
+
+  static renameColumn(oldColName, newColName) {
+    return new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          `ALTER TABLE events RENAME COLUMN ${oldColName} TO ${newColName}`,
+          [],
+          (_, result) => resolve(result.rows._array),
+          (_, error) => reject(error)
+        )
+      })
+    })
+  }
+
+  static renameTable(oldTableName, newTableName) {
+    return new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          `ALTER TABLE ${oldTableName} RENAME TO ${newTableName}`,
+          [],
+          (_, result) => resolve(result.rows._array),
+          (_, error) => reject(error)
+        )
+      })
+    })
+  }
+
+  static closeDB() {
+    db._db.close()
+  }
+
+  static openDB() {
+    db = SQLite.openDatabase(DBName)
+  }
+
+  static getTableColumns(table) {
+    return new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          //"SELECT COLUMN_NAME. FROM information_schema.columns. WHERE table_schema='events.db' AND table_name='events'",
+          `PRAGMA table_info(${table})`,
+          //"SHOW TABLES",
+          //"SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='events.db' AND `TABLE_NAME`='events'",
+          [],
+          (_, result) => resolve(result.rows._array),
+          (_, error) => reject(error)
+        )
+      })
+    })
+  }
+
+  static getTables() {
+    return new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          "SELECT name FROM sqlite_master WHERE type ='table' AND name NOT LIKE 'sqlite_%'",
           [],
           (_, result) => resolve(result.rows._array),
           (_, error) => reject(error)
@@ -76,7 +164,7 @@ export class DB {
       finance_road,
       finance_organizator,
       finance_assistants,
-      finance_comment,
+      comment,
       status,
     } = newEvent
     //Помещаем ключи в объект события
@@ -97,7 +185,7 @@ export class DB {
       finance_road,
       finance_organizator,
       finance_assistants,
-      finance_comment,
+      comment,
       status,
     }
     return new Promise((resolve, reject) => {
@@ -135,7 +223,7 @@ export class DB {
       finance_road,
       finance_organizator,
       finance_assistants,
-      finance_comment,
+      comment,
       status,
     } = updateEvent
     eventToSend = {
@@ -155,7 +243,7 @@ export class DB {
       finance_road,
       finance_organizator,
       finance_assistants,
-      finance_comment,
+      comment,
       status,
     }
     const eventKeys = Object.keys(eventToSend)
@@ -239,12 +327,12 @@ export class DB {
     )
   }
 
-  static deleteTable() {
+  static deleteTable(table) {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
           // `DROP TABLE events`,`DROP DATABASE events.db`
-          tx.executeSql(`DROP TABLE events`, [], resolve, (_, error) =>
+          tx.executeSql(`DROP TABLE ${table}`, [], resolve, (_, error) =>
             reject(error)
           )
         )
