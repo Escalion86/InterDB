@@ -21,12 +21,6 @@ import {
   eventIconDependencies,
   auditoryIconDependencies,
 } from "../db/dependencies"
-import {
-  StatusIcon,
-  FinanceIcon,
-  EventIcon,
-  AuditoryIcon,
-} from "../components/icons"
 import { dbDefault } from "../db/dbTemplate"
 import {
   EventRowDropDownPicker,
@@ -137,8 +131,8 @@ const CreateEventScreen = ({ navigation, route }) => {
       <EventRowDropDownPicker
         dependencies={statusIconDependencies}
         name="Статус события"
-        IconEventComponent={StatusIcon}
-        dafeultValue={newEvent.status}
+        // IconEventComponent={StatusIcon}
+        defeultValue={newEvent.status}
         placeholder={"Выберите статус события"}
         onChangeItem={(item) => setEventItem({ status: item.value })}
         theme={useTheme()}
@@ -146,8 +140,8 @@ const CreateEventScreen = ({ navigation, route }) => {
       <EventRowDropDownPicker
         dependencies={financeIconDependencies}
         name="Статус оплаты"
-        IconEventComponent={FinanceIcon}
-        dafeultValue={newEvent.finance_status}
+        // IconEventComponent={FinanceIcon}
+        defeultValue={newEvent.finance_status}
         placeholder={"Выберите статус оплаты"}
         onChangeItem={(item) => setEventItem({ finance_status: item.value })}
         theme={useTheme()}
@@ -155,8 +149,8 @@ const CreateEventScreen = ({ navigation, route }) => {
       <EventRowDropDownPicker
         dependencies={eventIconDependencies}
         name="Тип события"
-        IconEventComponent={EventIcon}
-        dafeultValue={newEvent.event}
+        // IconEventComponent={EventIcon}
+        defeultValue={newEvent.event}
         placeholder={"Выберите тип события"}
         onChangeItem={(item) => setEventItem({ event: item.value })}
         theme={useTheme()}
@@ -164,8 +158,8 @@ const CreateEventScreen = ({ navigation, route }) => {
       <EventRowDropDownPicker
         dependencies={auditoryIconDependencies}
         name="Аудитория"
-        IconEventComponent={AuditoryIcon}
-        dafeultValue={newEvent.auditory}
+        // IconEventComponent={AuditoryIcon}
+        defeultValue={newEvent.auditory}
         placeholder={"Выберите аудиторию"}
         onChangeItem={(item) => setEventItem({ auditory: item.value })}
         theme={useTheme()}

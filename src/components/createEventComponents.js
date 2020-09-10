@@ -10,6 +10,7 @@ import { useTheme } from "@react-navigation/native"
 import DropDownPicker from "react-native-dropdown-picker"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { formatDate, formatTime } from "../helpers/date"
+import { MainIcon } from "./icons"
 
 export const EventRowTitleBlock = ({ title = "", theme = useTheme() }) => {
   const { colors } = theme
@@ -87,8 +88,7 @@ export const EventRowTextInput = ({
 export const EventRowDropDownPicker = ({
   dependencies,
   name,
-  IconEventComponent,
-  dafeultValue = null,
+  defeultValue = null,
   placeholder = "Выберите пункт из списка",
   onChangeItem = null,
   theme = useTheme(),
@@ -100,12 +100,19 @@ export const EventRowDropDownPicker = ({
       label: "",
       value: item,
       icon: () => (
-        <IconEventComponent
+        <MainIcon
+          dependencies={dependencies}
           status={item}
           size={20}
           showtext={true}
           textcolor={colors.text}
         />
+        // <IconEventComponent
+        //   status={item}
+        //   size={20}
+        //   showtext={true}
+        //   textcolor={colors.text}
+        // />
       ),
     })
   }
@@ -116,7 +123,7 @@ export const EventRowDropDownPicker = ({
       <DropDownPicker
         placeholder={placeholder}
         items={arrayItems}
-        defaultValue={dafeultValue}
+        defaultValue={defeultValue}
         // labelStyle={{
         //   fontSize: 16,
         //   textAlign: "left",

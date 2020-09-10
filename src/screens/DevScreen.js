@@ -11,11 +11,7 @@ import {
 import DropDownPicker from "react-native-dropdown-picker"
 import { useDispatch } from "react-redux"
 import { useTheme } from "@react-navigation/native"
-import {
-  initTable,
-  // deleteTable,
-  reInitTable,
-} from "../store/actions/event"
+import { reInitTable } from "../store/actions/event"
 import { DB } from "../db/db"
 import dbTemplate from "../db/dbTemplate"
 
