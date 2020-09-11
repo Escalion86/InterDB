@@ -14,6 +14,18 @@ import { useTheme } from "@react-navigation/native"
 import { reInitTable } from "../store/actions/event"
 import { DB } from "../db/db"
 import dbTemplate from "../db/dbTemplate"
+import {
+  DevBtn,
+  DevInputBtn,
+  DevTwoInputBtn,
+} from "../components/devComponents"
+import {
+  Menu,
+  MenuProvider,
+  MenuOptions,
+  MenuTrigger,
+  renderers,
+} from "react-native-popup-menu"
 
 const DevTableScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
@@ -21,6 +33,7 @@ const DevTableScreen = ({ navigation, route }) => {
   const [columns, setColumns] = useState([])
   // const [selectedTable, setSelectedTable] = useState(null)
   const selectedTable = route.params.table
+  const { Popover } = renderers
 
   // if (selectedTable) {
   //   loadColumns(selectedTable)
@@ -28,7 +41,7 @@ const DevTableScreen = ({ navigation, route }) => {
 
   async function loadColumns(table) {
     const data = await DB.getTableColumns(table)
-    // console.log("loadColumns :>> ", data)
+    console.log("loadColumns :>> ", data)
     setColumns(data)
   }
 
@@ -40,114 +53,8 @@ const DevTableScreen = ({ navigation, route }) => {
     title: `Панель разработчика`,
   })
 
-  const DevBtn = ({ title = "", onPress = null }) => (
-    <TouchableOpacity
-      style={{
-        ...styles.button,
-        borderColor: colors.border,
-        backgroundColor: colors.card,
-      }}
-      onPress={onPress}
-    >
-      <Text style={{ color: colors.text, fontSize: 16 }}>{title}</Text>
-    </TouchableOpacity>
-  )
-
-  const DevInputBtn = ({
-    title = "",
-    onPress = (value) => console.log(value),
-  }) => {
-    const [value, setValue] = useState("")
-    return (
-      <View style={{ flexDirection: "row" }}>
-        <TextInput
-          style={{
-            flex: 1,
-            textAlign: "center",
-            fontSize: 16,
-            color: colors.text,
-            borderWidth: 1,
-            borderColor: colors.border,
-            margin: 5,
-          }}
-          onChangeText={(text) => setValue(text)}
-        />
-        <TouchableOpacity
-          style={{
-            ...styles.button,
-            borderColor: colors.border,
-            backgroundColor: colors.card,
-          }}
-          onPress={() => onPress(value)}
-        >
-          <Text style={{ color: colors.text, fontSize: 16 }}>{title}</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-
-  const DevTwoInputBtn = ({
-    title = "",
-    onPress = (oldValue, newValue) => console.log(oldValue, newValue),
-  }) => {
-    const [oldValue, setOldValue] = useState("")
-    const [newValue, setNewValue] = useState("")
-    return (
-      <View style={{ flexDirection: "row" }}>
-        <TextInput
-          style={{
-            flex: 1,
-            textAlign: "center",
-            fontSize: 16,
-            color: colors.text,
-            borderWidth: 1,
-            borderColor: colors.border,
-            margin: 5,
-          }}
-          placeholder="Текущее имя"
-          onChangeText={(text) => setOldValue(text)}
-        />
-        <TextInput
-          style={{
-            flex: 1,
-            textAlign: "center",
-            fontSize: 16,
-            color: colors.text,
-            borderWidth: 1,
-            borderColor: colors.border,
-            margin: 5,
-          }}
-          placeholder="Новое имя"
-          onChangeText={(text) => setNewValue(text)}
-        />
-        <TouchableOpacity
-          style={{
-            ...styles.button,
-            borderColor: colors.border,
-            backgroundColor: colors.card,
-          }}
-          onPress={() => onPress(oldValue, newValue)}
-        >
-          <Text style={{ color: colors.text, fontSize: 14 }}>{title}</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-
-  const DevDropDownPicker = () => {
-    const tablesItems = []
-    tables.forEach((table) => {
-      tablesItems.push({
-        label: table.name,
-        value: table.name,
-      })
-    })
-
-    if (tables.length === 0) return null
-  }
-
   const Header = () => (
-    <View style={{ height: selectedTable ? null : 800 }}>
+    <View style={{ height: selectedTable ? null : 800, width: "100%" }}>
       {selectedTable ? (
         <>
           <Text
@@ -182,23 +89,97 @@ const DevTableScreen = ({ navigation, route }) => {
   )
 
   return (
-    <FlatList
-      ListHeaderComponent={<Header />}
-      style={styles.list}
-      data={columns}
-      keyExtractor={(item) => item.cid.toString()}
-      renderItem={({ item }) => (
-        <Text
-          style={{
-            color: colors.text,
-            fontSize: 14,
-            width: "49%",
-          }}
-        >
-          {item.name}
-        </Text>
-      )}
-    />
+    <View style={styles.container}>
+      <FlatList
+        ListHeaderComponent={<Header />}
+        style={styles.list}
+        data={columns}
+        keyExtractor={(item) => item.cid.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity>
+            <Menu
+              renderer={Popover}
+              rendererProps={{ preferredPlacement: "left" }}
+            >
+              <MenuTrigger>
+                <Text
+                  style={{
+                    color: colors.text,
+                    fontSize: 16,
+                    borderColor: "#fff",
+                    textAlign: "center",
+                  }}
+                >
+                  {item.name}
+                </Text>
+              </MenuTrigger>
+              <MenuOptions
+                style={{
+                  ...styles.menuOptions,
+                  borderColor: "#ffff99",
+                  borderWidth: 1,
+                  // borderRadius: 20,
+                  backgroundColor: colors.card,
+                }}
+              >
+                <View style={styles.row}>
+                  <Text style={{ fontSize: 16, color: colors.text }}>cid</Text>
+                  <Text
+                    style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+                  >
+                    {item.cid}
+                  </Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={{ fontSize: 16, color: colors.text }}>
+                    dflt_value
+                  </Text>
+                  <Text
+                    style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+                  >
+                    {item.dflt_value === null ? "null" : item.dflt_value}
+                  </Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={{ fontSize: 16, color: colors.text }}>name</Text>
+                  <Text
+                    style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+                  >
+                    {item.name}
+                  </Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={{ fontSize: 16, color: colors.text }}>
+                    notnull
+                  </Text>
+                  <Text
+                    style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+                  >
+                    {item.notnull ? "true" : "false"}
+                  </Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={{ fontSize: 16, color: colors.text }}>pk</Text>
+                  <Text
+                    style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+                  >
+                    {item.pk}
+                  </Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={{ fontSize: 16, color: colors.text }}>type</Text>
+                  <Text
+                    style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+                  >
+                    {item.type}
+                  </Text>
+                </View>
+              </MenuOptions>
+            </Menu>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
   )
 }
 // export const getTableColumns = () => {
@@ -211,6 +192,10 @@ const DevTableScreen = ({ navigation, route }) => {
 export default DevTableScreen
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 5,
+  },
   title: {
     // alignItems: "center",
     // justifyContent: "center",
@@ -233,5 +218,14 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 0,
     margin: 0,
+    // flexWrap: "wrap",
+    // flexDirection: "row",
+  },
+  menuOptions: {
+    padding: 20,
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 })
