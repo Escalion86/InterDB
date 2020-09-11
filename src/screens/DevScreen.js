@@ -27,14 +27,11 @@ const DevScreen = ({ navigation, route }) => {
     setTables(data)
   }
 
-  // if (selectedTable) {
-  //   loadColumns(selectedTable)
-  // }
-
   async function loadColumns(table) {
     const data = await DB.getTableColumns(table)
     // console.log("loadColumns :>> ", data)
-    setColumns(data)
+    navigation.navigate("DevTable", { table })
+    // setColumns(data)
   }
 
   useEffect(() => {
@@ -57,87 +54,6 @@ const DevScreen = ({ navigation, route }) => {
       <Text style={{ color: colors.text, fontSize: 16 }}>{title}</Text>
     </TouchableOpacity>
   )
-
-  const DevInputBtn = ({
-    title = "",
-    onPress = (value) => console.log(value),
-  }) => {
-    const [value, setValue] = useState("")
-    return (
-      <View style={{ flexDirection: "row" }}>
-        <TextInput
-          style={{
-            flex: 1,
-            textAlign: "center",
-            fontSize: 16,
-            color: colors.text,
-            borderWidth: 1,
-            borderColor: colors.border,
-            margin: 5,
-          }}
-          onChangeText={(text) => setValue(text)}
-        />
-        <TouchableOpacity
-          style={{
-            ...styles.button,
-            borderColor: colors.border,
-            backgroundColor: colors.card,
-          }}
-          onPress={() => onPress(value)}
-        >
-          <Text style={{ color: colors.text, fontSize: 16 }}>{title}</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-
-  const DevTwoInputBtn = ({
-    title = "",
-    onPress = (oldValue, newValue) => console.log(oldValue, newValue),
-  }) => {
-    const [oldValue, setOldValue] = useState("")
-    const [newValue, setNewValue] = useState("")
-    return (
-      <View style={{ flexDirection: "row" }}>
-        <TextInput
-          style={{
-            flex: 1,
-            textAlign: "center",
-            fontSize: 16,
-            color: colors.text,
-            borderWidth: 1,
-            borderColor: colors.border,
-            margin: 5,
-          }}
-          placeholder="Текущее имя"
-          onChangeText={(text) => setOldValue(text)}
-        />
-        <TextInput
-          style={{
-            flex: 1,
-            textAlign: "center",
-            fontSize: 16,
-            color: colors.text,
-            borderWidth: 1,
-            borderColor: colors.border,
-            margin: 5,
-          }}
-          placeholder="Новое имя"
-          onChangeText={(text) => setNewValue(text)}
-        />
-        <TouchableOpacity
-          style={{
-            ...styles.button,
-            borderColor: colors.border,
-            backgroundColor: colors.card,
-          }}
-          onPress={() => onPress(oldValue, newValue)}
-        >
-          <Text style={{ color: colors.text, fontSize: 14 }}>{title}</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
 
   const DevDropDownPicker = () => {
     const tablesItems = []
@@ -183,8 +99,8 @@ const DevScreen = ({ navigation, route }) => {
     )
   }
 
-  const Header = () => (
-    <View style={{ height: selectedTable ? null : 800 }}>
+  return (
+    <View style={styles.container}>
       <DevBtn
         title="Очистить и перезапустить БД"
         onPress={() => {
@@ -196,66 +112,16 @@ const DevScreen = ({ navigation, route }) => {
       <DevBtn title="Закрыть БД" onPress={() => DB.closeDB()} />
       <DevBtn title="Открыть БД" onPress={() => DB.openDB()} />
       <DevDropDownPicker />
-      {selectedTable ? (
-        <>
-          <DevInputBtn
-            title="Переименовать таблицу"
-            onPress={(newName) => DB.renameTable(selectedTable, newName)}
-          />
-          <DevInputBtn
-            title="Создать колонку"
-            onPress={(value) => DB.addColumn(value, "TEXT", false)}
-          />
-          <DevTwoInputBtn
-            title="Переименовать колонку"
-            onPress={DB.renameColumn}
-          />
-          <DevBtn
-            title="Удалить таблицу"
-            onPress={() => DB.deleteTable(selectedTable)}
-          />
-          {/* <DevBtn
-            title="Показать текущие колонки таблицы"
-            onPress={async () => {
-              const res = await DB.getTableColumns()
-              setColumns(res)
-            }}
-          /> */}
-        </>
-      ) : null}
     </View>
   )
-
-  return (
-    <FlatList
-      ListHeaderComponent={<Header />}
-      style={styles.list}
-      data={columns}
-      keyExtractor={(item) => item.cid.toString()}
-      renderItem={({ item }) => (
-        <Text
-          style={{
-            color: colors.text,
-            fontSize: 14,
-            width: "49%",
-          }}
-        >
-          {item.name}
-        </Text>
-      )}
-    />
-  )
 }
-// export const getTableColumns = () => {
-//   return async () => {
-//     const res = await DB.getTableColumns()
-//     console.log("getTableColumns :>> ", res)
-//   }
-// }
 
 export default DevScreen
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 5,
+  },
   button: {
     borderWidth: 1,
     height: 40,

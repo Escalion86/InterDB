@@ -16,6 +16,7 @@ import ClientsScreen from "../screens/ClientsScreen"
 import ClientScreen from "../screens/ClientScreen"
 import CreateClientScreen from "../screens/CreateClientScreen"
 import DevScreen from "../screens/DevScreen"
+import DevTableScreen from "../screens/DevTableScreen"
 import ProgramsScreen from "../screens/ProgramsScreen"
 import { useTheme } from "@react-navigation/native"
 import { darkTheme } from "../theme"
@@ -87,13 +88,17 @@ const ClientsStackScreen = ({ navigation }) => (
 const DevStackScreen = ({ navigation }) => (
   <StackNavigator navigation={navigation} initialRouteName="Main">
     <DevStack.Screen
-      name="Dev"
+      name="DevDB"
       component={DevScreen}
-      initialParams={{ actual: false }}
       options={{
         headerLeft: () => burgerButton(navigation),
       }}
     />
+    <DevStack.Screen name="DevTable" component={DevTableScreen} />
+    {/* <DevStack.Screen
+      name="DevColumn"
+      component={DevColumnScreen}
+    /> */}
   </StackNavigator>
 )
 
