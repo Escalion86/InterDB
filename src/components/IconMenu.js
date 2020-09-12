@@ -9,7 +9,7 @@ import {
 import { MainIcon } from "./icons"
 import { iconDependencies } from "../db/dependencies"
 import { useDispatch } from "react-redux"
-import { updateEventPartially } from "../store/actions/event"
+import { updateDataTablePartially } from "../store/actions/event"
 
 const IconMenu = ({ event, theme, eventPartName = null, style = {} }) => {
   const eventId = event.id
@@ -26,7 +26,7 @@ const IconMenu = ({ event, theme, eventPartName = null, style = {} }) => {
           if (eventPartName && activeValue !== key) {
             const part = {}
             part[eventPartName] = key
-            dispatch(updateEventPartially(eventId, part))
+            dispatch(updateDataTablePartially("events", eventId, part))
           }
         }}
         style={

@@ -17,12 +17,7 @@ import {
 } from "react-native-popup-menu"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
-import {
-  loadEvents,
-  addEvent,
-  deleteAllEvents,
-  getTableColumns,
-} from "../store/actions/event"
+import { loadEvents, addEvent, deleteAllEvents } from "../store/actions/event"
 import { EventCard } from "../components/EventCard"
 import { dbGenerator } from "../db/dbTemplate"
 import { useTheme } from "@react-navigation/native"
@@ -165,7 +160,7 @@ const EventsScreen = ({ navigation, route }) => {
           title="Add rondom event"
           iconName="ios-add-circle-outline"
           onPress={() => {
-            const tmp = dbGenerator("events")
+            const tmp = dbGenerator("event")
             dispatch(addEvent(tmp))
           }}
           // onPress={() => navigation.navigate("Create")}

@@ -33,7 +33,7 @@ const CreateEventScreen = ({ navigation, route }) => {
   const event =
     route.params !== undefined && route.params.event !== undefined
       ? route.params.event
-      : dbDefault
+      : dbDefault.event
 
   const dispatch = useDispatch()
   const [newEvent, setNewEvent] = useState(event)
@@ -47,7 +47,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 
   const saveHandler = () => {
     event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
-    // setNewEvent(dbDefault)
     navigation.navigate("Events")
   }
 

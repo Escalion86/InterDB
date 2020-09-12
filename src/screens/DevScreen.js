@@ -10,10 +10,13 @@ import {
 } from "react-native"
 import { useDispatch } from "react-redux"
 import { useTheme } from "@react-navigation/native"
-import { reInitTable } from "../store/actions/event"
+import { reInitTable } from "../store/actions/db"
 import { DB } from "../db/db"
 import dbTemplate from "../db/dbTemplate"
+import { dbTemplateToSqlFull } from "../db/db"
 import { DevBtn, DevDropDownPicker } from "../components/devComponents"
+// import Timer from "../components/Timer"
+// import Notification from "../components/Notification"
 
 const DevScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
@@ -29,9 +32,7 @@ const DevScreen = ({ navigation, route }) => {
 
   async function loadColumns(table) {
     const data = await DB.getTableColumns(table)
-    // console.log("loadColumns :>> ", data)
     navigation.navigate("DevTable", { table })
-    // setColumns(data)
   }
 
   useEffect(() => {
@@ -71,6 +72,8 @@ const DevScreen = ({ navigation, route }) => {
           disabled={!selectedTable}
         />
       </View>
+      {/* <Timer /> */}
+      {/* <Notification /> */}
     </View>
   )
 }

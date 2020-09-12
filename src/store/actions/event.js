@@ -3,7 +3,7 @@ import {
   ADD_EVENT,
   UPDATE_EVENT,
   UPDATE_EVENT_PARTIALLY,
-  LOADING,
+  LOADING_EVENTS,
   DELETE_EVENT,
   DELETE_ALL_EVENTS,
   SET_EVENT_STATUS,
@@ -13,17 +13,11 @@ import {
   SET_FINANCE_STATUS,
 } from "../types"
 import { DB } from "../../db/db"
-
-export const initTable = () => {
-  return async () => {
-    const events = await DB.init()
-    alert("Таблица инициализирована")
-  }
-}
+import dbTemplate from "../../db/dbTemplate"
 
 export const loadEvents = () => {
   return async (dispatch) => {
-    const events = await DB.getEvents()
+    const events = await DB.getTableData("events")
     dispatch({
       type: LOAD_EVENTS,
       events,
@@ -31,9 +25,9 @@ export const loadEvents = () => {
   }
 }
 
-export const loading = () => {
+export const loadingEvents = () => {
   return {
-    type: LOADING,
+    type: LOADING_EVENTS,
   }
 }
 
@@ -60,7 +54,7 @@ export const loadingEventComplite = (id) => {
 
 export const addEvent = (event) => {
   return async (dispatch) => {
-    await dispatch(loading())
+    await dispatch(loadingEvents())
     const eventId = await DB.addEvent(event)
     event.id = eventId
     dispatch({
@@ -84,7 +78,7 @@ export const updateEvent = (event) => {
 export const updateEventPartially = (id, parts) => {
   return async (dispatch) => {
     await dispatch(loadingEvent(id))
-    await DB.updateEventPartially(id, parts)
+    await DB.updateDataTablePartially("events", id, parts)
     dispatch({
       type: UPDATE_EVENT_PARTIALLY,
       id,
@@ -95,8 +89,8 @@ export const updateEventPartially = (id, parts) => {
 
 export const deleteAllEvents = () => {
   return async (dispatch) => {
-    await dispatch(loading())
-    await DB.deleteAllEvents()
+    await dispatch(loadingEvents())
+    await DB.deleteAllDataFromTable("events")
     dispatch({
       type: DELETE_ALL_EVENTS,
     })
@@ -130,21 +124,10 @@ export const setFinanceStatus = (id, status) => {
 export const deleteEvent = (id) => {
   return async (dispatch) => {
     await dispatch(deletingEvent(id))
-    await DB.deleteEvent()
+    await DB.deleteDataFromTable("events")
     dispatch({
       type: DELETE_EVENT,
       id,
     })
-  }
-}
-
-export const reInitTable = () => {
-  return async (dispatch) => {
-    await DB.deleteTable()
-    dispatch({
-      type: DELETE_ALL_EVENTS,
-    })
-    await DB.init()
-    alert("Таблица перезапущена")
   }
 }

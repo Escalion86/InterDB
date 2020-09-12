@@ -6,19 +6,15 @@ import { AppHeaderIcon } from "../components/AppHeaderIcon"
 const ProgramsScreen = ({ navigation, route }) => {
   navigation.setOptions({
     title: `Программы`,
-    // headerRight: () => (
-    //   <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-    //     <Item
-    //       title="Edit Event"
-    //       iconName="md-create"
-    //       onPress={() => {
-    //         console.log(event)
-    //         alert(`Событие ${event.auditory}, ${event.event}`)
-    //       }}
-    //       // onPress={() => navigation.navigate("Create")}
-    //     />
-    //   </HeaderButtons>
-    // ),
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+        <Item
+          title="Add Program"
+          iconName="ios-add-circle"
+          onPress={() => navigation.navigate("CreateProgram")}
+        />
+      </HeaderButtons>
+    ),
   })
 
   return (

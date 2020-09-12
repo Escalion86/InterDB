@@ -18,6 +18,9 @@ import CreateClientScreen from "../screens/CreateClientScreen"
 import DevScreen from "../screens/DevScreen"
 import DevTableScreen from "../screens/DevTableScreen"
 import ProgramsScreen from "../screens/ProgramsScreen"
+import ProgramScreen from "../screens/ProgramScreen"
+import CreateProgramScreen from "../screens/CreateProgramScreen"
+
 import { useTheme } from "@react-navigation/native"
 import { darkTheme } from "../theme"
 
@@ -103,7 +106,7 @@ const DevStackScreen = ({ navigation }) => (
 )
 
 const ProgramsStackScreen = ({ navigation }) => (
-  <StackNavigator navigation={navigation} initialRouteName="Main">
+  <StackNavigator navigation={navigation} initialRouteName="Programs">
     <ProgramsStack.Screen
       name="Programs"
       component={ProgramsScreen}
@@ -111,6 +114,11 @@ const ProgramsStackScreen = ({ navigation }) => (
         headerLeft: () => burgerButton(navigation),
       }}
     />
+    <ProgramsStack.Screen
+      name="CreateProgram"
+      component={CreateProgramScreen}
+    />
+    <ProgramsStack.Screen name="Program" component={ProgramScreen} />
   </StackNavigator>
 )
 
@@ -220,6 +228,16 @@ const DrawerScreen = () => {
           ),
         }}
       />
+      {/* <Drawer.Screen
+        name="Test"
+        component={Test}
+        options={{
+          drawerLabel: "Test",
+          drawerIcon: () => (
+            <Ionicons name="md-bug" size={24} color={colors.text} />
+          ),
+        }}
+      /> */}
     </Drawer.Navigator>
   )
 }

@@ -1,50 +1,65 @@
 import * as SQLite from "expo-sqlite"
 import dbTemplate from "./dbTemplate"
 
-const DBName = "events.db"
+const DBName = "events2.db"
 
 let db = SQLite.openDatabase(DBName)
 
-const dbTemplateToSql = (table = "events") => {
+export const dbTemplateToSql = (table = "events") => {
   //TODO Добавить указание дефолтных значений
   let colSql, sql
   // dbTemplate.forEach((table) => {
   sql = `CREATE TABLE IF NOT EXISTS ${table} (id INTEGER PRIMARY KEY NOT NULL`
-  colSql = ""
   uniq = []
   dbTemplate[table].forEach((col) => {
-    colSql += `, ${col.db_name} ${col.db_type}${
-      col.not_null ? " NOT NULL" : ""
+    sql += `, ${col.db_name} ${col.db_type}${col.not_null ? " NOT NULL" : ""}${
+      col.default !== "" ? ` DEFAULT '${col.default}'` : ""
     }`
     uniq.push(col.db_name)
   })
 
-  sql += `${colSql}, UNIQUE (${uniq.join(", ")}) ON CONFLICT REPLACE)`
-  console.log("sql :>> ", sql)
+  // sql += `${colSql}, UNIQUE (${uniq.join(", ")}) ON CONFLICT REPLACE)`
+  sql += `)`
+  // console.log("sql :>> ", sql)
   return sql
 
   // })
 }
 
+export const dbTemplateToSqlFull = () => {
+  const tables = Object.keys(dbTemplate)
+  let sql = ""
+  tables.forEach((table) => {
+    sql += `${dbTemplateToSql(table)}; `
+  })
+  console.log("dbTemplateToSqlFull :>> ", sql)
+  return sql
+}
+
 export class DB {
   static init() {
-    return new Promise((resolve, reject) =>
-      db.transaction((tx) => {
-        tx.executeSql(dbTemplateToSql("events"), [], resolve, (_, error) =>
-          reject(error)
-        )
-      })
-    )
+    const tables = Object.keys(dbTemplate)
+    tables.forEach(async (table) => {
+      await new Promise((resolve, reject) =>
+        db.transaction((tx) => {
+          tx.executeSql(dbTemplateToSql(table), [], resolve, (_, error) =>
+            reject(error)
+          )
+        })
+      )
+    })
+
+    return true
   }
 
-  static addColumn(colName, type = "TEXT", notNull = false) {
+  static addColumn(table, colName, type = "TEXT", notNull = false) {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
           // `IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'events' AND COLUMN_NAME = 'events.db') BEGIN ADD ${colName} ${type}${
           //   notNull ? " NOT NULL" : ""
           // } END`,
-          `ALTER TABLE events ADD OR ABORT COLUMN ${colName} ${type}${
+          `ALTER TABLE ${table} ADD COLUMN ${colName} ${type}${
             notNull ? " NOT NULL" : ""
           }`,
           [],
@@ -69,11 +84,11 @@ export class DB {
   //   })
   // }
 
-  static renameColumn(oldColName, newColName) {
+  static renameColumn(table, oldColName, newColName) {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
-          `ALTER TABLE events RENAME COLUMN ${oldColName} TO ${newColName}`,
+          `ALTER TABLE ${table} RENAME COLUMN ${oldColName} TO ${newColName}`,
           [],
           (_, result) => resolve(result.rows._array),
           (_, error) => reject(error)
@@ -132,11 +147,11 @@ export class DB {
     })
   }
 
-  static getEvents() {
+  static getTableData(table) {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
-          "SELECT * FROM events",
+          `SELECT * FROM ${table}`,
           [],
           (_, result) => resolve(result.rows._array),
           (_, error) => reject(error)
@@ -260,11 +275,11 @@ export class DB {
     )
   }
 
-  static deleteAllEvents() {
+  static deleteAllDataFromTable(table) {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
-          tx.executeSql(`DELETE FROM events`, [], resolve, (_, error) =>
+          tx.executeSql(`DELETE FROM ${table}`, [], resolve, (_, error) =>
             reject(error)
           )
         )
@@ -273,13 +288,13 @@ export class DB {
   }
 
   //XXX Нет проверки на лишние ключи
-  static updateEventPartially(id, parts) {
+  static updateDataTablePartially(table, id, parts) {
     const partKeys = Object.keys(parts)
     const partValues = Object.values(parts)
     return new Promise((resolve, reject) =>
       db.transaction((tx) => {
         tx.executeSql(
-          `UPDATE events SET ${partKeys.join(" = ? ")} = ? WHERE id = ?`,
+          `UPDATE ${table} SET ${partKeys.join(" = ? ")} = ? WHERE id = ?`,
           [...partValues, id],
           resolve,
           (_, error) => reject(error)
@@ -314,7 +329,7 @@ export class DB {
     )
   }
 
-  static deleteEvent(id) {
+  static deleteDataFromTable(table, id) {
     return new Promise((resolve, reject) =>
       db.transaction((tx) => {
         tx.executeSql(
@@ -332,8 +347,11 @@ export class DB {
       db.transaction((tx) => {
         tx.executeSql(
           // `DROP TABLE events`,`DROP DATABASE events.db`
-          tx.executeSql(`DROP TABLE ${table}`, [], resolve, (_, error) =>
-            reject(error)
+          tx.executeSql(
+            `DROP TABLE IF EXISTS ${table}`,
+            [],
+            resolve,
+            (_, error) => reject(error)
           )
         )
       })

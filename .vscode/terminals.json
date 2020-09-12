@@ -5,6 +5,11 @@
       "name": "Android Start",
       "focus": true,
       "command": "expo start --android"
+    },
+    {
+      "name": "Android Start with clear chache",
+      "focus": true,
+      "command": "expo r -c"
     }
   ]
 }

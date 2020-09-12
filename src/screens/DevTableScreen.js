@@ -11,7 +11,7 @@ import {
 import DropDownPicker from "react-native-dropdown-picker"
 import { useDispatch } from "react-redux"
 import { useTheme } from "@react-navigation/native"
-import { reInitTable } from "../store/actions/event"
+import { reInitTable } from "../store/actions/db"
 import { DB } from "../db/db"
 import dbTemplate from "../db/dbTemplate"
 import {
@@ -41,7 +41,6 @@ const DevTableScreen = ({ navigation, route }) => {
 
   async function loadColumns(table) {
     const data = await DB.getTableColumns(table)
-    console.log("loadColumns :>> ", data)
     setColumns(data)
   }
 
@@ -50,31 +49,40 @@ const DevTableScreen = ({ navigation, route }) => {
   }, [])
 
   navigation.setOptions({
-    title: `Панель разработчика`,
+    title: `Таблица "${selectedTable}"`,
   })
 
   const Header = () => (
     <View style={{ height: selectedTable ? null : 800, width: "100%" }}>
       {selectedTable ? (
         <>
-          <Text
+          {/* <Text
             style={{ ...styles.title, color: colors.text }}
-          >{`Таблица "${selectedTable}"`}</Text>
+          >{`Таблица "${selectedTable}"`}</Text> */}
           <DevInputBtn
             title="Переименовать таблицу"
             onPress={(newName) => DB.renameTable(selectedTable, newName)}
           />
           <DevInputBtn
             title="Создать колонку"
-            onPress={(value) => DB.addColumn(value, "TEXT", false)}
+            onPress={async (value) => {
+              await DB.addColumn(selectedTable, value, "TEXT", false)
+              loadColumns(selectedTable)
+            }}
           />
           <DevTwoInputBtn
             title="Переименовать колонку"
-            onPress={DB.renameColumn}
+            onPress={async (column) => {
+              await DB.renameColumn(selectedTable, column)
+              loadColumns(selectedTable)
+            }}
           />
           <DevBtn
             title="Удалить таблицу"
-            onPress={() => DB.deleteTable(selectedTable)}
+            onPress={() => {
+              DB.deleteTable(selectedTable)
+              navigation.goBack()
+            }}
           />
           {/* <DevBtn
             title="Показать текущие колонки таблицы"
@@ -182,12 +190,6 @@ const DevTableScreen = ({ navigation, route }) => {
     </View>
   )
 }
-// export const getTableColumns = () => {
-//   return async () => {
-//     const res = await DB.getTableColumns()
-//     console.log("getTableColumns :>> ", res)
-//   }
-// }
 
 export default DevTableScreen
 

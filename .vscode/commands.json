@@ -7,9 +7,15 @@
       "color": "#FFCC00"
     },
     {
-      "text": "$(terminal) Android Start",
+      "text": "$(terminal) Start",
       "command": "terminals.runTerminalByName",
       "arguments": ["Android Start"],
+      "tooltip": "Android Start"
+    },
+    {
+      "text": "$(terminal) Start clrChache",
+      "command": "terminals.runTerminalByName",
+      "arguments": ["Android Start with clear chache"],
       "tooltip": "Android Start"
     }
   ]

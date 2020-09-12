@@ -61,7 +61,6 @@ export const EventCard = ({ navigation, event }) => {
       delayPressIn={50}
       style={{ ...styles.card, backgroundColor: colors.card, minHeight: 94 }}
       onPress={() => {
-        console.log(event)
         navigation.navigate("Event", { event: event })
       }}
     >
