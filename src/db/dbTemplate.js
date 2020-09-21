@@ -1,4 +1,4 @@
-let dbTemplate = ["events", "clients"]
+let dbTemplate = ["events", "clients", "programs"]
 
 const rndArray = (array) => {
   const rndNum = Math.floor(Math.random() * array.length)
@@ -20,29 +20,45 @@ const rndMinutes = () => {
 const rndTime = () => {
   return rndHours() + ":" + rndMinutes()
 }
-export const dbDefault = {
-  event: {
-    // auditory: "Взрослые",
-    event: "Юбилей",
-    date: new Date().setSeconds(0, 0),
-    duration: 30,
-    location_town: "Красноярск",
-    location_street: null,
-    location_house: null,
-    location_room: null,
-    location_name: "Дом",
-    location_floor: null,
-    finance_price: 0, // profit = price - road - organizator - assistants
-    finance_status: "Не оплачено",
-    finance_avans: 0,
-    finance_road: 0,
-    finance_organizator: 0,
-    finance_assistants: 0,
-    finance_tips: 0,
-    comment: null,
-    status: "Заметка",
-  },
-}
+
+// export const dbDefault = {
+//   event: {
+//     // auditory: "Взрослые",
+//     event: "Юбилей",
+//     date: new Date().setSeconds(0, 0),
+//     duration: 30,
+//     location_town: "Красноярск",
+//     location_street: null,
+//     location_house: null,
+//     location_room: null,
+//     location_name: "Дом",
+//     location_floor: null,
+//     finance_price: 0, // profit = price - road - organizator - assistants
+//     finance_status: "Не оплачено",
+//     finance_avans: 0,
+//     finance_road: 0,
+//     finance_organizator: 0,
+//     finance_assistants: 0,
+//     finance_tips: 0,
+//     comment: null,
+//     status: "Заметка",
+//   },
+//   program: {
+//     name: "",
+//     description: "",
+//     price: 0,
+//     length: 0,
+//     preparetime: 0,
+//     collecttime: 0,
+//   },
+//   client: {
+//     name: "",
+//     phone: "",
+//     instagram: "",
+//     vk: "",
+//     facebook: "",
+//   },
+// }
 
 export const dbGenerator = (table = "event") => {
   switch (table) {
@@ -105,6 +121,25 @@ export const dbGenerator = (table = "event") => {
           "Аня",
         ]),
         phone: rndArray(["+79123456789", "+79234567890", "+793456789012"]),
+        instagram: "",
+        vk: "",
+        facebook: "",
+      }
+    case "program":
+      return {
+        name: rndArray([
+          "Свадьба, стандарт",
+          "Свадьба, короткая",
+          "Корпоратив, стандарт",
+          "Корпоратив, короткая",
+          "Юбилей, стандарт",
+          "Юбилей, короткая",
+        ]),
+        description: "Описание",
+        price: rndArray([5000, 7000, 9000]),
+        length: 30,
+        preparetime: 20,
+        collecttime: 20,
       }
     default:
       return {}
@@ -128,6 +163,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: false,
       default: "День рождения",
+      db_default: "День рождения",
     },
     {
       db_name: "date",
@@ -136,6 +172,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: true,
       default: "",
+      db_default: "",
     },
     {
       db_name: "duration",
@@ -144,6 +181,7 @@ export default dbTemplate = {
       db_type: "INTEGER",
       not_null: true,
       default: 30,
+      db_default: 30,
     },
     {
       db_name: "location_town",
@@ -152,6 +190,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: true,
       default: "Красноярск",
+      db_default: "Красноярск",
     },
     {
       db_name: "location_street",
@@ -159,7 +198,8 @@ export default dbTemplate = {
       type: "text",
       db_type: "TEXT",
       not_null: false,
-      default: "",
+      default: null,
+      db_default: "",
     },
     {
       db_name: "location_house",
@@ -167,7 +207,8 @@ export default dbTemplate = {
       type: "text",
       db_type: "TEXT",
       not_null: false,
-      default: "",
+      default: null,
+      db_default: "",
     },
     {
       db_name: "location_room",
@@ -175,7 +216,8 @@ export default dbTemplate = {
       type: "text",
       db_type: "TEXT",
       not_null: false,
-      default: "",
+      default: null,
+      db_default: "",
     },
     {
       db_name: "location_name",
@@ -183,7 +225,8 @@ export default dbTemplate = {
       type: "text",
       db_type: "TEXT",
       not_null: false,
-      default: "",
+      default: "Дом",
+      db_default: "",
     },
     {
       db_name: "location_floor",
@@ -191,7 +234,8 @@ export default dbTemplate = {
       type: "integer",
       db_type: "TEXT",
       not_null: false,
-      default: "",
+      default: null,
+      db_default: "",
     },
     {
       db_name: "finance_price",
@@ -200,6 +244,7 @@ export default dbTemplate = {
       db_type: "INTEGER",
       not_null: true,
       default: 0,
+      db_default: 0,
     },
     {
       db_name: "finance_status",
@@ -208,6 +253,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: true,
       default: "Не оплачено",
+      db_default: "Не оплачено",
     },
     {
       db_name: "finance_avans",
@@ -216,6 +262,7 @@ export default dbTemplate = {
       db_type: "INTEGER",
       not_null: true,
       default: 0,
+      db_default: 0,
     },
     {
       db_name: "finance_road",
@@ -224,6 +271,7 @@ export default dbTemplate = {
       db_type: "INTEGER",
       not_null: true,
       default: 0,
+      db_default: 0,
     },
     {
       db_name: "finance_organizator",
@@ -232,6 +280,7 @@ export default dbTemplate = {
       db_type: "INTEGER",
       not_null: true,
       default: 0,
+      db_default: 0,
     },
     {
       db_name: "finance_assistants",
@@ -240,6 +289,7 @@ export default dbTemplate = {
       db_type: "INTEGER",
       not_null: true,
       default: 0,
+      db_default: 0,
     },
     {
       db_name: "finance_tips",
@@ -248,6 +298,7 @@ export default dbTemplate = {
       db_type: "INTEGER",
       not_null: true,
       default: 0,
+      db_default: 0,
     },
     {
       db_name: "comment",
@@ -256,6 +307,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: false,
       default: "",
+      db_default: "",
     },
     {
       db_name: "status",
@@ -264,6 +316,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: true,
       default: "Заметка",
+      db_default: "Заметка",
     },
   ],
 
@@ -275,6 +328,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: true,
       default: "",
+      db_default: "",
     },
     {
       db_name: "phone",
@@ -283,6 +337,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: true,
       default: "",
+      db_default: "",
     },
     {
       db_name: "instagram",
@@ -291,6 +346,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: false,
       default: "",
+      db_default: "",
     },
 
     {
@@ -300,6 +356,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: false,
       default: "",
+      db_default: "",
     },
 
     {
@@ -309,6 +366,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: false,
       default: "",
+      db_default: "",
     },
   ],
 
@@ -320,6 +378,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: true,
       default: "",
+      db_default: "",
     },
     {
       db_name: "description",
@@ -328,6 +387,7 @@ export default dbTemplate = {
       db_type: "TEXT",
       not_null: false,
       default: "",
+      db_default: "",
     },
     {
       db_name: "price",
@@ -336,6 +396,7 @@ export default dbTemplate = {
       db_type: "INTEGER",
       not_null: true,
       default: 0,
+      db_default: 0,
     },
     {
       db_name: "length",
@@ -343,7 +404,8 @@ export default dbTemplate = {
       type: "integer",
       db_type: "INTEGER",
       not_null: true,
-      default: 5,
+      default: 0,
+      db_default: 0,
     },
     {
       db_name: "preparetime",
@@ -352,6 +414,7 @@ export default dbTemplate = {
       db_type: "INTEGER",
       not_null: true,
       default: 0,
+      db_default: 0,
     },
     {
       db_name: "collecttime",
@@ -360,6 +423,15 @@ export default dbTemplate = {
       db_type: "INTEGER",
       not_null: true,
       default: 0,
+      db_default: 0,
     },
   ],
+}
+
+export const dbDefault = (db) => {
+  let arr = {}
+  dbTemplate[db].forEach((data) => {
+    arr[data.db_name] = data.default
+  })
+  return arr
 }

@@ -4,6 +4,13 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 
 const ProgramScreen = ({ navigation, route }) => {
+  const program =
+    route.params !== undefined && route.params.program !== undefined
+      ? route.params.program
+      : navigation.navigate("Programs")
+
+  console.log("program :>> ", program)
+
   navigation.setOptions({
     title: `Программа`,
     // headerRight: () => (

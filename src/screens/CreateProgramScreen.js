@@ -4,6 +4,11 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 
 const CreateProgramScreen = ({ navigation, route }) => {
+  const program =
+    route.params !== undefined && route.params.program !== undefined
+      ? route.params.program
+      : dbDefault(programs)
+
   const saveHandler = () => {
     // event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
     navigation.navigate("Programs")

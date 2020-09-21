@@ -84,7 +84,8 @@ export const EventCard = ({ navigation, event }) => {
       <View style={styles.middle}>
         <View style={styles.cardheader}>
           <Text style={{ ...styles.cardtitle, color: colors.text }}>
-            {event.auditory}, {event.event}
+            {/* {event.auditory},  */}
+            {event.event}
           </Text>
         </View>
         <View style={styles.carddesc}>

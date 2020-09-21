@@ -21,7 +21,6 @@ import { loadEvents, addEvent, deleteAllEvents } from "../store/actions/event"
 import { EventCard } from "../components/EventCard"
 import { dbGenerator } from "../db/dbTemplate"
 import { useTheme } from "@react-navigation/native"
-import { Root, Popup } from "popup-ui"
 import { Ionicons } from "@expo/vector-icons"
 
 const EventsScreen = ({ navigation, route }) => {
@@ -195,7 +194,7 @@ const EventsScreen = ({ navigation, route }) => {
       events.sort((a, b) => (a.date > b.date ? 1 : -1))
   }
 
-  if (!events.length) {
+  if (events.length == 0) {
     return (
       <View style={styles.wrapper}>
         <Text>Заявок пока нет</Text>
@@ -204,18 +203,16 @@ const EventsScreen = ({ navigation, route }) => {
   }
 
   return (
-    <Root>
-      <View style={styles.wrapper}>
-        <FlatList
-          style={styles.list}
-          data={events}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <EventCard navigation={navigation} event={item} />
-          )}
-        />
-      </View>
-    </Root>
+    <View style={styles.wrapper}>
+      <FlatList
+        style={styles.list}
+        data={events}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <EventCard navigation={navigation} event={item} />
+        )}
+      />
+    </View>
   )
 }
 

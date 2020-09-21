@@ -33,7 +33,7 @@ const CreateEventScreen = ({ navigation, route }) => {
   const event =
     route.params !== undefined && route.params.event !== undefined
       ? route.params.event
-      : dbDefault.event
+      : dbDefault(events)
 
   const dispatch = useDispatch()
   const [newEvent, setNewEvent] = useState(event)

@@ -163,7 +163,7 @@ export class DB {
   static addEvent(newEvent) {
     //Вычленяем только нужные ключи (такие как loading и пр. не нужны)
     const {
-      auditory,
+      // auditory,
       event,
       date,
       duration,
@@ -185,7 +185,7 @@ export class DB {
     } = newEvent
     //Помещаем ключи в объект события
     newEvent = {
-      auditory,
+      // auditory,
       event,
       date: Math.floor(date / 1000), //корректируем так, как в DB не влазит
       duration,
@@ -224,7 +224,7 @@ export class DB {
   static updateEvent(updateEvent) {
     const {
       id,
-      auditory,
+      // auditory,
       event,
       date,
       duration,
@@ -245,7 +245,7 @@ export class DB {
       status,
     } = updateEvent
     eventToSend = {
-      auditory,
+      // auditory,
       event,
       date: Math.floor(date / 1000), //корректируем так, как в DB не влазит
       duration,
@@ -365,6 +365,41 @@ export class DB {
             resolve,
             (_, error) => reject(error)
           )
+        )
+      })
+    })
+  }
+
+  static addProgram(newProgram) {
+    //Вычленяем только нужные ключи (такие как loading и пр. не нужны)
+    const {
+      name,
+      description,
+      price,
+      length,
+      preparetime,
+      collecttime,
+    } = newProgram
+    //Помещаем ключи в объект события
+    newProgram = {
+      name,
+      description,
+      price,
+      length,
+      preparetime,
+      collecttime,
+    }
+    return new Promise((resolve, reject) => {
+      const programKeys = Object.keys(newProgram)
+
+      db.transaction((tx) => {
+        tx.executeSql(
+          `INSERT INTO programs (${programKeys.join(
+            ", "
+          )}) VALUES (${"?, ".repeat(programKeys.length).slice(0, -2)})`,
+          Object.values(newProgram),
+          (_, result) => resolve(result.insertId),
+          (_, error) => reject(error)
         )
       })
     })

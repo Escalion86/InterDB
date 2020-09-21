@@ -114,11 +114,11 @@ const ProgramsStackScreen = ({ navigation }) => (
         headerLeft: () => burgerButton(navigation),
       }}
     />
+    <ProgramsStack.Screen name="Program" component={ProgramScreen} />
     <ProgramsStack.Screen
       name="CreateProgram"
       component={CreateProgramScreen}
     />
-    <ProgramsStack.Screen name="Program" component={ProgramScreen} />
   </StackNavigator>
 )
 

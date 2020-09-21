@@ -81,7 +81,8 @@ export const EventCard = ({ navigation, event }) => {
       </View>
       <View style={styles.middle}>
         <Text style={{ ...styles.cardtitle, color: colors.text }}>
-          {event.auditory}, {event.event}
+          {/*  {event.auditory},  */}
+          {event.event}
         </Text>
         <Text style={{ ...styles.carddesc, color: colors.text }}>
           {event.location_town}, {event.location_street},{" "}
