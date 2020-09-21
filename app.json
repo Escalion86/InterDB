@@ -5,6 +5,7 @@
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "platforms": ["android"],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -22,7 +23,8 @@
     },
     "android": {
       "icon": "./assets/ic_stat_ac_unit.png",
-      "useNextNotificationsApi": true
+      "useNextNotificationsApi": true,
+      "package": "com.escalion.InterDB"
     }
   }
 }

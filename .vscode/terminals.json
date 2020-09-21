@@ -10,6 +10,11 @@
       "name": "Android Start with clear chache",
       "focus": true,
       "command": "expo r -c"
+    },
+    {
+      "name": "Build APK",
+      "focus": true,
+      "command": "expo build:android -t apk"
     }
   ]
 }

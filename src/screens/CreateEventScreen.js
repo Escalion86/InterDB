@@ -46,6 +46,7 @@ const CreateEventScreen = ({ navigation, route }) => {
   }
 
   const saveHandler = () => {
+    console.log(newEvent)
     event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
     navigation.navigate("Events")
   }
@@ -173,7 +174,9 @@ const CreateEventScreen = ({ navigation, route }) => {
         title="Цена клиента"
         value={newEvent.finance_price}
         theme={useTheme()}
-        onChangeText={(text) => setEventItem({ finance_price: text })}
+        onChangeText={(text) =>
+          setEventItem({ finance_price: Math.floor(text) })
+        }
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
@@ -182,7 +185,9 @@ const CreateEventScreen = ({ navigation, route }) => {
         title="За дорогу"
         value={newEvent.finance_road}
         theme={useTheme()}
-        onChangeText={(text) => setEventItem({ finance_road: text })}
+        onChangeText={(text) =>
+          setEventItem({ finance_road: Math.floor(text) })
+        }
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
@@ -191,7 +196,9 @@ const CreateEventScreen = ({ navigation, route }) => {
         title="Организатору"
         value={newEvent.finance_organizator}
         theme={useTheme()}
-        onChangeText={(text) => setEventItem({ finance_organizator: text })}
+        onChangeText={(text) =>
+          setEventItem({ finance_organizator: Math.floor(text) })
+        }
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
@@ -200,7 +207,20 @@ const CreateEventScreen = ({ navigation, route }) => {
         title="Ассистентам"
         value={newEvent.finance_assistants}
         theme={useTheme()}
-        onChangeText={(text) => setEventItem({ finance_assistants: text })}
+        onChangeText={(text) =>
+          setEventItem({ finance_assistants: Math.floor(text) })
+        }
+        keyboardType="numeric"
+        placeholder="0"
+        postfix="&#8381;"
+      />
+      <EventRowTextInput
+        title="Чаевые"
+        value={newEvent.finance_tips}
+        theme={useTheme()}
+        onChangeText={(text) =>
+          setEventItem({ finance_tips: Math.floor(text) })
+        }
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"

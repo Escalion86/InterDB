@@ -17,6 +17,12 @@
       "command": "terminals.runTerminalByName",
       "arguments": ["Android Start with clear chache"],
       "tooltip": "Android Start"
+    },
+    {
+      "text": "$(terminal) Build APK",
+      "command": "terminals.runTerminalByName",
+      "arguments": ["Build APK"],
+      "tooltip": "Android Start"
     }
   ]
 }

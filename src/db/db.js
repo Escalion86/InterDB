@@ -179,6 +179,7 @@ export class DB {
       finance_road,
       finance_organizator,
       finance_assistants,
+      finance_tips,
       comment,
       status,
     } = newEvent
@@ -200,6 +201,7 @@ export class DB {
       finance_road,
       finance_organizator,
       finance_assistants,
+      finance_tips,
       comment,
       status,
     }
@@ -238,6 +240,7 @@ export class DB {
       finance_road,
       finance_organizator,
       finance_assistants,
+      finance_tips,
       comment,
       status,
     } = updateEvent
@@ -246,27 +249,36 @@ export class DB {
       event,
       date: Math.floor(date / 1000), //корректируем так, как в DB не влазит
       duration,
-      location_town,
+      // location_town,
       location_street,
-      location_house,
-      location_room,
-      location_name,
-      location_floor,
+      // location_house,
+      // location_room,
+      // location_name,
+      // location_floor,
       finance_price, // profit = price - road - organizator - assistants
       finance_status,
       finance_avans,
       finance_road,
       finance_organizator,
       finance_assistants,
-      comment,
+      finance_tips,
+      // comment,
       status,
     }
     const eventKeys = Object.keys(eventToSend)
     // console.log(`UPDATE events SET ${eventKeys.join(" = ? ")} = ? WHERE id = ?`)
+    // console.log(
+    //   "DB Update Event :>> ",
+    //   `UPDATE events SET ${eventKeys.join(" = ? ")} = ? WHERE id = ?`
+    // )
+    // console.log("DB Update Values Event :>> ", [
+    //   ...Object.values(eventToSend),
+    //   id,
+    // ])
     return new Promise((resolve, reject) =>
       db.transaction((tx) => {
         tx.executeSql(
-          `UPDATE events SET ${eventKeys.join(" = ? ")} = ? WHERE id = ?`,
+          `UPDATE events SET ${eventKeys.join(" = '?' ")} = '?' WHERE id = '?'`,
           [...Object.values(eventToSend), id],
           resolve,
           (_, error) => reject(error)

@@ -5,7 +5,6 @@ import {
   View,
   ActivityIndicator,
   TouchableOpacity,
-  Linking,
 } from "react-native"
 import {
   Menu,
@@ -20,7 +19,6 @@ import { StatusIcon, FinanceIcon } from "./icons"
 import { useTheme } from "@react-navigation/native"
 import { setEventStatus, setFinanceStatus } from "../store/actions/event"
 import { Root, Toast } from "popup-ui"
-import { HeaderButtons, Item } from "react-navigation-header-buttons"
 
 import {
   statusIconDependencies,
@@ -82,35 +80,18 @@ export const EventCard = ({ navigation, event }) => {
         />
       </View>
       <View style={styles.middle}>
-        <View style={styles.cardheader}>
-          <Text style={{ ...styles.cardtitle, color: colors.text }}>
-            {event.auditory}, {event.event}
-          </Text>
-        </View>
-        <View style={styles.cardadress}>
-          <Text style={{ ...styles.carddesc, color: colors.text }}>
-            {event.location_town}, {event.location_street},{" "}
-            {Math.trunc(event.location_house)}
-            {event.location_room
-              ? ` - ${Math.trunc(event.location_room)}`
-              : null}
-            {event.location_name ? ` (${event.location_name})` : null}
-          </Text>
-          <Ionicons
-            name="md-navigate"
-            size={22}
-            color="white"
-            style={{ marginLeft: 5 }}
-            onPress={() =>
-              Linking.openURL(
-                `yandexnavi://map_search?text=${event.location_town},%20${event.location_street}%20${event.location_house}`
-              )
-            }
-          />
-        </View>
+        <Text style={{ ...styles.cardtitle, color: colors.text }}>
+          {event.auditory}, {event.event}
+        </Text>
+        <Text style={{ ...styles.carddesc, color: colors.text }}>
+          {event.location_town}, {event.location_street},{" "}
+          {Math.trunc(event.location_house)}
+          {event.location_room ? ` - ${Math.trunc(event.location_room)}` : null}
+          {event.location_name ? ` (${event.location_name})` : null}
+        </Text>
       </View>
       <View style={styles.right}>
-        <View style={styles.carddate}>
+        <View style={{ height: 52, padding: 5 }}>
           <Text style={{ ...styles.datetime, color: colors.text }}>
             {formatDate(new Date(event.date))}
           </Text>
@@ -227,39 +208,20 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     justifyContent: "space-around",
   },
-  carddate: { height: 50, padding: 5 },
   middle: {
-    // padding: 10,
+    padding: 10,
     flex: 1,
   },
   right: {
     alignItems: "flex-end",
-    borderLeftWidth: 1,
-  },
-  cardheader: {
-    flex: 1,
-    padding: 10,
-    alignItems: "center",
-    justifyContent: "center",
   },
   cardtitle: {
     fontFamily: "open-bold",
     fontSize: 16,
   },
   carddesc: {
-    flex: 1,
     fontFamily: "open-regular",
-    fontSize: 14,
-  },
-  cardadress: {
-    flexDirection: "row",
-    height: 42,
-    // borderColor: "red",
-    // borderWidth: 1,
-    paddingHorizontal: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    borderTopWidth: 1,
+    fontSize: 15,
   },
   center: {
     flex: 1,
@@ -285,13 +247,13 @@ const styles = StyleSheet.create({
     // flex: 1,
     fontSize: 14,
     width: "100%",
-    height: 42,
+    height: 40,
     textAlignVertical: "center",
     textAlign: "center",
     color: "#ffff99",
     borderTopWidth: 1,
-    // borderLeftWidth: 1,
-    // borderTopLeftRadius: 10,
+    borderLeftWidth: 1,
+    borderTopLeftRadius: 10,
     borderBottomRightRadius: 10,
   },
   menuOptions: {
