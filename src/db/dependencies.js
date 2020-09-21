@@ -23,11 +23,12 @@ export const auditoryIconDependencies = {
 }
 
 export const eventIconDependencies = {
-  Свадьба: { name: "ios-disc", color: "#555555" },
-  Юбилей: { name: "ios-disc", color: "#000088" },
-  Копоратив: { name: "ios-disc", color: "#880088" },
-  "День рождения": { name: "ios-disc", color: "#006600" },
-  Другое: { name: "ios-disc", color: "#999900" },
+  Свадьба: { name: "ios-disc", color: "#555555", auditory: "Взрослые" },
+  Юбилей: { name: "ios-disc", color: "#000088", auditory: "Взрослые" },
+  Копоратив: { name: "ios-disc", color: "#880088", auditory: "Взрослые" },
+  "День рождения": { name: "ios-disc", color: "#000088", auditory: "Взрослые" },
+  "День рождения": { name: "ios-disc", color: "#006600", auditory: "Дети" },
+  Другое: { name: "ios-disc", color: "#999900", auditory: "Взрослые" },
 }
 
 export const iconDependencies = {

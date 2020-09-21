@@ -1,13 +1,13 @@
 import * as SQLite from "expo-sqlite"
 import dbTemplate from "./dbTemplate"
 
-const DBName = "events2.db"
+const DBName = "events3.db"
 
 let db = SQLite.openDatabase(DBName)
 
 export const dbTemplateToSql = (table = "events") => {
   //TODO Добавить указание дефолтных значений
-  let colSql, sql
+  let sql
   // dbTemplate.forEach((table) => {
   sql = `CREATE TABLE IF NOT EXISTS ${table} (id INTEGER PRIMARY KEY NOT NULL`
   uniq = []
@@ -18,7 +18,7 @@ export const dbTemplateToSql = (table = "events") => {
     uniq.push(col.db_name)
   })
 
-  // sql += `${colSql}, UNIQUE (${uniq.join(", ")}) ON CONFLICT REPLACE)`
+  // sql += `${sql}, UNIQUE (${uniq.join(", ")}) ON CONFLICT REPLACE)`
   sql += `)`
   // console.log("sql :>> ", sql)
   return sql

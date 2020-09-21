@@ -22,7 +22,7 @@ const rndTime = () => {
 }
 export const dbDefault = {
   event: {
-    auditory: "Взрослые",
+    // auditory: "Взрослые",
     event: "Юбилей",
     date: new Date().setSeconds(0, 0),
     duration: 30,
@@ -48,7 +48,7 @@ export const dbGenerator = (table = "event") => {
   switch (table) {
     case "event":
       return {
-        auditory: rndArray(["Взрослые", "Дети", "Подростки", "Смешанная"]),
+        // auditory: rndArray(["Взрослые", "Дети", "Подростки", "Смешанная"]),
         event: rndArray([
           "Свадьба",
           "Юбилей",
@@ -113,14 +113,14 @@ export const dbGenerator = (table = "event") => {
 
 export default dbTemplate = {
   events: [
-    {
-      db_name: "auditory",
-      desc: "Взрослые, дети, подростки, смешанная",
-      type: "list",
-      db_type: "TEXT",
-      not_null: true,
-      default: "Взрослые",
-    },
+    // {
+    //   db_name: "auditory",
+    //   desc: "Взрослые, дети, подростки, смешанная",
+    //   type: "list",
+    //   db_type: "TEXT",
+    //   not_null: true,
+    //   default: "Взрослые",
+    // },
     {
       db_name: "event",
       desc: "Свадьба, Юбилей, Копоратив, День рождения",

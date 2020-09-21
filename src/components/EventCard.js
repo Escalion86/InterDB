@@ -87,8 +87,8 @@ export const EventCard = ({ navigation, event }) => {
             {event.auditory}, {event.event}
           </Text>
         </View>
-        <View style={styles.cardadress}>
-          <Text style={{ ...styles.carddesc, color: colors.text }}>
+        <View style={styles.carddesc}>
+          <Text style={{ ...styles.carddesctext, color: colors.text }}>
             {event.location_town}, {event.location_street},{" "}
             {Math.trunc(event.location_house)}
             {event.location_room
@@ -246,12 +246,12 @@ const styles = StyleSheet.create({
     fontFamily: "open-bold",
     fontSize: 16,
   },
-  carddesc: {
+  carddesctext: {
     flex: 1,
     fontFamily: "open-regular",
     fontSize: 14,
   },
-  cardadress: {
+  carddesc: {
     flexDirection: "row",
     height: 42,
     // borderColor: "red",

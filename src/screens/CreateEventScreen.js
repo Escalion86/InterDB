@@ -138,6 +138,15 @@ const CreateEventScreen = ({ navigation, route }) => {
         theme={useTheme()}
       />
       <EventRowDropDownPicker
+        dependencies={eventIconDependencies}
+        name="Услуга"
+        // IconEventComponent={EventIcon}
+        defeultValue={newEvent.event}
+        placeholder={"Выберите услугу"}
+        onChangeItem={(item) => setEventItem({ event: item.value })}
+        theme={useTheme()}
+      />
+      <EventRowDropDownPicker
         dependencies={financeIconDependencies}
         name="Статус оплаты"
         // IconEventComponent={FinanceIcon}
@@ -146,7 +155,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         onChangeItem={(item) => setEventItem({ finance_status: item.value })}
         theme={useTheme()}
       />
-      <EventRowDropDownPicker
+      {/* <EventRowDropDownPicker
         dependencies={eventIconDependencies}
         name="Тип события"
         // IconEventComponent={EventIcon}
@@ -163,7 +172,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         placeholder={"Выберите аудиторию"}
         onChangeItem={(item) => setEventItem({ auditory: item.value })}
         theme={useTheme()}
-      />
+      /> */}
       <EventRowDateTimePicker
         dateValue={newEvent.date}
         onChangeStoreHook={setEventItem}
