@@ -249,12 +249,12 @@ export class DB {
       event,
       date: Math.floor(date / 1000), //корректируем так, как в DB не влазит
       duration,
-      // location_town,
+      location_town,
       location_street,
-      // location_house,
-      // location_room,
-      // location_name,
-      // location_floor,
+      location_house,
+      location_room,
+      location_name,
+      location_floor,
       finance_price, // profit = price - road - organizator - assistants
       finance_status,
       finance_avans,
@@ -262,7 +262,7 @@ export class DB {
       finance_organizator,
       finance_assistants,
       finance_tips,
-      // comment,
+      comment,
       status,
     }
     const eventKeys = Object.keys(eventToSend)
@@ -403,5 +403,39 @@ export class DB {
         )
       })
     })
+  }
+
+  static updateService(updateService) {
+    const {
+      id,
+      name,
+      description,
+      price,
+      length,
+      preparetime,
+      collecttime,
+    } = updateService
+    serviceToSend = {
+      name,
+      description,
+      price,
+      length,
+      preparetime,
+      collecttime,
+    }
+    const serviceKeys = Object.keys(serviceToSend)
+
+    return new Promise((resolve, reject) =>
+      db.transaction((tx) => {
+        tx.executeSql(
+          `UPDATE services SET ${serviceKeys.join(
+            " = '?' "
+          )} = '?' WHERE id = '?'`,
+          [...Object.values(serviceToSend), id],
+          resolve,
+          (_, error) => reject(error)
+        )
+      })
+    )
   }
 }

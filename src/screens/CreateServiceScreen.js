@@ -6,11 +6,7 @@ import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import { dbDefault } from "../db/dbTemplate"
 import { useTheme } from "@react-navigation/native"
 import { addService, updateService } from "../store/actions/service"
-import {
-  TextInputBlock,
-  DateTimePickerBlock,
-  TitleBlock,
-} from "../components/createComponents"
+import { TextInputBlock, TitleBlock } from "../components/createComponents"
 
 const CreateServiceScreen = ({ navigation, route }) => {
   const service =
@@ -51,19 +47,56 @@ const CreateServiceScreen = ({ navigation, route }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <TitleBlock title="Финансы" theme={useTheme()} />
+      {/* <TitleBlock title="Финансы" theme={useTheme()} /> */}
       <TextInputBlock
         title="Название"
-        value={service.name}
+        value={newService.name}
         theme={useTheme()}
         onChangeText={(text) => setServiceItem({ name: text })}
       />
-      {/* <TextInputBlock
-        title="Дом"
-        value={newEvent.location_house}
+      <TextInputBlock
+        title="Описание"
+        value={newService.description}
         theme={useTheme()}
-        onChangeText={(text) => setEventItem({ location_house: text })}
-      /> */}
+        onChangeText={(text) => setServiceItem({ description: text })}
+        multiline={true}
+      />
+      <TextInputBlock
+        title="Продолжительность"
+        value={newService.length}
+        theme={useTheme()}
+        keyboardType="numeric"
+        onChangeText={(text) => setServiceItem({ length: text })}
+        postfix="мин"
+        placeholder="0"
+      />
+      <TextInputBlock
+        title="Время на подготовку"
+        value={newService.preparetime}
+        theme={useTheme()}
+        keyboardType="numeric"
+        onChangeText={(text) => setServiceItem({ preparetime: text })}
+        postfix="мин"
+        placeholder="0"
+      />
+      <TextInputBlock
+        title="Время на сбор"
+        value={newService.collecttime}
+        theme={useTheme()}
+        keyboardType="numeric"
+        onChangeText={(text) => setServiceItem({ collecttime: text })}
+        postfix="мин"
+        placeholder="0"
+      />
+      <TextInputBlock
+        title="Стоимость"
+        value={newService.price}
+        theme={useTheme()}
+        onChangeText={(text) => setServiceItem({ price: text })}
+        keyboardType="numeric"
+        postfix="&#8381;"
+        placeholder="0"
+      />
     </ScrollView>
   )
 }
