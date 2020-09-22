@@ -30,7 +30,7 @@ const ServiceScreen = ({ navigation, route }) => {
           title="Edit Service"
           iconName="md-create"
           onPress={() => {
-            alert(`Услуга ${service.name}, ${service.description}`)
+            navigation.navigate("CreateService", { service: service })
           }}
           // onPress={() => navigation.navigate("Create")}
         />

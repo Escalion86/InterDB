@@ -244,7 +244,7 @@ export class DB {
       comment,
       status,
     } = updateEvent
-    eventToSend = {
+    const eventToSend = {
       // auditory,
       event,
       date: Math.floor(date / 1000), //корректируем так, как в DB не влазит
@@ -275,10 +275,14 @@ export class DB {
     //   ...Object.values(eventToSend),
     //   id,
     // ])
+    console.log("[...Object.values(eventToSend), id] :>> ", [
+      ...Object.values(eventToSend),
+      id,
+    ])
     return new Promise((resolve, reject) =>
       db.transaction((tx) => {
         tx.executeSql(
-          `UPDATE events SET ${eventKeys.join(" = '?' ")} = '?' WHERE id = '?'`,
+          `UPDATE events SET ${eventKeys.join(" = ?, ")} = ? WHERE id = ?`,
           [...Object.values(eventToSend), id],
           resolve,
           (_, error) => reject(error)
@@ -415,7 +419,7 @@ export class DB {
       preparetime,
       collecttime,
     } = updateService
-    serviceToSend = {
+    const serviceToSend = {
       name,
       description,
       price,
@@ -428,9 +432,7 @@ export class DB {
     return new Promise((resolve, reject) =>
       db.transaction((tx) => {
         tx.executeSql(
-          `UPDATE services SET ${serviceKeys.join(
-            " = '?' "
-          )} = '?' WHERE id = '?'`,
+          `UPDATE services SET ${serviceKeys.join(" = ?, ")} = ? WHERE id = ?`,
           [...Object.values(serviceToSend), id],
           resolve,
           (_, error) => reject(error)
