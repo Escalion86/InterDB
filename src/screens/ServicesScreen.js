@@ -24,7 +24,7 @@ const ServicesScreen = ({ navigation, route }) => {
   console.log("services :>> ", services)
 
   navigation.setOptions({
-    title: `Программы`,
+    title: `Услуги`,
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
         <Item

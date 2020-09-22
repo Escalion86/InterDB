@@ -1,7 +1,9 @@
 import React from "react"
+import { useDispatch } from "react-redux"
 import { StyleSheet, Text, View } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
+import { deleteService } from "../store/actions/service"
 
 const ServiceScreen = ({ navigation, route }) => {
   const service =
@@ -9,23 +11,31 @@ const ServiceScreen = ({ navigation, route }) => {
       ? route.params.service
       : navigation.navigate("Services")
 
-  console.log("service :>> ", service)
+  const dispatch = useDispatch()
 
   navigation.setOptions({
-    title: `Программа`,
-    // headerRight: () => (
-    //   <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-    //     <Item
-    //       title="Edit Event"
-    //       iconName="md-create"
-    //       onPress={() => {
-    //         console.log(event)
-    //         alert(`Событие ${event.auditory}, ${event.event}`)
-    //       }}
-    //       // onPress={() => navigation.navigate("Create")}
-    //     />
-    //   </HeaderButtons>
-    // ),
+    title: `Услуга`,
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+        <Item
+          title="Delete Service"
+          iconName="ios-trash"
+          onPress={() => {
+            dispatch(deleteService(service.id))
+            navigation.navigate("Services")
+          }}
+          // onPress={() => navigation.navigate("Create")}
+        />
+        <Item
+          title="Edit Service"
+          iconName="md-create"
+          onPress={() => {
+            alert(`Услуга ${service.name}, ${service.description}`)
+          }}
+          // onPress={() => navigation.navigate("Create")}
+        />
+      </HeaderButtons>
+    ),
   })
 
   return (

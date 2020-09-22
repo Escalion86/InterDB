@@ -212,7 +212,7 @@ const DrawerScreen = () => {
         name="Services"
         component={ServicesStackScreen}
         options={{
-          drawerLabel: "Программы",
+          drawerLabel: "Услуги",
           drawerIcon: () => (
             <Ionicons name="ios-flame" size={24} color={colors.text} />
           ),
