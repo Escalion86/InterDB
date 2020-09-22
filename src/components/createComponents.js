@@ -12,12 +12,12 @@ import DateTimePicker from "@react-native-community/datetimepicker"
 import { formatDate, formatTime } from "../helpers/date"
 import { MainIcon } from "./icons"
 
-export const EventRowTitleBlock = ({ title = "", theme = useTheme() }) => {
+export const TitleBlock = ({ title = "", theme = useTheme() }) => {
   const { colors } = theme
   return <Text style={{ ...styles.title, color: colors.text }}>{title}</Text>
 }
 
-export const EventRowTextInput = ({
+export const TextInputBlock = ({
   title = null,
   value = null,
   postfix = "",
@@ -150,7 +150,7 @@ export const EventRowDropDownPicker = ({
   )
 }
 
-export const EventRowDateTimePicker = ({
+export const DateTimePickerBlock = ({
   dateValue,
   onChangeStoreHook,
   theme = useTheme(),

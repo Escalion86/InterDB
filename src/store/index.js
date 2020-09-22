@@ -1,12 +1,12 @@
 import { createStore, combineReducers, applyMiddleware } from "redux"
 import thunk from "redux-thunk"
 import { eventReducer } from "./reducers/event"
-import { programReducer } from "./reducers/program"
+import { serviceReducer } from "./reducers/service"
 import { clientReducer } from "./reducers/client"
 
 const rootReducer = combineReducers({
   event: eventReducer,
-  program: programReducer,
+  service: serviceReducer,
   client: clientReducer,
 })
 

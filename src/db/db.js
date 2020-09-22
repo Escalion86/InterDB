@@ -370,7 +370,7 @@ export class DB {
     })
   }
 
-  static addProgram(newProgram) {
+  static addService(newService) {
     //Вычленяем только нужные ключи (такие как loading и пр. не нужны)
     const {
       name,
@@ -379,9 +379,9 @@ export class DB {
       length,
       preparetime,
       collecttime,
-    } = newProgram
+    } = newService
     //Помещаем ключи в объект события
-    newProgram = {
+    newService = {
       name,
       description,
       price,
@@ -390,14 +390,14 @@ export class DB {
       collecttime,
     }
     return new Promise((resolve, reject) => {
-      const programKeys = Object.keys(newProgram)
+      const serviceKeys = Object.keys(newService)
 
       db.transaction((tx) => {
         tx.executeSql(
-          `INSERT INTO programs (${programKeys.join(
+          `INSERT INTO services (${serviceKeys.join(
             ", "
-          )}) VALUES (${"?, ".repeat(programKeys.length).slice(0, -2)})`,
-          Object.values(newProgram),
+          )}) VALUES (${"?, ".repeat(serviceKeys.length).slice(0, -2)})`,
+          Object.values(newService),
           (_, result) => resolve(result.insertId),
           (_, error) => reject(error)
         )

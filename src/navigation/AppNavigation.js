@@ -17,9 +17,9 @@ import ClientScreen from "../screens/ClientScreen"
 import CreateClientScreen from "../screens/CreateClientScreen"
 import DevScreen from "../screens/DevScreen"
 import DevTableScreen from "../screens/DevTableScreen"
-import ProgramsScreen from "../screens/ProgramsScreen"
-import ProgramScreen from "../screens/ProgramScreen"
-import CreateProgramScreen from "../screens/CreateProgramScreen"
+import ServicesScreen from "../screens/ServicesScreen"
+import ServiceScreen from "../screens/ServiceScreen"
+import CreateServiceScreen from "../screens/CreateServiceScreen"
 
 import { useTheme } from "@react-navigation/native"
 import { darkTheme } from "../theme"
@@ -27,7 +27,7 @@ import { darkTheme } from "../theme"
 const Stack = createStackNavigator()
 const EventsStack = createStackNavigator()
 const ClientsStack = createStackNavigator()
-const ProgramsStack = createStackNavigator()
+const ServicesStack = createStackNavigator()
 const DevStack = createStackNavigator()
 
 const burgerButton = (navigation) => (
@@ -105,19 +105,19 @@ const DevStackScreen = ({ navigation }) => (
   </StackNavigator>
 )
 
-const ProgramsStackScreen = ({ navigation }) => (
-  <StackNavigator navigation={navigation} initialRouteName="Programs">
-    <ProgramsStack.Screen
-      name="Programs"
-      component={ProgramsScreen}
+const ServicesStackScreen = ({ navigation }) => (
+  <StackNavigator navigation={navigation} initialRouteName="Services">
+    <ServicesStack.Screen
+      name="Services"
+      component={ServicesScreen}
       options={{
         headerLeft: () => burgerButton(navigation),
       }}
     />
-    <ProgramsStack.Screen name="Program" component={ProgramScreen} />
-    <ProgramsStack.Screen
-      name="CreateProgram"
-      component={CreateProgramScreen}
+    <ServicesStack.Screen name="Service" component={ServiceScreen} />
+    <ServicesStack.Screen
+      name="CreateService"
+      component={CreateServiceScreen}
     />
   </StackNavigator>
 )
@@ -209,8 +209,8 @@ const DrawerScreen = () => {
         }}
       />
       <Drawer.Screen
-        name="Programs"
-        component={ProgramsStackScreen}
+        name="Services"
+        component={ServicesStackScreen}
         options={{
           drawerLabel: "Программы",
           drawerIcon: () => (

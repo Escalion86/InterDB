@@ -4,48 +4,48 @@ import { StyleSheet, Text, View, FlatList } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import {
-  loadPrograms,
-  addProgram,
-  deleteAllPrograms,
-} from "../store/actions/program"
+  loadServices,
+  addService,
+  deleteAllServices,
+} from "../store/actions/service"
 import { dbGenerator } from "../db/dbTemplate"
-import { ProgramCard } from "../components/ProgramCard"
+import { ServiceCard } from "../components/ServiceCard"
 
-const ProgramsScreen = ({ navigation, route }) => {
+const ServicesScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(loadPrograms())
+    dispatch(loadServices())
   }, [dispatch])
 
-  const programs = useSelector((state) => state.program.programs)
-  const loading = useSelector((state) => state.program.loading)
+  const services = useSelector((state) => state.service.services)
+  const loading = useSelector((state) => state.service.loading)
 
-  console.log("programs :>> ", programs)
+  console.log("services :>> ", services)
 
   navigation.setOptions({
     title: `Программы`,
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
         <Item
-          title="Add rondom program"
+          title="Add rondom service"
           iconName="ios-add-circle-outline"
           onPress={() => {
-            const tmp = dbGenerator("program")
-            dispatch(addProgram(tmp))
+            const tmp = dbGenerator("service")
+            dispatch(addService(tmp))
           }}
           // onPress={() => navigation.navigate("Create")}
         />
         <Item
-          title="Add Program"
+          title="Add Service"
           iconName="ios-add-circle"
-          onPress={() => navigation.navigate("CreateProgram")}
+          onPress={() => navigation.navigate("CreateService")}
         />
       </HeaderButtons>
     ),
   })
 
-  if (programs.length == 0) {
+  if (services.length == 0) {
     return (
       <View style={styles.wrapper}>
         <Text>Заявок пока нет</Text>
@@ -57,17 +57,17 @@ const ProgramsScreen = ({ navigation, route }) => {
     <View style={styles.wrapper}>
       <FlatList
         style={styles.list}
-        data={programs}
+        data={services}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <ProgramCard navigation={navigation} program={item} />
+          <ServiceCard navigation={navigation} service={item} />
         )}
       />
     </View>
   )
 }
 
-export default ProgramsScreen
+export default ServicesScreen
 
 const styles = StyleSheet.create({
   wrapper: {

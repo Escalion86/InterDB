@@ -1,4 +1,4 @@
-let dbTemplate = ["events", "clients", "programs"]
+let dbTemplate = ["events", "clients", "services"]
 
 const rndArray = (array) => {
   const rndNum = Math.floor(Math.random() * array.length)
@@ -43,7 +43,7 @@ const rndTime = () => {
 //     comment: null,
 //     status: "Заметка",
 //   },
-//   program: {
+//   service: {
 //     name: "",
 //     description: "",
 //     price: 0,
@@ -125,7 +125,7 @@ export const dbGenerator = (table = "event") => {
         vk: "",
         facebook: "",
       }
-    case "program":
+    case "service":
       return {
         name: rndArray([
           "Свадьба, стандарт",
@@ -140,6 +140,7 @@ export const dbGenerator = (table = "event") => {
         length: 30,
         preparetime: 20,
         collecttime: 20,
+        archive: 0,
       }
     default:
       return {}
@@ -370,7 +371,7 @@ export default dbTemplate = {
     },
   ],
 
-  programs: [
+  services: [
     {
       db_name: "name",
       desc: "Название программы",
@@ -421,6 +422,15 @@ export default dbTemplate = {
       desc: "Время на сбор",
       type: "integer",
       db_type: "INTEGER",
+      not_null: true,
+      default: 0,
+      db_default: 0,
+    },
+    {
+      db_name: "archive",
+      desc: "Архивировано",
+      type: "boolean",
+      db_type: "INT",
       not_null: true,
       default: 0,
       db_default: 0,

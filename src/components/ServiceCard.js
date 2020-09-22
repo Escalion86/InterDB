@@ -28,12 +28,12 @@ import {
 } from "../db/dependencies"
 import IconMenu from "./IconMenu"
 
-export const ProgramCard = ({ navigation, program }) => {
+export const ServiceCard = ({ navigation, service }) => {
   const { Popover } = renderers
   const theme = useTheme()
   const colors = theme.colors
 
-  if (program.loading || program.deleting) {
+  if (service.loading || service.deleting) {
     return (
       <View
         style={{
@@ -43,7 +43,7 @@ export const ProgramCard = ({ navigation, program }) => {
           minHeight: 94,
         }}
       >
-        {program.loading ? (
+        {service.loading ? (
           <ActivityIndicator size="large" color={colors.text} />
         ) : (
           <Ionicons name={"ios-trash"} size={32} color={colors.notification} />
@@ -58,7 +58,7 @@ export const ProgramCard = ({ navigation, program }) => {
       delayPressIn={50}
       style={{ ...styles.card, backgroundColor: colors.card, minHeight: 94 }}
       onPress={() => {
-        navigation.navigate("Program", { program: program })
+        navigation.navigate("Service", { service: service })
       }}
     >
       <View
@@ -67,12 +67,12 @@ export const ProgramCard = ({ navigation, program }) => {
       <View style={styles.middle}>
         <View style={styles.cardheader}>
           <Text style={{ ...styles.cardtitle, color: colors.text }}>
-            {program.name}
+            {service.name}
           </Text>
         </View>
         <View style={styles.carddesc}>
           <Text style={{ ...styles.cardtitle, color: colors.text }}>
-            {program.description}
+            {service.description}
           </Text>
         </View>
       </View>

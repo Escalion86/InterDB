@@ -24,10 +24,10 @@ import {
 import { dbDefault } from "../db/dbTemplate"
 import {
   EventRowDropDownPicker,
-  EventRowTextInput,
-  EventRowDateTimePicker,
-  EventRowTitleBlock,
-} from "../components/createEventComponents"
+  TextInputBlock,
+  DateTimePickerBlock,
+  TitleBlock,
+} from "../components/createComponents"
 
 const CreateEventScreen = ({ navigation, route }) => {
   const event =
@@ -46,7 +46,6 @@ const CreateEventScreen = ({ navigation, route }) => {
   }
 
   const saveHandler = () => {
-    console.log(newEvent)
     event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
     navigation.navigate("Events")
   }
@@ -127,7 +126,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <EventRowTitleBlock title="Описание" theme={useTheme()} />
+      <TitleBlock title="Описание" theme={useTheme()} />
       <EventRowDropDownPicker
         dependencies={statusIconDependencies}
         name="Статус события"
@@ -173,13 +172,13 @@ const CreateEventScreen = ({ navigation, route }) => {
         onChangeItem={(item) => setEventItem({ auditory: item.value })}
         theme={useTheme()}
       /> */}
-      <EventRowDateTimePicker
+      <DateTimePickerBlock
         dateValue={newEvent.date}
         onChangeStoreHook={setEventItem}
         theme={useTheme()}
       />
-      <EventRowTitleBlock title="Финансы" theme={useTheme()} />
-      <EventRowTextInput
+      <TitleBlock title="Финансы" theme={useTheme()} />
+      <TextInputBlock
         title="Цена клиента"
         value={newEvent.finance_price}
         theme={useTheme()}
@@ -190,7 +189,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         placeholder="0"
         postfix="&#8381;"
       />
-      <EventRowTextInput
+      <TextInputBlock
         title="За дорогу"
         value={newEvent.finance_road}
         theme={useTheme()}
@@ -201,7 +200,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         placeholder="0"
         postfix="&#8381;"
       />
-      <EventRowTextInput
+      <TextInputBlock
         title="Организатору"
         value={newEvent.finance_organizator}
         theme={useTheme()}
@@ -212,7 +211,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         placeholder="0"
         postfix="&#8381;"
       />
-      <EventRowTextInput
+      <TextInputBlock
         title="Ассистентам"
         value={newEvent.finance_assistants}
         theme={useTheme()}
@@ -223,7 +222,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         placeholder="0"
         postfix="&#8381;"
       />
-      <EventRowTextInput
+      <TextInputBlock
         title="Чаевые"
         value={newEvent.finance_tips}
         theme={useTheme()}
@@ -234,38 +233,38 @@ const CreateEventScreen = ({ navigation, route }) => {
         placeholder="0"
         postfix="&#8381;"
       />
-      <EventRowTitleBlock title="Адрес" theme={useTheme()} />
-      <EventRowTextInput
+      <TitleBlock title="Адрес" theme={useTheme()} />
+      <TextInputBlock
         title="Название заведения"
         value={newEvent.location_name}
         theme={useTheme()}
         onChangeText={(text) => setEventItem({ location_name: text })}
       />
-      <EventRowTextInput
+      <TextInputBlock
         title="Город"
         value={newEvent.location_town}
         theme={useTheme()}
         onChangeText={(text) => setEventItem({ location_town: text })}
       />
-      <EventRowTextInput
+      <TextInputBlock
         title="Улица"
         value={newEvent.location_street}
         theme={useTheme()}
         onChangeText={(text) => setEventItem({ location_street: text })}
       />
-      <EventRowTextInput
+      <TextInputBlock
         title="Дом"
         value={newEvent.location_house}
         theme={useTheme()}
         onChangeText={(text) => setEventItem({ location_house: text })}
       />
-      <EventRowTextInput
+      <TextInputBlock
         title="Квартира"
         value={newEvent.location_room}
         theme={useTheme()}
         onChangeText={(text) => setEventItem({ location_room: text })}
       />
-      <EventRowTextInput
+      <TextInputBlock
         title="Этаж"
         value={newEvent.location_floor}
         theme={useTheme()}

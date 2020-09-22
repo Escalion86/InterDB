@@ -3,13 +3,13 @@ import { StyleSheet, Text, View } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 
-const ProgramScreen = ({ navigation, route }) => {
-  const program =
-    route.params !== undefined && route.params.program !== undefined
-      ? route.params.program
-      : navigation.navigate("Programs")
+const ServiceScreen = ({ navigation, route }) => {
+  const service =
+    route.params !== undefined && route.params.service !== undefined
+      ? route.params.service
+      : navigation.navigate("Services")
 
-  console.log("program :>> ", program)
+  console.log("service :>> ", service)
 
   navigation.setOptions({
     title: `Программа`,
@@ -35,6 +35,6 @@ const ProgramScreen = ({ navigation, route }) => {
   )
 }
 
-export default ProgramScreen
+export default ServiceScreen
 
 const styles = StyleSheet.create({})
