@@ -22,6 +22,7 @@ import { EventCard } from "../components/EventCard"
 import { dbGenerator } from "../db/dbTemplate"
 import { useTheme } from "@react-navigation/native"
 import { Ionicons } from "@expo/vector-icons"
+import { loadAll } from "../store/actions/db"
 
 const EventsScreen = ({ navigation, route }) => {
 	const { colors } = useTheme()
@@ -29,9 +30,12 @@ const EventsScreen = ({ navigation, route }) => {
 	const { Popover } = renderers
 	const [sorting, setSorting] = useState("dateDESC")
 
-	useEffect(() => {
-		dispatch(loadEvents())
-	}, [dispatch])
+	// useEffect(() => {
+	// 	dispatch(loadAll())
+	// }, [dispatch])
+	// useEffect(() => {
+	//   dispatch(loadEvents())
+	// }, [dispatch])
 	const events = useSelector((state) => state.event.events)
 	const loading = useSelector((state) => state.event.loading)
 

@@ -57,7 +57,7 @@ export const EventCard = ({ navigation, event }) => {
 			</View>
 		)
 	}
-
+	//TODO перевести в отображение загрузки названий
 	const services = useSelector((state) => state.service.services)
 	const clients = useSelector((state) => state.client.clients)
 

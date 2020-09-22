@@ -7,33 +7,33 @@ import { EventsScreen } from "./src/screens/EventsScreen"
 import { bootstrap } from "./src/bootstrap"
 import { MenuProvider } from "react-native-popup-menu"
 import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  ActivityIndicator,
+	StyleSheet,
+	Text,
+	View,
+	FlatList,
+	ActivityIndicator,
 } from "react-native"
 import store from "./src/store"
 
 export default function App() {
-  const [isReady, setIsReady] = useState(false)
+	const [isReady, setIsReady] = useState(false)
 
-  if (!isReady) {
-    return (
-      <AppLoading
-        startAsync={bootstrap}
-        onFinish={() => setIsReady(true)}
-        onError={(err) => console.log(err)}
-      />
-    )
-  }
+	if (!isReady) {
+		return (
+			<AppLoading
+				startAsync={bootstrap}
+				onFinish={() => setIsReady(true)}
+				onError={(err) => console.log(err)}
+			/>
+		)
+	}
 
-  return (
-    <Provider store={store}>
-      <MenuProvider>
-        <AppNavigation />
-        <StatusBar style="light" />
-      </MenuProvider>
-    </Provider>
-  )
+	return (
+		<Provider store={store}>
+			<MenuProvider>
+				<AppNavigation />
+				<StatusBar style="light" />
+			</MenuProvider>
+		</Provider>
+	)
 }
