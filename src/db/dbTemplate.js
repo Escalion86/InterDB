@@ -352,7 +352,6 @@ export default dbTemplate = {
 			default: "",
 			db_default: "",
 		},
-
 		{
 			db_name: "vk",
 			desc: "VK логин",
@@ -362,7 +361,6 @@ export default dbTemplate = {
 			default: "",
 			db_default: "",
 		},
-
 		{
 			db_name: "facebook",
 			desc: "Facebook логин",

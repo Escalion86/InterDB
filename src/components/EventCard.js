@@ -71,7 +71,7 @@ export const EventCard = ({ navigation, event }) => {
 		<TouchableOpacity
 			// activeOpacity={1}
 			delayPressIn={50}
-			style={{ ...styles.card, backgroundColor: colors.card, minHeight: 94 }}
+			style={{ ...styles.card, backgroundColor: colors.card, minHeight: 80 }}
 			onPress={() => {
 				navigation.navigate("Event", { event: event })
 			}}
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
 	},
 	carddesc: {
 		flexDirection: "row",
-		height: 42,
+		height: 46,
 		// borderColor: "red",
 		// borderWidth: 1,
 		paddingHorizontal: 10,

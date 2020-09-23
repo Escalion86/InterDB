@@ -7,7 +7,7 @@ import {
 	TextInput,
 	ScrollView,
 } from "react-native"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import DropDownPicker from "react-native-dropdown-picker"
@@ -27,13 +27,21 @@ import {
 	TextInputBlock,
 	DateTimePickerBlock,
 	TitleBlock,
+	DropDownPickerBlock,
 } from "../components/createComponents"
 
 const CreateEventScreen = ({ navigation, route }) => {
 	const event =
 		route.params !== undefined && route.params.event !== undefined
 			? route.params.event
-			: dbDefault("events")
+			: { ...dbDefault("events"), date: new Date().setSeconds(0, 0) }
+
+	const services = useSelector((state) => state.service.services)
+	// const clients = useSelector((state) => state.client.clients)
+	const clients = [
+		{ id: 1, name: "Петя" },
+		{ id: 2, name: "Иван" },
+	]
 
 	const dispatch = useDispatch()
 	const [newEvent, setNewEvent] = useState(event)
@@ -145,12 +153,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         onChangeItem={(item) => setEventItem({ event: item.value })}
         theme={useTheme()}
       /> */}
-			<TextInputBlock
-				title="Услуга"
-				value={newEvent.service}
-				theme={useTheme()}
-				onChangeText={(text) => setEventItem({ service: text })}
-			/>
+
 			<EventRowDropDownPicker
 				dependencies={financeIconDependencies}
 				name="Статус оплаты"
@@ -181,6 +184,26 @@ const CreateEventScreen = ({ navigation, route }) => {
 			<DateTimePickerBlock
 				dateValue={newEvent.date}
 				onChangeStoreHook={setEventItem}
+				theme={useTheme()}
+			/>
+			<TitleBlock title="Услуга" theme={useTheme()} />
+			<DropDownPickerBlock
+				name="Услуга"
+				db={services}
+				defeultValue={newEvent.service}
+				placeholder={"[ Выберите услугу ]"}
+				zeroItem={{ label: "Новая услуга", value: 0 }}
+				onChangeItem={(item) => setEventItem({ service: item.value })}
+				theme={useTheme()}
+			/>
+			<TitleBlock title="Клиент" theme={useTheme()} />
+			<DropDownPickerBlock
+				name="Клиент"
+				db={clients}
+				defeultValue={newEvent.client}
+				placeholder={"[ Выберите клиента ]"}
+				zeroItem={{ label: "Новый клиент", value: 0 }}
+				onChangeItem={(item) => setEventItem({ client: item.value })}
 				theme={useTheme()}
 			/>
 			<TitleBlock title="Финансы" theme={useTheme()} />
