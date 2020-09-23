@@ -33,6 +33,7 @@ export const EventCard = ({ navigation, event }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
 	const colors = theme.colors
+	const styles = stylesFactory(colors)
 	const profit =
 		event.finance_price -
 		event.finance_road -
@@ -45,7 +46,6 @@ export const EventCard = ({ navigation, event }) => {
 				style={{
 					...styles.center,
 					...styles.card,
-					backgroundColor: colors.card,
 					minHeight: 94,
 				}}
 			>
@@ -71,12 +71,12 @@ export const EventCard = ({ navigation, event }) => {
 		<TouchableOpacity
 			// activeOpacity={1}
 			delayPressIn={50}
-			style={{ ...styles.card, backgroundColor: colors.card, minHeight: 80 }}
+			style={styles.card}
 			onPress={() => {
 				navigation.navigate("Event", { event: event })
 			}}
 		>
-			<View style={{ ...styles.left, borderRightColor: colors.background }}>
+			<View style={styles.left}>
 				<IconMenu
 					event={event}
 					theme={theme}
@@ -93,13 +93,13 @@ export const EventCard = ({ navigation, event }) => {
 			</View>
 			<View style={styles.middle}>
 				<View style={styles.cardheader}>
-					<Text style={{ ...styles.cardtitle, color: colors.text }}>
+					<Text style={styles.cardtitle}>
 						{/* {event.auditory},  */}
 						{service.name}
 					</Text>
 				</View>
 				<View style={styles.carddesc}>
-					<Text style={{ ...styles.carddesctext, color: colors.text }}>
+					<Text style={styles.carddesctext}>
 						{event.location_town}, {event.location_street},{" "}
 						{Math.trunc(event.location_house)}
 						{event.location_room
@@ -110,7 +110,7 @@ export const EventCard = ({ navigation, event }) => {
 					<Ionicons
 						name="md-navigate"
 						size={22}
-						color="white"
+						color={colors.text}
 						style={{ marginLeft: 5 }}
 						onPress={() =>
 							Linking.openURL(
@@ -122,10 +122,10 @@ export const EventCard = ({ navigation, event }) => {
 			</View>
 			<View style={styles.right}>
 				<View style={styles.carddate}>
-					<Text style={{ ...styles.datetime, color: colors.text }}>
+					<Text style={styles.datetime}>
 						{formatDate(new Date(event.date))}
 					</Text>
-					<Text style={{ ...styles.datetime, color: colors.text }}>
+					<Text style={styles.datetime}>
 						{getWeekDay(new Date(event.date))}{" "}
 						{formatTime(new Date(event.date))}
 					</Text>
@@ -137,27 +137,10 @@ export const EventCard = ({ navigation, event }) => {
 				>
 					<MenuTrigger>
 						{/* <TouchableOpacity style={styles.finance}> */}
-						<Text
-							style={{
-								...styles.profit,
-								borderTopColor: colors.background,
-								borderLeftColor: colors.background,
-								backgroundColor: colors.border,
-							}}
-						>
-							{profit}
-						</Text>
+						<Text style={styles.profit}>{profit}</Text>
 						{/* </TouchableOpacity> */}
 					</MenuTrigger>
-					<MenuOptions
-						style={{
-							...styles.menuOptions,
-							borderColor: "#ffff99",
-							borderWidth: 1,
-							// borderRadius: 20,
-							backgroundColor: colors.card,
-						}}
-					>
+					<MenuOptions style={styles.menuOptions}>
 						<View style={styles.row}>
 							<Text style={{ fontSize: 16, color: colors.text }}>
 								Цена клиента
@@ -222,94 +205,110 @@ export const EventCard = ({ navigation, event }) => {
 	)
 }
 
-const styles = StyleSheet.create({
-	card: {
-		width: "100%",
-		marginVertical: 2,
-		// backgroundColor: THEME.SECONDARY_COLOR,
-		borderColor: "black",
-		borderWidth: 1,
-		borderRadius: 10,
-		flexDirection: "row",
-	},
-	left: {
-		padding: 5,
-		//borderRightColor: "black",
-		borderRightWidth: 1,
-		justifyContent: "space-around",
-	},
-	carddate: { height: 50, padding: 5 },
-	middle: {
-		// padding: 10,
-		flex: 1,
-	},
-	right: {
-		alignItems: "flex-end",
-		borderLeftWidth: 1,
-	},
-	cardheader: {
-		flex: 1,
-		padding: 10,
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	cardtitle: {
-		fontFamily: "open-bold",
-		fontSize: 16,
-	},
-	carddesctext: {
-		flex: 1,
-		fontFamily: "open-regular",
-		fontSize: 14,
-	},
-	carddesc: {
-		flexDirection: "row",
-		height: 46,
-		// borderColor: "red",
-		// borderWidth: 1,
-		paddingHorizontal: 10,
-		justifyContent: "center",
-		alignItems: "center",
-		borderTopWidth: 1,
-	},
-	center: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	datetime: {
-		fontSize: 14,
-		textAlign: "right",
-	},
-	finance: {
-		flex: 1,
-		flexDirection: "column",
-		justifyContent: "flex-end",
-		width: "100%",
-		// borderColor: "#fff",
-		// borderWidth: 2,
-		// height: "100%",
-		// alignItems: "center",
-		// justifyContent: "center",
-	},
-	profit: {
-		// flex: 1,
-		fontSize: 14,
-		width: "100%",
-		height: 42,
-		textAlignVertical: "center",
-		textAlign: "center",
-		color: "#ffff99",
-		borderTopWidth: 1,
-		// borderLeftWidth: 1,
-		// borderTopLeftRadius: 10,
-		borderBottomRightRadius: 10,
-	},
-	menuOptions: {
-		padding: 20,
-	},
-	row: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-	},
-})
+const stylesFactory = (colors) => {
+	console.log("colors", colors)
+	return StyleSheet.create({
+		card: {
+			width: "100%",
+			marginVertical: 2,
+			// backgroundColor: THEME.SECONDARY_COLOR,
+			borderColor: colors.border,
+			borderWidth: 1,
+			borderRadius: 10,
+			flexDirection: "row",
+			backgroundColor: colors.card,
+			minHeight: 80,
+		},
+		left: {
+			padding: 5,
+			borderRightWidth: 1,
+			justifyContent: "space-around",
+			borderRightColor: colors.border,
+		},
+		carddate: { height: 50, padding: 5 },
+		middle: {
+			// padding: 10,
+			flex: 1,
+		},
+		right: {
+			alignItems: "flex-end",
+			borderLeftWidth: 1,
+			borderColor: colors.border,
+		},
+		cardheader: {
+			flex: 1,
+			padding: 10,
+			alignItems: "center",
+			justifyContent: "center",
+		},
+		cardtitle: {
+			fontFamily: "open-bold",
+			fontSize: 16,
+			color: colors.text,
+		},
+		carddesctext: {
+			flex: 1,
+			fontFamily: "open-regular",
+			fontSize: 14,
+			color: colors.text,
+		},
+		carddesc: {
+			flexDirection: "row",
+			height: 46,
+			// borderColor: "red",
+			// borderWidth: 1,
+			paddingHorizontal: 10,
+			justifyContent: "center",
+			alignItems: "center",
+			borderTopWidth: 1,
+			borderColor: colors.border,
+		},
+		center: {
+			flex: 1,
+			justifyContent: "center",
+			alignItems: "center",
+		},
+		datetime: {
+			fontSize: 14,
+			textAlign: "right",
+			color: colors.text,
+		},
+		finance: {
+			flex: 1,
+			flexDirection: "column",
+			justifyContent: "flex-end",
+			width: "100%",
+			// borderColor: "#fff",
+			// borderWidth: 2,
+			// height: "100%",
+			// alignItems: "center",
+			// justifyContent: "center",
+		},
+		profit: {
+			// flex: 1,
+			fontSize: 14,
+			width: "100%",
+			height: 46,
+			textAlignVertical: "center",
+			textAlign: "center",
+			color: colors.money,
+			borderTopWidth: 1,
+			// borderLeftWidth: 1,
+			// borderTopLeftRadius: 10,
+			borderBottomRightRadius: 10,
+			borderColor: colors.border,
+			backgroundColor: colors.card2,
+		},
+		menuOptions: {
+			padding: 20,
+			borderColor: colors.border,
+			borderWidth: 1,
+			// borderRadius: 20,
+			backgroundColor: colors.card,
+		},
+		row: {
+			flexDirection: "row",
+			justifyContent: "space-between",
+		},
+	})
+}

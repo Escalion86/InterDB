@@ -224,7 +224,7 @@ export default EventsScreen
 
 const styles = StyleSheet.create({
 	wrapper: {
-		padding: 0,
+		paddingHorizontal: 5,
 		margin: 0,
 	},
 	noItems: {

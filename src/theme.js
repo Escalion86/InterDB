@@ -18,8 +18,9 @@ export const darkTheme = {
 		accent: "#03dac4", //Переключатель
 		backdrop: "rgba(0, 0, 0, 0.5)",
 		background: "rgb(1, 1, 1)",
-		border: "rgb(46, 46, 48)",
+		border: "rgb(12, 12, 12)",
 		card: "rgb(30, 30, 30)",
+		card2: "rgb(46, 46, 46)",
 		disabled: "rgba(0, 0, 0, 0.26)",
 		error: "#B00020",
 		notification: "rgb(255, 69, 58)",
@@ -29,6 +30,7 @@ export const darkTheme = {
 		primary: "rgb(229, 229, 231)",
 		surface: "#ffffff",
 		text: "rgb(229, 229, 231)",
+		money: "#ffff99",
 	},
 	dark: true,
 	fonts: {
@@ -60,6 +62,9 @@ export const lightTheme = {
 		accent: "#03dac4",
 		backdrop: "rgba(0, 0, 0, 0.5)",
 		background: "#f6f6f6",
+		border: "rgb(60, 60, 60)",
+		card: "rgb(230, 230, 230)",
+		card2: "rgb(110, 110, 110)",
 		disabled: "rgba(0, 0, 0, 0.26)",
 		error: "#B00020",
 		notification: "#f50057",
@@ -69,6 +74,7 @@ export const lightTheme = {
 		primary: "#6200ee",
 		surface: "#ffffff",
 		text: "#000000",
+		money: "#ffff66",
 	},
 	dark: false,
 	fonts: {

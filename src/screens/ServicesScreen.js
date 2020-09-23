@@ -21,7 +21,7 @@ const ServicesScreen = ({ navigation, route }) => {
 	const services = useSelector((state) => state.service.services)
 	const loading = useSelector((state) => state.service.loading)
 
-	console.log("services :>> ", services)
+	// console.log("services :>> ", services)
 
 	navigation.setOptions({
 		title: `Услуги`,
@@ -71,7 +71,7 @@ export default ServicesScreen
 
 const styles = StyleSheet.create({
 	wrapper: {
-		padding: 0,
+		paddingHorizontal: 5,
 		margin: 0,
 	},
 	noItems: {

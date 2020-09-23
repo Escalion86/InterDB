@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar"
+// import { StatusBar } from "expo-status-bar"
 import React, { useState } from "react"
 import { Provider } from "react-redux"
 import { AppLoading } from "expo"
@@ -32,7 +32,7 @@ export default function App() {
 		<Provider store={store}>
 			<MenuProvider>
 				<AppNavigation />
-				<StatusBar style="light" />
+				{/* <StatusBar style="auto" /> */}
 			</MenuProvider>
 		</Provider>
 	)

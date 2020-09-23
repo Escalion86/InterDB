@@ -24,30 +24,33 @@ const DrawerContent = (props) => {
 		setIsDarkTheme(!theme.dark)
 	}
 
+	const { colors } = theme
+
 	return (
 		<View style={{ flex: 1 }}>
 			<DrawerContentScrollView {...props}>
 				<View style={styles.drawerContent}>
-					<View style={styles.userInfoSection}>
-						<View style={{ flexDirection: "row", marginTop: 15 }}>
-							<Avatar.Image
-								source={require("../../assets/avatar/male.jpg")}
-								size={50}
-							/>
-							<View
-								style={{
-									marginLeft: 15,
-									flexDirection: "column",
-									// borderWidth: 1,
-									// borderColor: "red",
-								}}
-							>
-								<Title style={styles.title}>Aleksei Belinskiy</Title>
-								<Caption style={styles.caption}>@escalion</Caption>
+					<Drawer.Section style={styles.drawerSection}>
+						<View style={styles.userInfoSection}>
+							<View style={{ flexDirection: "row", marginTop: 15 }}>
+								<Avatar.Image
+									source={require("../../assets/avatar/male.jpg")}
+									size={50}
+								/>
+								<View
+									style={{
+										marginLeft: 15,
+										flexDirection: "column",
+										// borderWidth: 1,
+										// borderColor: "red",
+									}}
+								>
+									<Title style={styles.title}>Алексей Белинский</Title>
+									<Caption style={styles.caption}>@escalion</Caption>
+								</View>
 							</View>
-						</View>
 
-						<View style={styles.row}>
+							{/* <View style={styles.row}>
 							<View style={styles.section}>
 								<Paragraph style={[styles.paragraph, styles.caption]}>
 									80
@@ -60,88 +63,61 @@ const DrawerContent = (props) => {
 								</Paragraph>
 								<Caption style={styles.caption}>Followers</Caption>
 							</View>
+						</View> */}
 						</View>
-					</View>
+					</Drawer.Section>
 					<Drawer.Section style={styles.drawerSection}>
 						<DrawerItem
 							icon={({ color, size }) => (
 								<Ionicons
-									name="ios-log-out"
+									name="md-calendar"
 									size={22}
-									color="white"
+									color={colors.text}
 									style={{ marginLeft: 5 }}
 								/>
 							)}
-							label="Home"
+							label="События"
 							onPress={() => {
-								props.navigation.navigate("Home")
+								props.navigation.navigate("Events")
 							}}
 						/>
 						<DrawerItem
 							icon={({ color, size }) => (
 								<Ionicons
-									name="ios-log-out"
+									name="md-people"
 									size={22}
-									color="white"
+									color={colors.text}
 									style={{ marginLeft: 5 }}
 								/>
 							)}
-							label="Profile"
+							label="Клиенты"
 							onPress={() => {
-								props.navigation.navigate("Profile")
+								props.navigation.navigate("Clients")
 							}}
 						/>
 						<DrawerItem
 							icon={({ color, size }) => (
 								<Ionicons
-									name="ios-log-out"
+									name="md-briefcase"
 									size={22}
-									color="white"
+									color={colors.text}
 									style={{ marginLeft: 5 }}
 								/>
 							)}
-							label="Bookmarks"
+							label="Услуги"
 							onPress={() => {
-								props.navigation.navigate("BookmarkScreen")
-							}}
-						/>
-						<DrawerItem
-							icon={({ color, size }) => (
-								<Ionicons
-									name="ios-log-out"
-									size={22}
-									color="white"
-									style={{ marginLeft: 5 }}
-								/>
-							)}
-							label="Settings"
-							onPress={() => {
-								props.navigation.navigate("SettingsScreen")
-							}}
-						/>
-						<DrawerItem
-							icon={({ color, size }) => (
-								<Ionicons
-									name="ios-log-out"
-									size={22}
-									color="white"
-									style={{ marginLeft: 5 }}
-								/>
-							)}
-							label="Support"
-							onPress={() => {
-								props.navigation.navigate("SupportScreen")
+								props.navigation.navigate("Services")
 							}}
 						/>
 					</Drawer.Section>
-					<Drawer.Section title="Preferences">
+					<Drawer.Section title="Настройки">
 						<TouchableRipple
 							onPress={() => {
 								toggleTheme()
 							}}
 						>
 							<View style={styles.preference}>
-								<Text>Dark Theme</Text>
+								<Text>Тёмная тема</Text>
 								<View pointerEvents="none">
 									<Switch value={theme.dark} />
 								</View>
@@ -152,6 +128,20 @@ const DrawerContent = (props) => {
 			</DrawerContentScrollView>
 			<Drawer.Section style={styles.bottomDrawerSection}>
 				<DrawerItem
+					icon={({ color, size }) => (
+						<Ionicons
+							name="md-bug"
+							size={22}
+							color={colors.text}
+							style={{ marginLeft: 5 }}
+						/>
+					)}
+					label="Панель разработчика"
+					onPress={() => {
+						props.navigation.navigate("Dev")
+					}}
+				/>
+				{/* <DrawerItem
 					icon={() => (
 						<Ionicons
 							name="ios-log-out"
@@ -160,8 +150,8 @@ const DrawerContent = (props) => {
 							style={{ marginLeft: 5 }}
 						/>
 					)}
-					label="Sign Out"
-				/>
+					label="Выход"
+				/> */}
 			</Drawer.Section>
 		</View>
 	)
@@ -175,6 +165,7 @@ const styles = StyleSheet.create({
 	},
 	userInfoSection: {
 		paddingLeft: 20,
+		height: 75,
 	},
 	title: {
 		// marginTop: 3,
@@ -202,10 +193,10 @@ const styles = StyleSheet.create({
 		marginRight: 3,
 	},
 	drawerSection: {
-		marginTop: 15,
+		// marginTop: 15,
 	},
 	bottomDrawerSection: {
-		marginBottom: 15,
+		// marginBottom: 15,
 		borderTopColor: "#f4f4f4",
 		borderTopWidth: 1,
 	},

@@ -57,11 +57,14 @@ const StackNavigator = ({ children, navigation, initialRouteName }) => {
 		<Stack.Navigator
 			initialRouteName="Main"
 			screenOptions={{
-				headerTintColor:
-					Platform.OS === "android" ? "white" : colors.background,
+				headerTintColor: colors.text,
+				// Platform.OS === "android" ? colors.text : colors.background,
 				headerStyle: {
-					backgroundColor:
-						Platform.OS === "android" ? colors.background : "white",
+					backgroundColor: colors.background,
+					// Platform.OS === "android" ? colors.background : "white",
+				},
+				headerTitleStyle: {
+					color: colors.text,
 				},
 			}}
 		>
@@ -75,7 +78,7 @@ const EventsStackScreen = ({ navigation }) => (
 		<EventsStack.Screen
 			name="Events"
 			component={EventsScreen}
-			initialParams={{ actual: false }}
+			// initialParams={{ actual: false }}
 			options={{
 				headerLeft: () => burgerButton(navigation),
 			}}
@@ -133,55 +136,55 @@ const ServicesStackScreen = ({ navigation }) => (
 	</StackNavigator>
 )
 
-const ActualStackScreen = ({ navigation }) => (
-	<StackNavigator navigation={navigation}>
-		<EventsStack.Screen
-			name="Events"
-			component={EventsScreen}
-			initialParams={{ actual: true }}
-			options={{
-				headerLeft: () => burgerButton(navigation),
-			}}
-		/>
-	</StackNavigator>
-)
+// const ActualStackScreen = ({ navigation }) => (
+// 	<StackNavigator navigation={navigation}>
+// 		<EventsStack.Screen
+// 			name="Events"
+// 			component={EventsScreen}
+// 			initialParams={{ actual: true }}
+// 			options={{
+// 				headerLeft: () => burgerButton(navigation),
+// 			}}
+// 		/>
+// 	</StackNavigator>
+// )
 
-const Tabs = createMaterialBottomTabNavigator()
+// const Tabs = createMaterialBottomTabNavigator()
 
-const EventsTabsScreen = () => {
-	const { colors } = useTheme()
-	return (
-		<Tabs.Navigator
-			// activeColor={"#fff"}
-			// barStyle={{ backgroundColor: THEME.MAIN_COLOR }}
-			// tabBarOptions={{
-			//   activeTintColor: "#fff",
-			// }}
-			barStyle={{ backgroundColor: colors.background }}
-		>
-			<Tabs.Screen
-				name="Events"
-				component={EventsScreen}
-				options={{
-					tabBarLabel: "Все",
-					tabBarIcon: (info) => (
-						<Ionicons name="ios-albums" size={25} color={info.color} />
-					),
-				}}
-			/>
-			<Tabs.Screen
-				name="Actual"
-				component={ActualStackScreen}
-				options={{
-					tabBarLabel: "Актуальные",
-					tabBarIcon: (info) => (
-						<Ionicons name="ios-albums" size={25} color={info.color} />
-					),
-				}}
-			/>
-		</Tabs.Navigator>
-	)
-}
+// const EventsTabsScreen = () => {
+// 	const { colors } = useTheme()
+// 	return (
+// 		<Tabs.Navigator
+// 			// activeColor={"#fff"}
+// 			// barStyle={{ backgroundColor: THEME.MAIN_COLOR }}
+// 			// tabBarOptions={{
+// 			//   activeTintColor: "#fff",
+// 			// }}
+// 			barStyle={{ backgroundColor: colors.background }}
+// 		>
+// 			<Tabs.Screen
+// 				name="Events"
+// 				component={EventsScreen}
+// 				options={{
+// 					tabBarLabel: "Все",
+// 					tabBarIcon: (info) => (
+// 						<Ionicons name="ios-albums" size={25} color={info.color} />
+// 					),
+// 				}}
+// 			/>
+// 			{/* <Tabs.Screen
+// 				name="Actual"
+// 				component={ActualStackScreen}
+// 				options={{
+// 					tabBarLabel: "Актуальные",
+// 					tabBarIcon: (info) => (
+// 						<Ionicons name="ios-albums" size={25} color={info.color} />
+// 					),
+// 				}}
+// 			/> */}
+// 		</Tabs.Navigator>
+// 	)
+// }
 
 const Drawer = createDrawerNavigator()
 
