@@ -18,7 +18,7 @@ export const darkTheme = {
 		accent: "#03dac4", //Переключатель
 		backdrop: "rgba(0, 0, 0, 0.5)",
 		background: "rgb(1, 1, 1)",
-		border: "rgb(12, 12, 12)",
+		border: "rgb(12, 2, 12)",
 		card: "rgb(30, 30, 30)",
 		card2: "rgb(46, 46, 46)",
 		disabled: "rgba(0, 0, 0, 0.26)",

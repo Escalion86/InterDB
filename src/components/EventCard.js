@@ -205,9 +205,8 @@ export const EventCard = ({ navigation, event }) => {
 	)
 }
 
-const stylesFactory = (colors) => {
-	console.log("colors", colors)
-	return StyleSheet.create({
+const stylesFactory = (colors) =>
+	StyleSheet.create({
 		card: {
 			width: "100%",
 			marginVertical: 2,
@@ -311,4 +310,3 @@ const stylesFactory = (colors) => {
 			justifyContent: "space-between",
 		},
 	})
-}
