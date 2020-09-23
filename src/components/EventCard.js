@@ -79,13 +79,13 @@ export const EventCard = ({ navigation, event }) => {
 			<View style={styles.left}>
 				<IconMenu
 					event={event}
-					theme={theme}
+					// theme={theme}
 					eventPartName="status"
 					// actionOnSelect={setEventStatus}
 				/>
 				<IconMenu
 					event={event}
-					theme={theme}
+					// theme={theme}
 					style={{ marginTop: 6 }}
 					eventPartName="finance_status"
 					// actionOnSelect={setFinanceStatus}
@@ -296,7 +296,7 @@ const stylesFactory = (colors) =>
 			// borderTopLeftRadius: 10,
 			borderBottomRightRadius: 10,
 			borderColor: colors.border,
-			backgroundColor: colors.card2,
+			backgroundColor: colors.active,
 		},
 		menuOptions: {
 			padding: 20,

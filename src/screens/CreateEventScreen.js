@@ -191,6 +191,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 				zeroItem={{ label: "Новая услуга", value: 0 }}
 				onChangeItem={(item) => setEventItem({ service: item.value })}
 				theme={useTheme()}
+				searchable={services.length > 8}
 			/>
 			<TitleBlock title="Клиент" theme={useTheme()} />
 			<DropDownPickerBlock
@@ -201,6 +202,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 				zeroItem={{ label: "Новый клиент", value: 0 }}
 				onChangeItem={(item) => setEventItem({ client: item.value })}
 				theme={useTheme()}
+				searchable={clients.length > 8}
 			/>
 			<TitleBlock title="Финансы" theme={useTheme()} />
 			<TextInputBlock

@@ -26,7 +26,6 @@ import {
 	statusIconDependencies,
 	financeIconDependencies,
 } from "../db/dependencies"
-import IconMenu from "./IconMenu"
 
 export const ServiceCard = ({ navigation, service }) => {
 	const { Popover } = renderers
@@ -76,7 +75,7 @@ export const ServiceCard = ({ navigation, service }) => {
 			<View style={styles.right}>
 				<View style={styles.carddate}>
 					<Text style={styles.datetime}>
-						{service.preparetime + service.collecttime + service.length}
+						{service.preparetime + service.collecttime + service.length} мин
 					</Text>
 				</View>
 				<Text style={styles.price}>{service.price}</Text>
@@ -183,7 +182,7 @@ const stylesFactory = (colors) =>
 			borderBottomRightRadius: 10,
 			borderTopColor: colors.border,
 			borderLeftColor: colors.border,
-			backgroundColor: colors.card2,
+			backgroundColor: colors.active,
 		},
 		menuOptions: {
 			padding: 20,

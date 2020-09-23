@@ -67,7 +67,7 @@ export const TextInputBlock = ({
 							minWidth: 36,
 							height: "100%",
 							borderColor: colors.border,
-							backgroundColor: colors.border,
+							backgroundColor: colors.active,
 							borderTopWidth: 1,
 							borderBottomWidth: 1,
 							borderRightWidth: 1,
@@ -106,6 +106,7 @@ export const EventRowDropDownPicker = ({
 					size={20}
 					showtext={true}
 					textcolor={colors.text}
+					style={{ paddingHorizontal: 10 }}
 				/>
 				// <IconEventComponent
 				//   status={item}
@@ -133,6 +134,7 @@ export const EventRowDropDownPicker = ({
 				style={{
 					backgroundColor: colors.card,
 					borderColor: colors.border,
+					paddingLeft: 0,
 				}}
 				dropDownMaxHeight={350}
 				itemStyle={{
@@ -141,8 +143,11 @@ export const EventRowDropDownPicker = ({
 				dropDownStyle={{
 					backgroundColor: colors.card,
 					borderColor: colors.border,
+					paddingHorizontal: 0,
+					paddingVertical: 0,
 				}}
-				activeItemStyle={{ backgroundColor: colors.border }}
+				// containerStyle={{ padding: 0, margin: 0, paddingHorizontal: 0 }}
+				activeItemStyle={{ backgroundColor: colors.active }}
 				arrowColor={colors.text}
 				onChangeItem={onChangeItem}
 			/>
@@ -236,6 +241,7 @@ export const DropDownPickerBlock = ({
 	onChangeItem = null,
 	zeroItem = null,
 	theme = useTheme(),
+	searchable = false,
 }) => {
 	const { colors } = theme
 	let arrayItems = zeroItem ? [zeroItem] : []
@@ -279,10 +285,17 @@ export const DropDownPickerBlock = ({
 				dropDownStyle={{
 					backgroundColor: colors.card,
 					borderColor: colors.border,
+					paddingVertical: 0,
 				}}
-				activeItemStyle={{ backgroundColor: colors.border }}
+				// containerStyle={{ padding: 0, margin: 0, paddingHorizontal: 0 }}
+				activeItemStyle={{ backgroundColor: colors.active }}
 				arrowColor={colors.text}
 				onChangeItem={onChangeItem}
+				searchable={searchable}
+				searchablePlaceholder="Найти"
+				searchablePlaceholderTextColor="gray"
+				seachableStyle={{}}
+				searchableError={() => <Text>Not Found</Text>}
 			/>
 		</View>
 	)

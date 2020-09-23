@@ -22,12 +22,13 @@ export const MainIcon = ({
 	size = 36,
 	showtext = false,
 	textcolor = null,
+	style = {},
 }) => {
 	if (!status) {
 		return null
 	} else {
 		return (
-			<View style={styles.container}>
+			<View style={{ ...styles.container, ...style }}>
 				<View
 					style={{
 						...styles.button,
