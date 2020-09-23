@@ -37,11 +37,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 			: { ...dbDefault("events"), date: new Date().setSeconds(0, 0) }
 
 	const services = useSelector((state) => state.service.services)
-	// const clients = useSelector((state) => state.client.clients)
-	const clients = [
-		{ id: 1, name: "Петя" },
-		{ id: 2, name: "Иван" },
-	]
+	const clients = useSelector((state) => state.client.clients)
 
 	const dispatch = useDispatch()
 	const [newEvent, setNewEvent] = useState(event)

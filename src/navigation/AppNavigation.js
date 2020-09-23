@@ -1,7 +1,12 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 
 import { useDispatch } from "react-redux"
 import { loadAll } from "../store/actions/db"
+import {
+	DefaultTheme,
+	DarkTheme,
+	Provider as PaperProvider,
+} from "react-native-paper"
 
 import { NavigationContainer } from "@react-navigation/native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
@@ -25,8 +30,10 @@ import ServicesScreen from "../screens/ServicesScreen"
 import ServiceScreen from "../screens/ServiceScreen"
 import CreateServiceScreen from "../screens/CreateServiceScreen"
 
+import DrawerContent from "../components/DrawerContent"
+
 import { useTheme } from "@react-navigation/native"
-import { darkTheme } from "../theme"
+import { darkTheme, lightTheme } from "../theme"
 
 const Stack = createStackNavigator()
 const EventsStack = createStackNavigator()
@@ -178,19 +185,22 @@ const EventsTabsScreen = () => {
 
 const Drawer = createDrawerNavigator()
 
-const DrawerScreen = () => {
+const DrawerScreen = ({ setIsDarkTheme }) => {
 	const { colors } = useTheme()
 	return (
 		<Drawer.Navigator
 			drawerType="slide"
-			drawerContentOptions={
-				{
-					// activeTintColor: "#fff",
-					// labelStyle: {
-					//   fontFamily: "open-bold",
-					// },
-				}
-			}
+			// drawerContentOptions={
+			// 	{
+			// 		// activeTintColor: "#fff",
+			// 		// labelStyle: {
+			// 		//   fontFamily: "open-bold",
+			// 		// },
+			// 	}
+			// }
+			drawerContent={(props) => (
+				<DrawerContent {...props} setIsDarkTheme={setIsDarkTheme} />
+			)}
 		>
 			<Drawer.Screen
 				name="Events"
@@ -198,7 +208,7 @@ const DrawerScreen = () => {
 				options={{
 					drawerLabel: "События",
 					drawerIcon: () => (
-						<Ionicons name="ios-albums" size={24} color={colors.text} />
+						<Ionicons name="md-calendar" size={24} color={colors.text} />
 					),
 				}}
 			/>
@@ -218,7 +228,7 @@ const DrawerScreen = () => {
 				options={{
 					drawerLabel: "Услуги",
 					drawerIcon: () => (
-						<Ionicons name="ios-flame" size={24} color={colors.text} />
+						<Ionicons name="md-briefcase" size={24} color={colors.text} />
 					),
 				}}
 			/>
@@ -245,17 +255,32 @@ const DrawerScreen = () => {
 		</Drawer.Navigator>
 	)
 }
+// console.log("DefaultTheme", DefaultTheme)
+// console.log("darkTheme", darkTheme)
+// console.log("DefaultTheme", DefaultTheme)
 
 export const AppNavigation = () => {
 	const dispatch = useDispatch()
+
+	const [isDarkTheme, setIsDarkTheme] = useState(false)
+	let theme = null
+	if (isDarkTheme) {
+		theme = darkTheme
+	} else {
+		theme = lightTheme
+	}
+
+	// console.log("theme", theme)
 	//После загрузки всех компонентов и state - загружаем данные БД
 	useEffect(() => {
 		dispatch(loadAll())
 	}, [dispatch])
 
 	return (
-		<NavigationContainer theme={darkTheme}>
-			<DrawerScreen />
-		</NavigationContainer>
+		<PaperProvider theme={theme}>
+			<NavigationContainer theme={theme}>
+				<DrawerScreen setIsDarkTheme={setIsDarkTheme} />
+			</NavigationContainer>
+		</PaperProvider>
 	)
 }
