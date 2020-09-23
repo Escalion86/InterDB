@@ -12,6 +12,7 @@ import { dbGenerator } from "../db/dbTemplate"
 import { ServiceCard } from "../components/ServiceCard"
 import { Ionicons } from "@expo/vector-icons"
 import { useTheme } from "@react-navigation/native"
+import * as Animatable from "react-native-animatable"
 
 const ServicesScreen = ({ navigation, route }) => {
 	const dispatch = useDispatch()
@@ -54,12 +55,23 @@ const ServicesScreen = ({ navigation, route }) => {
 			<View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
 				<Text style={{ fontSize: 20 }}>Создайте услугу</Text>
 
-				<Ionicons
-					name="ios-add-circle"
-					size={50}
-					color={colors.accent}
-					onPress={() => navigation.navigate("CreateService")}
-				/>
+				<Animatable.Text
+					animation="pulse"
+					easing="ease-out"
+					iterationCount="infinite"
+					style={{ textAlign: "center" }}
+					duration={1500}
+					// iterationCount={"infinite"}
+					iterationDelay={1000}
+					useNativeDriver={true}
+				>
+					<Ionicons
+						name="ios-add-circle"
+						size={50}
+						color={colors.accent}
+						onPress={() => navigation.navigate("CreateService")}
+					/>
+				</Animatable.Text>
 			</View>
 		)
 	}

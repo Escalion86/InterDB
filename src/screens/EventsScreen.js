@@ -23,6 +23,7 @@ import { dbGenerator } from "../db/dbTemplate"
 import { useTheme } from "@react-navigation/native"
 import { Ionicons } from "@expo/vector-icons"
 import { loadAll } from "../store/actions/db"
+import * as Animatable from "react-native-animatable"
 
 const EventsScreen = ({ navigation, route }) => {
 	const { colors } = useTheme()
@@ -202,13 +203,23 @@ const EventsScreen = ({ navigation, route }) => {
 		return (
 			<View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
 				<Text style={{ fontSize: 20 }}>Событий пока нет</Text>
-
-				<Ionicons
-					name="ios-add-circle"
-					size={50}
-					color={colors.accent}
-					onPress={() => navigation.navigate("CreateEvent")}
-				/>
+				<Animatable.Text
+					animation="pulse"
+					easing="ease-out"
+					iterationCount="infinite"
+					style={{ textAlign: "center" }}
+					duration={1500}
+					// iterationCount={"infinite"}
+					iterationDelay={1000}
+					useNativeDriver={true}
+				>
+					<Ionicons
+						name="ios-add-circle"
+						size={50}
+						color={colors.accent}
+						onPress={() => navigation.navigate("CreateEvent")}
+					/>
+				</Animatable.Text>
 			</View>
 		)
 	}
