@@ -295,9 +295,17 @@ export class DB {
 		return new Promise((resolve, reject) => {
 			db.transaction((tx) => {
 				tx.executeSql(
-					tx.executeSql(`DELETE FROM ${table}`, [], resolve, (_, error) =>
+					`DELETE FROM ${table}`,
+					[],
+					resolve,
+					// (resolve) => {
+					// 	console.log("resolve:", resolve)
+					// 	return resolve
+					// },
+					(_, error) => {
+						// console.log("error:", error)
 						reject(error)
-					)
+					}
 				)
 			})
 		})
@@ -349,7 +357,7 @@ export class DB {
 		return new Promise((resolve, reject) =>
 			db.transaction((tx) => {
 				tx.executeSql(
-					"DELETE FROM events WHERE id = ?",
+					`DELETE FROM ${table} WHERE id = ?`,
 					[id],
 					resolve,
 					(_, error) => reject(error)
@@ -361,14 +369,12 @@ export class DB {
 	static deleteTable(table) {
 		return new Promise((resolve, reject) => {
 			db.transaction((tx) => {
+				// `DROP TABLE events`,`DROP DATABASE events.db`
 				tx.executeSql(
-					// `DROP TABLE events`,`DROP DATABASE events.db`
-					tx.executeSql(
-						`DROP TABLE IF EXISTS ${table}`,
-						[],
-						resolve,
-						(_, error) => reject(error)
-					)
+					`DROP TABLE IF EXISTS ${table}`,
+					[],
+					resolve,
+					(_, error) => reject(error)
 				)
 			})
 		})
