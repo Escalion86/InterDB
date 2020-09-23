@@ -10,6 +10,8 @@ import {
 } from "../store/actions/service"
 import { dbGenerator } from "../db/dbTemplate"
 import { ServiceCard } from "../components/ServiceCard"
+import { Ionicons } from "@expo/vector-icons"
+import { useTheme } from "@react-navigation/native"
 
 const ServicesScreen = ({ navigation, route }) => {
 	const dispatch = useDispatch()
@@ -17,6 +19,8 @@ const ServicesScreen = ({ navigation, route }) => {
 	// useEffect(() => {
 	//   dispatch(loadServices())
 	// }, [dispatch])
+
+	const { colors } = useTheme()
 
 	const services = useSelector((state) => state.service.services)
 	const loading = useSelector((state) => state.service.loading)
@@ -47,8 +51,15 @@ const ServicesScreen = ({ navigation, route }) => {
 
 	if (services.length == 0) {
 		return (
-			<View style={styles.wrapper}>
-				<Text>Заявок пока нет</Text>
+			<View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+				<Text style={{ fontSize: 20 }}>Создайте услугу</Text>
+
+				<Ionicons
+					name="ios-add-circle"
+					size={50}
+					color={colors.accent}
+					onPress={() => navigation.navigate("CreateService")}
+				/>
 			</View>
 		)
 	}
