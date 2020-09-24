@@ -235,7 +235,7 @@ export const DateTimePickerBlock = ({
 
 export const DropDownPickerBlock = ({
 	db = [],
-	name,
+	name = null,
 	defeultValue = null,
 	placeholder = "[ Выберите пункт меню ]",
 	onChangeItem = null,
@@ -244,8 +244,15 @@ export const DropDownPickerBlock = ({
 	searchable = false,
 }) => {
 	const { colors } = theme
+	let defaultExists = false
 	let arrayItems = zeroItem ? [zeroItem] : []
+	if (zeroItem && zeroItem.value === defeultValue) {
+		defaultExists = true
+	}
 	db.forEach((data) => {
+		if (data.id === defeultValue) {
+			defaultExists = true
+		}
 		arrayItems.push({
 			label: data.name,
 			value: data.id,
@@ -260,14 +267,17 @@ export const DropDownPickerBlock = ({
 			// ),
 		})
 	})
+	console.log("defeultValue", defeultValue)
 
 	return (
 		<View style={styles.row}>
-			<Text style={{ ...styles.text, color: colors.text }}>{name}</Text>
+			{name ? (
+				<Text style={{ ...styles.text, color: colors.text }}>{name}</Text>
+			) : null}
 			<DropDownPicker
 				placeholder={placeholder}
 				items={arrayItems}
-				defaultValue={defeultValue}
+				defaultValue={defaultExists ? defeultValue : null}
 				labelStyle={{
 					fontSize: 16,
 					textAlign: "left",

@@ -8,6 +8,8 @@ import {
 	Provider as PaperProvider,
 } from "react-native-paper"
 
+import { StatusBar } from "expo-status-bar"
+
 import { NavigationContainer } from "@react-navigation/native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
@@ -282,6 +284,7 @@ export const AppNavigation = () => {
 	return (
 		<PaperProvider theme={theme}>
 			<NavigationContainer theme={theme}>
+				<StatusBar style={theme.dark ? "light" : "dark"} />
 				<DrawerScreen setIsDarkTheme={setIsDarkTheme} />
 			</NavigationContainer>
 		</PaperProvider>

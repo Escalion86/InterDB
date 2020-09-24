@@ -36,6 +36,8 @@ const CreateEventScreen = ({ navigation, route }) => {
 			? route.params.event
 			: { ...dbDefault("events"), date: new Date().setSeconds(0, 0) }
 
+	console.log("event", event)
+
 	const services = useSelector((state) => state.service.services)
 	const clients = useSelector((state) => state.client.clients)
 
