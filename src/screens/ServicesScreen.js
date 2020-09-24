@@ -15,8 +15,6 @@ import { useTheme } from "@react-navigation/native"
 import * as Animatable from "react-native-animatable"
 import Fab from "../components/Fab"
 
-import isCloseToBottom from "../helpers/isCloseToBottom"
-
 const ServicesScreen = ({ navigation, route }) => {
 	const dispatch = useDispatch()
 
@@ -34,10 +32,11 @@ const ServicesScreen = ({ navigation, route }) => {
 	let services = useSelector((state) => state.service.services)
 	const loading = useSelector((state) => state.service.loading)
 
+	console.log("services", services)
+
 	services = services.filter((item) => {
 		return (
-			(showArchvedOnly && item.archive === 1) ||
-			(!showArchvedOnly && item.archive === 0)
+			(showArchvedOnly && item.archive) || (!showArchvedOnly && !item.archive)
 		)
 	})
 

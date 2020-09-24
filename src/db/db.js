@@ -6,7 +6,6 @@ const DBName = "events4.db"
 let db = SQLite.openDatabase(DBName)
 
 export const dbTemplateToSql = (table = "events") => {
-	//TODO Добавить указание дефолтных значений
 	let sql
 	// dbTemplate.forEach((table) => {
 	sql = `CREATE TABLE IF NOT EXISTS ${table} (id INTEGER PRIMARY KEY NOT NULL`

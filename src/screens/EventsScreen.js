@@ -26,8 +26,6 @@ import { loadAll } from "../store/actions/db"
 import * as Animatable from "react-native-animatable"
 import Fab from "../components/Fab"
 
-import isCloseToBottom from "../helpers/isCloseToBottom"
-
 const EventsScreen = ({ navigation, route }) => {
 	const { colors } = useTheme()
 	const dispatch = useDispatch()
@@ -207,7 +205,9 @@ const EventsScreen = ({ navigation, route }) => {
 	if (events.length == 0) {
 		return (
 			<View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-				<Text style={{ fontSize: 20 }}>Событий пока нет</Text>
+				<Text style={{ fontSize: 20, color: colors.text }}>
+					Событий пока нет
+				</Text>
 				<Fab
 					color={colors.accent}
 					visible={true}
