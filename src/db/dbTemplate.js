@@ -134,6 +134,7 @@ export const dbGenerator = (table = "event") => {
 				length: 30,
 				preparetime: 20,
 				collecttime: 20,
+				image: null,
 				archive: 0,
 			}
 		default:
@@ -426,6 +427,15 @@ export default dbTemplate = {
 			not_null: true,
 			default: 0,
 			db_default: 0,
+		},
+		{
+			db_name: "image",
+			desc: "Картинка",
+			type: "string",
+			db_type: "TEXT",
+			not_null: false,
+			default: null,
+			db_default: null,
 		},
 		{
 			db_name: "archive",
