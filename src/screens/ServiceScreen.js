@@ -38,7 +38,8 @@ const ServiceScreen = ({ navigation, route }) => {
 					iconName="ios-trash"
 					onPress={() => {
 						dispatch(deleteService(service.id))
-						navigation.navigate("Services")
+						navigation.goBack()
+						// navigation.navigate("Services")
 					}}
 					// onPress={() => navigation.navigate("Create")}
 				/>

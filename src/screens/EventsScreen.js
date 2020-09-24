@@ -24,12 +24,17 @@ import { useTheme } from "@react-navigation/native"
 import { Ionicons } from "@expo/vector-icons"
 import { loadAll } from "../store/actions/db"
 import * as Animatable from "react-native-animatable"
+import Fab from "../components/Fab"
+
+import isCloseToBottom from "../helpers/isCloseToBottom"
 
 const EventsScreen = ({ navigation, route }) => {
 	const { colors } = useTheme()
 	const dispatch = useDispatch()
 	const { Popover } = renderers
 	const [sorting, setSorting] = useState("dateDESC")
+	const [scrollPosition, setScrollPosition] = useState(0)
+	const [fabVisible, setFabVisible] = useState(true)
 
 	// useEffect(() => {
 	// 	dispatch(loadAll())
@@ -169,14 +174,14 @@ const EventsScreen = ({ navigation, route }) => {
 					}}
 					// onPress={() => navigation.navigate("Create")}
 				/>
-				<Item
+				{/* <Item
 					title="Add event"
 					iconName="ios-add-circle"
 					onPress={() => {
 						navigation.navigate("CreateEvent")
 					}}
 					// onPress={() => navigation.navigate("Create")}
-				/>
+				/> */}
 			</HeaderButtons>
 		),
 	})
@@ -188,22 +193,29 @@ const EventsScreen = ({ navigation, route }) => {
 			</View>
 		)
 	}
-	switch (sorting) {
-		case "dateDESC":
-			events.sort((a, b) => (a.date > b.date ? 1 : -1))
-			break
-		case "dateASC":
-			events.sort((a, b) => (a.date < b.date ? 1 : -1))
-			break
-		default:
-			events.sort((a, b) => (a.date > b.date ? 1 : -1))
-	}
+	// switch (sorting) {
+	// 	case "dateDESC":
+	// 		events.sort((a, b) => (a.date > b.date ? 1 : -1))
+	// 		break
+	// 	case "dateASC":
+	// 		events.sort((a, b) => (a.date < b.date ? 1 : -1))
+	// 		break
+	// 	default:
+	// 		events.sort((a, b) => (a.date > b.date ? 1 : -1))
+	// }
 
 	if (events.length == 0) {
 		return (
 			<View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
 				<Text style={{ fontSize: 20 }}>Событий пока нет</Text>
-				<Animatable.Text
+				<Fab
+					color={colors.accent}
+					visible={true}
+					onPress={() => {
+						navigation.navigate("CreateService")
+					}}
+				/>
+				{/* <Animatable.Text
 					animation="pulse"
 					easing="ease-out"
 					iterationCount="infinite"
@@ -219,20 +231,40 @@ const EventsScreen = ({ navigation, route }) => {
 						color={colors.accent}
 						onPress={() => navigation.navigate("CreateEvent")}
 					/>
-				</Animatable.Text>
+				</Animatable.Text> */}
 			</View>
 		)
 	}
 
 	return (
-		<View style={styles.wrapper}>
-			<FlatList
-				style={styles.list}
-				data={events}
-				keyExtractor={(item) => item.id.toString()}
-				renderItem={({ item }) => (
-					<EventCard navigation={navigation} event={item} />
-				)}
+		<View style={{ height: "100%" }}>
+			<View style={styles.wrapper}>
+				<FlatList
+					style={styles.list}
+					data={events}
+					keyExtractor={(item) => item.id.toString()}
+					// scrollsToTop={false}
+					// onTouchMove={() => setFabVisible(true)}
+					onScroll={({ nativeEvent }) => {
+						const currentOffset = nativeEvent.contentOffset.y
+						setFabVisible(currentOffset < scrollPosition)
+						// const direction = currentOffset > scrollPosition ? "down" : "up"
+						setScrollPosition(currentOffset)
+						// console.log("direction scroll: ", direction)
+						// setFabVisible(!isCloseToBottom(nativeEvent))
+					}}
+					scrollEventThrottle={1000}
+					renderItem={({ item }) => (
+						<EventCard navigation={navigation} event={item} />
+					)}
+				/>
+			</View>
+			<Fab
+				color={colors.accent}
+				visible={fabVisible}
+				onPress={() => {
+					navigation.navigate("CreateEvent")
+				}}
 			/>
 		</View>
 	)
