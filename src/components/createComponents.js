@@ -253,21 +253,22 @@ export const DropDownPickerBlock = ({
 		if (data.id === defeultValue) {
 			defaultExists = true
 		}
-		arrayItems.push({
-			label: data.name,
-			value: data.id,
-			// icon: () => (
-			//   <MainIcon
-			//     dependencies={dependencies}
-			//     status={item}
-			//     size={20}
-			//     showtext={true}
-			//     textcolor={colors.text}
-			//   />
-			// ),
-		})
+		if (!data.archive) {
+			arrayItems.push({
+				label: data.name,
+				value: data.id,
+				// icon: () => (
+				//   <MainIcon
+				//     dependencies={dependencies}
+				//     status={item}
+				//     size={20}
+				//     showtext={true}
+				//     textcolor={colors.text}
+				//   />
+				// ),
+			})
+		}
 	})
-	console.log("defeultValue", defeultValue)
 
 	return (
 		<View style={styles.row}>

@@ -17,38 +17,57 @@ import * as Animatable from "react-native-animatable"
 const ServicesScreen = ({ navigation, route }) => {
 	const dispatch = useDispatch()
 
+	const showArchvedOnly = route.name === "Archive"
+
 	// useEffect(() => {
 	//   dispatch(loadServices())
 	// }, [dispatch])
 
 	const { colors } = useTheme()
 
-	const services = useSelector((state) => state.service.services)
+	let services = useSelector((state) => state.service.services)
 	const loading = useSelector((state) => state.service.loading)
 
-	// console.log("services :>> ", services)
-
-	navigation.setOptions({
-		title: `Услуги`,
-		headerRight: () => (
-			<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-				<Item
-					title="Add rondom service"
-					iconName="ios-add-circle-outline"
-					onPress={() => {
-						const tmp = dbGenerator("service")
-						dispatch(addService(tmp))
-					}}
-					// onPress={() => navigation.navigate("Create")}
-				/>
-				<Item
-					title="Add Service"
-					iconName="ios-add-circle"
-					onPress={() => navigation.navigate("CreateService")}
-				/>
-			</HeaderButtons>
-		),
+	services = services.filter((item) => {
+		return (
+			(showArchvedOnly && item.archive === 1) ||
+			(!showArchvedOnly && item.archive === 0)
+		)
 	})
+
+	console.log("navigation :>> ", navigation)
+	if (showArchvedOnly) {
+		navigation.setOptions({
+			title: `Архив услуг`,
+		})
+	} else {
+		navigation.setOptions({
+			title: showArchvedOnly ? `Архив услуг` : `Услуги`,
+			headerRight: () => (
+				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+					<Item
+						title="Add Service"
+						iconName="ios-archive"
+						onPress={() => navigation.navigate("Archive")}
+					/>
+					<Item
+						title="Add rondom service"
+						iconName="ios-add-circle-outline"
+						onPress={() => {
+							const tmp = dbGenerator("service")
+							dispatch(addService(tmp))
+						}}
+						// onPress={() => navigation.navigate("Create")}
+					/>
+					<Item
+						title="Add Service"
+						iconName="ios-add-circle"
+						onPress={() => navigation.navigate("CreateService")}
+					/>
+				</HeaderButtons>
+			),
+		})
+	}
 
 	if (services.length == 0) {
 		return (

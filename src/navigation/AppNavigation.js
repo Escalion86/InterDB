@@ -9,10 +9,10 @@ import {
 } from "react-native-paper"
 
 import { StatusBar } from "expo-status-bar"
+import burgerButton from "../components/burgerButton"
 
 import { NavigationContainer } from "@react-navigation/native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
-import { AppHeaderIcon } from "../components/AppHeaderIcon"
 
 import { Platform, Text, View } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
@@ -43,15 +43,15 @@ const ClientsStack = createStackNavigator()
 const ServicesStack = createStackNavigator()
 const DevStack = createStackNavigator()
 
-const burgerButton = (navigation) => (
-	<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-		<Item
-			title="Toggle Drawer"
-			iconName="ios-menu"
-			onPress={() => navigation.toggleDrawer()}
-		/>
-	</HeaderButtons>
-)
+// const burgerButton = (navigation) => (
+// 	<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+// 		<Item
+// 			title="Toggle Drawer"
+// 			iconName="ios-menu"
+// 			onPress={() => navigation.toggleDrawer()}
+// 		/>
+// 	</HeaderButtons>
+// )
 
 const StackNavigator = ({ children, navigation, initialRouteName }) => {
 	const { colors } = useTheme()
@@ -120,6 +120,7 @@ const DevStackScreen = ({ navigation }) => (
     /> */}
 	</StackNavigator>
 )
+const Tabs = createMaterialBottomTabNavigator()
 
 const ServicesStackScreen = ({ navigation }) => (
 	<StackNavigator navigation={navigation} initialRouteName="Services">
@@ -129,6 +130,13 @@ const ServicesStackScreen = ({ navigation }) => (
 			options={{
 				headerLeft: () => burgerButton(navigation),
 			}}
+		/>
+		<ServicesStack.Screen
+			name="Archive"
+			component={ServicesScreen}
+			// options={{
+			// 	headerLeft: () => burgerButton(navigation),
+			// }}
 		/>
 		<ServicesStack.Screen name="Service" component={ServiceScreen} />
 		<ServicesStack.Screen
@@ -152,6 +160,41 @@ const ServicesStackScreen = ({ navigation }) => (
 // )
 
 // const Tabs = createMaterialBottomTabNavigator()
+// const ServiceTabsScreen = () => {
+// 	return (
+// 		<Tabs.Navigator
+// 			activeColor={"#fff"}
+// 			barStyle={{ backgroundColor: "#333" }}
+// 			tabBarOptions={{
+// 				activeTintColor: "#fff",
+// 			}}
+// 			// barStyle={{ backgroundColor: colors.background }}
+// 		>
+// 			<Tabs.Screen
+// 				name="Services"
+// 				component={ServicesScreen}
+// 				// initialParams={{ archive: false }}
+// 				options={{
+// 					tabBarLabel: "Актуальные",
+// 					tabBarIcon: (info) => (
+// 						<Ionicons name="ios-albums" size={25} color={info.color} />
+// 					),
+// 				}}
+// 			/>
+// 			<Tabs.Screen
+// 				name="Archive"
+// 				component={ServicesScreen}
+// 				// initialParams={{ archive: true }}
+// 				options={{
+// 					tabBarLabel: "Архивные",
+// 					tabBarIcon: (info) => (
+// 						<Ionicons name="ios-archive" size={25} color={info.color} />
+// 					),
+// 				}}
+// 			/>
+// 		</Tabs.Navigator>
+// 	)
+// }
 
 // const EventsTabsScreen = () => {
 // 	const { colors } = useTheme()
