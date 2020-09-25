@@ -5,16 +5,63 @@ import {
 	View,
 	TouchableOpacity,
 	TextInput,
+	Image,
 } from "react-native"
 import { useTheme } from "@react-navigation/native"
 import DropDownPicker from "react-native-dropdown-picker"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { formatDate, formatTime } from "../helpers/date"
 import { MainIcon } from "./icons"
+import * as ImagePicker from "expo-image-picker"
 
 export const TitleBlock = ({ title = "", theme = useTheme() }) => {
 	const { colors } = theme
 	return <Text style={{ ...styles.title, color: colors.text }}>{title}</Text>
+}
+
+export const ImagePickerBlock = ({
+	title = null,
+	image = null,
+	onPick = () => {},
+}) => {
+	const { colors } = useTheme()
+
+	const takePhoto = async () => {
+		const img = await ImagePicker.launchCameraAsync({
+			quality: 0.7,
+			allowsEditing: false,
+			aspect: [1, 1],
+		})
+
+		onPick(img.uri)
+	}
+
+	return (
+		<View style={{ ...styles.row, height: null }}>
+			<Text style={{ fontSize: 18, width: 170, color: colors.text }}>
+				{title}
+			</Text>
+			<TouchableOpacity onPress={async () => takePhoto()}>
+				<Image
+					style={{
+						// flex: 1,
+						borderRadius: 5,
+						borderWidth: 1,
+						borderColor: colors.border,
+						minWidth: 230,
+						minHeight: 230,
+					}}
+					source={
+						image === "null"
+							? require("../../assets/no_image.jpg")
+							: { uri: image }
+					}
+					// resizeMethod="scale"
+					resizeMode="cover"
+				/>
+			</TouchableOpacity>
+		</View>
+	)
 }
 
 export const TextInputBlock = ({
@@ -40,7 +87,6 @@ export const TextInputBlock = ({
 					borderColor: colors.border,
 					backgroundColor: colors.card,
 					borderWidth: 1,
-					borderRadius: 5,
 					borderRadius: 5,
 					height: "100%",
 
@@ -348,5 +394,13 @@ const styles = StyleSheet.create({
 		// paddingLeft: 5,
 		height: 44,
 		flex: 1,
+	},
+	image: {
+		// width: "100%",
+		// flex: 1,
+		borderRadius: 5,
+		// height: "100%",
+		borderColor: "red",
+		borderWidth: 3,
 	},
 })

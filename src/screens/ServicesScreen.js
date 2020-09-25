@@ -30,7 +30,7 @@ const ServicesScreen = ({ navigation, route }) => {
 	let services = useSelector((state) => state.service.services)
 	const loading = useSelector((state) => state.service.loading)
 
-	console.log("services", services)
+	// console.log("services", services)
 
 	services = services.filter((item) => {
 		return (

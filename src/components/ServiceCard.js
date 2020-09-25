@@ -6,6 +6,7 @@ import {
 	ActivityIndicator,
 	TouchableOpacity,
 	Linking,
+	Image,
 } from "react-native"
 import {
 	Menu,
@@ -65,7 +66,25 @@ const ServiceCard = ({ navigation, service }) => {
 				navigation.navigate("Service", { service: service })
 			}}
 		>
-			<View style={styles.left}></View>
+			<View style={styles.left}>
+				<Image
+					style={{
+						// flex: 1,
+						borderRadius: 5,
+						borderWidth: 1,
+						borderColor: colors.border,
+						width: 80,
+						height: 80,
+					}}
+					source={
+						service.image === "null"
+							? require("../../assets/no_image.jpg")
+							: { uri: service.image }
+					}
+					// resizeMethod="scale"
+					resizeMode="cover"
+				/>
+			</View>
 			<View style={styles.middle}>
 				<View style={styles.cardheader}>
 					<Text style={styles.cardtitle}>{service.name}</Text>
