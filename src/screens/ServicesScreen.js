@@ -9,7 +9,7 @@ import {
 	deleteAllServices,
 } from "../store/actions/service"
 import { dbGenerator } from "../db/dbTemplate"
-import { ServiceCard } from "../components/ServiceCard"
+import ServiceCard from "../components/ServiceCard"
 import { Ionicons } from "@expo/vector-icons"
 import { useTheme } from "@react-navigation/native"
 import * as Animatable from "react-native-animatable"
@@ -20,9 +20,6 @@ const ServicesScreen = ({ navigation, route }) => {
 	const dispatch = useDispatch()
 
 	const showArchvedOnly = route.name === "Archive"
-
-	const [fabVisible, setFabVisible] = useState(true)
-	const [scrollPosition, setScrollPosition] = useState(0)
 
 	// useEffect(() => {
 	//   dispatch(loadServices())
@@ -57,7 +54,7 @@ const ServicesScreen = ({ navigation, route }) => {
 						onPress={() => navigation.navigate("Archive")}
 					/>
 					<Item
-						title="Add rondom service"
+						title="Add random service"
 						iconName="ios-add-circle-outline"
 						onPress={() => {
 							const tmp = dbGenerator("service")
@@ -76,18 +73,22 @@ const ServicesScreen = ({ navigation, route }) => {
 	}
 
 	if (services.length == 0) {
-		return showArchvedOnly ? (
+		return (
 			<View style={styles.center}>
-				<Text style={{ fontSize: 20, color: colors.text }}>Архив пуст</Text>
+				<Text style={{ fontSize: 20, color: colors.text }}>
+					{showArchvedOnly ? "Архив пуст" : "Услуг нет"}
+				</Text>
+
+				{showArchvedOnly ? null : (
+					<Fab
+						visible={true}
+						onPress={() => {
+							navigation.navigate("CreateService")
+						}}
+						label="Создайте услугу"
+					/>
+				)}
 			</View>
-		) : (
-			<Fab
-				visible={true}
-				onPress={() => {
-					navigation.navigate("CreateService")
-				}}
-				label="Создайте услугу"
-			/>
 		)
 	}
 

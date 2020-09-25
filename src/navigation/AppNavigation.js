@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { AsyncStorage } from "react-native"
 
 import { useDispatch } from "react-redux"
 import { loadAll } from "../store/actions/db"
@@ -36,6 +37,31 @@ import DrawerContent from "../components/DrawerContent"
 
 import { useTheme } from "@react-navigation/native"
 import { darkTheme, lightTheme } from "../theme"
+
+const _storeData = async (key, value) => {
+	try {
+		await AsyncStorage.setItem(key, value)
+	} catch (error) {
+		// Error saving data
+	}
+}
+
+const _retrieveData = async (key) => {
+	try {
+		const value = await AsyncStorage.getItem(key)
+		if (value !== null) {
+			// We have data!!
+			// console.log("value", value)
+			return value
+		} else {
+			// console.log("NO DATA")
+			return false
+		}
+	} catch (error) {
+		// Error retrieving data
+		return false
+	}
+}
 
 const Stack = createStackNavigator()
 const EventsStack = createStackNavigator()
@@ -101,6 +127,7 @@ const ClientsStackScreen = ({ navigation }) => (
 			}}
 		/>
 		<ClientsStack.Screen name="Client" component={ClientScreen} />
+		<ClientsStack.Screen name="CreateClient" component={CreateClientScreen} />
 	</StackNavigator>
 )
 
@@ -311,6 +338,16 @@ export const AppNavigation = () => {
 	const dispatch = useDispatch()
 
 	const [isDarkTheme, setIsDarkTheme] = useState(false)
+
+	_retrieveData("darkTheme").then((data) => {
+		setIsDarkTheme(data === "1")
+	})
+
+	const toggleDarkTheme = async () => {
+		await _storeData("darkTheme", !isDarkTheme ? "1" : "0")
+		setIsDarkTheme(!isDarkTheme)
+	}
+
 	let theme = null
 	if (isDarkTheme) {
 		theme = darkTheme
@@ -328,7 +365,7 @@ export const AppNavigation = () => {
 		<PaperProvider theme={theme}>
 			<NavigationContainer theme={theme}>
 				<StatusBar style={theme.dark ? "light" : "dark"} />
-				<DrawerScreen setIsDarkTheme={setIsDarkTheme} />
+				<DrawerScreen setIsDarkTheme={toggleDarkTheme} />
 			</NavigationContainer>
 		</PaperProvider>
 	)

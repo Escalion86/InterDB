@@ -7,33 +7,21 @@ import {
 	TouchableOpacity,
 	Linking,
 } from "react-native"
-import {
-	Menu,
-	MenuProvider,
-	MenuOptions,
-	MenuTrigger,
-	renderers,
-} from "react-native-popup-menu"
 import { Ionicons } from "@expo/vector-icons"
 import { formatDate, formatTime, getWeekDay } from "../helpers/date"
-import { StatusIcon, FinanceIcon } from "./icons"
 import { useTheme } from "@react-navigation/native"
-import { setEventStatus, setFinanceStatus } from "../store/actions/event"
-import { Root, Toast } from "popup-ui"
-import { HeaderButtons, Item } from "react-navigation-header-buttons"
 
 import {
 	statusIconDependencies,
 	financeIconDependencies,
 } from "../db/dependencies"
 
-const ServiceCard = ({ navigation, service }) => {
-	const { Popover } = renderers
+const ClientCard = ({ navigation, client }) => {
 	const theme = useTheme()
 	const colors = theme.colors
 	const styles = stylesFactory(colors)
 
-	if (service.loading || service.deleting) {
+	if (client.loading || client.deleting) {
 		return (
 			<View
 				style={{
@@ -41,7 +29,7 @@ const ServiceCard = ({ navigation, service }) => {
 					...styles.card,
 				}}
 			>
-				{service.loading ? (
+				{client.loading ? (
 					<ActivityIndicator size="large" color={colors.text} />
 				) : (
 					<Ionicons name={"ios-trash"} size={32} color={colors.notification} />
@@ -50,11 +38,11 @@ const ServiceCard = ({ navigation, service }) => {
 		)
 	}
 
-	const CardDesc = ({ desc }) => (
-		<View style={styles.carddesc}>
-			<Text style={styles.carddesctext}>{desc}</Text>
-		</View>
-	)
+	// const CardDesc = ({ desc }) => (
+	// 	<View style={styles.carddesc}>
+	// 		<Text style={styles.carddesctext}>{desc}</Text>
+	// 	</View>
+	// )
 
 	return (
 		<TouchableOpacity
@@ -62,29 +50,29 @@ const ServiceCard = ({ navigation, service }) => {
 			delayPressIn={50}
 			style={styles.card}
 			onPress={() => {
-				navigation.navigate("Service", { service: service })
+				navigation.navigate("Client", { client: client })
 			}}
 		>
 			<View style={styles.left}></View>
 			<View style={styles.middle}>
 				<View style={styles.cardheader}>
-					<Text style={styles.cardtitle}>{service.name}</Text>
+					<Text style={styles.cardtitle}>{client.name}</Text>
 				</View>
-				{service.description ? <CardDesc desc={service.description} /> : null}
+				{/* {service.description ? <CardDesc desc={service.description} /> : null} */}
 			</View>
 			<View style={styles.right}>
 				<View style={styles.carddate}>
 					<Text style={styles.datetime}>
-						{service.preparetime + service.collecttime + service.length} мин
+						{/* {service.preparetime + service.collecttime + service.length} мин */}
 					</Text>
 				</View>
-				<Text style={styles.price}>{service.price}</Text>
+				{/* <Text style={styles.price}>{service.price}</Text> */}
 			</View>
 		</TouchableOpacity>
 	)
 }
 
-export default ServiceCard
+export default ClientCard
 
 const stylesFactory = (colors) =>
 	StyleSheet.create({

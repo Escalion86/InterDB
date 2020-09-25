@@ -445,4 +445,54 @@ export class DB {
 			})
 		)
 	}
+
+	static addClient(client) {
+		//Вычленяем только нужные ключи (такие как loading и пр. не нужны)
+		const { name, phone, instagram, vk, facebook } = client
+		//Помещаем ключи в объект события
+		newClient = {
+			name,
+			phone,
+			instagram,
+			vk,
+			facebook,
+		}
+		return new Promise((resolve, reject) => {
+			const clientKeys = Object.keys(newClient)
+
+			db.transaction((tx) => {
+				tx.executeSql(
+					`INSERT INTO clients (${clientKeys.join(
+						", "
+					)}) VALUES (${"?, ".repeat(clientKeys.length).slice(0, -2)})`,
+					Object.values(newClient),
+					(_, result) => resolve(result.insertId),
+					(_, error) => reject(error)
+				)
+			})
+		})
+	}
+
+	static updateClient(client) {
+		const { id, name, phone, instagram, vk, facebook } = client
+		const clientToSend = {
+			name,
+			phone,
+			instagram,
+			vk,
+			facebook,
+		}
+		const clientKeys = Object.keys(clientToSend)
+
+		return new Promise((resolve, reject) =>
+			db.transaction((tx) => {
+				tx.executeSql(
+					`UPDATE clients SET ${clientKeys.join(" = ?, ")} = ? WHERE id = ?`,
+					[...Object.values(clientToSend), id],
+					resolve,
+					(_, error) => reject(error)
+				)
+			})
+		)
+	}
 }

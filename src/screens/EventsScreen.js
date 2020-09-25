@@ -18,7 +18,7 @@ import {
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import { loadEvents, addEvent, deleteAllEvents } from "../store/actions/event"
-import { EventCard } from "../components/EventCard"
+import EventCard from "../components/EventCard"
 import { dbGenerator } from "../db/dbTemplate"
 import { useTheme } from "@react-navigation/native"
 import { Ionicons } from "@expo/vector-icons"
@@ -32,8 +32,6 @@ const EventsScreen = ({ navigation, route }) => {
 	const dispatch = useDispatch()
 	const { Popover } = renderers
 	const [sorting, setSorting] = useState("dateDESC")
-	const [scrollPosition, setScrollPosition] = useState(0)
-	const [fabVisible, setFabVisible] = useState(true)
 
 	// useEffect(() => {
 	// 	dispatch(loadAll())
@@ -165,7 +163,7 @@ const EventsScreen = ({ navigation, route }) => {
 					// onPress={() => navigation.navigate("Create")}
 				/>
 				<Item
-					title="Add rondom event"
+					title="Add random event"
 					iconName="ios-add-circle-outline"
 					onPress={() => {
 						const tmp = dbGenerator("event")
@@ -205,34 +203,35 @@ const EventsScreen = ({ navigation, route }) => {
 
 	if (events.length == 0) {
 		return (
-			// <View style={styles.center}>
-			<Fab
-				visible={true}
-				onPress={() => {
-					navigation.navigate("CreateEvent")
-				}}
-				label="Добавьте событие"
-			/>
-			// <Animatable.Text
-			// 	animation="pulse"
-			// 	easing="ease-out"
-			// 	iterationCount="infinite"
-			// 	style={{ textAlign: "center" }}
-			// 	duration={1500}
-			// 	// iterationCount={"infinite"}
-			// 	iterationDelay={1000}
-			// 	useNativeDriver={true}
-			// >
-			// 	<Ionicons
-			// 		name="ios-add-circle"
-			// 		size={50}
-			// 		color={colors.accent}
-			// 		onPress={() => navigation.navigate("CreateEvent")}
-			// 	/>
-			// </Animatable.Text>
-			// </View>
+			<View style={styles.center}>
+				<Text style={{ fontSize: 20, color: colors.text }}>Событей нет</Text>
+				<Fab
+					visible={true}
+					onPress={() => {
+						navigation.navigate("CreateEvent")
+					}}
+					label="Добавьте событие"
+				/>
+			</View>
 		)
 	}
+	// <Animatable.Text
+	// 	animation="pulse"
+	// 	easing="ease-out"
+	// 	iterationCount="infinite"
+	// 	style={{ textAlign: "center" }}
+	// 	duration={1500}
+	// 	// iterationCount={"infinite"}
+	// 	iterationDelay={1000}
+	// 	useNativeDriver={true}
+	// >
+	// 	<Ionicons
+	// 		name="ios-add-circle"
+	// 		size={50}
+	// 		color={colors.accent}
+	// 		onPress={() => navigation.navigate("CreateEvent")}
+	// 	/>
+	// </Animatable.Text>
 
 	return (
 		<MainFlatListWithFab
@@ -249,11 +248,10 @@ const EventsScreen = ({ navigation, route }) => {
 
 export default EventsScreen
 
-// const styles = StyleSheet.create({
-// 	center: {
-// 		flex: 1,
-// 		// justifyContent: "flex-end",
-// 		alignItems: "center",
-// 		marginBottom: 20,
-// 	},
-// })
+const styles = StyleSheet.create({
+	center: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+})

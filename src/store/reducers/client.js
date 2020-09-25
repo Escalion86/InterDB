@@ -12,10 +12,7 @@ import {
 } from "../types"
 
 const initialState = {
-	clients: [
-		{ id: 1, name: "Петя" },
-		{ id: 2, name: "Иван" },
-	],
+	clients: [],
 	loading: true,
 }
 

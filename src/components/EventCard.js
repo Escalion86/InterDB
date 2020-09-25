@@ -29,7 +29,7 @@ import {
 } from "../db/dependencies"
 import IconMenu from "./IconMenu"
 
-export const EventCard = ({ navigation, event }) => {
+const EventCard = ({ navigation, event }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
 	const colors = theme.colors
@@ -204,6 +204,8 @@ export const EventCard = ({ navigation, event }) => {
 		</TouchableOpacity>
 	)
 }
+
+export default EventCard
 
 const stylesFactory = (colors) =>
 	StyleSheet.create({
