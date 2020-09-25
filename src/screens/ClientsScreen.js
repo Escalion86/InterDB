@@ -51,7 +51,7 @@ const ClientsScreen = ({ navigation, route }) => {
 				<Fab
 					visible={true}
 					onPress={() => {
-						navigation.navigate("CreateEvent")
+						navigation.navigate("CreateClient")
 					}}
 					label="Добавьте клиента"
 				/>
@@ -66,7 +66,7 @@ const ClientsScreen = ({ navigation, route }) => {
 				<ClientCard navigation={navigation} client={item} />
 			)}
 			onPressFab={() => {
-				navigation.navigate("CreateEvent")
+				navigation.navigate("CreateClient")
 			}}
 		/>
 	)
