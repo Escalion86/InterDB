@@ -6,20 +6,20 @@ import {
 	ActivityIndicator,
 	TouchableOpacity,
 	Linking,
+	Image,
 } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import { formatDate, formatTime, getWeekDay } from "../helpers/date"
 import { useTheme } from "@react-navigation/native"
 
-import {
-	statusIconDependencies,
-	financeIconDependencies,
-} from "../db/dependencies"
-
 const ClientCard = ({ navigation, client }) => {
 	const theme = useTheme()
-	const colors = theme.colors
+	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
+
+	const noImageUrl = dark
+		? require("../../assets/no_image_dark.jpg")
+		: require("../../assets/no_image.jpg")
 
 	if (client.loading || client.deleting) {
 		return (
@@ -53,7 +53,21 @@ const ClientCard = ({ navigation, client }) => {
 				navigation.navigate("Client", { client: client })
 			}}
 		>
-			<View style={styles.left}></View>
+			<View style={styles.left}>
+				<Image
+					style={{
+						// flex: 1,
+						borderRadius: 5,
+						borderWidth: 1,
+						borderColor: colors.border,
+						width: 80,
+						height: 80,
+					}}
+					source={!client.avatar ? noImageUrl : { uri: client.avatar }}
+					// resizeMethod="scale"
+					resizeMode="cover"
+				/>
+			</View>
 			<View style={styles.middle}>
 				<View style={styles.cardheader}>
 					<Text style={styles.cardtitle}>{client.name}</Text>

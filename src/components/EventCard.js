@@ -23,10 +23,6 @@ import { setEventStatus, setFinanceStatus } from "../store/actions/event"
 import { Root, Toast } from "popup-ui"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 
-import {
-	statusIconDependencies,
-	financeIconDependencies,
-} from "../db/dependencies"
 import IconMenu from "./IconMenu"
 
 const EventCard = ({ navigation, event }) => {

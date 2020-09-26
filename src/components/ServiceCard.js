@@ -23,16 +23,15 @@ import { setEventStatus, setFinanceStatus } from "../store/actions/event"
 import { Root, Toast } from "popup-ui"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 
-import {
-	statusIconDependencies,
-	financeIconDependencies,
-} from "../db/dependencies"
-
 const ServiceCard = ({ navigation, service }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
-	const colors = theme.colors
+	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
+
+	const noImageUrl = dark
+		? require("../../assets/no_image_dark.jpg")
+		: require("../../assets/no_image.jpg")
 
 	if (service.loading || service.deleting) {
 		return (
@@ -76,11 +75,7 @@ const ServiceCard = ({ navigation, service }) => {
 						width: 80,
 						height: 80,
 					}}
-					source={
-						!service.image
-							? require("../../assets/no_image.jpg")
-							: { uri: service.image }
-					}
+					source={!service.image ? noImageUrl : { uri: service.image }}
 					// resizeMethod="scale"
 					resizeMode="cover"
 				/>
