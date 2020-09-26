@@ -16,9 +16,21 @@ const PhotoPicker = ({ onPick, image = null }) => {
 		onPick(img.uri)
 	}
 
+	const takeImage = async () => {
+		const img = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			quality: 0.7,
+			allowsEditing: false,
+			aspect: [1, 1],
+		})
+
+		setImage(img.uri)
+		onPick(img.uri)
+	}
+
 	return (
 		<View style={styles.wrapper}>
-			<Button title="Сделать фото" onPress={takePhoto} />
+			<Button title="Сделать фото" onPress={takeImage} />
 			{newImage && <Image style={styles.image} source={{ uri: newImage }} />}
 		</View>
 	)

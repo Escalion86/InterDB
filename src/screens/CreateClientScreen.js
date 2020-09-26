@@ -21,7 +21,7 @@ const CreateClientScreen = ({ navigation, route }) => {
 	const setClientItem = (item) => {
 		setNewClient({ ...newClient, ...item })
 	}
-
+	//TODO Сделать проверку на заполнение необходимых полей
 	const saveHandler = () => {
 		client.id
 			? dispatch(updateClient(newClient))

@@ -29,8 +29,9 @@ const CreateServiceScreen = ({ navigation, route }) => {
 	const setServiceItem = (item) => {
 		setNewService({ ...newService, ...item })
 	}
-
+	//TODO Сделать проверку на заполнение необходимых полей
 	const saveHandler = () => {
+		console.log("save service", newService)
 		service.id
 			? dispatch(updateService(newService))
 			: dispatch(addService(newService))

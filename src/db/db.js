@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite"
 import dbTemplate from "./dbTemplate"
 
-const DBName = "events4.db"
+const DBName = "events6.db"
 
 let db = SQLite.openDatabase(DBName)
 
@@ -400,13 +400,14 @@ export class DB {
 		}
 		return new Promise((resolve, reject) => {
 			const serviceKeys = Object.keys(newService)
+			const serviceValues = Object.values(newService)
 
 			db.transaction((tx) => {
 				tx.executeSql(
 					`INSERT INTO services (${serviceKeys.join(
 						", "
 					)}) VALUES (${"?, ".repeat(serviceKeys.length).slice(0, -2)})`,
-					Object.values(newService),
+					serviceValues,
 					(_, result) => resolve(result.insertId),
 					(_, error) => reject(error)
 				)

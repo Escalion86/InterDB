@@ -50,7 +50,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 	const setEventItem = (item) => {
 		setNewEvent({ ...newEvent, ...item })
 	}
-
+	//TODO Сделать проверку на заполнение необходимых полей
 	const saveHandler = () => {
 		event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
 		navigation.navigate("Events")

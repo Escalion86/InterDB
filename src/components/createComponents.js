@@ -4,8 +4,11 @@ import {
 	Text,
 	View,
 	TouchableOpacity,
+	TouchableHighlight,
+	TouchableWithoutFeedback,
 	TextInput,
 	Image,
+	Modal,
 } from "react-native"
 import { useTheme } from "@react-navigation/native"
 import DropDownPicker from "react-native-dropdown-picker"
@@ -19,43 +22,133 @@ export const TitleBlock = ({ title = "", theme = useTheme() }) => {
 	return <Text style={{ ...styles.title, color: colors.text }}>{title}</Text>
 }
 
+//TODO Возможно стоит продумать автоматическое изменение размера картинки до минимума
 export const ImagePickerBlock = ({
 	title = null,
 	image = null,
 	onPick = () => {},
 }) => {
-	const { colors } = useTheme()
+	const { colors, dark } = useTheme()
+
+	const noImageUrl = dark
+		? require("../../assets/no_image_dark.jpg")
+		: require("../../assets/no_image.jpg")
 
 	const takePhoto = async () => {
 		const img = await ImagePicker.launchCameraAsync({
-			quality: 0.7,
-			allowsEditing: false,
+			quality: 0.8,
+			allowsEditing: true,
 			aspect: [1, 1],
 		})
 
 		onPick(img.uri)
 	}
 
+	const chooseImage = async () => {
+		const img = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			quality: 0.8,
+			allowsEditing: true,
+			aspect: [1, 1],
+		})
+
+		onPick(img.uri)
+	}
+	const [modalVisible, setModalVisible] = useState(false)
+
+	const ModalChoosePhotoSource = () => (
+		<Modal
+			animationType="slide"
+			transparent={true}
+			visible={modalVisible}
+			onRequestClose={() => {
+				Alert.alert("Modal has been closed.")
+			}}
+		>
+			<TouchableOpacity
+				style={styles.modal}
+				onPressOut={() => {
+					setModalVisible(false)
+				}}
+			>
+				<TouchableWithoutFeedback>
+					<View
+						style={{
+							...styles.panel,
+							backgroundColor: colors.card,
+							borderColor: colors.border,
+						}}
+					>
+						<View style={{ alignItems: "center" }}>
+							<Text style={{ ...styles.panelTitle, color: colors.text }}>
+								Загрузка фотографии
+							</Text>
+							<Text style={{ ...styles.panelSubtitle, color: colors.text }}>
+								Выберите источник изображения
+							</Text>
+						</View>
+						<TouchableOpacity
+							style={{ ...styles.panelButton, backgroundColor: colors.accent }}
+							onPress={() => {
+								setModalVisible(!modalVisible)
+								takePhoto()
+							}}
+						>
+							<Text
+								style={{ ...styles.panelButtonTitle, color: colors.accentText }}
+							>
+								Сделать фотографию
+							</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={{
+								...styles.panelButton,
+								backgroundColor: colors.accent,
+							}}
+							onPress={() => {
+								setModalVisible(!modalVisible)
+								chooseImage()
+							}}
+						>
+							<Text
+								style={{ ...styles.panelButtonTitle, color: colors.accentText }}
+							>
+								Выбрать из галереи
+							</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={{
+								...styles.panelButton,
+								backgroundColor: colors.abort,
+							}}
+							onPress={() => setModalVisible(!modalVisible)}
+						>
+							<Text style={styles.panelButtonTitle}>Отмена</Text>
+						</TouchableOpacity>
+					</View>
+				</TouchableWithoutFeedback>
+			</TouchableOpacity>
+		</Modal>
+	)
+
 	return (
 		<View style={{ ...styles.row, height: null }}>
+			<ModalChoosePhotoSource />
 			<Text style={{ fontSize: 18, width: 170, color: colors.text }}>
 				{title}
 			</Text>
-			<TouchableOpacity onPress={async () => takePhoto()}>
+			<TouchableOpacity onPress={async () => setModalVisible(true)}>
 				<Image
 					style={{
 						// flex: 1,
 						borderRadius: 5,
 						borderWidth: 1,
-						borderColor: colors.border,
+						borderColor: colors.card,
+						// backgroundColor: colors.card,
 						minWidth: 230,
 						minHeight: 230,
 					}}
-					source={
-						image === "null"
-							? require("../../assets/no_image.jpg")
-							: { uri: image }
-					}
+					source={!image ? noImageUrl : { uri: image }}
 					// resizeMethod="scale"
 					resizeMode="cover"
 				/>
@@ -402,5 +495,64 @@ const styles = StyleSheet.create({
 		// height: "100%",
 		borderColor: "red",
 		borderWidth: 3,
+	},
+
+	modal: {
+		justifyContent: "flex-end",
+		height: "100%",
+	},
+	panel: {
+		padding: 20,
+		paddingTop: 20,
+		borderTopLeftRadius: 20,
+		borderTopRightRadius: 20,
+		borderLeftWidth: 1,
+		borderTopWidth: 1,
+		borderRightWidth: 1,
+
+		// shadowColor: '#000000',
+		// shadowOffset: {width: 0, height: 0},
+		// shadowRadius: 5,
+		// shadowOpacity: 0.4,
+	},
+	header: {
+		shadowColor: "#333333",
+		shadowOffset: { width: -1, height: -3 },
+		shadowRadius: 2,
+		shadowOpacity: 0.4,
+		// elevation: 5,
+		paddingTop: 20,
+		borderTopLeftRadius: 20,
+		borderTopRightRadius: 20,
+	},
+	panelHeader: {
+		alignItems: "center",
+	},
+	panelHandle: {
+		width: 40,
+		height: 8,
+		borderRadius: 4,
+		backgroundColor: "#00000040",
+		marginBottom: 10,
+	},
+	panelTitle: {
+		fontSize: 27,
+		height: 35,
+	},
+	panelSubtitle: {
+		fontSize: 14,
+		color: "gray",
+		marginBottom: 10,
+	},
+	panelButton: {
+		padding: 13,
+		borderRadius: 10,
+		alignItems: "center",
+		marginVertical: 7,
+	},
+	panelButtonTitle: {
+		fontSize: 17,
+		fontWeight: "bold",
+		color: "white",
 	},
 })

@@ -77,7 +77,7 @@ const ServiceCard = ({ navigation, service }) => {
 						height: 80,
 					}}
 					source={
-						service.image === "null"
+						!service.image
 							? require("../../assets/no_image.jpg")
 							: { uri: service.image }
 					}
