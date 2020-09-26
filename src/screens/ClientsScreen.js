@@ -53,7 +53,7 @@ const ClientsScreen = ({ navigation, route }) => {
 					onPress={() => {
 						navigation.navigate("CreateClient")
 					}}
-					label="Добавьте клиента"
+					label="Добавить клиента"
 				/>
 			</View>
 		)

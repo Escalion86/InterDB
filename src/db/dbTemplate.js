@@ -118,6 +118,7 @@ export const dbGenerator = (table = "event") => {
 				instagram: "",
 				vk: "",
 				facebook: "",
+				avatar: "",
 			}
 		case "service":
 			return {

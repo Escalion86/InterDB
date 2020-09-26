@@ -85,7 +85,7 @@ const ServicesScreen = ({ navigation, route }) => {
 						onPress={() => {
 							navigation.navigate("CreateService")
 						}}
-						label="Создайте услугу"
+						label="Добавить услугу"
 					/>
 				)}
 			</View>

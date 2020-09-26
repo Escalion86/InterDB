@@ -140,7 +140,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 				defeultValue={newEvent.status}
 				placeholder={"Выберите статус события"}
 				onChangeItem={(item) => setEventItem({ status: item.value })}
-				theme={useTheme()}
 			/>
 			{/* <EventRowDropDownPicker
         dependencies={eventIconDependencies}
@@ -159,7 +158,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 				defeultValue={newEvent.finance_status}
 				placeholder={"Выберите статус оплаты"}
 				onChangeItem={(item) => setEventItem({ finance_status: item.value })}
-				theme={useTheme()}
 			/>
 			{/* <EventRowDropDownPicker
         dependencies={eventIconDependencies}
@@ -182,7 +180,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 			<DateTimePickerBlock
 				dateValue={newEvent.date}
 				onChangeStoreHook={setEventItem}
-				theme={useTheme()}
 			/>
 			<TitleBlock title="Услуга" theme={useTheme()} />
 			<DropDownPickerBlock
@@ -192,7 +189,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 				placeholder={"[ Выберите услугу ]"}
 				zeroItem={{ label: "Новая услуга", value: 0 }}
 				onChangeItem={(item) => setEventItem({ service: item.value })}
-				theme={useTheme()}
 				searchable={services.length > 8}
 			/>
 			<TitleBlock title="Клиент" theme={useTheme()} />
@@ -203,14 +199,12 @@ const CreateEventScreen = ({ navigation, route }) => {
 				placeholder={"[ Выберите клиента ]"}
 				zeroItem={{ label: "Новый клиент", value: 0 }}
 				onChangeItem={(item) => setEventItem({ client: item.value })}
-				theme={useTheme()}
 				searchable={clients.length > 8}
 			/>
 			<TitleBlock title="Финансы" theme={useTheme()} />
 			<TextInputBlock
 				title="Цена клиента"
 				value={newEvent.finance_price}
-				theme={useTheme()}
 				onChangeText={(text) =>
 					setEventItem({ finance_price: Math.floor(text) })
 				}
@@ -221,7 +215,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 			<TextInputBlock
 				title="За дорогу"
 				value={newEvent.finance_road}
-				theme={useTheme()}
 				onChangeText={(text) =>
 					setEventItem({ finance_road: Math.floor(text) })
 				}
@@ -232,7 +225,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 			<TextInputBlock
 				title="Организатору"
 				value={newEvent.finance_organizator}
-				theme={useTheme()}
 				onChangeText={(text) =>
 					setEventItem({ finance_organizator: Math.floor(text) })
 				}
@@ -243,7 +235,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 			<TextInputBlock
 				title="Ассистентам"
 				value={newEvent.finance_assistants}
-				theme={useTheme()}
 				onChangeText={(text) =>
 					setEventItem({ finance_assistants: Math.floor(text) })
 				}
@@ -254,7 +245,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 			<TextInputBlock
 				title="Чаевые"
 				value={newEvent.finance_tips}
-				theme={useTheme()}
 				onChangeText={(text) =>
 					setEventItem({ finance_tips: Math.floor(text) })
 				}
@@ -266,37 +256,31 @@ const CreateEventScreen = ({ navigation, route }) => {
 			<TextInputBlock
 				title="Название заведения"
 				value={newEvent.location_name}
-				theme={useTheme()}
 				onChangeText={(text) => setEventItem({ location_name: text })}
 			/>
 			<TextInputBlock
 				title="Город"
 				value={newEvent.location_town}
-				theme={useTheme()}
 				onChangeText={(text) => setEventItem({ location_town: text })}
 			/>
 			<TextInputBlock
 				title="Улица"
 				value={newEvent.location_street}
-				theme={useTheme()}
 				onChangeText={(text) => setEventItem({ location_street: text })}
 			/>
 			<TextInputBlock
 				title="Дом"
 				value={newEvent.location_house}
-				theme={useTheme()}
 				onChangeText={(text) => setEventItem({ location_house: text })}
 			/>
 			<TextInputBlock
 				title="Квартира"
 				value={newEvent.location_room}
-				theme={useTheme()}
 				onChangeText={(text) => setEventItem({ location_room: text })}
 			/>
 			<TextInputBlock
 				title="Этаж"
 				value={newEvent.location_floor}
-				theme={useTheme()}
 				keyboardType="numeric"
 				onChangeText={(text) => setEventItem({ location_floor: text })}
 			/>

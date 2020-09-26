@@ -10,6 +10,7 @@ import {
 	Image,
 	Modal,
 } from "react-native"
+// import TextInputMask from "react-native-text-input-mask"
 import { useTheme } from "@react-navigation/native"
 import DropDownPicker from "react-native-dropdown-picker"
 import DateTimePicker from "@react-native-community/datetimepicker"
@@ -161,13 +162,14 @@ export const TextInputBlock = ({
 	title = null,
 	value = null,
 	postfix = "",
-	theme = useTheme(),
 	onChangeText = () => {},
 	keyboardType = "default",
 	placeholder = "",
+	mask = null,
 }) => {
 	value = value ? value.toString() : ""
-	const { colors } = theme
+	const { colors } = useTheme()
+
 	return (
 		<View style={styles.row}>
 			<Text style={{ fontSize: 18, width: 170, color: colors.text }}>
@@ -186,20 +188,43 @@ export const TextInputBlock = ({
 					// paddingHorizontal: 10,
 				}}
 			>
-				<TextInput
-					style={{
-						flex: 1,
-						textAlign: "center",
-						fontSize: 18,
-						color: colors.text,
-						// borderWidth: 1,
-						// borderColor: "#fff",
-					}}
-					keyboardType={keyboardType}
-					onChangeText={onChangeText}
-					placeholder={placeholder}
-					value={value}
-				/>
+				{mask ? (
+					<TextInput />
+				) : (
+					// <TextInputMask
+					// 	style={{
+					// 		flex: 1,
+					// 		textAlign: "center",
+					// 		fontSize: 18,
+					// 		color: colors.text,
+					// 		// borderWidth: 1,
+					// 		// borderColor: "#fff",
+					// 	}}
+					// 	refInput={(ref) => {
+					// 		this.input = ref
+					// 	}}
+					// 	onChangeText={(formatted, extracted) => {
+					// 		console.log(formatted) // +1 (123) 456-78-90
+					// 		console.log(extracted) // 1234567890
+					// 	}}
+					// 	mask={mask ? mask : "+1 ([000])"}
+					// />
+
+					<TextInput
+						style={{
+							flex: 1,
+							textAlign: "center",
+							fontSize: 18,
+							color: colors.text,
+							// borderWidth: 1,
+							// borderColor: "#fff",
+						}}
+						keyboardType={keyboardType}
+						onChangeText={onChangeText}
+						placeholder={placeholder}
+						value={value}
+					/>
+				)}
 				{postfix ? (
 					<View
 						style={{
@@ -230,9 +255,8 @@ export const EventRowDropDownPicker = ({
 	defeultValue = null,
 	placeholder = "Выберите пункт из списка",
 	onChangeItem = null,
-	theme = useTheme(),
 }) => {
-	const { colors } = theme
+	const { colors } = useTheme()
 	let arrayItems = []
 	for (let item in dependencies) {
 		arrayItems.push({
@@ -294,12 +318,8 @@ export const EventRowDropDownPicker = ({
 	)
 }
 
-export const DateTimePickerBlock = ({
-	dateValue,
-	onChangeStoreHook,
-	theme = useTheme(),
-}) => {
-	const { colors } = theme
+export const DateTimePickerBlock = ({ dateValue, onChangeStoreHook }) => {
+	const { colors } = useTheme()
 	const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
 
 	return (
@@ -379,10 +399,9 @@ export const DropDownPickerBlock = ({
 	placeholder = "[ Выберите пункт меню ]",
 	onChangeItem = null,
 	zeroItem = null,
-	theme = useTheme(),
 	searchable = false,
 }) => {
-	const { colors } = theme
+	const { colors } = useTheme()
 	let defaultExists = false
 	let arrayItems = zeroItem ? [zeroItem] : []
 	if (zeroItem && zeroItem.value === defeultValue) {

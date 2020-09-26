@@ -210,7 +210,7 @@ const EventsScreen = ({ navigation, route }) => {
 					onPress={() => {
 						navigation.navigate("CreateEvent")
 					}}
-					label="Добавьте событие"
+					label="Добавить событие"
 				/>
 			</View>
 		)

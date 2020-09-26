@@ -11,7 +11,6 @@ import {
 	TitleBlock,
 	ImagePickerBlock,
 } from "../components/createComponents"
-import PhotoPicker from "../components/PhotoPicker"
 
 const CreateServiceScreen = ({ navigation, route }) => {
 	const service =
@@ -110,11 +109,6 @@ const CreateServiceScreen = ({ navigation, route }) => {
 				image={newService.image}
 				onPick={(img) => setServiceItem({ image: img })}
 			/>
-
-			{/* <PhotoPicker
-				image={newService.image}
-				onPick={(image) => setServiceItem({ image: image })}
-			/> */}
 		</ScrollView>
 	)
 }
