@@ -10,6 +10,7 @@ import {
 	TextInputBlock,
 	TitleBlock,
 	ImagePickerBlock,
+	GenderSwitch,
 } from "../components/createComponents"
 
 const CreateClientScreen = ({ navigation, route }) => {
@@ -22,6 +23,8 @@ const CreateClientScreen = ({ navigation, route }) => {
 	const [newClient, setNewClient] = useState(client)
 
 	const { colors } = useTheme()
+
+	console.log("client", client)
 
 	const setClientItem = (item) => {
 		setNewClient({ ...newClient, ...item })
@@ -64,6 +67,13 @@ const CreateClientScreen = ({ navigation, route }) => {
 				value={newClient.phone}
 				// mask="+1 ([000]) [000] [00] [00]"
 				onChangeText={(text) => setClientItem({ phone: text })}
+			/>
+			<GenderSwitch
+				title="Пол"
+				value={newClient.gender === 1}
+				onSwitch={(text) => {
+					setClientItem({ gender: text ? 1 : 0 })
+				}}
 			/>
 			<TitleBlock title="Соц. сети" theme={useTheme()} />
 			<TextInputBlock

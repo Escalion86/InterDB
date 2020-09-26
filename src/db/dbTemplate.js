@@ -104,16 +104,49 @@ export const dbGenerator = (table = "event") => {
 				]),
 			}
 		case "client":
+			const gender = rndArray([0, 1])
 			return {
-				name: rndArray([
-					"Вася",
-					"Петя",
-					"Федор",
-					"Стас",
-					"Коля",
-					"Маша",
-					"Аня",
-				]),
+				name:
+					gender === 0
+						? `${rndArray([
+								"Мария",
+								"Анна",
+								"Ирина",
+								"Марина",
+								"Светлана",
+						  ])} ${rndArray([
+								"Николаевна",
+								"Анатольевна",
+								"Дмитриевна",
+								"Алексеевна",
+								"Александровна",
+						  ])} ${rndArray([
+								"Куйбышева",
+								"Петрова",
+								"Мартынова",
+								"Толстых",
+								"Смирнова",
+						  ])}`
+						: `${rndArray([
+								"Василий",
+								"Петр",
+								"Федор",
+								"Станислав",
+								"Николай",
+						  ])} ${rndArray([
+								"Васильевич",
+								"Петрович",
+								"Федорович",
+								"Станиславович",
+								"Николаевич",
+						  ])} ${rndArray([
+								"Пушкин",
+								"Гудин",
+								"Ушанов",
+								"Мишин",
+								"Стариков",
+						  ])}`,
+				gender: gender,
 				phone: rndArray(["+79123456789", "+79234567890", "+793456789012"]),
 				instagram: "",
 				vk: "",
@@ -335,6 +368,15 @@ export default dbTemplate = {
 			not_null: true,
 			default: "",
 			db_default: "",
+		},
+		{
+			db_name: "gender",
+			desc: "Пол",
+			type: "boolean",
+			db_type: "INT",
+			not_null: true,
+			default: 0,
+			db_default: 0,
 		},
 		{
 			db_name: "phone",
