@@ -398,10 +398,12 @@ export const DateTimePickerBlock = ({ dateValue, onChangeStoreHook }) => {
 			<View style={styles.datetimecontainer}>
 				<TouchableOpacity
 					onPress={() => setDateTimePickerShow("eventDateStart")}
+					style={{ flex: 4, marginRight: 8 }}
 				>
 					<Text
 						style={{
 							...styles.datetime,
+
 							color: colors.text,
 							backgroundColor: colors.card,
 							borderColor: colors.border,
@@ -427,10 +429,12 @@ export const DateTimePickerBlock = ({ dateValue, onChangeStoreHook }) => {
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() => setDateTimePickerShow("eventTimeStart")}
+					style={{ flex: 2 }}
 				>
 					<Text
 						style={{
 							...styles.datetime,
+
 							color: colors.text,
 							backgroundColor: colors.card,
 							borderColor: colors.border,
@@ -565,7 +569,7 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		// flex: 1,
 		height: "100%",
-		paddingHorizontal: 12,
+		paddingHorizontal: 5,
 		textAlign: "center",
 		textAlignVertical: "center",
 		borderWidth: 1,
