@@ -41,8 +41,8 @@ const ModalBottomMenu = ({
 							borderColor: colors.border,
 						}}
 					>
-						{title && subtitle ? (
-							<View style={{ alignItems: "center" }}>
+						{title || subtitle ? (
+							<View style={{ alignItems: "center", marginBottom: 10 }}>
 								{title ? (
 									<Text style={{ ...styles.panelTitle, color: colors.text }}>
 										{title}
@@ -71,14 +71,14 @@ const styles = StyleSheet.create({
 		height: "100%",
 	},
 	panel: {
-		padding: 20,
+		padding: 5,
 		paddingTop: 20,
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20,
 		borderLeftWidth: 1,
 		borderTopWidth: 1,
 		borderRightWidth: 1,
-
+		maxHeight: 500,
 		// shadowColor: '#000000',
 		// shadowOffset: {width: 0, height: 0},
 		// shadowRadius: 5,
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
 	panelSubtitle: {
 		fontSize: 14,
 		color: "gray",
-		marginBottom: 10,
+		// marginBottom: 10,
 	},
 	panelButton: {
 		padding: 13,

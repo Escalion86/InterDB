@@ -24,11 +24,21 @@ import { setEventStatus, setFinanceStatus } from "../store/actions/event"
 import { Root, Toast } from "popup-ui"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 
-const ServiceCard = ({ navigation, service }) => {
+const ServiceCard = ({
+	navigation,
+	service,
+	onPress = null,
+	listMode = false,
+}) => {
 	const { Popover } = renderers
 	const theme = useTheme()
 	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
+
+	if (!onPress)
+		onPress = () => {
+			navigation.navigate("Service", { service: service })
+		}
 
 	const noImageUrl = dark
 		? require("../../assets/no_image_dark.jpg")
@@ -62,9 +72,7 @@ const ServiceCard = ({ navigation, service }) => {
 			// activeOpacity={1}
 			delayPressIn={50}
 			style={styles.card}
-			onPress={() => {
-				navigation.navigate("Service", { service: service })
-			}}
+			onPress={onPress}
 		>
 			<View style={styles.left}>
 				<Image

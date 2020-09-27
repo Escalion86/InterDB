@@ -13,10 +13,20 @@ import { formatDate, formatTime, getWeekDay } from "../helpers/date"
 import { useTheme } from "@react-navigation/native"
 import ContactsMenu from "./ContactsMenu"
 
-const ClientCard = ({ navigation, client }) => {
+const ClientCard = ({
+	navigation,
+	client,
+	onPress = null,
+	listMode = false,
+}) => {
 	const theme = useTheme()
 	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
+
+	if (!onPress)
+		onPress = () => {
+			navigation.navigate("Client", { client: client })
+		}
 
 	const noImageUrl =
 		client.gender === 0
@@ -55,9 +65,7 @@ const ClientCard = ({ navigation, client }) => {
 			// activeOpacity={1}
 			delayPressIn={50}
 			style={styles.card}
-			onPress={() => {
-				navigation.navigate("Client", { client: client })
-			}}
+			onPress={onPress}
 		>
 			<View style={styles.left}>
 				<Image
@@ -82,9 +90,11 @@ const ClientCard = ({ navigation, client }) => {
 				</View>
 				{/* {service.description ? <CardDesc desc={service.description} /> : null} */}
 			</View>
-			<View style={styles.right}>
-				<ContactsMenu client={client} />
-			</View>
+			{listMode ? null : (
+				<View style={styles.right}>
+					<ContactsMenu client={client} />
+				</View>
+			)}
 		</TouchableOpacity>
 	)
 }

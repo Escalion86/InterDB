@@ -8,8 +8,9 @@ const MainFlatListWithFab = ({
 	onPressFab,
 	containerStyle = {},
 	fabStyle = {},
+	fabVisible = true,
 }) => {
-	const [fabVisible, setFabVisible] = useState(true)
+	const [fabIsVisible, setFabIsVisible] = useState(fabVisible)
 	const [scrollPosition, setScrollPosition] = useState(0)
 
 	return (
@@ -26,16 +27,18 @@ const MainFlatListWithFab = ({
 					// onEndReachedThreshold={0.1}
 					// onTouchMove={() => setFabVisible(true)}
 					onScroll={({ nativeEvent }) => {
-						const currentOffset = nativeEvent.contentOffset.y
-						setFabVisible(currentOffset < scrollPosition)
-						// const direction = currentOffset > scrollPosition ? "down" : "up"
-						setScrollPosition(currentOffset)
+						if (fabVisible) {
+							const currentOffset = nativeEvent.contentOffset.y
+							setFabVisible(currentOffset < scrollPosition)
+							// const direction = currentOffset > scrollPosition ? "down" : "up"
+							setScrollPosition(currentOffset)
+						}
 					}}
 					scrollEventThrottle={1000}
 					renderItem={renderItem}
 				/>
 			</View>
-			<Fab visible={fabVisible} onPress={onPressFab} style={fabStyle} />
+			<Fab visible={fabIsVisible} onPress={onPressFab} style={fabStyle} />
 		</View>
 	)
 }

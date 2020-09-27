@@ -6,12 +6,12 @@ import {
 	TouchableOpacity,
 	TextInput,
 	ScrollView,
+	Button,
 } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import DropDownPicker from "react-native-dropdown-picker"
-import { useTheme } from "@react-navigation/native"
 import { addEvent, updateEvent } from "../store/actions/event"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { formatDate, formatTime } from "../helpers/date"
@@ -27,6 +27,10 @@ import {
 	TitleBlock,
 	DropDownPickerBlock,
 } from "../components/createComponents"
+import ModalBottomMenu from "../components/ModalBottomMenu"
+import MainFlatListWithFab from "../components/MainFlatListWithFab"
+import ServiceCard from "../components/ServiceCard"
+import ClientCard from "../components/ClientCard"
 
 const CreateEventScreen = ({ navigation, route }) => {
 	const event =
@@ -36,14 +40,14 @@ const CreateEventScreen = ({ navigation, route }) => {
 
 	console.log("event", event)
 
-	const services = useSelector((state) => state.service.services)
+	const services = useSelector((state) => state.service.services).filter(
+		(item) => !item.archive
+	)
 	const clients = useSelector((state) => state.client.clients)
 
 	const dispatch = useDispatch()
 	const [newEvent, setNewEvent] = useState(event)
 	// const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
-
-	const { colors } = useTheme()
 
 	const setEventItem = (item) => {
 		setNewEvent({ ...newEvent, ...item })
@@ -65,9 +69,12 @@ const CreateEventScreen = ({ navigation, route }) => {
 		),
 	})
 
+	const [modalServicesVisible, setModalServicesVisible] = useState(false)
+	const [modalClientsVisible, setModalClientsVisible] = useState(false)
+
 	return (
 		<ScrollView style={styles.container}>
-			<TitleBlock title="Описание" theme={useTheme()} />
+			<TitleBlock title="Описание" />
 			<EventRowDropDownPicker
 				dependencies={statusIconDependencies}
 				name="Статус события"
@@ -116,8 +123,8 @@ const CreateEventScreen = ({ navigation, route }) => {
 				dateValue={newEvent.date}
 				onChangeStoreHook={setEventItem}
 			/>
-			<TitleBlock title="Услуга" theme={useTheme()} />
-			<DropDownPickerBlock
+			<TitleBlock title="Услуга" />
+			{/* <DropDownPickerBlock
 				name="Услуга"
 				db={services}
 				defeultValue={newEvent.service}
@@ -125,9 +132,86 @@ const CreateEventScreen = ({ navigation, route }) => {
 				zeroItem={{ label: "Новая услуга", value: 0 }}
 				onChangeItem={(item) => setEventItem({ service: item.value })}
 				searchable={services.length > 8}
-			/>
-			<TitleBlock title="Клиент" theme={useTheme()} />
-			<DropDownPickerBlock
+			/> */}
+			{!newEvent.service ? (
+				<Button
+					onPress={() => {
+						setModalServicesVisible(true)
+					}}
+					title={`Выберите услугу`}
+				/>
+			) : (
+				<ServiceCard
+					navigation={navigation}
+					service={services.find((item) => item.id == newEvent.service)}
+					onPress={() => {
+						setModalServicesVisible(true)
+					}}
+				/>
+			)}
+
+			<ModalBottomMenu
+				title="Выберите услугу"
+				visible={modalServicesVisible}
+				onOuterClick={() => setModalServicesVisible(false)}
+			>
+				<MainFlatListWithFab
+					data={services}
+					renderItem={({ item }) => (
+						<ServiceCard
+							navigation={navigation}
+							service={item}
+							onPress={() => {
+								setEventItem({ service: item.id })
+								setModalServicesVisible(false)
+							}}
+							listMode={true}
+						/>
+					)}
+					fabVisible={false}
+				/>
+			</ModalBottomMenu>
+
+			<TitleBlock title="Клиент" />
+			{!newEvent.client ? (
+				<Button
+					onPress={() => {
+						setModalClientsVisible(true)
+					}}
+					title={`Выберите клиента`}
+				/>
+			) : (
+				<ClientCard
+					navigation={navigation}
+					client={clients.find((item) => item.id == newEvent.client)}
+					onPress={() => {
+						setModalClientsVisible(true)
+					}}
+				/>
+			)}
+
+			<ModalBottomMenu
+				title="Выберите клиента"
+				visible={modalClientsVisible}
+				onOuterClick={() => setModalClientsVisible(false)}
+			>
+				<MainFlatListWithFab
+					data={clients}
+					renderItem={({ item }) => (
+						<ClientCard
+							navigation={navigation}
+							client={item}
+							onPress={() => {
+								setEventItem({ client: item.id })
+								setModalClientsVisible(false)
+							}}
+							listMode={true}
+						/>
+					)}
+					fabVisible={false}
+				/>
+			</ModalBottomMenu>
+			{/* <DropDownPickerBlock
 				name="Клиент"
 				db={clients}
 				defeultValue={newEvent.client}
@@ -135,8 +219,8 @@ const CreateEventScreen = ({ navigation, route }) => {
 				zeroItem={{ label: "Новый клиент", value: 0 }}
 				onChangeItem={(item) => setEventItem({ client: item.value })}
 				searchable={clients.length > 8}
-			/>
-			<TitleBlock title="Финансы" theme={useTheme()} />
+			/> */}
+			<TitleBlock title="Финансы" />
 			<TextInputBlock
 				title="Цена клиента"
 				value={newEvent.finance_price}
@@ -187,7 +271,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 				placeholder="0"
 				postfix="&#8381;"
 			/>
-			<TitleBlock title="Адрес" theme={useTheme()} />
+			<TitleBlock title="Адрес" />
 			<TextInputBlock
 				title="Название заведения"
 				value={newEvent.location_name}
