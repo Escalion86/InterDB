@@ -228,13 +228,14 @@ const stylesFactory = (colors) =>
 			flex: 1,
 		},
 		right: {
-			alignItems: "flex-end",
+			// alignItems: "flex-end",
 			borderLeftWidth: 1,
 			borderColor: colors.border,
+			justifyContent: "space-between",
 		},
 		cardheader: {
 			flex: 1,
-			padding: 10,
+			padding: 5,
 			alignItems: "center",
 			justifyContent: "center",
 		},
@@ -251,7 +252,7 @@ const stylesFactory = (colors) =>
 		},
 		carddesc: {
 			flexDirection: "row",
-			height: 46,
+			minHeight: 46,
 			// borderColor: "red",
 			// borderWidth: 1,
 			paddingHorizontal: 10,

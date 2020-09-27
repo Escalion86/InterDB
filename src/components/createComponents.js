@@ -38,30 +38,32 @@ export const GenderSwitch = ({
 			<Text style={{ fontSize: 18, width: 170, color: colors.text }}>
 				{title}
 			</Text>
-			<Switch
-				value={value}
-				onValueChange={onSwitch}
-				disabled={false}
-				activeText={"муж"}
-				inActiveText={"жен"}
-				circleSize={30}
-				barHeight={32}
-				circleBorderWidth={3}
-				backgroundActive={"#202088"}
-				backgroundInactive={"#882020"}
-				circleActiveColor={"#2020ff"}
-				circleInActiveColor={"#ff2020"}
-				// renderInsideCircle={() => <CustomComponent />} // custom component to render inside the Switch circle (Text, Image, etc.)
-				changeValueImmediately={true} // if rendering inside circle, change state immediately or wait for animation to complete
-				innerCircleStyle={{ alignItems: "center", justifyContent: "center" }} // style for inner animated circle for what you (may) be rendering inside the circle
-				outerCircleStyle={{}} // style for outer animated circle
-				renderActiveText={true}
-				renderInActiveText={true}
-				switchLeftPx={6} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
-				switchRightPx={6} // denominator for logic when sliding to FALSE position. Higher number = more space from LEFT of the circle to BEGINNING of the slider
-				switchWidthMultiplier={2.5} // multipled by the `circleSize` prop to calculate total width of the Switch
-				switchBorderRadius={30} // Sets the border Radius of the switch slider. If unset, it remains the circleSize.
-			/>
+			<View style={styles.block}>
+				<Switch
+					value={value}
+					onValueChange={onSwitch}
+					disabled={false}
+					activeText={"муж"}
+					inActiveText={"жен"}
+					circleSize={30}
+					barHeight={32}
+					circleBorderWidth={3}
+					backgroundActive={"#202088"}
+					backgroundInactive={"#882020"}
+					circleActiveColor={"#2020ff"}
+					circleInActiveColor={"#ff2020"}
+					// renderInsideCircle={() => <CustomComponent />} // custom component to render inside the Switch circle (Text, Image, etc.)
+					changeValueImmediately={true} // if rendering inside circle, change state immediately or wait for animation to complete
+					innerCircleStyle={{ alignItems: "center", justifyContent: "center" }} // style for inner animated circle for what you (may) be rendering inside the circle
+					outerCircleStyle={{}} // style for outer animated circle
+					renderActiveText={true}
+					renderInActiveText={true}
+					switchLeftPx={6} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
+					switchRightPx={6} // denominator for logic when sliding to FALSE position. Higher number = more space from LEFT of the circle to BEGINNING of the slider
+					switchWidthMultiplier={2.5} // multipled by the `circleSize` prop to calculate total width of the Switch
+					switchBorderRadius={30} // Sets the border Radius of the switch slider. If unset, it remains the circleSize.
+				/>
+			</View>
 		</View>
 	)
 }
@@ -180,10 +182,11 @@ export const ImagePickerBlock = ({
 	return (
 		<View style={{ ...styles.row, height: null }}>
 			<ModalChoosePhotoSource />
-			<Text style={{ fontSize: 18, width: 170, color: colors.text }}>
-				{title}
-			</Text>
-			<TouchableOpacity onPress={async () => setModalVisible(true)}>
+			<Text style={{ ...styles.text, color: colors.text }}>{title}</Text>
+			<TouchableOpacity
+				style={styles.block}
+				onPress={async () => setModalVisible(true)}
+			>
 				<Image
 					style={{
 						// flex: 1,
@@ -191,8 +194,8 @@ export const ImagePickerBlock = ({
 						borderWidth: 1,
 						borderColor: colors.card,
 						// backgroundColor: colors.card,
-						width: 230,
-						height: 230,
+						width: "100%",
+						minHeight: 180,
 					}}
 					source={!image ? noImageUrl : { uri: image }}
 					// resizeMethod="scale"
@@ -219,12 +222,10 @@ export const TextInputBlock = ({
 
 	return (
 		<View style={styles.row}>
-			<Text style={{ fontSize: 18, width: 170, color: colors.text }}>
-				{title}
-			</Text>
+			<Text style={{ ...styles.text, color: colors.text }}>{title}</Text>
 			<View
 				style={{
-					flex: 1,
+					flex: 3,
 					flexDirection: "row",
 					borderColor: colors.border,
 					backgroundColor: colors.card,
@@ -254,12 +255,7 @@ export const TextInputBlock = ({
 						<Text style={{ fontSize: 18, color: colors.text }}>{prefix}</Text>
 					</View>
 				) : null}
-				{mask ? // 		// borderColor: "#fff", // 		// borderWidth: 1, // 		color: colors.text, // 		fontSize: 18, // 		textAlign: "center", // 		flex: 1, // 	style={{ // <TextInputMask
-				// 	}}
-				// 	mask={"+1 ([000]) [000] [00] [00]"}
-				// 	// value=""
-				// />
-				null : (
+				{mask ? null : ( // /> // 	// value="" // 	mask={"+1 ([000]) [000] [00] [00]"} // 	}} // 		// borderColor: "#fff", // 		// borderWidth: 1, // 		color: colors.text, // 		fontSize: 18, // 		textAlign: "center", // 		flex: 1, // 	style={{ // <TextInputMask
 					// <TextInputMask
 					// 	style={{
 					// 		flex: 1,
@@ -354,36 +350,38 @@ export const EventRowDropDownPicker = ({
 	return (
 		<View style={styles.row}>
 			<Text style={{ ...styles.text, color: colors.text }}>{name}</Text>
-			<DropDownPicker
-				placeholder={placeholder}
-				items={arrayItems}
-				defaultValue={defeultValue}
-				// labelStyle={{
-				//   fontSize: 16,
-				//   textAlign: "left",
-				//   color: colors.text,
-				// }}
-				containerStyle={{ height: 44, flex: 1 }}
-				style={{
-					backgroundColor: colors.card,
-					borderColor: colors.border,
-					paddingLeft: 0,
-				}}
-				dropDownMaxHeight={350}
-				itemStyle={{
-					justifyContent: "flex-start",
-				}}
-				dropDownStyle={{
-					backgroundColor: colors.card,
-					borderColor: colors.border,
-					paddingHorizontal: 0,
-					paddingVertical: 0,
-				}}
-				// containerStyle={{ padding: 0, margin: 0, paddingHorizontal: 0 }}
-				activeItemStyle={{ backgroundColor: colors.active }}
-				arrowColor={colors.text}
-				onChangeItem={onChangeItem}
-			/>
+			<View style={styles.block}>
+				<DropDownPicker
+					placeholder={placeholder}
+					items={arrayItems}
+					defaultValue={defeultValue}
+					// labelStyle={{
+					//   fontSize: 16,
+					//   textAlign: "left",
+					//   color: colors.text,
+					// }}
+					containerStyle={{ height: 44, flex: 1 }}
+					style={{
+						backgroundColor: colors.card,
+						borderColor: colors.border,
+						paddingLeft: 0,
+					}}
+					dropDownMaxHeight={350}
+					itemStyle={{
+						justifyContent: "flex-start",
+					}}
+					dropDownStyle={{
+						backgroundColor: colors.card,
+						borderColor: colors.border,
+						paddingHorizontal: 0,
+						paddingVertical: 0,
+					}}
+					// containerStyle={{ padding: 0, margin: 0, paddingHorizontal: 0 }}
+					activeItemStyle={{ backgroundColor: colors.active }}
+					arrowColor={colors.text}
+					onChangeItem={onChangeItem}
+				/>
+			</View>
 		</View>
 	)
 }
@@ -503,39 +501,41 @@ export const DropDownPickerBlock = ({
 			{name ? (
 				<Text style={{ ...styles.text, color: colors.text }}>{name}</Text>
 			) : null}
-			<DropDownPicker
-				placeholder={placeholder}
-				items={arrayItems}
-				defaultValue={defaultExists ? defeultValue : null}
-				labelStyle={{
-					fontSize: 16,
-					textAlign: "left",
-					color: colors.text,
-				}}
-				containerStyle={{ height: 44, flex: 1 }}
-				style={{
-					backgroundColor: colors.card,
-					borderColor: colors.border,
-				}}
-				dropDownMaxHeight={350}
-				itemStyle={{
-					justifyContent: "flex-start",
-				}}
-				dropDownStyle={{
-					backgroundColor: colors.card,
-					borderColor: colors.border,
-					paddingVertical: 0,
-				}}
-				// containerStyle={{ padding: 0, margin: 0, paddingHorizontal: 0 }}
-				activeItemStyle={{ backgroundColor: colors.active }}
-				arrowColor={colors.text}
-				onChangeItem={onChangeItem}
-				searchable={searchable}
-				searchablePlaceholder="Найти"
-				searchablePlaceholderTextColor="gray"
-				seachableStyle={{}}
-				searchableError={() => <Text>Not Found</Text>}
-			/>
+			<View style={styles.block}>
+				<DropDownPicker
+					placeholder={placeholder}
+					items={arrayItems}
+					defaultValue={defaultExists ? defeultValue : null}
+					labelStyle={{
+						fontSize: 16,
+						textAlign: "left",
+						color: colors.text,
+					}}
+					containerStyle={{ height: 44, flex: 1 }}
+					style={{
+						backgroundColor: colors.card,
+						borderColor: colors.border,
+					}}
+					dropDownMaxHeight={350}
+					itemStyle={{
+						justifyContent: "flex-start",
+					}}
+					dropDownStyle={{
+						backgroundColor: colors.card,
+						borderColor: colors.border,
+						paddingVertical: 0,
+					}}
+					// containerStyle={{ padding: 0, margin: 0, paddingHorizontal: 0 }}
+					activeItemStyle={{ backgroundColor: colors.active }}
+					arrowColor={colors.text}
+					onChangeItem={onChangeItem}
+					searchable={searchable}
+					searchablePlaceholder="Найти"
+					searchablePlaceholderTextColor="gray"
+					seachableStyle={{}}
+					searchableError={() => <Text>Not Found</Text>}
+				/>
+			</View>
 		</View>
 	)
 }
@@ -552,7 +552,8 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 18,
-		width: 170,
+		// width: 170,
+		flex: 2,
 	},
 	row: {
 		flexDirection: "row",
@@ -575,7 +576,7 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		// paddingLeft: 5,
 		height: 44,
-		flex: 1,
+		flex: 3,
 	},
 	image: {
 		// width: "100%",
@@ -584,6 +585,9 @@ const styles = StyleSheet.create({
 		// height: "100%",
 		borderColor: "red",
 		borderWidth: 3,
+	},
+	block: {
+		flex: 3,
 	},
 
 	modal: {
