@@ -144,6 +144,7 @@ const stylesFactory = (colors) =>
 		cardtitle: {
 			fontFamily: "open-bold",
 			fontSize: 16,
+			textAlign: "center",
 			color: colors.text,
 		},
 		carddesctext: {

@@ -17,12 +17,12 @@ export const darkTheme = {
 	colors: {
 		abort: "rgb(255, 50, 35)",
 		accent: "#03dac4", //Переключатель
-		accentText: "rgb(30, 30, 30)",
+		accentText: "rgb(40, 40, 40)",
 		backdrop: "rgba(0, 0, 0, 0.5)",
 		background: "rgb(1, 1, 1)",
-		border: "rgb(12, 2, 12)",
-		card: "rgb(30, 30, 30)",
-		active: "rgb(46, 46, 46)",
+		border: "rgb(15, 4, 15)",
+		card: "rgb(40, 40, 40)",
+		active: "rgb(55, 55, 55)",
 		disabled: "rgba(0, 0, 0, 0.26)",
 		error: "#B00020",
 		notification: "rgb(255, 69, 58)",
