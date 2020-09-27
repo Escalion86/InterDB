@@ -50,7 +50,7 @@ export const MainIcon = ({
 					<Text
 						style={{
 							...styles.text,
-							fontSize: 10 + Math.floor(size / 3),
+							fontSize: 9 + Math.floor(size / 3),
 							color: textcolor,
 						}}
 					>

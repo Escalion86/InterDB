@@ -38,7 +38,7 @@ const IconMenu = ({ event, eventPartName = null, style = {} }) => {
 					<MainIcon
 						dependencies={dependencies}
 						status={key}
-						size={20}
+						size={24}
 						showtext={true}
 						textcolor={theme.colors.text}
 					/>

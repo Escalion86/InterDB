@@ -555,7 +555,7 @@ const styles = StyleSheet.create({
 		height: 40,
 	},
 	text: {
-		fontSize: 18,
+		fontSize: 16,
 		// width: 170,
 		flex: 2,
 	},
@@ -566,7 +566,7 @@ const styles = StyleSheet.create({
 		height: 45,
 	},
 	datetime: {
-		fontSize: 18,
+		fontSize: 16,
 		// flex: 1,
 		height: "100%",
 		paddingHorizontal: 5,

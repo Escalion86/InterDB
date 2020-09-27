@@ -18,8 +18,6 @@ import { formatDate, formatTime } from "../helpers/date"
 import {
 	statusIconDependencies,
 	financeIconDependencies,
-	eventIconDependencies,
-	auditoryIconDependencies,
 } from "../db/dependencies"
 import { dbDefault } from "../db/dbTemplate"
 import {
@@ -66,69 +64,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 			</>
 		),
 	})
-	let statuses = []
-	for (let status in statusIconDependencies) {
-		statuses.push({
-			label: "",
-			value: status,
-			icon: () => (
-				<StatusIcon
-					status={status}
-					size={20}
-					showtext={true}
-					textcolor={colors.text}
-				/>
-			),
-		})
-	}
-
-	let finance_statuses = []
-	for (let finance_status in financeIconDependencies) {
-		finance_statuses.push({
-			label: "",
-			value: finance_status,
-			icon: () => (
-				<FinanceIcon
-					status={finance_status}
-					size={20}
-					showtext={true}
-					textcolor={colors.text}
-				/>
-			),
-		})
-	}
-
-	let event_types = []
-	for (let event_type in eventIconDependencies) {
-		event_types.push({
-			label: "",
-			value: event_type,
-			icon: () => (
-				<EventIcon
-					status={event_type}
-					size={20}
-					showtext={true}
-					textcolor={colors.text}
-				/>
-			),
-		})
-	}
-
-	let auditories = []
-	for (let auditory in auditoryIconDependencies) {
-		auditories.push({
-			label: "",
-			value: auditory,
-			icon: () => (
-				<AuditoryIcon
-					status={auditory}
-					size={20}
-					showtext={true}
-					textcolor={colors.text}
-				/>
-			),
-		})
-	}
 
 	return (
 		<ScrollView style={styles.container}>
