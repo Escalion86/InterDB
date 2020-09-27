@@ -9,6 +9,7 @@ import {
 	TextInput,
 	Image,
 	Modal,
+	Dimensions,
 } from "react-native"
 // import TextInputMask from "react-native-text-input-mask"
 import { useTheme } from "@react-navigation/native"
@@ -18,6 +19,7 @@ import { formatDate, formatTime } from "../helpers/date"
 import { MainIcon } from "./icons"
 import * as ImagePicker from "expo-image-picker"
 import { Switch } from "react-native-switch"
+import ModalBottomMenu from "./ModalBottomMenu"
 // import TextInputMask from "./TextInputMask"
 // import TextInputMask from "react-native-text-input-mask"
 
@@ -35,9 +37,7 @@ export const GenderSwitch = ({
 
 	return (
 		<View style={styles.row}>
-			<Text style={{ fontSize: 18, width: 170, color: colors.text }}>
-				{title}
-			</Text>
+			<Text style={{ ...styles.text, color: colors.text }}>{title}</Text>
 			<View style={styles.block}>
 				<Switch
 					value={value}
@@ -46,7 +46,7 @@ export const GenderSwitch = ({
 					activeText={"муж"}
 					inActiveText={"жен"}
 					circleSize={30}
-					barHeight={32}
+					barHeight={34}
 					circleBorderWidth={3}
 					backgroundActive={"#202088"}
 					backgroundInactive={"#882020"}
@@ -60,7 +60,7 @@ export const GenderSwitch = ({
 					renderInActiveText={true}
 					switchLeftPx={6} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
 					switchRightPx={6} // denominator for logic when sliding to FALSE position. Higher number = more space from LEFT of the circle to BEGINNING of the slider
-					switchWidthMultiplier={2.5} // multipled by the `circleSize` prop to calculate total width of the Switch
+					switchWidthMultiplier={2.6} // multipled by the `circleSize` prop to calculate total width of the Switch
 					switchBorderRadius={30} // Sets the border Radius of the switch slider. If unset, it remains the circleSize.
 				/>
 			</View>
@@ -105,79 +105,50 @@ export const ImagePickerBlock = ({
 	const [modalVisible, setModalVisible] = useState(false)
 
 	const ModalChoosePhotoSource = () => (
-		<Modal
-			animationType="slide"
-			transparent={true}
+		<ModalBottomMenu
+			title="Загрузка фотографии"
+			subtitle="Выберите источник изображения"
 			visible={modalVisible}
-			onRequestClose={() => {
-				Alert.alert("Modal has been closed.")
-			}}
+			onOuterClick={() => setModalVisible(false)}
 		>
 			<TouchableOpacity
-				style={styles.modal}
-				onPressOut={() => {
-					setModalVisible(false)
+				style={{ ...styles.panelButton, backgroundColor: colors.accent }}
+				onPress={() => {
+					setModalVisible(!modalVisible)
+					takePhoto()
 				}}
 			>
-				<TouchableWithoutFeedback>
-					<View
-						style={{
-							...styles.panel,
-							backgroundColor: colors.card,
-							borderColor: colors.border,
-						}}
-					>
-						<View style={{ alignItems: "center" }}>
-							<Text style={{ ...styles.panelTitle, color: colors.text }}>
-								Загрузка фотографии
-							</Text>
-							<Text style={{ ...styles.panelSubtitle, color: colors.text }}>
-								Выберите источник изображения
-							</Text>
-						</View>
-						<TouchableOpacity
-							style={{ ...styles.panelButton, backgroundColor: colors.accent }}
-							onPress={() => {
-								setModalVisible(!modalVisible)
-								takePhoto()
-							}}
-						>
-							<Text
-								style={{ ...styles.panelButtonTitle, color: colors.accentText }}
-							>
-								Сделать фотографию
-							</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={{
-								...styles.panelButton,
-								backgroundColor: colors.accent,
-							}}
-							onPress={() => {
-								setModalVisible(!modalVisible)
-								chooseImage()
-							}}
-						>
-							<Text
-								style={{ ...styles.panelButtonTitle, color: colors.accentText }}
-							>
-								Выбрать из галереи
-							</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={{
-								...styles.panelButton,
-								backgroundColor: colors.abort,
-							}}
-							onPress={() => setModalVisible(!modalVisible)}
-						>
-							<Text style={styles.panelButtonTitle}>Отмена</Text>
-						</TouchableOpacity>
-					</View>
-				</TouchableWithoutFeedback>
+				<Text style={{ ...styles.panelButtonTitle, color: colors.accentText }}>
+					Сделать фотографию
+				</Text>
 			</TouchableOpacity>
-		</Modal>
+			<TouchableOpacity
+				style={{
+					...styles.panelButton,
+					backgroundColor: colors.accent,
+				}}
+				onPress={() => {
+					setModalVisible(!modalVisible)
+					chooseImage()
+				}}
+			>
+				<Text style={{ ...styles.panelButtonTitle, color: colors.accentText }}>
+					Выбрать из галереи
+				</Text>
+			</TouchableOpacity>
+			<TouchableOpacity
+				style={{
+					...styles.panelButton,
+					backgroundColor: colors.abort,
+				}}
+				onPress={() => setModalVisible(!modalVisible)}
+			>
+				<Text style={styles.panelButtonTitle}>Отмена</Text>
+			</TouchableOpacity>
+		</ModalBottomMenu>
 	)
+
+	const imageDemention = (Dimensions.get("window").width / 5) * 3 - 8
 
 	return (
 		<View style={{ ...styles.row, height: null }}>
@@ -187,20 +158,22 @@ export const ImagePickerBlock = ({
 				style={styles.block}
 				onPress={async () => setModalVisible(true)}
 			>
-				<Image
-					style={{
-						// flex: 1,
-						borderRadius: 5,
-						borderWidth: 1,
-						borderColor: colors.card,
-						// backgroundColor: colors.card,
-						width: "100%",
-						minHeight: 180,
-					}}
-					source={!image ? noImageUrl : { uri: image }}
-					// resizeMethod="scale"
-					resizeMode="cover"
-				/>
+				<View style={{ height: imageDemention, width: imageDemention }}>
+					<Image
+						style={{
+							// flex: 1,
+							borderRadius: 5,
+							borderWidth: 1,
+							borderColor: colors.card,
+							// backgroundColor: colors.card,
+							width: "100%",
+							height: "100%",
+						}}
+						source={!image ? noImageUrl : { uri: image }}
+						// resizeMethod="scale"
+						resizeMode="cover"
+					/>
+				</View>
 			</TouchableOpacity>
 		</View>
 	)

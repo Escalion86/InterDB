@@ -7,6 +7,7 @@ import {
 	TouchableOpacity,
 	Linking,
 	Image,
+	Dimensions,
 } from "react-native"
 import {
 	Menu,
@@ -72,8 +73,8 @@ const ServiceCard = ({ navigation, service }) => {
 						borderRadius: 5,
 						borderWidth: 1,
 						borderColor: colors.border,
-						width: 80,
-						height: 80,
+						width: "100%",
+						height: "100%",
 					}}
 					source={!service.image ? noImageUrl : { uri: service.image }}
 					// resizeMethod="scale"
@@ -114,10 +115,12 @@ const stylesFactory = (colors) =>
 			minHeight: 80,
 		},
 		left: {
+			flex: 1,
 			padding: 5,
 			//borderRightColor: "black",
+			flexDirection: "row",
 			borderRightWidth: 1,
-			justifyContent: "space-around",
+			// justifyContent: "space-around",
 			borderRightColor: colors.border,
 		},
 		carddate: {
@@ -128,7 +131,7 @@ const stylesFactory = (colors) =>
 		},
 		middle: {
 			// padding: 10,
-			flex: 1,
+			flex: 3,
 		},
 		right: {
 			borderLeftWidth: 1,
