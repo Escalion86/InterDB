@@ -113,7 +113,7 @@ const AboutScreen = ({ navigation, route }) => {
 									color: colors.accent,
 								}}
 							>
-								Escalion.ru
+								https://Escalion.ru
 							</Text>
 						</TouchableOpacity>
 					</View>
