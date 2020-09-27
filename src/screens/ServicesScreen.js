@@ -38,7 +38,6 @@ const ServicesScreen = ({ navigation, route }) => {
 		)
 	})
 
-	// console.log("navigation :>> ", navigation)
 	if (showArchvedOnly) {
 		navigation.setOptions({
 			title: `Архив услуг`,
@@ -49,7 +48,14 @@ const ServicesScreen = ({ navigation, route }) => {
 			headerRight: () => (
 				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
 					<Item
-						title="Add Service"
+						title="Delete all services"
+						iconName="ios-trash"
+						onPress={() => {
+							dispatch(deleteAllServices())
+						}}
+					/>
+					<Item
+						title="Archive"
 						iconName="ios-archive"
 						onPress={() => navigation.navigate("Archive")}
 					/>
@@ -60,7 +66,6 @@ const ServicesScreen = ({ navigation, route }) => {
 							const tmp = dbGenerator("service")
 							dispatch(addService(tmp))
 						}}
-						// onPress={() => navigation.navigate("Create")}
 					/>
 					{/* <Item
 						title="Add Service"

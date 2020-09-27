@@ -115,6 +115,7 @@ const CreateClientScreen = ({ navigation, route }) => {
 			<TextInputBlock
 				title="Telegram"
 				value={newClient.telegram}
+				prefix="@"
 				onChangeText={(text) => setClientItem({ telegram: text })}
 			/>
 			<TextInputBlock

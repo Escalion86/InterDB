@@ -11,6 +11,7 @@ import {
 import { Ionicons } from "@expo/vector-icons"
 import { formatDate, formatTime, getWeekDay } from "../helpers/date"
 import { useTheme } from "@react-navigation/native"
+import ContactsMenu from "./ContactsMenu"
 
 const ClientCard = ({ navigation, client }) => {
 	const theme = useTheme()
@@ -82,12 +83,7 @@ const ClientCard = ({ navigation, client }) => {
 				{/* {service.description ? <CardDesc desc={service.description} /> : null} */}
 			</View>
 			<View style={styles.right}>
-				<View style={styles.carddate}>
-					<Text style={styles.datetime}>
-						{/* {service.preparetime + service.collecttime + service.length} мин */}
-					</Text>
-				</View>
-				{/* <Text style={styles.price}>{service.price}</Text> */}
+				<ContactsMenu client={client} />
 			</View>
 		</TouchableOpacity>
 	)
@@ -128,7 +124,9 @@ const stylesFactory = (colors) =>
 		right: {
 			borderLeftWidth: 1,
 			borderLeftColor: colors.border,
-			width: 70,
+			width: 50,
+			justifyContent: "center",
+			alignItems: "center",
 		},
 		cardheader: {
 			flex: 1,

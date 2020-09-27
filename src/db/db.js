@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite"
 import dbTemplate from "./dbTemplate"
 
-const DBName = "events10.db"
+const DBName = "events11.db"
 
 let db = SQLite.openDatabase(DBName)
 
@@ -449,14 +449,34 @@ export class DB {
 
 	static addClient(client) {
 		//Вычленяем только нужные ключи (такие как loading и пр. не нужны)
-		const { name, phone, instagram, vk, facebook } = client
-		//Помещаем ключи в объект события
-		newClient = {
+		const {
 			name,
+			surname,
+			thirdname,
 			phone,
 			instagram,
 			vk,
 			facebook,
+			whatsapp,
+			viber,
+			telegram,
+			email,
+			gender,
+		} = client
+		//Помещаем ключи в объект события
+		newClient = {
+			name,
+			surname,
+			thirdname,
+			phone,
+			instagram,
+			vk,
+			facebook,
+			whatsapp,
+			viber,
+			telegram,
+			email,
+			gender,
 		}
 		return new Promise((resolve, reject) => {
 			const clientKeys = Object.keys(newClient)
@@ -475,13 +495,34 @@ export class DB {
 	}
 
 	static updateClient(client) {
-		const { id, name, phone, instagram, vk, facebook } = client
-		const clientToSend = {
+		const {
+			id,
 			name,
+			surname,
+			thirdname,
 			phone,
 			instagram,
 			vk,
 			facebook,
+			whatsapp,
+			viber,
+			telegram,
+			email,
+			gender,
+		} = client
+		const clientToSend = {
+			name,
+			surname,
+			thirdname,
+			phone,
+			instagram,
+			vk,
+			facebook,
+			whatsapp,
+			viber,
+			telegram,
+			email,
+			gender,
 		}
 		const clientKeys = Object.keys(clientToSend)
 

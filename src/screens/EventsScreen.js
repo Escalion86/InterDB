@@ -160,7 +160,6 @@ const EventsScreen = ({ navigation, route }) => {
 					onPress={() => {
 						dispatch(deleteAllEvents())
 					}}
-					// onPress={() => navigation.navigate("Create")}
 				/>
 				<Item
 					title="Add random event"
@@ -169,7 +168,6 @@ const EventsScreen = ({ navigation, route }) => {
 						const tmp = dbGenerator("event")
 						dispatch(addEvent(tmp))
 					}}
-					// onPress={() => navigation.navigate("Create")}
 				/>
 				{/* <Item
 					title="Add event"

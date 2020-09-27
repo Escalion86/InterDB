@@ -24,13 +24,19 @@ const ClientsScreen = ({ navigation, route }) => {
 		headerRight: () => (
 			<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
 				<Item
+					title="Delete all clients"
+					iconName="ios-trash"
+					onPress={() => {
+						dispatch(deleteAllClients())
+					}}
+				/>
+				<Item
 					title="Add random client"
 					iconName="ios-add-circle-outline"
 					onPress={() => {
 						const tmp = dbGenerator("client")
 						dispatch(addClient(tmp))
 					}}
-					// onPress={() => navigation.navigate("Create")}
 				/>
 			</HeaderButtons>
 		),
