@@ -31,6 +31,7 @@ import DevScreen from "../screens/DevScreen"
 import DevTableScreen from "../screens/DevTableScreen"
 import ServicesScreen from "../screens/ServicesScreen"
 import ServiceScreen from "../screens/ServiceScreen"
+import AboutScreen from "../screens/AboutScreen"
 import CreateServiceScreen from "../screens/CreateServiceScreen"
 
 import DrawerContent from "../components/DrawerContent"
@@ -68,6 +69,7 @@ const EventsStack = createStackNavigator()
 const ClientsStack = createStackNavigator()
 const ServicesStack = createStackNavigator()
 const DevStack = createStackNavigator()
+const AboutStack = createStackNavigator()
 
 // const burgerButton = (navigation) => (
 // 	<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
@@ -147,7 +149,25 @@ const DevStackScreen = ({ navigation }) => (
     /> */}
 	</StackNavigator>
 )
-const Tabs = createMaterialBottomTabNavigator()
+
+const AboutStackScreen = ({ navigation }) => (
+	<StackNavigator navigation={navigation} initialRouteName="Main">
+		<DevStack.Screen
+			name="About"
+			component={AboutScreen}
+			options={{
+				headerLeft: () => burgerButton(navigation),
+			}}
+		/>
+		{/* <DevStack.Screen name="DevTable" component={DevTableScreen} /> */}
+		{/* <DevStack.Screen
+      name="DevColumn"
+      component={DevColumnScreen}
+    /> */}
+	</StackNavigator>
+)
+
+// const Tabs = createMaterialBottomTabNavigator()
 
 const ServicesStackScreen = ({ navigation }) => (
 	<StackNavigator navigation={navigation} initialRouteName="Services">
@@ -317,16 +337,20 @@ const DrawerScreen = ({ setIsDarkTheme }) => {
 					),
 				}}
 			/>
-			{/* <Drawer.Screen
-        name="Test"
-        component={Test}
-        options={{
-          drawerLabel: "Test",
-          drawerIcon: () => (
-            <Ionicons name="md-bug" size={24} color={colors.text} />
-          ),
-        }}
-      /> */}
+			<Drawer.Screen
+				name="About"
+				component={AboutStackScreen}
+				options={{
+					drawerLabel: "О приложении",
+					drawerIcon: () => (
+						<Ionicons
+							name="md-information-circle-outline"
+							size={24}
+							color={colors.text}
+						/>
+					),
+				}}
+			/>
 		</Drawer.Navigator>
 	)
 }

@@ -130,6 +130,20 @@ const DrawerContent = (props) => {
 				<DrawerItem
 					icon={({ color, size }) => (
 						<Ionicons
+							name="md-information-circle-outline"
+							size={22}
+							color={colors.text}
+							style={{ marginLeft: 5 }}
+						/>
+					)}
+					label="О приложении"
+					onPress={() => {
+						props.navigation.navigate("About")
+					}}
+				/>
+				<DrawerItem
+					icon={({ color, size }) => (
+						<Ionicons
 							name="md-bug"
 							size={22}
 							color={colors.text}
