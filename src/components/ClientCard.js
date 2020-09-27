@@ -17,9 +17,14 @@ const ClientCard = ({ navigation, client }) => {
 	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
 
-	const noImageUrl = dark
-		? require("../../assets/no_image_dark.jpg")
-		: require("../../assets/no_image.jpg")
+	const noImageUrl =
+		client.gender === 0
+			? dark
+				? require("../../assets/avatar/famale_dark.jpg")
+				: require("../../assets/avatar/famale.jpg")
+			: dark
+			? require("../../assets/avatar/male_dark.jpg")
+			: require("../../assets/avatar/male.jpg")
 
 	if (client.loading || client.deleting) {
 		return (
@@ -70,7 +75,9 @@ const ClientCard = ({ navigation, client }) => {
 			</View>
 			<View style={styles.middle}>
 				<View style={styles.cardheader}>
-					<Text style={styles.cardtitle}>{client.name}</Text>
+					<Text style={styles.cardtitle}>
+						{client.surname} {client.name} {client.thirdname}
+					</Text>
 				</View>
 				{/* {service.description ? <CardDesc desc={service.description} /> : null} */}
 			</View>

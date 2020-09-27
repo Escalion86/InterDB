@@ -18,6 +18,8 @@ import { formatDate, formatTime } from "../helpers/date"
 import { MainIcon } from "./icons"
 import * as ImagePicker from "expo-image-picker"
 import { Switch } from "react-native-switch"
+// import TextInputMask from "./TextInputMask"
+// import TextInputMask from "react-native-text-input-mask"
 
 export const TitleBlock = ({ title = "" }) => {
 	const { colors } = useTheme()
@@ -69,12 +71,14 @@ export const ImagePickerBlock = ({
 	title = "",
 	image = "",
 	onPick = () => {},
+	noImageUrl = null,
 }) => {
 	const { colors, dark } = useTheme()
-
-	const noImageUrl = dark
-		? require("../../assets/no_image_dark.jpg")
-		: require("../../assets/no_image.jpg")
+	if (!noImageUrl) {
+		noImageUrl = dark
+			? require("../../assets/no_image_dark.jpg")
+			: require("../../assets/no_image.jpg")
+	}
 
 	const takePhoto = async () => {
 		const img = await ImagePicker.launchCameraAsync({
@@ -187,8 +191,8 @@ export const ImagePickerBlock = ({
 						borderWidth: 1,
 						borderColor: colors.card,
 						// backgroundColor: colors.card,
-						minWidth: 230,
-						minHeight: 230,
+						width: 230,
+						height: 230,
 					}}
 					source={!image ? noImageUrl : { uri: image }}
 					// resizeMethod="scale"
@@ -202,11 +206,13 @@ export const ImagePickerBlock = ({
 export const TextInputBlock = ({
 	title = "",
 	value = null,
+	prefix = "",
 	postfix = "",
 	onChangeText = () => {},
 	keyboardType = "default",
 	placeholder = "",
 	mask = null,
+	multiline = false,
 }) => {
 	value = value ? value.toString() : ""
 	const { colors } = useTheme()
@@ -229,9 +235,31 @@ export const TextInputBlock = ({
 					// paddingHorizontal: 10,
 				}}
 			>
-				{mask ? (
-					<TextInput />
-				) : (
+				{prefix ? (
+					<View
+						style={{
+							minWidth: 36,
+							height: "100%",
+							// borderColor: colors.border,
+							backgroundColor: colors.active,
+							// borderTopWidth: 1,
+							// borderBottomWidth: 1,
+							// borderRightWidth: 1,
+							borderBottomLeftRadius: 5,
+							borderTopLeftRadius: 5,
+							paddingHorizontal: 10,
+							justifyContent: "center",
+						}}
+					>
+						<Text style={{ fontSize: 18, color: colors.text }}>{prefix}</Text>
+					</View>
+				) : null}
+				{mask ? // 		// borderColor: "#fff", // 		// borderWidth: 1, // 		color: colors.text, // 		fontSize: 18, // 		textAlign: "center", // 		flex: 1, // 	style={{ // <TextInputMask
+				// 	}}
+				// 	mask={"+1 ([000]) [000] [00] [00]"}
+				// 	// value=""
+				// />
+				null : (
 					// <TextInputMask
 					// 	style={{
 					// 		flex: 1,
@@ -260,6 +288,7 @@ export const TextInputBlock = ({
 							// borderWidth: 1,
 							// borderColor: "#fff",
 						}}
+						multiline={multiline}
 						keyboardType={keyboardType}
 						onChangeText={onChangeText}
 						placeholder={placeholder}

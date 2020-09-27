@@ -108,46 +108,40 @@ export const dbGenerator = (table = "event") => {
 			return {
 				name:
 					gender === 0
-						? `${rndArray([
-								"Мария",
-								"Анна",
-								"Ирина",
-								"Марина",
-								"Светлана",
-						  ])} ${rndArray([
+						? rndArray(["Мария", "Анна", "Ирина", "Марина", "Светлана"])
+						: rndArray(["Василий", "Петр", "Федор", "Станислав", "Николай"]),
+				thirdname:
+					gender === 0
+						? rndArray([
 								"Николаевна",
 								"Анатольевна",
 								"Дмитриевна",
 								"Алексеевна",
 								"Александровна",
-						  ])} ${rndArray([
-								"Куйбышева",
-								"Петрова",
-								"Мартынова",
-								"Толстых",
-								"Смирнова",
-						  ])}`
-						: `${rndArray([
-								"Василий",
-								"Петр",
-								"Федор",
-								"Станислав",
-								"Николай",
-						  ])} ${rndArray([
+						  ])
+						: rndArray([
 								"Васильевич",
 								"Петрович",
 								"Федорович",
 								"Станиславович",
 								"Николаевич",
-						  ])} ${rndArray([
-								"Пушкин",
-								"Гудин",
-								"Ушанов",
-								"Мишин",
-								"Стариков",
-						  ])}`,
+						  ]),
+				surname:
+					gender === 0
+						? rndArray([
+								"Куйбышева",
+								"Петрова",
+								"Мартынова",
+								"Толстых",
+								"Смирнова",
+						  ])
+						: rndArray(["Пушкин", "Гудин", "Ушанов", "Мишин", "Стариков"]),
 				gender: gender,
 				phone: rndArray(["+79123456789", "+79234567890", "+793456789012"]),
+				email: "",
+				whatsapp: "",
+				viber: "",
+				telegram: "",
 				instagram: "",
 				vk: "",
 				facebook: "",
@@ -362,10 +356,28 @@ export default dbTemplate = {
 	clients: [
 		{
 			db_name: "name",
-			desc: "ФИО",
+			desc: "Имя",
 			type: "text",
 			db_type: "TEXT",
-			not_null: true,
+			not_null: false,
+			default: "",
+			db_default: "",
+		},
+		{
+			db_name: "surname",
+			desc: "Фамилия",
+			type: "text",
+			db_type: "TEXT",
+			not_null: false,
+			default: "",
+			db_default: "",
+		},
+		{
+			db_name: "thirdname",
+			desc: "Отчество",
+			type: "text",
+			db_type: "TEXT",
+			not_null: false,
 			default: "",
 			db_default: "",
 		},
@@ -383,7 +395,43 @@ export default dbTemplate = {
 			desc: "Телефон",
 			type: "phone",
 			db_type: "TEXT",
-			not_null: true,
+			not_null: false,
+			default: "",
+			db_default: "",
+		},
+		{
+			db_name: "email",
+			desc: "EMail",
+			type: "email",
+			db_type: "TEXT",
+			not_null: false,
+			default: "",
+			db_default: "",
+		},
+		{
+			db_name: "whatsapp",
+			desc: "WhatsApp",
+			type: "phone",
+			db_type: "TEXT",
+			not_null: false,
+			default: "",
+			db_default: "",
+		},
+		{
+			db_name: "viber",
+			desc: "Viber",
+			type: "phone",
+			db_type: "TEXT",
+			not_null: false,
+			default: "",
+			db_default: "",
+		},
+		{
+			db_name: "Telegram",
+			desc: "Telegram",
+			type: "phone",
+			db_type: "TEXT",
+			not_null: false,
 			default: "",
 			db_default: "",
 		},

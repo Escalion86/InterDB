@@ -38,7 +38,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
 	}
 
 	navigation.setOptions({
-		title: `Создание услуги`,
+		title: service.id ? `Редактирование услуги` : `Создание услуги`,
 		headerRight: () => (
 			<>
 				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>

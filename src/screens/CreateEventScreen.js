@@ -57,7 +57,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 	}
 
 	navigation.setOptions({
-		title: `Создание события`,
+		title: event.id ? `Редактирование события` : `Создание события`,
 		headerRight: () => (
 			<>
 				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
