@@ -6,17 +6,13 @@ import {
 	SliderSaturationPicker,
 	SliderValuePicker,
 } from "react-native-slider-color-picker"
+import { Switch } from "react-native-paper"
 import {
-	// useTheme,
-	// Avatar,
-	// Title,
-	// Caption,
-	// Paragraph,
-	// Drawer,
-	// Text,
-	// TouchableRipple,
-	Switch,
-} from "react-native-paper"
+	EventRowDropDownPicker,
+	TextInputBlock,
+	DateTimePickerBlock,
+	TitleBlock,
+} from "../components/createComponents"
 import tinycolor from "tinycolor2"
 
 // import SliderColorPicker from "../components/SliderColorPicker"
@@ -63,6 +59,7 @@ const SettingsScreen = ({ navigation, route }) => {
 
 	return (
 		<View style={styles.container}>
+			<TitleBlock title="Настройка цветовой схемы" />
 			<View style={styles.row}>
 				<View style={styles.switchcontainer}>
 					<Text style={{ fontSize: 16, color: colors.text }}>Тёмная тема</Text>

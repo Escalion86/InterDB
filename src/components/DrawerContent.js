@@ -16,16 +16,16 @@ import { Ionicons } from "@expo/vector-icons"
 import { ThemeContext } from "../ThemeContext"
 
 const DrawerContent = (props) => {
-	const { setDark } = useContext(ThemeContext)
+	// const { setDark } = useContext(ThemeContext)
 
 	const theme = useTheme()
 	// const { setDark } = useContext(ThemeContext)
 	// const [theme, setDarkTheme] = useState(useTheme().dark)
 
-	const toggleTheme = () => {
-		// setDarkTheme({ ...theme, dark: !theme.dark })
-		setIsDarkTheme(!theme.dark)
-	}
+	// const toggleTheme = () => {
+	// 	// setDarkTheme({ ...theme, dark: !theme.dark })
+	// 	setIsDarkTheme(!theme.dark)
+	// }
 
 	const { colors } = theme
 
@@ -113,7 +113,7 @@ const DrawerContent = (props) => {
 							}}
 						/>
 					</Drawer.Section>
-					<Drawer.Section title="Настройки">
+					{/* <Drawer.Section title="Настройки">
 						<TouchableRipple
 							onPress={() => {
 								setDark(!theme.dark)
@@ -126,7 +126,7 @@ const DrawerContent = (props) => {
 								</View>
 							</View>
 						</TouchableRipple>
-					</Drawer.Section>
+					</Drawer.Section> */}
 				</View>
 			</DrawerContentScrollView>
 			<Drawer.Section style={styles.bottomDrawerSection}>

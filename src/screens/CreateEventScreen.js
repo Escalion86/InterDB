@@ -19,6 +19,7 @@ import ModalBottomMenu from "../components/ModalBottomMenu"
 import MainFlatListWithFab from "../components/MainFlatListWithFab"
 import ServiceCard from "../components/ServiceCard"
 import ClientCard from "../components/ClientCard"
+import { useTheme } from "@react-navigation/native"
 
 const CreateEventScreen = ({ navigation, route }) => {
 	const event =
@@ -26,7 +27,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 			? route.params.event
 			: { ...dbDefault("events"), date: new Date().setSeconds(0, 0) }
 
-	console.log("event", event)
+	const { colors } = useTheme()
 
 	const services = useSelector((state) => state.service.services).filter(
 		(item) => !item.archive
@@ -127,6 +128,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 						setModalServicesVisible(true)
 					}}
 					title={`Выберите услугу`}
+					color={colors.accent}
 				/>
 			) : (
 				<ServiceCard
@@ -167,6 +169,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 						setModalClientsVisible(true)
 					}}
 					title={`Выберите клиента`}
+					color={colors.accent}
 				/>
 			) : (
 				<ClientCard

@@ -20,8 +20,6 @@ const CreateServiceScreen = ({ navigation, route }) => {
 	const dispatch = useDispatch()
 	const [newService, setNewService] = useState(service)
 
-	console.log(newService)
-
 	const { colors } = useTheme()
 
 	const setServiceItem = (item) => {
