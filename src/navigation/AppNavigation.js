@@ -31,33 +31,7 @@ import CreateServiceScreen from "../screens/CreateServiceScreen"
 import DrawerContent from "../components/DrawerContent"
 
 import { useTheme } from "@react-navigation/native"
-import { darkTheme, lightTheme } from "../theme"
 import { ThemeContext } from "../ThemeContext"
-
-const _storeData = async (key, value) => {
-	try {
-		await AsyncStorage.setItem(key, value)
-	} catch (error) {
-		// Error saving data
-	}
-}
-
-const _retrieveData = async (key) => {
-	try {
-		const value = await AsyncStorage.getItem(key)
-		if (value !== null) {
-			// We have data!!
-			// console.log("value", value)
-			return value
-		} else {
-			// console.log("NO DATA")
-			return false
-		}
-	} catch (error) {
-		// Error retrieving data
-		return false
-	}
-}
 
 const Stack = createStackNavigator()
 const EventsStack = createStackNavigator()
@@ -377,27 +351,7 @@ const DrawerScreen = () => {
 export const AppNavigation = () => {
 	const dispatch = useDispatch()
 
-	const { theme, setDark } = useContext(ThemeContext)
-
-	// const [isDarkTheme, setIsDarkTheme] = useState(false)
-
-	// _retrieveData("darkTheme").then((data) => {
-	// 	setIsDarkTheme(data === "1")
-	// })
-
-	// const toggleDarkTheme = async () => {
-	// 	await _storeData("darkTheme", !isDarkTheme ? "1" : "0")
-	// 	setIsDarkTheme(!isDarkTheme)
-	// }
-
-	// let theme = null
-	// if (isDarkTheme) {
-	// 	theme = darkTheme
-	// } else {
-	// 	theme = lightTheme
-	// }
-
-	// console.log("theme", theme)
+	const { theme } = useContext(ThemeContext)
 	//После загрузки всех компонентов и state - загружаем данные БД
 	useEffect(() => {
 		dispatch(loadAll())

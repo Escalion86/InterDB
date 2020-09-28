@@ -32,7 +32,7 @@ export const ThemeContext = createContext({})
 
 export const ThemeProvider = ({ children }) => {
 	const [theme, setTheme] = useState(lightTheme)
-	const [accent, setAccent] = useState(lightTheme.accent)
+	const [accent, setAccent] = useState(lightTheme.colors.accent)
 	const { colors } = theme
 	const resultTheme = { ...theme, colors: { ...colors, accent } }
 
@@ -42,7 +42,7 @@ export const ThemeProvider = ({ children }) => {
 	}
 
 	const setAccentColor = async (color) => {
-		await _storeData("accentColor", color)
+		await _storeData("accentColors", color)
 		setAccent(color)
 	}
 
@@ -50,7 +50,7 @@ export const ThemeProvider = ({ children }) => {
 		setDark(data === "1")
 	})
 
-	_retrieveData("accentColor").then((data) => {
+	_retrieveData("accentColors").then((data) => {
 		if (data) setAccent(data)
 	})
 
