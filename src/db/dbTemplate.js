@@ -75,6 +75,7 @@ export const dbGenerator = (table = "event") => {
 				finance_organizator: rndArray([0, 1000, 2000]),
 				finance_assistants: rndArray([0, 500, 1000, 1500, 2000]),
 				finance_tips: rndArray([0, 500, 1000, 1500, 2000]),
+				finance_consumables: rndArray([0, 0, 0, 500, 1000]),
 				comment: null,
 				status: rndArray([
 					"Заметка",
@@ -247,7 +248,7 @@ export default dbTemplate = {
 			type: "text",
 			db_type: "TEXT",
 			not_null: false,
-			default: null,
+			default: "",
 			db_default: "",
 		},
 		{
@@ -256,7 +257,7 @@ export default dbTemplate = {
 			type: "text",
 			db_type: "TEXT",
 			not_null: false,
-			default: null,
+			default: "",
 			db_default: "",
 		},
 		{
@@ -265,7 +266,7 @@ export default dbTemplate = {
 			type: "text",
 			db_type: "TEXT",
 			not_null: false,
-			default: null,
+			default: "",
 			db_default: "",
 		},
 		{
@@ -283,7 +284,7 @@ export default dbTemplate = {
 			type: "integer",
 			db_type: "TEXT",
 			not_null: false,
-			default: null,
+			default: "",
 			db_default: "",
 		},
 		{
@@ -334,6 +335,15 @@ export default dbTemplate = {
 		{
 			db_name: "finance_assistants",
 			desc: "Финансы - ассистентам",
+			type: "integer",
+			db_type: "INTEGER",
+			not_null: true,
+			default: 0,
+			db_default: 0,
+		},
+		{
+			db_name: "finance_consumables",
+			desc: "Финансы - расходные материалы",
 			type: "integer",
 			db_type: "INTEGER",
 			not_null: true,

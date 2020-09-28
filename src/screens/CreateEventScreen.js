@@ -262,6 +262,16 @@ const CreateEventScreen = ({ navigation, route }) => {
 				placeholder="0"
 				postfix="&#8381;"
 			/>
+			<TextInputBlock
+				title="Расходные материалы"
+				value={newEvent.finance_consumables}
+				onChangeText={(text) =>
+					setEventItem({ finance_consumables: Math.floor(text) })
+				}
+				keyboardType="numeric"
+				placeholder="0"
+				postfix="&#8381;"
+			/>
 			<TitleBlock title="Адрес" />
 			<TextInputBlock
 				title="Название заведения"

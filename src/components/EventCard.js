@@ -30,7 +30,9 @@ const EventCard = ({ navigation, event }) => {
 		event.finance_price -
 		event.finance_road -
 		event.finance_organizator -
-		event.finance_assistants
+		event.finance_assistants -
+		event.finance_consumables +
+		event.finance_tips
 
 	if (event.loading || event.deleting) {
 		return (
@@ -58,6 +60,15 @@ const EventCard = ({ navigation, event }) => {
 	})[0]
 
 	if (!service) service = { name: "[ Услуга не найдена ]" }
+
+	const MenuRow = ({ title = "", num = 0, style = {} }) => (
+		<View style={{ ...styles.row, ...style }}>
+			<Text style={{ fontSize: 16, color: colors.text }}>{title}</Text>
+			<Text style={{ fontSize: 16, marginLeft: 20, color: colors.text }}>
+				{num}
+			</Text>
+		</View>
+	)
 
 	return (
 		<TouchableOpacity
@@ -154,63 +165,21 @@ const EventCard = ({ navigation, event }) => {
 						{/* </TouchableOpacity> */}
 					</MenuTrigger>
 					<MenuOptions style={styles.menuOptions}>
-						<View style={styles.row}>
-							<Text style={{ fontSize: 16, color: colors.text }}>
-								Цена клиента
-							</Text>
-							<Text
-								style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
-							>
-								{event.finance_price}
-							</Text>
-						</View>
-						<View style={styles.row}>
-							<Text style={{ fontSize: 16, color: colors.text }}>
-								За дорогу
-							</Text>
-							<Text
-								style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
-							>
-								{-event.finance_road}
-							</Text>
-						</View>
-						<View style={styles.row}>
-							<Text style={{ fontSize: 16, color: colors.text }}>
-								Организатору
-							</Text>
-							<Text
-								style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
-							>
-								{-event.finance_organizator}
-							</Text>
-						</View>
-						<View
+						<MenuRow title="Цена клиента" num={event.finance_price} />
+						<MenuRow title="За дорогу" num={-event.finance_road} />
+						<MenuRow title="Организатору" num={-event.finance_organizator} />
+						<MenuRow title="Расходники" num={-event.finance_consumables} />
+						<MenuRow title="Ассистентам" num={-event.finance_assistants} />
+						<MenuRow
+							title="Чаевые"
+							num={event.finance_tips}
 							style={{
-								...styles.row,
 								borderBottomColor: colors.text,
 								borderBottomWidth: 1,
 								paddingBottom: 5,
 							}}
-						>
-							<Text style={{ fontSize: 16, color: colors.text }}>
-								Ассистентам
-							</Text>
-							<Text
-								style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
-							>
-								{-event.finance_assistants}
-							</Text>
-						</View>
-						<View style={styles.row}>
-							<Text style={{ paddingTop: 5, fontSize: 16, color: colors.text }}>
-								ИТОГО
-							</Text>
-							<Text
-								style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
-							>
-								{profit}
-							</Text>
-						</View>
+						/>
+						<MenuRow title="ИТОГО" num={profit} style={{ paddingTop: 5 }} />
 					</MenuOptions>
 				</Menu>
 			</View>
@@ -330,5 +299,6 @@ const stylesFactory = (colors) =>
 		row: {
 			flexDirection: "row",
 			justifyContent: "space-between",
+			alignItems: "center",
 		},
 	})

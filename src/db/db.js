@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite"
 import dbTemplate, { prepareForDB } from "./dbTemplate"
 
-const DBName = "events11.db"
+const DBName = "events13.db"
 
 let db = SQLite.openDatabase(DBName)
 
@@ -162,6 +162,8 @@ export class DB {
 	static addEvent(event) {
 		const newEvent = prepareForDB("events", event)
 		newEvent.date = Math.floor(newEvent.date / 1000)
+
+		console.log("newEvent", newEvent)
 
 		return new Promise((resolve, reject) => {
 			const eventKeys = Object.keys(newEvent)
