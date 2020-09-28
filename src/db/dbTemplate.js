@@ -30,23 +30,37 @@ export const prepareForDB = (dbTableName, data) => {
 }
 
 export const dbGenerator = (table = "event") => {
+	const town = rndArray(["Красноярск", "Сосновоборск"])
 	switch (table) {
 		case "event":
 			return {
 				// auditory: rndArray(["Взрослые", "Дети", "Подростки", "Смешанная"]),
-				service: rndArray([1, 2]),
+				service: rndArray([0, 1, 2]),
 				date: new Date().setSeconds(0, 0),
 				duration: rndArray([20, 30, 40, 60]),
-				location_town: rndArray(["Красноярск", "Сосновоборск"]),
-				location_street: rndArray([
-					"Линейная",
-					"Высотная",
-					"9 мая",
-					"Караульная",
-					"Робиспьера",
-				]),
-				location_house: Math.floor(Math.random() * 100) + 1,
-				location_room: Math.floor(Math.random() * 300) + 1,
+				location_town: town,
+				location_street:
+					town == "Красноярск"
+						? rndArray([
+								"Линейная",
+								"Высотная",
+								"9 мая",
+								"Караульная",
+								"Робиспьера",
+								"Дубровинского",
+								"Карамзина",
+								"Перенсона",
+								"Ады лебедевой",
+						  ])
+						: rndArray([
+								"Энтузиастов",
+								"Весенняя",
+								"Солнечная",
+								"9 Пятилетки",
+								"проспект Мира",
+						  ]),
+				location_house: Math.floor(Math.random() * 80) + 1,
+				location_room: Math.floor(Math.random() * 200) + 1,
 				location_name: "Дом",
 				location_floor: null,
 				finance_price: rndArray([5000, 6000, 7000, 8000, 9000, 10000]),
@@ -73,12 +87,28 @@ export const dbGenerator = (table = "event") => {
 				]),
 			}
 		case "client":
-			const gender = rndArray([0, 1])
+			const gender = rndArray([0, 1, 3])
 			return {
 				name:
 					gender === 0
-						? rndArray(["Мария", "Анна", "Ирина", "Марина", "Светлана"])
-						: rndArray(["Василий", "Петр", "Федор", "Станислав", "Николай"]),
+						? rndArray([
+								"Мария",
+								"Анна",
+								"Ирина",
+								"Марина",
+								"Светлана",
+								"Ульяна",
+								"Инна",
+						  ])
+						: rndArray([
+								"Василий",
+								"Петр",
+								"Федор",
+								"Станислав",
+								"Николай",
+								"Михаил",
+								"Алексей",
+						  ]),
 				thirdname:
 					gender === 0
 						? rndArray([
@@ -87,6 +117,7 @@ export const dbGenerator = (table = "event") => {
 								"Дмитриевна",
 								"Алексеевна",
 								"Александровна",
+								"Петровна",
 						  ])
 						: rndArray([
 								"Васильевич",
@@ -94,6 +125,7 @@ export const dbGenerator = (table = "event") => {
 								"Федорович",
 								"Станиславович",
 								"Николаевич",
+								"Петрович",
 						  ]),
 				surname:
 					gender === 0
@@ -103,8 +135,19 @@ export const dbGenerator = (table = "event") => {
 								"Мартынова",
 								"Толстых",
 								"Смирнова",
+								"Толстова",
+								"Ломоносова",
 						  ])
-						: rndArray(["Пушкин", "Гудин", "Ушанов", "Мишин", "Стариков"]),
+						: rndArray([
+								"Пушкин",
+								"Гудин",
+								"Ушанов",
+								"Мишин",
+								"Стариков",
+								"Ломоносов",
+								"Гришин",
+								"Астахов",
+						  ]),
 				gender: gender,
 				phone: rndArray(["+79123456789", "+79234567890", "+793456789012"]),
 				email: "",
@@ -125,6 +168,10 @@ export const dbGenerator = (table = "event") => {
 					"Корпоратив, короткая",
 					"Юбилей, стандарт",
 					"Юбилей, короткая",
+					"Детский день рождения, короткая",
+					"Детский день рождения, мастер-класс",
+					"Детский день рождения, стандарт",
+					"Детский день рождения, шоу",
 				]),
 				description: "Описание",
 				price: rndArray([5000, 7000, 9000]),
