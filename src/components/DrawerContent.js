@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import { StyleSheet, View } from "react-native"
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer"
 import {
@@ -13,10 +13,13 @@ import {
 	Switch,
 } from "react-native-paper"
 import { Ionicons } from "@expo/vector-icons"
+import { ThemeContext } from "../ThemeContext"
 
 const DrawerContent = (props) => {
-	const { setIsDarkTheme } = props
+	const { setDark } = useContext(ThemeContext)
+
 	const theme = useTheme()
+	// const { setDark } = useContext(ThemeContext)
 	// const [theme, setDarkTheme] = useState(useTheme().dark)
 
 	const toggleTheme = () => {
@@ -113,7 +116,7 @@ const DrawerContent = (props) => {
 					<Drawer.Section title="Настройки">
 						<TouchableRipple
 							onPress={() => {
-								toggleTheme()
+								setDark(!theme.dark)
 							}}
 						>
 							<View style={styles.preference}>

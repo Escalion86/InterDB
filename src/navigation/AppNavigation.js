@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { AsyncStorage } from "react-native"
 
 import { useDispatch } from "react-redux"
@@ -32,6 +32,7 @@ import DrawerContent from "../components/DrawerContent"
 
 import { useTheme } from "@react-navigation/native"
 import { darkTheme, lightTheme } from "../theme"
+import { ThemeContext } from "../ThemeContext"
 
 const _storeData = async (key, value) => {
 	try {
@@ -287,8 +288,9 @@ const ServicesStackScreen = ({ navigation }) => (
 
 const Drawer = createDrawerNavigator()
 
-const DrawerScreen = ({ setIsDarkTheme }) => {
+const DrawerScreen = () => {
 	const { colors } = useTheme()
+	const { setDark } = useContext(ThemeContext)
 	return (
 		<Drawer.Navigator
 			drawerType="slide"
@@ -301,7 +303,7 @@ const DrawerScreen = ({ setIsDarkTheme }) => {
 			// 	}
 			// }
 			drawerContent={(props) => (
-				<DrawerContent {...props} setIsDarkTheme={setIsDarkTheme} />
+				<DrawerContent {...props} setIsDarkTheme={setDark} />
 			)}
 		>
 			<Drawer.Screen
@@ -371,30 +373,29 @@ const DrawerScreen = ({ setIsDarkTheme }) => {
 		</Drawer.Navigator>
 	)
 }
-// console.log("DefaultTheme", DefaultTheme)
-// console.log("darkTheme", darkTheme)
-// console.log("DefaultTheme", DefaultTheme)
 
 export const AppNavigation = () => {
 	const dispatch = useDispatch()
 
-	const [isDarkTheme, setIsDarkTheme] = useState(false)
+	const { theme, setDark } = useContext(ThemeContext)
 
-	_retrieveData("darkTheme").then((data) => {
-		setIsDarkTheme(data === "1")
-	})
+	// const [isDarkTheme, setIsDarkTheme] = useState(false)
 
-	const toggleDarkTheme = async () => {
-		await _storeData("darkTheme", !isDarkTheme ? "1" : "0")
-		setIsDarkTheme(!isDarkTheme)
-	}
+	// _retrieveData("darkTheme").then((data) => {
+	// 	setIsDarkTheme(data === "1")
+	// })
 
-	let theme = null
-	if (isDarkTheme) {
-		theme = darkTheme
-	} else {
-		theme = lightTheme
-	}
+	// const toggleDarkTheme = async () => {
+	// 	await _storeData("darkTheme", !isDarkTheme ? "1" : "0")
+	// 	setIsDarkTheme(!isDarkTheme)
+	// }
+
+	// let theme = null
+	// if (isDarkTheme) {
+	// 	theme = darkTheme
+	// } else {
+	// 	theme = lightTheme
+	// }
 
 	// console.log("theme", theme)
 	//После загрузки всех компонентов и state - загружаем данные БД
@@ -406,7 +407,7 @@ export const AppNavigation = () => {
 		<PaperProvider theme={theme}>
 			<NavigationContainer theme={theme}>
 				<StatusBar style={theme.dark ? "light" : "dark"} />
-				<DrawerScreen setIsDarkTheme={toggleDarkTheme} />
+				<DrawerScreen />
 			</NavigationContainer>
 		</PaperProvider>
 	)

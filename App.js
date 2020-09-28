@@ -14,6 +14,7 @@ import {
 	ActivityIndicator,
 } from "react-native"
 import store from "./src/store"
+import { ThemeProvider } from "./src/ThemeContext"
 
 export default function App() {
 	const [isReady, setIsReady] = useState(false)
@@ -31,7 +32,9 @@ export default function App() {
 	return (
 		<Provider store={store}>
 			<MenuProvider>
-				<AppNavigation />
+				<ThemeProvider>
+					<AppNavigation />
+				</ThemeProvider>
 				{/* <StatusBar style="auto" /> */}
 			</MenuProvider>
 		</Provider>

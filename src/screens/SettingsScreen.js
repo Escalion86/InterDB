@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { AppRegistry, Dimensions, StyleSheet, Text, View } from "react-native"
 import { useTheme } from "@react-navigation/native"
 import {
@@ -6,14 +6,29 @@ import {
 	SliderSaturationPicker,
 	SliderValuePicker,
 } from "react-native-slider-color-picker"
+import {
+	// useTheme,
+	// Avatar,
+	// Title,
+	// Caption,
+	// Paragraph,
+	// Drawer,
+	// Text,
+	// TouchableRipple,
+	Switch,
+} from "react-native-paper"
 import tinycolor from "tinycolor2"
 
-import SliderColorPicker from "../components/SliderColorPicker"
+// import SliderColorPicker from "../components/SliderColorPicker"
+import { ThemeContext } from "../ThemeContext"
 
 const { width } = Dimensions.get("window")
 
 const SettingsScreen = ({ navigation, route }) => {
-	const { colors } = useTheme()
+	const theme = useTheme()
+	const { colors } = theme
+	const { setDark, setAccent } = useContext(ThemeContext)
+
 	navigation.setOptions({
 		title: `Настройки`,
 		// headerRight: () => (
@@ -37,43 +52,51 @@ const SettingsScreen = ({ navigation, route }) => {
 		// ),
 	})
 
-	const [oldColor, setOldColor] = useState("#FF7700")
+	// const [oldColor, setOldColor] = useState("#FF7700")
 
 	const changeColor = (colorHsvOrRgb, resType) => {
 		if (resType === "end") {
 			const hex = tinycolor(colorHsvOrRgb).toHexString()
-			console.log("hex", hex)
-			setOldColor(hex)
+			setAccent(hex)
 		}
 	}
 
 	return (
-		// <SliderColorPicker />
 		<View style={styles.container}>
-			<View
-				style={{
-					marginHorizontal: 24,
-					marginTop: 20,
-					height: 12,
-					width: width - 48,
-				}}
-			>
-				<SliderHuePicker
-					ref={(view) => {
-						sliderHuePicker = view
-					}}
-					oldColor={oldColor}
-					trackStyle={[{ height: 12, width: width - 48 }]}
-					thumbStyle={styles.thumb}
-					useNativeDriver={true}
-					onColorChange={changeColor}
-					moveVelocityThreshold={0}
-				/>
+			<View style={styles.row}>
+				<View style={styles.switchcontainer}>
+					<Text style={{ fontSize: 16, color: colors.text }}>Тёмная тема</Text>
+					<Switch
+						value={theme.dark}
+						onValueChange={(value) => setDark(value)}
+					/>
+				</View>
 			</View>
-			<View style={styles.preference}>
-				<Text>Тёмная тема</Text>
-				<View pointerEvents="none">
-					<Switch value={theme.dark} />
+			<View style={styles.row}>
+				<Text style={{ fontSize: 16, color: colors.text }}>
+					Цвета активных элементов
+				</Text>
+				<View
+					style={{
+						marginHorizontal: 24,
+						// marginTop: 20,
+						height: 60,
+						width: width - 48,
+					}}
+				>
+					{/* <SliderColorPicker /> */}
+
+					<SliderHuePicker
+						// ref={(view) => {
+						// 	sliderHuePicker = view
+						// }}
+						oldColor={colors.accent}
+						trackStyle={[{ height: 12, width: width - 48 }]}
+						thumbStyle={styles.thumb}
+						useNativeDriver={true}
+						onColorChange={changeColor}
+						moveVelocityThreshold={0}
+					/>
 				</View>
 			</View>
 		</View>
@@ -87,37 +110,12 @@ const styles = StyleSheet.create({
 		flex: 1,
 		padding: 5,
 	},
-	developer: {
-		borderTopWidth: 2,
-		borderBottomWidth: 2,
+	row: {
+		marginBottom: 10,
+	},
+	switchcontainer: {
 		flexDirection: "row",
-		alignItems: "center",
-		marginVertical: 30,
-		paddingHorizontal: 20,
-	},
-	contacts: {
-		flexDirection: "row",
-		justifyContent: "space-evenly",
-		marginTop: 20,
-	},
-	paragraph: {
-		fontSize: 18,
-		marginBottom: 6,
-	},
-	content: {
-		flex: 1,
-	},
-	bottom: {
-		height: 30,
-		alignItems: "center",
-	},
-	version: {
-		fontSize: 14,
-	},
-	contact: {
-		alignItems: "center",
-		justifyContent: "center",
-		borderRadius: 200,
+		justifyContent: "space-between",
 	},
 	thumb: {
 		width: 20,

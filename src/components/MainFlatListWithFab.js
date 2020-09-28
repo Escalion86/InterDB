@@ -29,7 +29,7 @@ const MainFlatListWithFab = ({
 					onScroll={({ nativeEvent }) => {
 						if (fabVisible) {
 							const currentOffset = nativeEvent.contentOffset.y
-							setFabVisible(currentOffset < scrollPosition)
+							setFabIsVisible(currentOffset < scrollPosition)
 							// const direction = currentOffset > scrollPosition ? "down" : "up"
 							setScrollPosition(currentOffset)
 						}
