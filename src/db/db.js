@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite"
-import dbTemplate from "./dbTemplate"
+import dbTemplate, { prepareForDB } from "./dbTemplate"
 
 const DBName = "events11.db"
 
@@ -160,52 +160,9 @@ export class DB {
 	}
 
 	static addEvent(event) {
-		//Вычленяем только нужные ключи (такие как loading и пр. не нужны)
-		const {
-			// auditory,
-			service,
-			client,
-			date,
-			duration,
-			location_town,
-			location_street,
-			location_house,
-			location_room,
-			location_name,
-			location_floor,
-			finance_price, // profit = price - road - organizator - assistants
-			finance_status,
-			finance_avans,
-			finance_road,
-			finance_organizator,
-			finance_assistants,
-			finance_tips,
-			comment,
-			status,
-		} = event
-		//Помещаем ключи в объект события
-		newEvent = {
-			// auditory,
-			service,
-			client,
-			date: Math.floor(date / 1000), //корректируем так, как в DB не влазит
-			duration,
-			location_town,
-			location_street,
-			location_house,
-			location_room,
-			location_name,
-			location_floor,
-			finance_price, // profit = price - road - organizator - assistants
-			finance_status,
-			finance_avans,
-			finance_road,
-			finance_organizator,
-			finance_assistants,
-			finance_tips,
-			comment,
-			status,
-		}
+		const newEvent = prepareForDB("events", event)
+		newEvent.date = Math.floor(newEvent.date / 1000)
+
 		return new Promise((resolve, reject) => {
 			const eventKeys = Object.keys(newEvent)
 
@@ -223,51 +180,9 @@ export class DB {
 	}
 
 	static updateEvent(event) {
-		const {
-			id,
-			// auditory,
-			service,
-			client,
-			date,
-			duration,
-			location_town,
-			location_street,
-			location_house,
-			location_room,
-			location_name,
-			location_floor,
-			finance_price, // profit = price - road - organizator - assistants
-			finance_status,
-			finance_avans,
-			finance_road,
-			finance_organizator,
-			finance_assistants,
-			finance_tips,
-			comment,
-			status,
-		} = event
-		const eventToSend = {
-			// auditory,
-			service,
-			client,
-			date: Math.floor(date / 1000), //корректируем так, как в DB не влазит
-			duration,
-			location_town,
-			location_street,
-			location_house,
-			location_room,
-			location_name,
-			location_floor,
-			finance_price, // profit = price - road - organizator - assistants
-			finance_status,
-			finance_avans,
-			finance_road,
-			finance_organizator,
-			finance_assistants,
-			finance_tips,
-			comment,
-			status,
-		}
+		const eventToSend = prepareForDB("events", event)
+		eventToSend.date = Math.floor(eventToSend.date / 1000)
+
 		const eventKeys = Object.keys(eventToSend)
 		// console.log(`UPDATE events SET ${eventKeys.join(" = ? ")} = ? WHERE id = ?`)
 		// console.log(
@@ -282,7 +197,7 @@ export class DB {
 			db.transaction((tx) => {
 				tx.executeSql(
 					`UPDATE events SET ${eventKeys.join(" = ?, ")} = ? WHERE id = ?`,
-					[...Object.values(eventToSend), id],
+					[...Object.values(eventToSend), event.id],
 					resolve,
 					(_, error) => reject(error)
 				)
@@ -380,24 +295,8 @@ export class DB {
 	}
 
 	static addService(service) {
-		//Вычленяем только нужные ключи (такие как loading и пр. не нужны)
-		const {
-			name,
-			description,
-			price,
-			length,
-			preparetime,
-			collecttime,
-		} = service
-		//Помещаем ключи в объект события
-		newService = {
-			name,
-			description,
-			price,
-			length,
-			preparetime,
-			collecttime,
-		}
+		const newService = prepareForDB("services", service)
+
 		return new Promise((resolve, reject) => {
 			const serviceKeys = Object.keys(newService)
 			const serviceValues = Object.values(newService)
@@ -416,30 +315,14 @@ export class DB {
 	}
 
 	static updateService(service) {
-		const {
-			id,
-			name,
-			description,
-			price,
-			length,
-			preparetime,
-			collecttime,
-		} = service
-		const serviceToSend = {
-			name,
-			description,
-			price,
-			length,
-			preparetime,
-			collecttime,
-		}
+		const serviceToSend = prepareForDB("services", service)
 		const serviceKeys = Object.keys(serviceToSend)
 
 		return new Promise((resolve, reject) =>
 			db.transaction((tx) => {
 				tx.executeSql(
 					`UPDATE services SET ${serviceKeys.join(" = ?, ")} = ? WHERE id = ?`,
-					[...Object.values(serviceToSend), id],
+					[...Object.values(serviceToSend), service.id],
 					resolve,
 					(_, error) => reject(error)
 				)
@@ -448,36 +331,8 @@ export class DB {
 	}
 
 	static addClient(client) {
-		//Вычленяем только нужные ключи (такие как loading и пр. не нужны)
-		const {
-			name,
-			surname,
-			thirdname,
-			phone,
-			instagram,
-			vk,
-			facebook,
-			whatsapp,
-			viber,
-			telegram,
-			email,
-			gender,
-		} = client
-		//Помещаем ключи в объект события
-		newClient = {
-			name,
-			surname,
-			thirdname,
-			phone,
-			instagram,
-			vk,
-			facebook,
-			whatsapp,
-			viber,
-			telegram,
-			email,
-			gender,
-		}
+		const newClient = prepareForDB("clients", client)
+
 		return new Promise((resolve, reject) => {
 			const clientKeys = Object.keys(newClient)
 
@@ -495,42 +350,15 @@ export class DB {
 	}
 
 	static updateClient(client) {
-		const {
-			id,
-			name,
-			surname,
-			thirdname,
-			phone,
-			instagram,
-			vk,
-			facebook,
-			whatsapp,
-			viber,
-			telegram,
-			email,
-			gender,
-		} = client
-		const clientToSend = {
-			name,
-			surname,
-			thirdname,
-			phone,
-			instagram,
-			vk,
-			facebook,
-			whatsapp,
-			viber,
-			telegram,
-			email,
-			gender,
-		}
+		const clientToSend = prepareForDB("clients", client)
+
 		const clientKeys = Object.keys(clientToSend)
 
 		return new Promise((resolve, reject) =>
 			db.transaction((tx) => {
 				tx.executeSql(
 					`UPDATE clients SET ${clientKeys.join(" = ?, ")} = ? WHERE id = ?`,
-					[...Object.values(clientToSend), id],
+					[...Object.values(clientToSend), client.id],
 					resolve,
 					(_, error) => reject(error)
 				)

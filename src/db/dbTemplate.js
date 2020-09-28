@@ -21,44 +21,13 @@ const rndTime = () => {
 	return rndHours() + ":" + rndMinutes()
 }
 
-// export const dbDefault = {
-//   event: {
-//     // auditory: "Взрослые",
-//     event: "Юбилей",
-//     date: new Date().setSeconds(0, 0),
-//     duration: 30,
-//     location_town: "Красноярск",
-//     location_street: null,
-//     location_house: null,
-//     location_room: null,
-//     location_name: "Дом",
-//     location_floor: null,
-//     finance_price: 0, // profit = price - road - organizator - assistants
-//     finance_status: "Не оплачено",
-//     finance_avans: 0,
-//     finance_road: 0,
-//     finance_organizator: 0,
-//     finance_assistants: 0,
-//     finance_tips: 0,
-//     comment: null,
-//     status: "Заметка",
-//   },
-//   service: {
-//     name: "",
-//     description: "",
-//     price: 0,
-//     length: 0,
-//     preparetime: 0,
-//     collecttime: 0,
-//   },
-//   client: {
-//     name: "",
-//     phone: "",
-//     instagram: "",
-//     vk: "",
-//     facebook: "",
-//   },
-// }
+export const prepareForDB = (dbTableName, data) => {
+	let preperedData = {}
+	dbTemplate[dbTableName].forEach((item) => {
+		preperedData[item.db_name] = data[item.db_name]
+	})
+	return preperedData
+}
 
 export const dbGenerator = (table = "event") => {
 	switch (table) {
