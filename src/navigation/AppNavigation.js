@@ -19,6 +19,7 @@ import EventScreen from "../screens/EventScreen"
 import CreateEventScreen from "../screens/CreateEventScreen"
 import ClientsScreen from "../screens/ClientsScreen"
 import ClientScreen from "../screens/ClientScreen"
+import SettingsScreen from "../screens/SettingsScreen"
 import CreateClientScreen from "../screens/CreateClientScreen"
 import DevScreen from "../screens/DevScreen"
 import DevTableScreen from "../screens/DevTableScreen"
@@ -63,6 +64,7 @@ const ClientsStack = createStackNavigator()
 const ServicesStack = createStackNavigator()
 const DevStack = createStackNavigator()
 const AboutStack = createStackNavigator()
+const SettingsStack = createStackNavigator()
 
 // const burgerButton = (navigation) => (
 // 	<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
@@ -145,7 +147,7 @@ const DevStackScreen = ({ navigation }) => (
 
 const AboutStackScreen = ({ navigation }) => (
 	<StackNavigator navigation={navigation} initialRouteName="Main">
-		<DevStack.Screen
+		<AboutStack.Screen
 			name="About"
 			component={AboutScreen}
 			options={{
@@ -157,6 +159,18 @@ const AboutStackScreen = ({ navigation }) => (
       name="DevColumn"
       component={DevColumnScreen}
     /> */}
+	</StackNavigator>
+)
+
+const SettingsStackScreen = ({ navigation }) => (
+	<StackNavigator navigation={navigation} initialRouteName="Main">
+		<SettingsStack.Screen
+			name="Settings"
+			component={SettingsScreen}
+			options={{
+				headerLeft: () => burgerButton(navigation),
+			}}
+		/>
 	</StackNavigator>
 )
 
@@ -341,6 +355,16 @@ const DrawerScreen = ({ setIsDarkTheme }) => {
 							size={24}
 							color={colors.text}
 						/>
+					),
+				}}
+			/>
+			<Drawer.Screen
+				name="Settings"
+				component={SettingsStackScreen}
+				options={{
+					drawerLabel: "Настройки",
+					drawerIcon: () => (
+						<Ionicons name="md-settings" size={24} color={colors.text} />
 					),
 				}}
 			/>

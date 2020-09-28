@@ -31,7 +31,7 @@ const DrawerContent = (props) => {
 			<DrawerContentScrollView {...props}>
 				<View style={styles.drawerContent}>
 					<Drawer.Section style={styles.drawerSection}>
-						<View style={styles.userInfoSection}>
+						{/* <View style={styles.userInfoSection}>
 							<View style={{ flexDirection: "row", marginTop: 15 }}>
 								<Avatar.Image
 									source={require("../../assets/avatar/male.jpg")}
@@ -50,7 +50,7 @@ const DrawerContent = (props) => {
 								</View>
 							</View>
 
-							{/* <View style={styles.row}>
+							<View style={styles.row}>
 							<View style={styles.section}>
 								<Paragraph style={[styles.paragraph, styles.caption]}>
 									80
@@ -63,8 +63,8 @@ const DrawerContent = (props) => {
 								</Paragraph>
 								<Caption style={styles.caption}>Followers</Caption>
 							</View>
-						</View> */}
 						</View>
+						</View> */}
 					</Drawer.Section>
 					<Drawer.Section style={styles.drawerSection}>
 						<DrawerItem
@@ -127,6 +127,20 @@ const DrawerContent = (props) => {
 				</View>
 			</DrawerContentScrollView>
 			<Drawer.Section style={styles.bottomDrawerSection}>
+				<DrawerItem
+					icon={({ color, size }) => (
+						<Ionicons
+							name="md-settings"
+							size={22}
+							color={colors.text}
+							style={{ marginLeft: 5 }}
+						/>
+					)}
+					label="Настройки"
+					onPress={() => {
+						props.navigation.navigate("Settings")
+					}}
+				/>
 				<DrawerItem
 					icon={({ color, size }) => (
 						<Ionicons

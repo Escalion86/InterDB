@@ -59,21 +59,23 @@ const ServiceCard = ({
 			style={styles.card}
 			onPress={onPress}
 		>
-			<View style={styles.left}>
-				<Image
-					style={{
-						// flex: 1,
-						borderRadius: 5,
-						borderWidth: 1,
-						borderColor: colors.border,
-						width: "100%",
-						height: "100%",
-					}}
-					source={!service.image ? noImageUrl : { uri: service.image }}
-					// resizeMethod="scale"
-					resizeMode="cover"
-				/>
-			</View>
+			{service.image ? (
+				<View style={styles.left}>
+					<Image
+						style={{
+							// flex: 1,
+							borderRadius: 5,
+							borderWidth: 1,
+							borderColor: colors.border,
+							width: "100%",
+							height: "100%",
+						}}
+						source={!service.image ? noImageUrl : { uri: service.image }}
+						// resizeMethod="scale"
+						resizeMode="cover"
+					/>
+				</View>
+			) : null}
 			<View style={styles.middle}>
 				<View style={styles.cardheader}>
 					<Text style={styles.cardtitle}>{service.name}</Text>

@@ -78,15 +78,13 @@ const ServicesScreen = ({ navigation, route }) => {
 					{showArchvedOnly ? "Архив пуст" : "Услуг нет"}
 				</Text>
 
-				{showArchvedOnly ? null : (
-					<Fab
-						visible={true}
-						onPress={() => {
-							navigation.navigate("CreateService")
-						}}
-						label="Добавить услугу"
-					/>
-				)}
+				<Fab
+					visible={!showArchvedOnly}
+					onPress={() => {
+						navigation.navigate("CreateService")
+					}}
+					label="Добавить услугу"
+				/>
 			</View>
 		)
 	}
@@ -94,6 +92,7 @@ const ServicesScreen = ({ navigation, route }) => {
 	return (
 		<MainFlatListWithFab
 			data={services}
+			fabVisible={!showArchvedOnly}
 			renderItem={({ item }) => (
 				<ServiceCard navigation={navigation} service={item} />
 			)}

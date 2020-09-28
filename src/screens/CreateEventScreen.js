@@ -210,7 +210,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 			/> */}
 			<TitleBlock title="Финансы" />
 			<TextInputBlock
-				title="Цена клиента"
+				title="Цена для клиента"
 				value={newEvent.finance_price}
 				onChangeText={(text) =>
 					setEventItem({ finance_price: Math.floor(text) })
