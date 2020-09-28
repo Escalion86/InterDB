@@ -13,7 +13,6 @@ import {
 	SET_FINANCE_STATUS,
 } from "../types"
 import { DB } from "../../db/db"
-import dbTemplate from "../../db/dbTemplate"
 
 export const loadEvents = () => {
 	return async (dispatch) => {

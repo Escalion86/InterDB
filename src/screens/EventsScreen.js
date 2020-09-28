@@ -1,28 +1,25 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import {
 	StyleSheet,
 	Text,
 	View,
-	FlatList,
 	ActivityIndicator,
 	TouchableOpacity,
 } from "react-native"
 import {
 	Menu,
-	MenuProvider,
 	MenuOptions,
 	MenuTrigger,
 	renderers,
 } from "react-native-popup-menu"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
-import { loadEvents, addEvent, deleteAllEvents } from "../store/actions/event"
+import { addEvent, deleteAllEvents } from "../store/actions/event"
 import EventCard from "../components/EventCard"
 import { dbGenerator } from "../db/dbTemplate"
 import { useTheme } from "@react-navigation/native"
 import { Ionicons } from "@expo/vector-icons"
-import { loadAll } from "../store/actions/db"
 import * as Animatable from "react-native-animatable"
 import Fab from "../components/Fab"
 import MainFlatListWithFab from "../components/MainFlatListWithFab"

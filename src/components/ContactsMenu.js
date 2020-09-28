@@ -1,19 +1,10 @@
 import React from "react"
-import {
-	StyleSheet,
-	Text,
-	View,
-	ActivityIndicator,
-	TouchableOpacity,
-	Linking,
-	Image,
-} from "react-native"
+import { StyleSheet, Text, View, Linking } from "react-native"
 import {
 	Menu,
 	MenuOptions,
 	MenuOption,
 	MenuTrigger,
-	// renderers,
 } from "react-native-popup-menu"
 import { useTheme } from "@react-navigation/native"
 import { FontAwesome5 } from "@expo/vector-icons"
@@ -149,7 +140,11 @@ const ContactsMenu = ({
 							backgroundColor: triggerBackgroundColor,
 						}}
 					>
-						<FontAwesome5 name="phone" size={size} color={colors.text} />
+						<FontAwesome5
+							name={triggerIconName}
+							size={size}
+							color={triggerIconColor}
+						/>
 					</View>
 				}
 			/>

@@ -11,9 +11,6 @@ const ServiceScreen = ({ navigation, route }) => {
 			? route.params.service
 			: navigation.navigate("Services")
 
-	console.log("typeof service.image", typeof service.image)
-	console.log("service.image", service.image)
-
 	const [archive, setArchive] = useState(service.archive)
 
 	const toggleArchive = () => {

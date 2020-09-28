@@ -3,7 +3,6 @@ import dbTemplate from "../../db/dbTemplate"
 import { loadEvents } from "./event"
 import { loadServices } from "./service"
 import { loadClients } from "./client"
-// import { loadAll } from "./src/store/actions/db"
 
 export const loadAll = () => {
 	return async (dispatch) => {

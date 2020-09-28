@@ -8,22 +8,13 @@ import {
 } from "react-native"
 import {
 	Menu,
-	MenuProvider,
 	MenuOptions,
 	MenuTrigger,
 	renderers,
 } from "react-native-popup-menu"
 import { Ionicons } from "@expo/vector-icons"
 import { formatDate, formatTime, getWeekDay } from "../helpers/date"
-import { StatusIcon, FinanceIcon } from "./icons"
 import { useTheme } from "@react-navigation/native"
-import { setEventStatus, setFinanceStatus } from "../store/actions/event"
-import { Root, Toast } from "popup-ui"
-
-import {
-	statusIconDependencies,
-	financeIconDependencies,
-} from "../db/dependencies"
 import IconMenu from "./IconMenu"
 
 export const EventCard = ({ navigation, event }) => {

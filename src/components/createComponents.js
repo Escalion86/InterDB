@@ -4,11 +4,8 @@ import {
 	Text,
 	View,
 	TouchableOpacity,
-	TouchableHighlight,
-	TouchableWithoutFeedback,
 	TextInput,
 	Image,
-	Modal,
 	Dimensions,
 } from "react-native"
 // import TextInputMask from "react-native-text-input-mask"

@@ -1,20 +1,9 @@
 import React, { useState } from "react"
-import {
-	StyleSheet,
-	Text,
-	View,
-	TouchableOpacity,
-	TextInput,
-	ScrollView,
-	Button,
-} from "react-native"
+import { StyleSheet, ScrollView, Button } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
-import DropDownPicker from "react-native-dropdown-picker"
 import { addEvent, updateEvent } from "../store/actions/event"
-import DateTimePicker from "@react-native-community/datetimepicker"
-import { formatDate, formatTime } from "../helpers/date"
 import {
 	statusIconDependencies,
 	financeIconDependencies,
@@ -25,7 +14,6 @@ import {
 	TextInputBlock,
 	DateTimePickerBlock,
 	TitleBlock,
-	DropDownPickerBlock,
 } from "../components/createComponents"
 import ModalBottomMenu from "../components/ModalBottomMenu"
 import MainFlatListWithFab from "../components/MainFlatListWithFab"

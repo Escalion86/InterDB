@@ -8,7 +8,6 @@ import { useTheme } from "@react-navigation/native"
 import { addService, updateService } from "../store/actions/service"
 import {
 	TextInputBlock,
-	TitleBlock,
 	ImagePickerBlock,
 } from "../components/createComponents"
 

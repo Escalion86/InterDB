@@ -1,5 +1,5 @@
 import React from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import {
 	StyleSheet,
 	Text,
@@ -17,11 +17,7 @@ import {
 } from "react-native-popup-menu"
 import { Ionicons } from "@expo/vector-icons"
 import { formatDate, formatTime, getWeekDay } from "../helpers/date"
-import { StatusIcon, FinanceIcon } from "./icons"
 import { useTheme } from "@react-navigation/native"
-import { setEventStatus, setFinanceStatus } from "../store/actions/event"
-import { Root, Toast } from "popup-ui"
-import { HeaderButtons, Item } from "react-navigation-header-buttons"
 
 import IconMenu from "./IconMenu"
 

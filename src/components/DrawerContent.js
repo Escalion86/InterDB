@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { ActivityIndicatorBase, StyleSheet, View } from "react-native"
+import React from "react"
+import { StyleSheet, View } from "react-native"
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer"
 import {
 	useTheme,

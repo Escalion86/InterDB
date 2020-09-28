@@ -3,16 +3,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { StyleSheet, Text, View, FlatList } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
-import {
-	loadServices,
-	addService,
-	deleteAllServices,
-} from "../store/actions/service"
+import { addService, deleteAllServices } from "../store/actions/service"
 import { dbGenerator } from "../db/dbTemplate"
 import ServiceCard from "../components/ServiceCard"
-import { Ionicons } from "@expo/vector-icons"
 import { useTheme } from "@react-navigation/native"
-import * as Animatable from "react-native-animatable"
 import Fab from "../components/Fab"
 import MainFlatListWithFab from "../components/MainFlatListWithFab"
 

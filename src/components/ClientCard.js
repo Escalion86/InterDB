@@ -5,11 +5,9 @@ import {
 	View,
 	ActivityIndicator,
 	TouchableOpacity,
-	Linking,
 	Image,
 } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
-import { formatDate, formatTime, getWeekDay } from "../helpers/date"
 import { useTheme } from "@react-navigation/native"
 import ContactsMenu from "./ContactsMenu"
 
@@ -92,7 +90,7 @@ const ClientCard = ({
 			</View>
 			{listMode ? null : (
 				<View style={styles.right}>
-					<ContactsMenu client={client} />
+					<ContactsMenu client={client} triggerIconName="phone" />
 				</View>
 			)}
 		</TouchableOpacity>

@@ -3,19 +3,12 @@ import { AsyncStorage } from "react-native"
 
 import { useDispatch } from "react-redux"
 import { loadAll } from "../store/actions/db"
-import {
-	DefaultTheme,
-	DarkTheme,
-	Provider as PaperProvider,
-} from "react-native-paper"
+import { Provider as PaperProvider } from "react-native-paper"
 
 import { StatusBar } from "expo-status-bar"
 import burgerButton from "../components/burgerButton"
 
 import { NavigationContainer } from "@react-navigation/native"
-import { HeaderButtons, Item } from "react-navigation-header-buttons"
-
-import { Platform, Text, View } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"

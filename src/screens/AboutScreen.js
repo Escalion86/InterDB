@@ -1,10 +1,6 @@
 import React from "react"
 import { StyleSheet, Text, View, Linking, Image } from "react-native"
-import { HeaderButtons, Item } from "react-navigation-header-buttons"
-import { AppHeaderIcon } from "../components/AppHeaderIcon"
-import burgerButton from "../components/burgerButton"
 import { useTheme } from "@react-navigation/native"
-import { colors } from "react-native-elements"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { FontAwesome5 } from "@expo/vector-icons"
 

@@ -1,20 +1,7 @@
 import React from "react"
 import { Ionicons } from "@expo/vector-icons"
-import {
-	statusIconDependencies,
-	financeIconDependencies,
-	eventIconDependencies,
-	auditoryIconDependencies,
-} from "../db/dependencies"
-import { IconButton } from "react-native-paper"
-import {
-	TouchableHighlight,
-	View,
-	Text,
-	StyleSheet,
-	Button,
-} from "react-native"
-// import { Button, Icon } from "react-native-elements"
+import { statusIconDependencies } from "../db/dependencies"
+import { View, Text, StyleSheet } from "react-native"
 
 export const MainIcon = ({
 	dependencies = statusIconDependencies,
