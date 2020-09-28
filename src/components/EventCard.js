@@ -6,7 +6,6 @@ import {
 	View,
 	ActivityIndicator,
 	TouchableOpacity,
-	Linking,
 } from "react-native"
 import {
 	Menu,
@@ -20,6 +19,7 @@ import { formatDate, formatTime, getWeekDay } from "../helpers/date"
 import { useTheme } from "@react-navigation/native"
 
 import IconMenu from "./IconMenu"
+import LinkTo from "../helpers/LinkTo"
 
 const EventCard = ({ navigation, event }) => {
 	const { Popover } = renderers
@@ -104,10 +104,29 @@ const EventCard = ({ navigation, event }) => {
 						size={22}
 						color={colors.text}
 						style={{ marginLeft: 5 }}
-						onPress={() =>
-							Linking.openURL(
-								`yandexnavi://map_search?text=${event.location_town},%20${event.location_street}%20${event.location_house}`
-							)
+						onPress={
+							() =>
+								LinkTo(
+									`yandexnavi://map_search?text=${event.location_town},%20${event.location_street}%20${event.location_house}`
+								)
+							// fetch(
+							//   "https://geocode-maps.yandex.ru/1.x/?format=json&apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=Красноярск+Линейная+109"
+							// )
+							//   .then((response) => response.json())
+							//   .then((result) => {
+							//     let geoObject =
+							//       result.response.GeoObjectCollection.featureMember[0].GeoObject
+							//         .Point.pos
+							//     geoObject = geoObject.split(" ") //.join(",")
+							//     console.log("geoObject :>> ", geoObject)
+							//     // Linking.openURL(
+							//     //   `https://geocode-maps.yandex.ru/1.x/?apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=${geoObject}`
+							//     // )
+							//     Linking.openURL(
+							//       //`yandexnavi://show_point_on_map?lat=${geoObject[1]}&lon=${geoObject[0]}&zoom=12&no-balloon=0&desc=кафе с wi-fi`
+							//       `yandexnavi://build_route_on_map?lat_to=${geoObject[1]}&lon_to=${geoObject[0]}`
+							//     )
+							//   })
 						}
 					/>
 				</View>

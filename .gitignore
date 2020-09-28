@@ -9,6 +9,7 @@ npm-debug.*
 *.orig.*
 web-build/
 src/components/noGit/
+.vscode
 
 # macOS
 .DS_Store
