@@ -118,13 +118,15 @@ const EventCard = ({ navigation, event }) => {
 			</View>
 			<View style={styles.right}>
 				<View style={styles.carddate}>
-					<Text style={styles.datetime}>
-						{formatDate(new Date(event.date))}
-					</Text>
-					<Text style={styles.datetime}>
-						{getWeekDay(new Date(event.date))}{" "}
-						{formatTime(new Date(event.date))}
-					</Text>
+					<View>
+						<Text style={styles.datetime}>
+							{formatDate(new Date(event.date))}
+						</Text>
+						<Text style={styles.datetime}>
+							{getWeekDay(new Date(event.date))}{" "}
+							{formatTime(new Date(event.date))}
+						</Text>
+					</View>
 				</View>
 				<Menu
 					style={styles.finance}
@@ -222,7 +224,13 @@ const stylesFactory = (colors) =>
 			justifyContent: "space-around",
 			borderRightColor: colors.border,
 		},
-		carddate: { height: 50, padding: 5 },
+		carddate: {
+			flex: 1,
+			// height: 50,
+			padding: 5,
+			alignItems: "center",
+			justifyContent: "center",
+		},
 		middle: {
 			// padding: 10,
 			flex: 1,
@@ -255,7 +263,7 @@ const stylesFactory = (colors) =>
 			minHeight: 46,
 			// borderColor: "red",
 			// borderWidth: 1,
-			paddingHorizontal: 10,
+			paddingHorizontal: 5,
 			justifyContent: "center",
 			alignItems: "center",
 			borderTopWidth: 1,
