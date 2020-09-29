@@ -16,7 +16,7 @@ import { formatDate, formatTime } from "../helpers/date"
 import { MainIcon } from "./icons"
 import * as ImagePicker from "expo-image-picker"
 import { Switch } from "react-native-switch"
-import ModalBottomMenu from "./ModalBottomMenu"
+import ModalBottomMenu, { ModalMenuButton } from "./ModalBottomMenu"
 // import TextInputMask from "./TextInputMask"
 // import TextInputMask from "react-native-text-input-mask"
 
@@ -108,40 +108,27 @@ export const ImagePickerBlock = ({
 			visible={modalVisible}
 			onOuterClick={() => setModalVisible(false)}
 		>
-			<TouchableOpacity
-				style={{ ...styles.panelButton, backgroundColor: colors.accent }}
+			<ModalMenuButton
+				title="Сделать фотографию"
 				onPress={() => {
-					setModalVisible(!modalVisible)
+					setModalVisible(false)
 					takePhoto()
 				}}
-			>
-				<Text style={{ ...styles.panelButtonTitle, color: colors.accentText }}>
-					Сделать фотографию
-				</Text>
-			</TouchableOpacity>
-			<TouchableOpacity
-				style={{
-					...styles.panelButton,
-					backgroundColor: colors.accent,
-				}}
+			/>
+			<ModalMenuButton
+				title="Выбрать из галереи"
 				onPress={() => {
-					setModalVisible(!modalVisible)
+					setModalVisible(false)
 					chooseImage()
 				}}
-			>
-				<Text style={{ ...styles.panelButtonTitle, color: colors.accentText }}>
-					Выбрать из галереи
-				</Text>
-			</TouchableOpacity>
-			<TouchableOpacity
-				style={{
-					...styles.panelButton,
-					backgroundColor: colors.abort,
+			/>
+			<ModalMenuButton
+				title="Отмена"
+				btnDecline
+				onPress={() => {
+					setModalVisible(false)
 				}}
-				onPress={() => setModalVisible(!modalVisible)}
-			>
-				<Text style={styles.panelButtonTitle}>Отмена</Text>
-			</TouchableOpacity>
+			/>
 		</ModalBottomMenu>
 	)
 

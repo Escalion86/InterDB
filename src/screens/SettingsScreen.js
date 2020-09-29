@@ -18,6 +18,8 @@ import tinycolor from "tinycolor2"
 // import SliderColorPicker from "../components/SliderColorPicker"
 import { ThemeContext } from "../ThemeContext"
 
+import { ModalMenuButton } from "../components/ModalBottomMenu"
+
 const { width } = Dimensions.get("window")
 
 const SettingsScreen = ({ navigation, route }) => {
@@ -95,6 +97,9 @@ const SettingsScreen = ({ navigation, route }) => {
 						moveVelocityThreshold={0}
 					/>
 				</View>
+			</View>
+			<View style={styles.row}>
+				<ModalMenuButton title="Проверочка цвета" />
 			</View>
 		</View>
 	)

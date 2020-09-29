@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import {
 	StyleSheet,
 	Text,
@@ -8,6 +8,7 @@ import {
 	Modal,
 } from "react-native"
 import { useTheme } from "@react-navigation/native"
+import { colors } from "react-native-elements"
 
 const ModalBottomMenu = ({
 	children,
@@ -60,6 +61,84 @@ const ModalBottomMenu = ({
 				</TouchableWithoutFeedback>
 			</TouchableOpacity>
 		</Modal>
+	)
+}
+
+export const ModalMenuButton = ({
+	title = "",
+	btnDecline = false,
+	onPress = () => {},
+}) => {
+	const { colors } = useTheme()
+	return (
+		<TouchableOpacity
+			style={{
+				...styles.panelButton,
+				backgroundColor: btnDecline ? colors.abort : colors.accent,
+			}}
+			onPress={onPress}
+		>
+			<Text
+				style={{
+					...styles.panelButtonTitle,
+					color: btnDecline ? colors.abortText : colors.accentText,
+				}}
+			>
+				{title}
+			</Text>
+		</TouchableOpacity>
+	)
+}
+
+export const ModalBottomMenuYesNo = ({
+	title = "",
+	subtitle = "",
+	onAccept = () => {},
+	children = null,
+	btnTitleConfirm = "Да",
+	btnTitleDecline = "Нет",
+	visible = false,
+	closer = null,
+}) => {
+	const withState = !children
+	const [modalVisible, setModalVisible] = useState(visible)
+
+	return (
+		<View>
+			{children ? (
+				<TouchableOpacity
+					onPress={() => {
+						setModalVisible(true)
+					}}
+				>
+					{children}
+				</TouchableOpacity>
+			) : null}
+			<ModalBottomMenu
+				title={title}
+				subtitle={subtitle}
+				visible={withState ? modalVisible : visible}
+				onOuterClick={() => {
+					withState ? setModalVisible(false) : closer()
+				}}
+			>
+				<ModalMenuButton
+					title={btnTitleConfirm}
+					btnDecline={false}
+					onPress={() => {
+						withState ? setModalVisible(false) : closer()
+						onAccept()
+					}}
+				/>
+				<ModalMenuButton
+					title={btnTitleDecline}
+					btnDecline={true}
+					onPress={() => {
+						withState ? setModalVisible(false) : closer()
+					}}
+				/>
+			</ModalBottomMenu>
+		</View>
 	)
 }
 
