@@ -10,6 +10,7 @@ import {
 import { useTheme } from "@react-navigation/native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { FontAwesome5 } from "@expo/vector-icons"
+import Button from "../components/Button"
 
 const AboutScreen = ({ navigation, route }) => {
 	const { colors } = useTheme()
@@ -131,9 +132,18 @@ const AboutScreen = ({ navigation, route }) => {
 						resizeMode="cover"
 					/>
 				</View>
+				<Button
+					title="Поблагодарить"
+					style={{ marginBottom: 20 }}
+					onPress={() =>
+						Linking.openURL(
+							"https://money.alfabank.ru/p2p/web/transfer/abelinskii3048"
+						)
+					}
+				/>
 			</ScrollView>
 
-			<View style={styles.bottom}>
+			<View style={{ ...styles.bottom, borderColor: colors.card }}>
 				<Text style={{ ...styles.version, color: colors.text }}>
 					Версия: 0.0.1
 				</Text>
@@ -154,7 +164,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 2,
 		flexDirection: "row",
 		alignItems: "center",
-		marginVertical: 30,
+		marginVertical: 20,
 		paddingHorizontal: 20,
 	},
 	contacts: {
@@ -172,6 +182,8 @@ const styles = StyleSheet.create({
 	bottom: {
 		height: 30,
 		alignItems: "center",
+		paddingTop: 5,
+		borderTopWidth: 1,
 	},
 	version: {
 		fontSize: 14,
