@@ -77,10 +77,10 @@ const SettingsScreen = ({ navigation, route }) => {
 				</Text>
 				<View
 					style={{
-						marginHorizontal: 24,
-						// marginTop: 20,
-						height: 60,
-						width: width - 48,
+						marginHorizontal: 20,
+						marginTop: 10,
+						height: 32,
+						width: width - 40,
 					}}
 				>
 					{/* <SliderColorPicker /> */}
@@ -90,7 +90,7 @@ const SettingsScreen = ({ navigation, route }) => {
 						// 	sliderHuePicker = view
 						// }}
 						oldColor={colors.accent}
-						trackStyle={[{ height: 12, width: width - 48 }]}
+						trackStyle={[{ height: 12, width: width - 50 }]}
 						thumbStyle={styles.thumb}
 						useNativeDriver={true}
 						onColorChange={changeColor}
@@ -98,8 +98,9 @@ const SettingsScreen = ({ navigation, route }) => {
 					/>
 				</View>
 			</View>
+			<Text style={{ fontSize: 16, color: colors.text }}>Пример:</Text>
 			<View style={styles.row}>
-				<ModalMenuButton title="Проверочка цвета" />
+				<ModalMenuButton title="Цвет текста подбирается автоматически" />
 			</View>
 		</View>
 	)
