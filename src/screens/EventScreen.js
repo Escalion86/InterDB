@@ -1,10 +1,11 @@
-import React from "react"
+import React, { useState } from "react"
 import { StyleSheet, Text, View, Linking } from "react-native"
 import { useDispatch } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import { formatDateTime } from "../helpers/date"
 import { deleteEvent } from "../store/actions/event"
+import { ModalBottomMenuYesNo } from "../components/ModalBottomMenu"
 
 const EventScreen = ({ navigation, route }) => {
 	const event =
@@ -12,7 +13,22 @@ const EventScreen = ({ navigation, route }) => {
 			? route.params.event
 			: navigation.navigate("Events")
 
+	const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
+
 	const dispatch = useDispatch()
+
+	const ModalDeleteConfirm = () => (
+		<ModalBottomMenuYesNo
+			title="Удаление события"
+			subtitle="Вы уверены что хотите удалить событие?"
+			onAccept={() => {
+				dispatch(deleteEvent(event.id))
+				navigation.goBack()
+			}}
+			visible={modalDeleteVisible}
+			closer={() => setModalDeleteVisible(false)}
+		/>
+	)
 
 	navigation.setOptions({
 		title: `Событие ${formatDateTime(new Date(event.date))}`,
@@ -22,10 +38,10 @@ const EventScreen = ({ navigation, route }) => {
 					title="Delete Event"
 					iconName="ios-trash"
 					onPress={() => {
-						dispatch(deleteEvent(event.id))
-						navigation.navigate("Events")
+						setModalDeleteVisible(true)
+						// dispatch(deleteEvent(event.id))
+						// navigation.navigate("Events")
 					}}
-					// onPress={() => navigation.navigate("Create")}
 				/>
 
 				<Item
@@ -34,8 +50,8 @@ const EventScreen = ({ navigation, route }) => {
 					onPress={() => {
 						navigation.navigate("CreateEvent", { event: event })
 					}}
-					// onPress={() => navigation.navigate("Create")}
 				/>
+				<ModalDeleteConfirm />
 			</HeaderButtons>
 		),
 	})
