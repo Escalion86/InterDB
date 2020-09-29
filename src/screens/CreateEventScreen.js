@@ -38,6 +38,9 @@ const CreateEventScreen = ({ navigation, route }) => {
 	const [newEvent, setNewEvent] = useState(event)
 	// const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
 
+	const serviceObj = services.find((item) => item.id == newEvent.service)
+	const clientObj = clients.find((item) => item.id == newEvent.client)
+
 	const setEventItem = (item) => {
 		setNewEvent({ ...newEvent, ...item })
 	}
@@ -122,7 +125,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 				onChangeItem={(item) => setEventItem({ service: item.value })}
 				searchable={services.length > 8}
 			/> */}
-			{!newEvent.service ? (
+			{!serviceObj ? (
 				<Button
 					onPress={() => {
 						setModalServicesVisible(true)
@@ -133,7 +136,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 			) : (
 				<ServiceCard
 					navigation={navigation}
-					service={services.find((item) => item.id == newEvent.service)}
+					service={serviceObj}
 					onPress={() => {
 						setModalServicesVisible(true)
 					}}
@@ -163,7 +166,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 			</ModalBottomMenu>
 
 			<TitleBlock title="Клиент" />
-			{!newEvent.client ? (
+			{!clientObj ? (
 				<Button
 					onPress={() => {
 						setModalClientsVisible(true)
@@ -174,7 +177,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 			) : (
 				<ClientCard
 					navigation={navigation}
-					client={clients.find((item) => item.id == newEvent.client)}
+					client={clientObj}
 					onPress={() => {
 						setModalClientsVisible(true)
 					}}

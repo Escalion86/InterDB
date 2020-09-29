@@ -21,80 +21,101 @@ const ClientCard = ({
 	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
 
-	if (!onPress)
-		onPress = () => {
-			navigation.navigate("Client", { client: client })
+	if (!client) {
+		return (
+			<TouchableOpacity
+				// activeOpacity={1}
+				delayPressIn={50}
+				style={styles.card}
+				onPress={onPress}
+			>
+				<View style={styles.middle}>
+					<View style={styles.cardheader}>
+						<Text style={styles.cardtitle}>Ошибка! Клиент не найден</Text>
+					</View>
+				</View>
+			</TouchableOpacity>
+		)
+	} else {
+		if (!onPress)
+			onPress = () => {
+				navigation.navigate("Client", { client: client })
+			}
+
+		const noImageUrl =
+			client.gender === 0
+				? dark
+					? require("../../assets/avatar/famale_dark.jpg")
+					: require("../../assets/avatar/famale.jpg")
+				: dark
+				? require("../../assets/avatar/male_dark.jpg")
+				: require("../../assets/avatar/male.jpg")
+
+		if (client.loading || client.deleting) {
+			return (
+				<View
+					style={{
+						...styles.center,
+						...styles.card,
+					}}
+				>
+					{client.loading ? (
+						<ActivityIndicator size="large" color={colors.text} />
+					) : (
+						<Ionicons
+							name={"ios-trash"}
+							size={32}
+							color={colors.notification}
+						/>
+					)}
+				</View>
+			)
 		}
 
-	const noImageUrl =
-		client.gender === 0
-			? dark
-				? require("../../assets/avatar/famale_dark.jpg")
-				: require("../../assets/avatar/famale.jpg")
-			: dark
-			? require("../../assets/avatar/male_dark.jpg")
-			: require("../../assets/avatar/male.jpg")
+		// const CardDesc = ({ desc }) => (
+		// 	<View style={styles.carddesc}>
+		// 		<Text style={styles.carddesctext}>{desc}</Text>
+		// 	</View>
+		// )
 
-	if (client.loading || client.deleting) {
 		return (
-			<View
-				style={{
-					...styles.center,
-					...styles.card,
-				}}
+			<TouchableOpacity
+				// activeOpacity={1}
+				delayPressIn={50}
+				style={styles.card}
+				onPress={onPress}
 			>
-				{client.loading ? (
-					<ActivityIndicator size="large" color={colors.text} />
-				) : (
-					<Ionicons name={"ios-trash"} size={32} color={colors.notification} />
+				<View style={styles.left}>
+					<Image
+						style={{
+							// flex: 1,
+							borderRadius: 5,
+							borderWidth: 1,
+							borderColor: colors.border,
+							width: 80,
+							height: 80,
+						}}
+						source={!client.avatar ? noImageUrl : { uri: client.avatar }}
+						// resizeMethod="scale"
+						resizeMode="cover"
+					/>
+				</View>
+				<View style={styles.middle}>
+					<View style={styles.cardheader}>
+						<Text style={styles.cardtitle}>
+							{client.surname} {client.name} {client.thirdname}
+						</Text>
+					</View>
+					{/* {service.description ? <CardDesc desc={service.description} /> : null} */}
+				</View>
+				{listMode ? null : (
+					<View style={styles.right}>
+						<ContactsMenu client={client} triggerIconName="phone" />
+					</View>
 				)}
-			</View>
+			</TouchableOpacity>
 		)
 	}
-
-	// const CardDesc = ({ desc }) => (
-	// 	<View style={styles.carddesc}>
-	// 		<Text style={styles.carddesctext}>{desc}</Text>
-	// 	</View>
-	// )
-
-	return (
-		<TouchableOpacity
-			// activeOpacity={1}
-			delayPressIn={50}
-			style={styles.card}
-			onPress={onPress}
-		>
-			<View style={styles.left}>
-				<Image
-					style={{
-						// flex: 1,
-						borderRadius: 5,
-						borderWidth: 1,
-						borderColor: colors.border,
-						width: 80,
-						height: 80,
-					}}
-					source={!client.avatar ? noImageUrl : { uri: client.avatar }}
-					// resizeMethod="scale"
-					resizeMode="cover"
-				/>
-			</View>
-			<View style={styles.middle}>
-				<View style={styles.cardheader}>
-					<Text style={styles.cardtitle}>
-						{client.surname} {client.name} {client.thirdname}
-					</Text>
-				</View>
-				{/* {service.description ? <CardDesc desc={service.description} /> : null} */}
-			</View>
-			{listMode ? null : (
-				<View style={styles.right}>
-					<ContactsMenu client={client} triggerIconName="phone" />
-				</View>
-			)}
-		</TouchableOpacity>
-	)
 }
 
 export default ClientCard

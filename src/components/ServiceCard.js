@@ -19,79 +19,99 @@ const ServiceCard = ({
 	const theme = useTheme()
 	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
+	if (!service) {
+		return (
+			<TouchableOpacity
+				// activeOpacity={1}
+				delayPressIn={50}
+				style={styles.card}
+				onPress={onPress}
+			>
+				<View style={styles.middle}>
+					<View style={styles.cardheader}>
+						<Text style={styles.cardtitle}>Ошибка! Услуга не найдена</Text>
+					</View>
+				</View>
+			</TouchableOpacity>
+		)
+	} else {
+		if (!onPress)
+			onPress = () => {
+				navigation.navigate("Service", { service: service })
+			}
 
-	if (!onPress)
-		onPress = () => {
-			navigation.navigate("Service", { service: service })
+		const noImageUrl = dark
+			? require("../../assets/no_image_dark.jpg")
+			: require("../../assets/no_image.jpg")
+
+		if (service.loading || service.deleting) {
+			return (
+				<View
+					style={{
+						...styles.center,
+						...styles.card,
+					}}
+				>
+					{service.loading ? (
+						<ActivityIndicator size="large" color={colors.text} />
+					) : (
+						<Ionicons
+							name={"ios-trash"}
+							size={32}
+							color={colors.notification}
+						/>
+					)}
+				</View>
+			)
 		}
 
-	const noImageUrl = dark
-		? require("../../assets/no_image_dark.jpg")
-		: require("../../assets/no_image.jpg")
-
-	if (service.loading || service.deleting) {
-		return (
-			<View
-				style={{
-					...styles.center,
-					...styles.card,
-				}}
-			>
-				{service.loading ? (
-					<ActivityIndicator size="large" color={colors.text} />
-				) : (
-					<Ionicons name={"ios-trash"} size={32} color={colors.notification} />
-				)}
+		const CardDesc = ({ desc }) => (
+			<View style={styles.carddesc}>
+				<Text style={styles.carddesctext}>{desc}</Text>
 			</View>
 		)
+
+		return (
+			<TouchableOpacity
+				// activeOpacity={1}
+				delayPressIn={50}
+				style={styles.card}
+				onPress={onPress}
+			>
+				{service.image ? (
+					<View style={styles.left}>
+						<Image
+							style={{
+								// flex: 1,
+								borderRadius: 5,
+								borderWidth: 1,
+								borderColor: colors.border,
+								width: "100%",
+								height: "100%",
+							}}
+							source={!service.image ? noImageUrl : { uri: service.image }}
+							// resizeMethod="scale"
+							resizeMode="cover"
+						/>
+					</View>
+				) : null}
+				<View style={styles.middle}>
+					<View style={styles.cardheader}>
+						<Text style={styles.cardtitle}>{service.name}</Text>
+					</View>
+					{service.description ? <CardDesc desc={service.description} /> : null}
+				</View>
+				<View style={styles.right}>
+					<View style={styles.carddate}>
+						<Text style={styles.datetime}>
+							{service.preparetime + service.collecttime + service.length} мин
+						</Text>
+					</View>
+					<Text style={styles.price}>{service.price}</Text>
+				</View>
+			</TouchableOpacity>
+		)
 	}
-
-	const CardDesc = ({ desc }) => (
-		<View style={styles.carddesc}>
-			<Text style={styles.carddesctext}>{desc}</Text>
-		</View>
-	)
-
-	return (
-		<TouchableOpacity
-			// activeOpacity={1}
-			delayPressIn={50}
-			style={styles.card}
-			onPress={onPress}
-		>
-			{service.image ? (
-				<View style={styles.left}>
-					<Image
-						style={{
-							// flex: 1,
-							borderRadius: 5,
-							borderWidth: 1,
-							borderColor: colors.border,
-							width: "100%",
-							height: "100%",
-						}}
-						source={!service.image ? noImageUrl : { uri: service.image }}
-						// resizeMethod="scale"
-						resizeMode="cover"
-					/>
-				</View>
-			) : null}
-			<View style={styles.middle}>
-				<View style={styles.cardheader}>
-					<Text style={styles.cardtitle}>{service.name}</Text>
-				</View>
-				{service.description ? <CardDesc desc={service.description} /> : null}
-			</View>
-			<View style={styles.right}>
-				<View style={styles.carddate}>
-					<Text style={styles.datetime}>
-						{service.preparetime + service.collecttime + service.length} мин
-					</Text>
-				</View>
-				<Text style={styles.price}>{service.price}</Text>
-			</View>
-		</TouchableOpacity>
-	)
 }
 
 export default ServiceCard
