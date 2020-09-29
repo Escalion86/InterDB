@@ -2,6 +2,7 @@ import React, { createContext, useState } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import { darkTheme, lightTheme } from "./theme"
 import { AsyncStorage } from "react-native"
+import contrastColor from "./helpers/contrastColor"
 
 const _storeData = async (key, value) => {
 	try {
@@ -34,7 +35,10 @@ export const ThemeProvider = ({ children }) => {
 	const [theme, setTheme] = useState(lightTheme)
 	const [accent, setAccent] = useState(lightTheme.colors.accent)
 	const { colors } = theme
-	const resultTheme = { ...theme, colors: { ...colors, accent } }
+	const resultTheme = {
+		...theme,
+		colors: { ...colors, accent, accentText: contrastColor(accent) },
+	}
 
 	const setDark = async (bool) => {
 		await _storeData("darkTheme", bool ? "1" : "0")

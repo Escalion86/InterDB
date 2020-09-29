@@ -4,8 +4,9 @@ export const darkTheme = {
 	},
 	colors: {
 		abort: "rgb(255, 50, 35)",
+		abortText: "#ffffff",
 		accent: "#03dac4", //Переключатель
-		accentText: "rgb(40, 40, 40)",
+		accentText: "#ffffff",
 		backdrop: "rgba(0, 0, 0, 0.5)",
 		background: "rgb(1, 1, 1)",
 		border: "rgb(15, 4, 15)",
@@ -49,9 +50,10 @@ export const lightTheme = {
 		scale: 1,
 	},
 	colors: {
-		abort: "rgb(255, 50, 35)",
+		abort: "#ff3223",
+		abortText: "#ffffff",
 		accent: "#03dac4",
-		accentText: "rgb(30, 30, 30)",
+		accentText: "#ffffff",
 		backdrop: "rgba(0, 0, 0, 0.5)",
 		background: "#f6f6f6",
 		border: "rgb(60, 60, 60)",
