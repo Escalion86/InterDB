@@ -6,6 +6,7 @@ const Button = ({
 	title = "",
 	btnDecline = false,
 	onPress = () => {},
+	onLongPress = () => {},
 	style = {},
 }) => {
 	const { colors } = useTheme()
@@ -17,6 +18,7 @@ const Button = ({
 				...style,
 			}}
 			onPress={onPress}
+			onLongPress={onLongPress}
 		>
 			<Text
 				style={{
