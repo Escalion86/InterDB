@@ -18,7 +18,7 @@ import tinycolor from "tinycolor2"
 // import SliderColorPicker from "../components/SliderColorPicker"
 import { ThemeContext } from "../ThemeContext"
 
-import { ModalMenuButton } from "../components/ModalBottomMenu"
+import Button from "../components/Button"
 
 const { width } = Dimensions.get("window")
 
@@ -100,7 +100,7 @@ const SettingsScreen = ({ navigation, route }) => {
 			</View>
 			<Text style={{ fontSize: 16, color: colors.text }}>Пример:</Text>
 			<View style={styles.row}>
-				<ModalMenuButton title="Цвет текста подбирается автоматически" />
+				<Button title="Цвет текста подбирается автоматически" />
 			</View>
 		</View>
 	)

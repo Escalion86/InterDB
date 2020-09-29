@@ -16,7 +16,8 @@ import { formatDate, formatTime } from "../helpers/date"
 import { MainIcon } from "./icons"
 import * as ImagePicker from "expo-image-picker"
 import { Switch } from "react-native-switch"
-import ModalBottomMenu, { ModalMenuButton } from "./ModalBottomMenu"
+import ModalBottomMenu from "./ModalBottomMenu"
+import Button from "./Button"
 // import TextInputMask from "./TextInputMask"
 // import TextInputMask from "react-native-text-input-mask"
 
@@ -108,21 +109,21 @@ export const ImagePickerBlock = ({
 			visible={modalVisible}
 			onOuterClick={() => setModalVisible(false)}
 		>
-			<ModalMenuButton
+			<Button
 				title="Сделать фотографию"
 				onPress={() => {
 					setModalVisible(false)
 					takePhoto()
 				}}
 			/>
-			<ModalMenuButton
+			<Button
 				title="Выбрать из галереи"
 				onPress={() => {
 					setModalVisible(false)
 					chooseImage()
 				}}
 			/>
-			<ModalMenuButton
+			<Button
 				title="Отмена"
 				btnDecline
 				onPress={() => {

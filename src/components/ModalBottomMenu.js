@@ -8,7 +8,7 @@ import {
 	Modal,
 } from "react-native"
 import { useTheme } from "@react-navigation/native"
-import { colors } from "react-native-elements"
+import Button from "./Button"
 
 const ModalBottomMenu = ({
 	children,
@@ -64,32 +64,6 @@ const ModalBottomMenu = ({
 	)
 }
 
-export const ModalMenuButton = ({
-	title = "",
-	btnDecline = false,
-	onPress = () => {},
-}) => {
-	const { colors } = useTheme()
-	return (
-		<TouchableOpacity
-			style={{
-				...styles.panelButton,
-				backgroundColor: btnDecline ? colors.abort : colors.accent,
-			}}
-			onPress={onPress}
-		>
-			<Text
-				style={{
-					...styles.panelButtonTitle,
-					color: btnDecline ? colors.abortText : colors.accentText,
-				}}
-			>
-				{title}
-			</Text>
-		</TouchableOpacity>
-	)
-}
-
 export const ModalBottomMenuYesNo = ({
 	title = "",
 	subtitle = "",
@@ -122,7 +96,7 @@ export const ModalBottomMenuYesNo = ({
 					withState ? setModalVisible(false) : closer()
 				}}
 			>
-				<ModalMenuButton
+				<Button
 					title={btnTitleConfirm}
 					btnDecline={false}
 					onPress={() => {
@@ -130,7 +104,7 @@ export const ModalBottomMenuYesNo = ({
 						onAccept()
 					}}
 				/>
-				<ModalMenuButton
+				<Button
 					title={btnTitleDecline}
 					btnDecline={true}
 					onPress={() => {
@@ -191,17 +165,5 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		color: "gray",
 		// marginBottom: 10,
-	},
-	panelButton: {
-		padding: 13,
-		borderRadius: 10,
-		alignItems: "center",
-		marginVertical: 7,
-	},
-	panelButtonTitle: {
-		fontSize: 17,
-		fontWeight: "bold",
-		color: "white",
-		textAlign: "center",
 	},
 })

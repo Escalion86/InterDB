@@ -1,5 +1,12 @@
 import React from "react"
-import { StyleSheet, Text, View, Linking, Image } from "react-native"
+import {
+	StyleSheet,
+	Text,
+	View,
+	Linking,
+	Image,
+	ScrollView,
+} from "react-native"
 import { useTheme } from "@react-navigation/native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { FontAwesome5 } from "@expo/vector-icons"
@@ -55,7 +62,7 @@ const AboutScreen = ({ navigation, route }) => {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.content}>
+			<ScrollView style={styles.content}>
 				<Text style={{ ...styles.paragraph, color: colors.text }}>
 					{"\t\t\t\t"}Цель приложения - упрощение взаимодействия с клиентами при
 					продаже своих услуг.
@@ -124,7 +131,7 @@ const AboutScreen = ({ navigation, route }) => {
 						resizeMode="cover"
 					/>
 				</View>
-			</View>
+			</ScrollView>
 
 			<View style={styles.bottom}>
 				<Text style={{ ...styles.version, color: colors.text }}>
