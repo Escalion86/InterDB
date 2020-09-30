@@ -17,10 +17,8 @@ const ClientsScreen = ({ navigation, route }) => {
 	const clients = useSelector((state) => state.client.clients)
 	const loading = useSelector((state) => state.client.loading)
 
-	console.log("clients", clients)
-
 	navigation.setOptions({
-		title: `Клиенты`,
+		title: `Клиенты (${clients.length})`,
 		headerRight: () => (
 			<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
 				<Item

@@ -90,16 +90,11 @@ const ServiceScreen = ({ navigation, route }) => {
 				<Item
 					title="Delete Service"
 					iconName="ios-trash"
-					onPress={
-						() => {
-							eventsDependency.length > 0
-								? setModalEventsVisible(true)
-								: setModalDeleteVisible(true)
-						}
-						// 	setModalDeleteVisible(true)
-						// 	// dispatch(deleteService(service.id))
-						// 	// navigation.goBack()
-					}
+					onPress={() => {
+						eventsDependency.length > 0
+							? setModalEventsVisible(true)
+							: setModalDeleteVisible(true)
+					}}
 				/>
 				<Item
 					title="Edit Service"

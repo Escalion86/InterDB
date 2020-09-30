@@ -34,11 +34,11 @@ const ServicesScreen = ({ navigation, route }) => {
 
 	if (showArchvedOnly) {
 		navigation.setOptions({
-			title: `Архив услуг`,
+			title: `Архив услуг (${services.length})`,
 		})
 	} else {
 		navigation.setOptions({
-			title: showArchvedOnly ? `Архив услуг` : `Услуги`,
+			title: `Услуги (${services.length})`,
 			headerRight: () => (
 				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
 					<Item
