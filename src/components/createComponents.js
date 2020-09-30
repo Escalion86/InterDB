@@ -174,6 +174,7 @@ export const TextInputBlock = ({
 	placeholder = "",
 	mask = null,
 	multiline = false,
+	fieldStyle = {},
 }) => {
 	value = value ? value.toString() : ""
 	const { colors } = useTheme()
@@ -190,6 +191,7 @@ export const TextInputBlock = ({
 					borderWidth: 1,
 					borderRadius: 5,
 					height: "100%",
+					...fieldStyle,
 
 					// paddingHorizontal: 10,
 				}}
