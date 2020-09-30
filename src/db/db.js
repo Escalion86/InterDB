@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite"
 import dbTemplate, { prepareForDB } from "./dbTemplate"
 
-const DBName = "events13.db"
+const DBName = "events14.db"
 
 let db = SQLite.openDatabase(DBName)
 
@@ -11,9 +11,9 @@ export const dbTemplateToSql = (table = "events") => {
 	sql = `CREATE TABLE IF NOT EXISTS ${table} (id INTEGER PRIMARY KEY NOT NULL`
 	uniq = []
 	dbTemplate[table].forEach((col) => {
-		sql += `, ${col.db_name} ${col.db_type}${col.not_null ? " NOT NULL" : ""}${
-			col.default !== "" ? ` DEFAULT '${col.default}'` : ""
-		}`
+		sql += `, ${col.db_name.toLowerCase()} ${col.db_type}${
+			col.not_null ? " NOT NULL" : ""
+		}${col.default !== "" ? ` DEFAULT '${col.default}'` : ""}`
 		uniq.push(col.db_name)
 	})
 

@@ -453,7 +453,7 @@ export default dbTemplate = {
 			db_default: "",
 		},
 		{
-			db_name: "Telegram",
+			db_name: "telegram",
 			desc: "Telegram",
 			type: "phone",
 			db_type: "TEXT",
