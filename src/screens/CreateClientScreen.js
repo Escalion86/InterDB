@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { StyleSheet, Text, View, ScrollView } from "react-native"
+import { StyleSheet, Text, View, ScrollView, ToastAndroid } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import { useDispatch } from "react-redux"
@@ -21,8 +21,22 @@ const CreateClientScreen = ({ navigation, route }) => {
 
 	const dispatch = useDispatch()
 	const [newClient, setNewClient] = useState(client)
+	console.log("newClient", newClient)
+	const nameFieldFilled =
+		newClient.name.trim() ||
+		newClient.surname.trim() ||
+		newClient.thirdname.trim()
+	const contactsFieldFilled =
+		newClient.phone.trim() ||
+		newClient.email.trim() ||
+		newClient.whatsapp.trim() ||
+		newClient.viber.trim() ||
+		newClient.telegram.trim() ||
+		newClient.instagram.trim() ||
+		newClient.vk.trim() ||
+		newClient.facebook.trim()
 
-	const { colors, dark } = useTheme()
+	const { dark, colors } = useTheme()
 
 	const noImageUrl =
 		newClient.gender === 0
@@ -38,10 +52,17 @@ const CreateClientScreen = ({ navigation, route }) => {
 	}
 	//TODO Сделать проверку на заполнение необходимых полей
 	const saveHandler = () => {
-		client.id
-			? dispatch(updateClient(newClient))
-			: dispatch(addClient(newClient))
-		navigation.navigate("Clients")
+		if (nameFieldFilled && contactsFieldFilled) {
+			client.id
+				? dispatch(updateClient(newClient))
+				: dispatch(addClient(newClient))
+			navigation.navigate("Clients")
+		} else {
+			ToastAndroid.show(
+				`Необходимо заполнить хотябы одно поле Имени и хотябы одно поле Контакта`,
+				ToastAndroid.LONG
+			)
+		}
 	}
 
 	navigation.setOptions({
@@ -59,7 +80,10 @@ const CreateClientScreen = ({ navigation, route }) => {
 			<TextInputBlock
 				title="Фамилия"
 				value={newClient.surname}
-				onChangeText={(text) => setClientItem({ surname: text })}
+				onChangeText={(text) =>
+					setClientItem({ surname: text.replace(/ +/g, "") })
+				}
+				fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
 				// keyboardType="numeric"
 				// postfix="&#8381;"
 				// placeholder="Иванов Иван Иванович"
@@ -67,7 +91,10 @@ const CreateClientScreen = ({ navigation, route }) => {
 			<TextInputBlock
 				title="Имя"
 				value={newClient.name}
-				onChangeText={(text) => setClientItem({ name: text })}
+				onChangeText={(text) =>
+					setClientItem({ name: text.replace(/ +/g, "") })
+				}
+				fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
 				// keyboardType="numeric"
 				// postfix="&#8381;"
 				// placeholder="Иванов Иван Иванович"
@@ -75,7 +102,10 @@ const CreateClientScreen = ({ navigation, route }) => {
 			<TextInputBlock
 				title="Отчество"
 				value={newClient.thirdname}
-				onChangeText={(text) => setClientItem({ thirdname: text })}
+				onChangeText={(text) =>
+					setClientItem({ thirdname: text.replace(/ +/g, "") })
+				}
+				fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
 				// keyboardType="numeric"
 				// postfix="&#8381;"
 				// placeholder="Иванов Иван Иванович"
@@ -99,46 +129,68 @@ const CreateClientScreen = ({ navigation, route }) => {
 				title="Телефон"
 				value={newClient.phone}
 				// mask="+1 ([000]) [000] [00] [00]"
-				onChangeText={(text) => setClientItem({ phone: text })}
-				prefix="+7"
+				onChangeText={(text) =>
+					setClientItem({ phone: text.replace(/ +/g, "") })
+				}
+				// prefix="+7"
+				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
 			/>
 			<TextInputBlock
 				title="WhatsApp"
 				value={newClient.whatsapp}
-				onChangeText={(text) => setClientItem({ whatsapp: text })}
+				onChangeText={(text) =>
+					setClientItem({ whatsapp: text.replace(/ +/g, "") })
+				}
+				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
 			/>
 			<TextInputBlock
 				title="Viber"
 				value={newClient.viber}
-				onChangeText={(text) => setClientItem({ viber: text })}
+				onChangeText={(text) =>
+					setClientItem({ viber: text.replace(/ +/g, "") })
+				}
+				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
 			/>
 			<TextInputBlock
 				title="Telegram"
 				value={newClient.telegram}
 				prefix="@"
-				onChangeText={(text) => setClientItem({ telegram: text })}
+				onChangeText={(text) =>
+					setClientItem({ telegram: text.replace(/ +/g, "") })
+				}
+				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
 			/>
 			<TextInputBlock
 				title="Email"
 				value={newClient.email}
-				onChangeText={(text) => setClientItem({ email: text })}
+				onChangeText={(text) =>
+					setClientItem({ email: text.replace(/ +/g, "") })
+				}
+				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
 			/>
 			<TextInputBlock
 				title="Instagram"
 				value={newClient.instagram}
-				onChangeText={(text) => setClientItem({ instagram: text })}
+				onChangeText={(text) =>
+					setClientItem({ instagram: text.replace(/ +/g, "") })
+				}
+				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
 				prefix="@"
 			/>
 			<TextInputBlock
 				title="ВКонтакте"
 				value={newClient.vk}
-				onChangeText={(text) => setClientItem({ vk: text })}
+				onChangeText={(text) => setClientItem({ vk: text.replace(/ +/g, "") })}
+				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
 				prefix="@"
 			/>
 			<TextInputBlock
 				title="FaceBook"
 				value={newClient.facebook}
-				onChangeText={(text) => setClientItem({ facebook: text })}
+				onChangeText={(text) =>
+					setClientItem({ facebook: text.replace(/ +/g, "") })
+				}
+				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
 				prefix="@"
 			/>
 		</ScrollView>
