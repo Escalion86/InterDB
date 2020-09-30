@@ -4,9 +4,10 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import { deleteService, updateServicePartially } from "../store/actions/service"
-import { ModalBottomMenuYesNo } from "../components/ModalBottomMenu"
+import ModalBottomMenu, {
+	ModalBottomMenuYesNo,
+} from "../components/ModalBottomMenu"
 import { useTheme } from "@react-navigation/native"
-import ModalBottomMenu from "../components/ModalBottomMenu"
 import MainFlatListWithFab from "../components/MainFlatListWithFab"
 import EventCard from "../components/EventCard"
 
@@ -91,7 +92,7 @@ const ServiceScreen = ({ navigation, route }) => {
 					iconName="ios-trash"
 					onPress={
 						() => {
-							eventsDependency
+							eventsDependency.length > 0
 								? setModalEventsVisible(true)
 								: setModalDeleteVisible(true)
 						}
