@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { StyleSheet, ScrollView, Button } from "react-native"
+import { StyleSheet, ScrollView, Button, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
@@ -126,13 +126,15 @@ const CreateEventScreen = ({ navigation, route }) => {
 				searchable={services.length > 8}
 			/> */}
 			{!serviceObj ? (
-				<Button
-					onPress={() => {
-						setModalServicesVisible(true)
-					}}
-					title={`Выберите услугу`}
-					color={colors.accent}
-				/>
+				<View style={{ zIndex: 0 }}>
+					<Button
+						onPress={() => {
+							setModalServicesVisible(true)
+						}}
+						title={`Выберите услугу`}
+						color={colors.accent}
+					/>
+				</View>
 			) : (
 				<ServiceCard
 					navigation={navigation}
@@ -167,13 +169,15 @@ const CreateEventScreen = ({ navigation, route }) => {
 
 			<TitleBlock title="Клиент" />
 			{!clientObj ? (
-				<Button
-					onPress={() => {
-						setModalClientsVisible(true)
-					}}
-					title={`Выберите клиента`}
-					color={colors.accent}
-				/>
+				<View style={{ zIndex: 0 }}>
+					<Button
+						onPress={() => {
+							setModalClientsVisible(true)
+						}}
+						title={`Выберите клиента`}
+						color={colors.accent}
+					/>
+				</View>
 			) : (
 				<ClientCard
 					navigation={navigation}
