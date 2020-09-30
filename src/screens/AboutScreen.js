@@ -6,6 +6,7 @@ import {
 	Linking,
 	Image,
 	ScrollView,
+	ToastAndroid,
 } from "react-native"
 import { useTheme } from "@react-navigation/native"
 import { TouchableOpacity } from "react-native-gesture-handler"
@@ -15,13 +16,16 @@ import { AppContext } from "../AppContext"
 
 const AboutScreen = ({ navigation, route }) => {
 	const { colors } = useTheme()
-	const { toggleDev } = useContext(AppContext)
+	const { toggleDev, dev } = useContext(AppContext)
 
 	const [startToOpenDev, setStartToOpenDev] = useState(null)
 
 	const endToOpenDev = () => {
 		if (Math.floor((new Date() - startToOpenDev) / 1000) >= 5) {
-			console.log("разница", Math.floor((new Date() - startToOpenDev) / 1000))
+			ToastAndroid.show(
+				`Панель разработчика ${dev ? "закрыта" : "открыта"}`,
+				ToastAndroid.SHORT
+			)
 			toggleDev()
 		}
 	}
