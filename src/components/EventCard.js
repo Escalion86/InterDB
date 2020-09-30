@@ -21,170 +21,195 @@ import { useTheme } from "@react-navigation/native"
 import IconMenu from "./IconMenu"
 import LinkTo from "../helpers/LinkTo"
 
-const EventCard = ({ navigation, event }) => {
+const EventCard = ({ navigation, event, onPress = null }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
 	const colors = theme.colors
 	const styles = stylesFactory(colors)
-	const profit =
-		event.finance_price -
-		event.finance_road -
-		event.finance_organizator -
-		event.finance_assistants -
-		event.finance_consumables +
-		event.finance_tips
 
-	if (event.loading || event.deleting) {
+	if (!event) {
 		return (
-			<View
-				style={{
-					...styles.center,
-					...styles.card,
-					minHeight: 94,
-				}}
+			<TouchableOpacity
+				// activeOpacity={1}
+				delayPressIn={50}
+				style={styles.card}
+				onPress={onPress}
 			>
-				{event.loading ? (
-					<ActivityIndicator size="large" color={colors.text} />
-				) : (
-					<Ionicons name={"ios-trash"} size={32} color={colors.notification} />
-				)}
-			</View>
-		)
-	}
-
-	const services = useSelector((state) => state.service.services)
-	const clients = useSelector((state) => state.client.clients)
-
-	let service = services.filter((data) => {
-		if (data.id == event.service) return data
-	})[0]
-
-	if (!service) service = { name: "[ Услуга не найдена ]" }
-
-	const MenuRow = ({ title = "", num = 0, style = {} }) => (
-		<View style={{ ...styles.row, ...style }}>
-			<Text style={{ fontSize: 16, color: colors.text }}>{title}</Text>
-			<Text style={{ fontSize: 16, marginLeft: 20, color: colors.text }}>
-				{num}
-			</Text>
-		</View>
-	)
-
-	return (
-		<TouchableOpacity
-			// activeOpacity={1}
-			delayPressIn={50}
-			style={styles.card}
-			onPress={() => {
-				navigation.navigate("Event", { event: event })
-			}}
-		>
-			<View style={styles.left}>
-				<IconMenu
-					event={event}
-					// theme={theme}
-					eventPartName="status"
-					// actionOnSelect={setEventStatus}
-				/>
-				<IconMenu
-					event={event}
-					// theme={theme}
-					style={{ marginTop: 6 }}
-					eventPartName="finance_status"
-					// actionOnSelect={setFinanceStatus}
-				/>
-			</View>
-			<View style={styles.middle}>
-				<View style={styles.cardheader}>
-					<Text style={styles.cardtitle}>
-						{/* {event.auditory},  */}
-						{service.name}
-					</Text>
-				</View>
-				<View style={styles.carddesc}>
-					<Text style={styles.carddesctext}>
-						{event.location_town}, {event.location_street},{" "}
-						{Math.trunc(event.location_house)}
-						{event.location_room
-							? ` - ${Math.trunc(event.location_room)}`
-							: null}
-						{event.location_name ? ` (${event.location_name})` : null}
-					</Text>
-					<Ionicons
-						name="md-navigate"
-						size={22}
-						color={colors.text}
-						style={{ marginLeft: 5 }}
-						onPress={
-							() =>
-								LinkTo(
-									`yandexnavi://map_search?text=${event.location_town},%20${event.location_street}%20${event.location_house}`
-								)
-							// fetch(
-							//   "https://geocode-maps.yandex.ru/1.x/?format=json&apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=Красноярск+Линейная+109"
-							// )
-							//   .then((response) => response.json())
-							//   .then((result) => {
-							//     let geoObject =
-							//       result.response.GeoObjectCollection.featureMember[0].GeoObject
-							//         .Point.pos
-							//     geoObject = geoObject.split(" ") //.join(",")
-							//     console.log("geoObject :>> ", geoObject)
-							//     // Linking.openURL(
-							//     //   `https://geocode-maps.yandex.ru/1.x/?apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=${geoObject}`
-							//     // )
-							//     Linking.openURL(
-							//       //`yandexnavi://show_point_on_map?lat=${geoObject[1]}&lon=${geoObject[0]}&zoom=12&no-balloon=0&desc=кафе с wi-fi`
-							//       `yandexnavi://build_route_on_map?lat_to=${geoObject[1]}&lon_to=${geoObject[0]}`
-							//     )
-							//   })
-						}
-					/>
-				</View>
-			</View>
-			<View style={styles.right}>
-				<View style={styles.carddate}>
-					<View>
-						<Text style={styles.datetime}>
-							{formatDate(new Date(event.date))}
-						</Text>
-						<Text style={styles.datetime}>
-							{getWeekDay(new Date(event.date))}{" "}
-							{formatTime(new Date(event.date))}
-						</Text>
+				<View style={styles.middle}>
+					<View style={styles.cardheader}>
+						<Text style={styles.cardtitle}>Ошибка! Событие не найдено</Text>
 					</View>
 				</View>
-				<Menu
-					style={styles.finance}
-					renderer={Popover}
-					rendererProps={{ preferredPlacement: "left" }}
+			</TouchableOpacity>
+		)
+	} else {
+		if (!onPress)
+			onPress = () => {
+				navigation.navigate("Event", { event: event })
+			}
+
+		const profit =
+			event.finance_price -
+			event.finance_road -
+			event.finance_organizator -
+			event.finance_assistants -
+			event.finance_consumables +
+			event.finance_tips
+
+		if (event.loading || event.deleting) {
+			return (
+				<View
+					style={{
+						...styles.center,
+						...styles.card,
+						minHeight: 94,
+					}}
 				>
-					<MenuTrigger>
-						{/* <TouchableOpacity style={styles.finance}> */}
-						<Text style={styles.profit}>{profit}</Text>
-						{/* </TouchableOpacity> */}
-					</MenuTrigger>
-					<MenuOptions style={styles.menuOptions}>
-						<MenuRow title="Цена клиента" num={event.finance_price} />
-						<MenuRow title="За дорогу" num={-event.finance_road} />
-						<MenuRow title="Организатору" num={-event.finance_organizator} />
-						<MenuRow title="Расходники" num={-event.finance_consumables} />
-						<MenuRow title="Ассистентам" num={-event.finance_assistants} />
-						<MenuRow
-							title="Чаевые"
-							num={event.finance_tips}
-							style={{
-								borderBottomColor: colors.text,
-								borderBottomWidth: 1,
-								paddingBottom: 5,
-							}}
+					{event.loading ? (
+						<ActivityIndicator size="large" color={colors.text} />
+					) : (
+						<Ionicons
+							name={"ios-trash"}
+							size={32}
+							color={colors.notification}
 						/>
-						<MenuRow title="ИТОГО" num={profit} style={{ paddingTop: 5 }} />
-					</MenuOptions>
-				</Menu>
+					)}
+				</View>
+			)
+		}
+
+		const services = useSelector((state) => state.service.services)
+		const clients = useSelector((state) => state.client.clients)
+
+		let service = services.filter((data) => {
+			if (data.id == event.service) return data
+		})[0]
+
+		if (!service) service = { name: "[ Услуга не найдена ]" }
+
+		const MenuRow = ({ title = "", num = 0, style = {} }) => (
+			<View style={{ ...styles.row, ...style }}>
+				<Text style={{ fontSize: 16, color: colors.text }}>{title}</Text>
+				<Text style={{ fontSize: 16, marginLeft: 20, color: colors.text }}>
+					{num}
+				</Text>
 			</View>
-		</TouchableOpacity>
-	)
+		)
+
+		return (
+			<TouchableOpacity
+				// activeOpacity={1}
+				delayPressIn={50}
+				style={styles.card}
+				onPress={onPress}
+			>
+				<View style={styles.left}>
+					<IconMenu
+						event={event}
+						// theme={theme}
+						eventPartName="status"
+						// actionOnSelect={setEventStatus}
+					/>
+					<IconMenu
+						event={event}
+						// theme={theme}
+						style={{ marginTop: 6 }}
+						eventPartName="finance_status"
+						// actionOnSelect={setFinanceStatus}
+					/>
+				</View>
+				<View style={styles.middle}>
+					<View style={styles.cardheader}>
+						<Text style={styles.cardtitle}>
+							{/* {event.auditory},  */}
+							{service.name}
+						</Text>
+					</View>
+					<View style={styles.carddesc}>
+						<Text style={styles.carddesctext}>
+							{event.location_town}, {event.location_street},{" "}
+							{Math.trunc(event.location_house)}
+							{event.location_room
+								? ` - ${Math.trunc(event.location_room)}`
+								: null}
+							{event.location_name ? ` (${event.location_name})` : null}
+						</Text>
+						<Ionicons
+							name="md-navigate"
+							size={22}
+							color={colors.text}
+							style={{ marginLeft: 5 }}
+							onPress={
+								() =>
+									LinkTo(
+										`yandexnavi://map_search?text=${event.location_town},%20${event.location_street}%20${event.location_house}`
+									)
+								// fetch(
+								//   "https://geocode-maps.yandex.ru/1.x/?format=json&apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=Красноярск+Линейная+109"
+								// )
+								//   .then((response) => response.json())
+								//   .then((result) => {
+								//     let geoObject =
+								//       result.response.GeoObjectCollection.featureMember[0].GeoObject
+								//         .Point.pos
+								//     geoObject = geoObject.split(" ") //.join(",")
+								//     console.log("geoObject :>> ", geoObject)
+								//     // Linking.openURL(
+								//     //   `https://geocode-maps.yandex.ru/1.x/?apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=${geoObject}`
+								//     // )
+								//     Linking.openURL(
+								//       //`yandexnavi://show_point_on_map?lat=${geoObject[1]}&lon=${geoObject[0]}&zoom=12&no-balloon=0&desc=кафе с wi-fi`
+								//       `yandexnavi://build_route_on_map?lat_to=${geoObject[1]}&lon_to=${geoObject[0]}`
+								//     )
+								//   })
+							}
+						/>
+					</View>
+				</View>
+				<View style={styles.right}>
+					<View style={styles.carddate}>
+						<View>
+							<Text style={styles.datetime}>
+								{formatDate(new Date(event.date))}
+							</Text>
+							<Text style={styles.datetime}>
+								{getWeekDay(new Date(event.date))}{" "}
+								{formatTime(new Date(event.date))}
+							</Text>
+						</View>
+					</View>
+					<Menu
+						style={styles.finance}
+						renderer={Popover}
+						rendererProps={{ preferredPlacement: "left" }}
+					>
+						<MenuTrigger>
+							{/* <TouchableOpacity style={styles.finance}> */}
+							<Text style={styles.profit}>{profit}</Text>
+							{/* </TouchableOpacity> */}
+						</MenuTrigger>
+						<MenuOptions style={styles.menuOptions}>
+							<MenuRow title="Цена клиента" num={event.finance_price} />
+							<MenuRow title="За дорогу" num={-event.finance_road} />
+							<MenuRow title="Организатору" num={-event.finance_organizator} />
+							<MenuRow title="Расходники" num={-event.finance_consumables} />
+							<MenuRow title="Ассистентам" num={-event.finance_assistants} />
+							<MenuRow
+								title="Чаевые"
+								num={event.finance_tips}
+								style={{
+									borderBottomColor: colors.text,
+									borderBottomWidth: 1,
+									paddingBottom: 5,
+								}}
+							/>
+							<MenuRow title="ИТОГО" num={profit} style={{ paddingTop: 5 }} />
+						</MenuOptions>
+					</Menu>
+				</View>
+			</TouchableOpacity>
+		)
+	}
 }
 
 export default EventCard

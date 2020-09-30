@@ -100,6 +100,8 @@ const ClientsStackScreen = ({ navigation }) => (
 		/>
 		<ClientsStack.Screen name="Client" component={ClientScreen} />
 		<ClientsStack.Screen name="CreateClient" component={CreateClientScreen} />
+		<ClientsStack.Screen name="Event" component={EventScreen} />
+		<ClientsStack.Screen name="CreateEvent" component={CreateEventScreen} />
 	</StackNavigator>
 )
 
@@ -172,6 +174,8 @@ const ServicesStackScreen = ({ navigation }) => (
 			name="CreateService"
 			component={CreateServiceScreen}
 		/>
+		<ServicesStack.Screen name="Event" component={EventScreen} />
+		<ServicesStack.Screen name="CreateEvent" component={CreateEventScreen} />
 	</StackNavigator>
 )
 

@@ -1,11 +1,14 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import { deleteService, updateServicePartially } from "../store/actions/service"
 import { ModalBottomMenuYesNo } from "../components/ModalBottomMenu"
 import { useTheme } from "@react-navigation/native"
+import ModalBottomMenu from "../components/ModalBottomMenu"
+import MainFlatListWithFab from "../components/MainFlatListWithFab"
+import EventCard from "../components/EventCard"
 
 const ServiceScreen = ({ navigation, route }) => {
 	const service =
@@ -13,10 +16,17 @@ const ServiceScreen = ({ navigation, route }) => {
 			? route.params.service
 			: navigation.navigate("Services")
 
+	const events = useSelector((state) => state.event.events)
+
+	const eventsDependency = events.filter((event) => {
+		return event.service === service.id
+	})
+
 	const { colors } = useTheme()
 
 	const [archive, setArchive] = useState(service.archive)
 	const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
+	const [modalEventsVisible, setModalEventsVisible] = useState(false)
 
 	const toggleArchive = () => {
 		dispatch(updateServicePartially(service.id, { archive: !archive }))
@@ -38,6 +48,32 @@ const ServiceScreen = ({ navigation, route }) => {
 		/>
 	)
 
+	const ModalDeleteDecline = () => (
+		<ModalBottomMenu
+			title="Удаление услуги невозможно"
+			subtitle={`Услуга зависима от ${eventsDependency.length} событий`}
+			visible={modalEventsVisible}
+			onOuterClick={() => setModalEventsVisible(false)}
+		>
+			<MainFlatListWithFab
+				data={eventsDependency}
+				renderItem={({ item }) => (
+					<EventCard
+						navigation={navigation}
+						event={item}
+						onPress={() => {
+							// setEventItem({ service: item.id })
+							setModalEventsVisible(false)
+							navigation.navigate("Event", { event: item })
+						}}
+						listMode={true}
+					/>
+				)}
+				fabVisible={false}
+			/>
+		</ModalBottomMenu>
+	)
+
 	navigation.setOptions({
 		title: `Услуга`,
 		headerRight: () => (
@@ -54,7 +90,11 @@ const ServiceScreen = ({ navigation, route }) => {
 					title="Delete Service"
 					iconName="ios-trash"
 					onPress={
-						() => setModalDeleteVisible(true)
+						() => {
+							eventsDependency
+								? setModalEventsVisible(true)
+								: setModalDeleteVisible(true)
+						}
 						// 	setModalDeleteVisible(true)
 						// 	// dispatch(deleteService(service.id))
 						// 	// navigation.goBack()
@@ -68,6 +108,7 @@ const ServiceScreen = ({ navigation, route }) => {
 					}}
 				/>
 				<ModalDeleteConfirm />
+				<ModalDeleteDecline />
 			</HeaderButtons>
 		),
 	})
