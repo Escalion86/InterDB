@@ -264,7 +264,6 @@ const Drawer = createDrawerNavigator()
 
 const DrawerScreen = () => {
 	const { colors } = useTheme()
-	const { setDark } = useContext(ThemeContext)
 	return (
 		<Drawer.Navigator
 			drawerType="slide"
@@ -276,9 +275,7 @@ const DrawerScreen = () => {
 			// 		// },
 			// 	}
 			// }
-			drawerContent={(props) => (
-				<DrawerContent {...props} setIsDarkTheme={setDark} />
-			)}
+			drawerContent={(props) => <DrawerContent {...props} />}
 		>
 			<Drawer.Screen
 				name="Events"
@@ -352,6 +349,7 @@ export const AppNavigation = () => {
 	const dispatch = useDispatch()
 
 	const { theme } = useContext(ThemeContext)
+
 	//После загрузки всех компонентов и state - загружаем данные БД
 	useEffect(() => {
 		dispatch(loadAll())

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useContext } from "react"
 import {
 	StyleSheet,
 	Text,
@@ -11,31 +11,44 @@ import { useTheme } from "@react-navigation/native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { FontAwesome5 } from "@expo/vector-icons"
 import Button from "../components/Button"
+import { AppContext } from "../AppContext"
 
 const AboutScreen = ({ navigation, route }) => {
 	const { colors } = useTheme()
-	navigation.setOptions({
-		title: `О приложении`,
-		// headerRight: () => (
-		// 	<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-		// 		<Item
-		// 			title="Delete Client"
-		// 			iconName="ios-trash"
-		// 			onPress={() => {
-		// 				dispatch(deleteClient(client.id))
-		// 				navigation.navigate("Clients")
-		// 			}}
-		// 		/>
-		// 		<Item
-		// 			title="Edit Client"
-		// 			iconName="md-create"
-		// 			onPress={() => {
-		// 				navigation.navigate("CreateClient", { client: client })
-		// 			}}
-		// 		/>
-		// 	</HeaderButtons>
-		// ),
-	})
+	const { toggleDev } = useContext(AppContext)
+
+	const [startToOpenDev, setStartToOpenDev] = useState(null)
+
+	const endToOpenDev = () => {
+		if (Math.floor((new Date() - startToOpenDev) / 1000) >= 5) {
+			console.log("разница", Math.floor((new Date() - startToOpenDev) / 1000))
+			toggleDev()
+		}
+	}
+
+	if (startToOpenDev)
+		navigation.setOptions({
+			title: `О приложении`,
+			// headerRight: () => (
+			// 	<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+			// 		<Item
+			// 			title="Delete Client"
+			// 			iconName="ios-trash"
+			// 			onPress={() => {
+			// 				dispatch(deleteClient(client.id))
+			// 				navigation.navigate("Clients")
+			// 			}}
+			// 		/>
+			// 		<Item
+			// 			title="Edit Client"
+			// 			iconName="md-create"
+			// 			onPress={() => {
+			// 				navigation.navigate("CreateClient", { client: client })
+			// 			}}
+			// 		/>
+			// 	</HeaderButtons>
+			// ),
+		})
 
 	const ContactIcon = ({
 		iconName = "",
@@ -121,16 +134,21 @@ const AboutScreen = ({ navigation, route }) => {
 							</Text>
 						</TouchableOpacity>
 					</View>
-
-					<Image
-						style={{
-							width: 96,
-							height: 96,
-						}}
-						source={require("../../assets/logo-dev.png")}
-						// resizeMethod="scale"
-						resizeMode="cover"
-					/>
+					<TouchableOpacity
+						activeOpacity={1}
+						onPressIn={() => setStartToOpenDev(new Date())}
+						onPressOut={() => endToOpenDev()}
+					>
+						<Image
+							style={{
+								width: 96,
+								height: 96,
+							}}
+							source={require("../../assets/logo-dev.png")}
+							// resizeMethod="scale"
+							resizeMode="cover"
+						/>
+					</TouchableOpacity>
 				</View>
 				<Button
 					title="Поблагодарить"

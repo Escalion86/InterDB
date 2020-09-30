@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react"
+import React, { createContext, useState, useEffect } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import { darkTheme, lightTheme } from "./theme"
 import { AsyncStorage } from "react-native"
@@ -49,10 +49,11 @@ export const ThemeProvider = ({ children }) => {
 		await _storeData("accentColors", color)
 		setAccent(color)
 	}
-
-	_retrieveData("darkTheme").then((data) => {
-		setDark(data === "1")
-	})
+	useEffect(() => {
+		_retrieveData("darkTheme").then((data) => {
+			setDark(data === "1")
+		})
+	}, [])
 
 	_retrieveData("accentColors").then((data) => {
 		if (data) setAccent(data)

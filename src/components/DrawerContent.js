@@ -13,21 +13,13 @@ import {
 	Switch,
 } from "react-native-paper"
 import { Ionicons } from "@expo/vector-icons"
-import { ThemeContext } from "../ThemeContext"
+import { AppContext } from "../AppContext"
 
 const DrawerContent = (props) => {
-	// const { setDark } = useContext(ThemeContext)
-
 	const theme = useTheme()
-	// const { setDark } = useContext(ThemeContext)
-	// const [theme, setDarkTheme] = useState(useTheme().dark)
-
-	// const toggleTheme = () => {
-	// 	// setDarkTheme({ ...theme, dark: !theme.dark })
-	// 	setIsDarkTheme(!theme.dark)
-	// }
-
 	const { colors } = theme
+
+	const { dev } = useContext(AppContext)
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -158,20 +150,22 @@ const DrawerContent = (props) => {
 						props.navigation.navigate("About")
 					}}
 				/>
-				<DrawerItem
-					icon={({ color, size }) => (
-						<Ionicons
-							name="md-bug"
-							size={22}
-							color={colors.text}
-							style={{ marginLeft: 5 }}
-						/>
-					)}
-					label="Панель разработчика"
-					onPress={() => {
-						props.navigation.navigate("Dev")
-					}}
-				/>
+				{dev ? (
+					<DrawerItem
+						icon={({ color, size }) => (
+							<Ionicons
+								name="md-bug"
+								size={22}
+								color={colors.text}
+								style={{ marginLeft: 5 }}
+							/>
+						)}
+						label="Панель разработчика"
+						onPress={() => {
+							props.navigation.navigate("Dev")
+						}}
+					/>
+				) : null}
 				{/* <DrawerItem
 					icon={() => (
 						<Ionicons

@@ -15,6 +15,7 @@ import {
 } from "react-native"
 import store from "./src/store"
 import { ThemeProvider } from "./src/ThemeContext"
+import { AppProvider } from "./src/AppContext"
 
 export default function App() {
 	const [isReady, setIsReady] = useState(false)
@@ -32,9 +33,11 @@ export default function App() {
 	return (
 		<Provider store={store}>
 			<MenuProvider>
-				<ThemeProvider>
-					<AppNavigation />
-				</ThemeProvider>
+				<AppProvider>
+					<ThemeProvider>
+						<AppNavigation />
+					</ThemeProvider>
+				</AppProvider>
 				{/* <StatusBar style="auto" /> */}
 			</MenuProvider>
 		</Provider>
