@@ -7,12 +7,7 @@ import {
 	SliderValuePicker,
 } from "react-native-slider-color-picker"
 import { Switch } from "react-native-paper"
-import {
-	EventRowDropDownPicker,
-	TextInputBlock,
-	DateTimePickerBlock,
-	TitleBlock,
-} from "../components/createComponents"
+import { TitleBlock } from "../components/createComponents"
 import tinycolor from "tinycolor2"
 
 // import SliderColorPicker from "../components/SliderColorPicker"
@@ -73,13 +68,13 @@ const SettingsScreen = ({ navigation, route }) => {
 			</View>
 			<View style={styles.row}>
 				<Text style={{ fontSize: 16, color: colors.text }}>
-					Цвета активных элементов
+					Цвет активных элементов
 				</Text>
 				<View
 					style={{
 						marginHorizontal: 20,
 						marginTop: 10,
-						height: 32,
+						height: 70,
 						width: width - 40,
 					}}
 				>
@@ -95,6 +90,26 @@ const SettingsScreen = ({ navigation, route }) => {
 						useNativeDriver={true}
 						onColorChange={changeColor}
 						moveVelocityThreshold={0}
+						style={{
+							marginTop: 0,
+						}}
+					/>
+					<SliderSaturationPicker
+						// ref={(view) => {
+						// 	this.sliderSaturationPicker = view
+						// }}
+						oldColor={colors.accent}
+						trackStyle={[{ height: 12, width: width - 50 }]}
+						thumbStyle={styles.thumb}
+						useNativeDriver={true}
+						onColorChange={changeColor}
+						style={{
+							height: 12,
+							borderRadius: 6,
+							backgroundColor: colors.accent,
+							width: width - 50,
+							marginTop: 0,
+						}}
 					/>
 				</View>
 			</View>
