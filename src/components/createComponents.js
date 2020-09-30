@@ -279,6 +279,7 @@ export const EventRowDropDownPicker = ({
 	defeultValue = null,
 	placeholder = "Выберите пункт из списка",
 	onChangeItem = null,
+	style = {},
 }) => {
 	const { colors } = useTheme()
 	let arrayItems = []
@@ -323,6 +324,7 @@ export const EventRowDropDownPicker = ({
 						backgroundColor: colors.card,
 						borderColor: colors.border,
 						paddingLeft: 0,
+						...style,
 					}}
 					dropDownMaxHeight={350}
 					itemStyle={{
@@ -333,6 +335,7 @@ export const EventRowDropDownPicker = ({
 						borderColor: colors.border,
 						paddingHorizontal: 0,
 						paddingVertical: 0,
+						zIndex: 99,
 					}}
 					// containerStyle={{ padding: 0, margin: 0, paddingHorizontal: 0 }}
 					activeItemStyle={{ backgroundColor: colors.active }}

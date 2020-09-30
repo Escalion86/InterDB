@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { StyleSheet, ScrollView, Button, View } from "react-native"
+import { StyleSheet, ScrollView, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
@@ -20,6 +20,7 @@ import MainFlatListWithFab from "../components/MainFlatListWithFab"
 import ServiceCard from "../components/ServiceCard"
 import ClientCard from "../components/ClientCard"
 import { useTheme } from "@react-navigation/native"
+import Button from "../components/Button"
 
 const CreateEventScreen = ({ navigation, route }) => {
 	const event =
@@ -132,7 +133,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 							setModalServicesVisible(true)
 						}}
 						title={`Выберите услугу`}
-						color={colors.accent}
 					/>
 				</View>
 			) : (
@@ -175,7 +175,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 							setModalClientsVisible(true)
 						}}
 						title={`Выберите клиента`}
-						color={colors.accent}
 					/>
 				</View>
 			) : (

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { StyleSheet, Text, View, Linking } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 import { useDispatch } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
