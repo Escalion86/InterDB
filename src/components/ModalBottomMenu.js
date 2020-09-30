@@ -137,33 +137,15 @@ const styles = StyleSheet.create({
 		// shadowRadius: 5,
 		// shadowOpacity: 0.4,
 	},
-	header: {
-		shadowColor: "#333333",
-		shadowOffset: { width: -1, height: -3 },
-		shadowRadius: 2,
-		shadowOpacity: 0.4,
-		// elevation: 5,
-		paddingTop: 20,
-		borderTopLeftRadius: 20,
-		borderTopRightRadius: 20,
-	},
-	panelHeader: {
-		alignItems: "center",
-	},
-	panelHandle: {
-		width: 40,
-		height: 8,
-		borderRadius: 4,
-		backgroundColor: "#00000040",
-		marginBottom: 10,
-	},
 	panelTitle: {
 		fontSize: 27,
-		height: 35,
+		// height: 35,
+		textAlign: "center",
 	},
 	panelSubtitle: {
 		fontSize: 14,
-		color: "gray",
+		// color: "gray",
+		textAlign: "center",
 		// marginBottom: 10,
 	},
 })
