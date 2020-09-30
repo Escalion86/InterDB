@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { StyleSheet, ScrollView, View } from "react-native"
+import { StyleSheet, ScrollView, View, ToastAndroid } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
@@ -41,14 +41,23 @@ const CreateEventScreen = ({ navigation, route }) => {
 
 	const serviceObj = services.find((item) => item.id == newEvent.service)
 	const clientObj = clients.find((item) => item.id == newEvent.client)
+	const servicePicked = serviceObj ? true : false
+	const clientPicked = clientObj ? true : false
 
 	const setEventItem = (item) => {
 		setNewEvent({ ...newEvent, ...item })
 	}
 	//TODO Сделать проверку на заполнение необходимых полей
 	const saveHandler = () => {
-		event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
-		navigation.navigate("Events")
+		if (servicePicked && clientPicked) {
+			event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
+			navigation.navigate("Events")
+		} else {
+			ToastAndroid.show(
+				`Необходимо выбрать Услугу и Клиента`,
+				ToastAndroid.LONG
+			)
+		}
 	}
 
 	navigation.setOptions({

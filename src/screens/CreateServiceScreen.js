@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
-import { StyleSheet, Text, View, ScrollView } from "react-native"
+import { StyleSheet, ScrollView, ToastAndroid } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import { dbDefault } from "../db/dbTemplate"
@@ -10,6 +10,7 @@ import {
 	TextInputBlock,
 	ImagePickerBlock,
 } from "../components/createComponents"
+import trimingArrayValues from "../helpers/trimingArrayValues"
 
 const CreateServiceScreen = ({ navigation, route }) => {
 	const service =
@@ -19,6 +20,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
 
 	const dispatch = useDispatch()
 	const [newService, setNewService] = useState(service)
+	const nameFieldFilled = newService.name.trim() ? true : false
 
 	const { colors } = useTheme()
 
@@ -27,11 +29,17 @@ const CreateServiceScreen = ({ navigation, route }) => {
 	}
 	//TODO Сделать проверку на заполнение необходимых полей
 	const saveHandler = () => {
-		console.log("save service", newService)
-		service.id
-			? dispatch(updateService(newService))
-			: dispatch(addService(newService))
-		navigation.navigate("Services")
+		if (nameFieldFilled) {
+			service.id
+				? dispatch(updateService(trimingArrayValues(newService)))
+				: dispatch(addService(trimingArrayValues(newService)))
+			navigation.navigate("Services")
+		} else {
+			ToastAndroid.show(
+				`Необходимо заполнить Название услуги`,
+				ToastAndroid.LONG
+			)
+		}
 	}
 
 	navigation.setOptions({
@@ -57,6 +65,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
 				value={newService.name}
 				theme={useTheme()}
 				onChangeText={(text) => setServiceItem({ name: text })}
+				fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
 			/>
 			<TextInputBlock
 				title="Описание"

@@ -12,6 +12,7 @@ import {
 	ImagePickerBlock,
 	GenderSwitch,
 } from "../components/createComponents"
+import trimingArrayValues from "../helpers/trimingArrayValues"
 
 const CreateClientScreen = ({ navigation, route }) => {
 	const client =
@@ -54,8 +55,8 @@ const CreateClientScreen = ({ navigation, route }) => {
 	const saveHandler = () => {
 		if (nameFieldFilled && contactsFieldFilled) {
 			client.id
-				? dispatch(updateClient(newClient))
-				: dispatch(addClient(newClient))
+				? dispatch(updateClient(trimingArrayValues(newClient)))
+				: dispatch(addClient(trimingArrayValues(newClient)))
 			navigation.navigate("Clients")
 		} else {
 			ToastAndroid.show(
