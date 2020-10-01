@@ -8,6 +8,7 @@ import {
 } from "react-native-popup-menu"
 import { useTheme } from "@react-navigation/native"
 import { FontAwesome5 } from "@expo/vector-icons"
+import { contactsIcons } from "../db/dependencies"
 
 const ContactsMenu = ({
 	client,
@@ -19,65 +20,7 @@ const ContactsMenu = ({
 	const { colors } = useTheme()
 	const size = 30
 
-	const menuObjects = [
-		{
-			name: "Позвонить",
-			icon: "phone",
-			color: "green",
-			url: `tel:/${client.phone}`,
-			exist: client.phone ? true : false,
-		},
-		{
-			name: "SMS",
-			icon: "sms",
-			color: "orange",
-			url: `sms:${client.phone}`,
-			exist: client.phone ? true : false,
-		},
-		{
-			name: "ВКонтакте",
-			icon: "vk",
-			color: "#597da3",
-			url: `http://vk.com/${client.vkontakte}`,
-			exist: client.vkontakte ? true : false,
-		},
-		{
-			name: "FaceBook",
-			icon: "facebook",
-			color: "#3b5998",
-			url: `http://vk.com/${client.facebook}`,
-			exist: client.facebook ? true : false,
-		},
-		{
-			name: "WhatsApp",
-			icon: "whatsapp",
-			color: "#43d854",
-			url: `whatsapp://send?phone=${client.whatsapp}`,
-			exist: client.whatsapp ? true : false,
-		},
-		{
-			name: "Viber",
-			icon: "viber",
-			color: "#59267c",
-			url: `viber://chat?number=${client.viber}`,
-			exist: client.viber ? true : false,
-		},
-		{
-			name: "Telegram",
-			icon: "telegram",
-			color: "#0088cc",
-			url: `http://t.me/${client.telegram}`,
-			exist: client.telegram ? true : false,
-		},
-
-		{
-			name: "E-Mail",
-			icon: "envelope",
-			color: "red",
-			url: `sms:${client.email}`,
-			exist: client.email ? true : false,
-		},
-	]
+	const menuObjects = contactsIcons(client)
 
 	let menu = []
 	for (let i = 0; i < menuObjects.length; i++) {

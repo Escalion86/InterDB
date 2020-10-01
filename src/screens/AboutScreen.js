@@ -10,9 +10,9 @@ import {
 } from "react-native"
 import { useTheme } from "@react-navigation/native"
 import { TouchableOpacity } from "react-native-gesture-handler"
-import { FontAwesome5 } from "@expo/vector-icons"
 import Button from "../components/Button"
 import { AppContext } from "../AppContext"
+import { ContactIcon } from "../components/infoComponents"
 
 const AboutScreen = ({ navigation, route }) => {
 	const { colors } = useTheme()
@@ -53,30 +53,6 @@ const AboutScreen = ({ navigation, route }) => {
 			// 	</HeaderButtons>
 			// ),
 		})
-
-	const ContactIcon = ({
-		iconName = "",
-		backgroundColor = colors.background,
-		url = null,
-	}) => {
-		const size = 30
-		return (
-			<TouchableOpacity
-				onPress={() => {
-					url ? Linking.openURL(url) : null
-				}}
-				style={{
-					...styles.contact,
-					width: size + Math.floor(size / 2),
-					height: size + Math.floor(size / 2),
-					padding: Math.floor(size / 16),
-					backgroundColor: backgroundColor,
-				}}
-			>
-				<FontAwesome5 name={iconName} size={size} color={"white"} />
-			</TouchableOpacity>
-		)
-	}
 
 	return (
 		<View style={styles.container}>
@@ -209,10 +185,5 @@ const styles = StyleSheet.create({
 	},
 	version: {
 		fontSize: 14,
-	},
-	contact: {
-		alignItems: "center",
-		justifyContent: "center",
-		borderRadius: 200,
 	},
 })
