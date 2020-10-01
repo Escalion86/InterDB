@@ -77,7 +77,7 @@ const CreateClientScreen = ({ navigation, route }) => {
 
 	return (
 		<ScrollView style={styles.container}>
-			<TitleBlock title="Основные" theme={useTheme()} />
+			<TitleBlock title="Основные" />
 			<TextInputBlock
 				title="Фамилия"
 				value={newClient.surname}
@@ -125,7 +125,7 @@ const CreateClientScreen = ({ navigation, route }) => {
 					setClientItem({ gender: text ? 1 : 0 })
 				}}
 			/>
-			<TitleBlock title="Связь" theme={useTheme()} />
+			<TitleBlock title="Связь" />
 			<TextInputBlock
 				title="Телефон"
 				value={newClient.phone}

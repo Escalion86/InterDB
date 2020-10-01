@@ -92,7 +92,6 @@ const CreateEventScreen = ({ navigation, route }) => {
         defeultValue={newEvent.event}
         placeholder={"Выберите услугу"}
         onChangeItem={(item) => setEventItem({ event: item.value })}
-        theme={useTheme()}
       /> */}
 
 			<EventRowDropDownPicker
@@ -110,7 +109,6 @@ const CreateEventScreen = ({ navigation, route }) => {
         defeultValue={newEvent.event}
         placeholder={"Выберите тип события"}
         onChangeItem={(item) => setEventItem({ event: item.value })}
-        theme={useTheme()}
       />
       <EventRowDropDownPicker
         dependencies={auditoryIconDependencies}
@@ -119,7 +117,6 @@ const CreateEventScreen = ({ navigation, route }) => {
         defeultValue={newEvent.auditory}
         placeholder={"Выберите аудиторию"}
         onChangeItem={(item) => setEventItem({ auditory: item.value })}
-        theme={useTheme()}
       /> */}
 			<DateTimePickerBlock
 				dateValue={newEvent.date}

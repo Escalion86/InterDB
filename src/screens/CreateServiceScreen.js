@@ -59,25 +59,22 @@ const CreateServiceScreen = ({ navigation, route }) => {
 
 	return (
 		<ScrollView style={styles.container}>
-			{/* <TitleBlock title="Финансы" theme={useTheme()} /> */}
+			{/* <TitleBlock title="Финансы" /> */}
 			<TextInputBlock
 				title="Название"
 				value={newService.name}
-				theme={useTheme()}
 				onChangeText={(text) => setServiceItem({ name: text })}
 				fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
 			/>
 			<TextInputBlock
 				title="Описание"
 				value={newService.description}
-				theme={useTheme()}
 				onChangeText={(text) => setServiceItem({ description: text })}
 				multiline={true}
 			/>
 			<TextInputBlock
 				title="Продолжительность"
 				value={newService.length}
-				theme={useTheme()}
 				keyboardType="numeric"
 				onChangeText={(text) => setServiceItem({ length: text })}
 				postfix="мин"
@@ -86,7 +83,6 @@ const CreateServiceScreen = ({ navigation, route }) => {
 			<TextInputBlock
 				title="Время на подготовку"
 				value={newService.preparetime}
-				theme={useTheme()}
 				keyboardType="numeric"
 				onChangeText={(text) => setServiceItem({ preparetime: text })}
 				postfix="мин"
@@ -95,7 +91,6 @@ const CreateServiceScreen = ({ navigation, route }) => {
 			<TextInputBlock
 				title="Время на сбор"
 				value={newService.collecttime}
-				theme={useTheme()}
 				keyboardType="numeric"
 				onChangeText={(text) => setServiceItem({ collecttime: text })}
 				postfix="мин"
@@ -104,7 +99,6 @@ const CreateServiceScreen = ({ navigation, route }) => {
 			<TextInputBlock
 				title="Стоимость"
 				value={newService.price}
-				theme={useTheme()}
 				onChangeText={(text) => setServiceItem({ price: text })}
 				keyboardType="numeric"
 				postfix="&#8381;"
