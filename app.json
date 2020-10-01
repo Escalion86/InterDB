@@ -24,7 +24,7 @@
 		"android": {
 			"icon": "./assets/gear96.png",
 			"useNextNotificationsApi": true,
-			"package": "com.escalion.InterDB"
+			"package": "com.escalion.SEDB"
 		}
 	}
 }
