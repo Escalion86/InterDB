@@ -119,8 +119,9 @@ const CreateEventScreen = ({ navigation, route }) => {
         onChangeItem={(item) => setEventItem({ auditory: item.value })}
       /> */}
 			<DateTimePickerBlock
+				title="Дата и время начала"
 				dateValue={newEvent.date}
-				onChangeStoreHook={setEventItem}
+				onChange={(value) => setEventItem({ date: value })}
 			/>
 			<TitleBlock title="Услуга" />
 			{/* <DropDownPickerBlock
