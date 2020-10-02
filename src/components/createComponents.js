@@ -199,7 +199,7 @@ export const TextInputBlock = ({
 				{prefix ? (
 					<View
 						style={{
-							minWidth: 36,
+							minWidth: 32,
 							height: "100%",
 							// borderColor: colors.border,
 							backgroundColor: colors.active,
@@ -212,7 +212,11 @@ export const TextInputBlock = ({
 							justifyContent: "center",
 						}}
 					>
-						<Text style={{ fontSize: 18, color: colors.text }}>{prefix}</Text>
+						<Text
+							style={{ fontSize: 18, color: colors.text, textAlign: "center" }}
+						>
+							{prefix}
+						</Text>
 					</View>
 				) : null}
 				{mask ? null : ( // /> // 	// value="" // 	mask={"+1 ([000]) [000] [00] [00]"} // 	}} // 		// borderColor: "#fff", // 		// borderWidth: 1, // 		color: colors.text, // 		fontSize: 18, // 		textAlign: "center", // 		flex: 1, // 	style={{ // <TextInputMask
@@ -254,7 +258,7 @@ export const TextInputBlock = ({
 				{postfix ? (
 					<View
 						style={{
-							minWidth: 36,
+							minWidth: 32,
 							height: "100%",
 							// borderColor: colors.border,
 							backgroundColor: colors.active,
@@ -267,7 +271,11 @@ export const TextInputBlock = ({
 							justifyContent: "center",
 						}}
 					>
-						<Text style={{ fontSize: 18, color: colors.text }}>{postfix}</Text>
+						<Text
+							style={{ fontSize: 18, color: colors.text, textAlign: "center" }}
+						>
+							{postfix}
+						</Text>
 					</View>
 				) : null}
 			</View>
