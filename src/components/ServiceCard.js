@@ -7,6 +7,12 @@ import {
 	TouchableOpacity,
 	Image,
 } from "react-native"
+import {
+	Menu,
+	MenuOptions,
+	MenuTrigger,
+	renderers,
+} from "react-native-popup-menu"
 import { Ionicons } from "@expo/vector-icons"
 import { useTheme } from "@react-navigation/native"
 
@@ -16,6 +22,7 @@ const ServiceCard = ({
 	onPress = null,
 	listMode = false,
 }) => {
+	const { Popover } = renderers
 	const theme = useTheme()
 	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
@@ -39,6 +46,11 @@ const ServiceCard = ({
 			onPress = () => {
 				navigation.navigate("Service", { service: service })
 			}
+
+		const profit =
+			service.finance_price -
+			service.finance_assistants -
+			service.finance_consumables
 
 		const noImageUrl = dark
 			? require("../../assets/no_image_dark.jpg")
@@ -68,6 +80,15 @@ const ServiceCard = ({
 		const CardDesc = ({ desc }) => (
 			<View style={styles.carddesc}>
 				<Text style={styles.carddesctext}>{desc}</Text>
+			</View>
+		)
+
+		const MenuRow = ({ title = "", num = 0, style = {} }) => (
+			<View style={{ ...styles.row, ...style }}>
+				<Text style={{ fontSize: 16, color: colors.text }}>{title}</Text>
+				<Text style={{ fontSize: 16, marginLeft: 20, color: colors.text }}>
+					{num}
+				</Text>
 			</View>
 		)
 
@@ -107,7 +128,32 @@ const ServiceCard = ({
 							{service.preparetime + service.collecttime + service.length} мин
 						</Text>
 					</View>
-					<Text style={styles.price}>{service.price}</Text>
+					{/* <Text style={styles.price}>{service.price}</Text> */}
+					<Menu
+						style={styles.finance}
+						renderer={Popover}
+						rendererProps={{ preferredPlacement: "left" }}
+					>
+						<MenuTrigger>
+							{/* <TouchableOpacity style={styles.finance}> */}
+							<Text style={styles.profit}>{profit}</Text>
+							{/* </TouchableOpacity> */}
+						</MenuTrigger>
+						<MenuOptions style={styles.menuOptions}>
+							<MenuRow title="Цена клиента" num={service.finance_price} />
+							<MenuRow title="Расходники" num={-service.finance_consumables} />
+							<MenuRow
+								title="Ассистентам"
+								num={-service.finance_assistants}
+								style={{
+									borderBottomColor: colors.text,
+									borderBottomWidth: 1,
+									paddingBottom: 5,
+								}}
+							/>
+							<MenuRow title="ИТОГО" num={profit} style={{ paddingTop: 5 }} />
+						</MenuOptions>
+					</Menu>
 				</View>
 			</TouchableOpacity>
 		)
@@ -195,7 +241,7 @@ const stylesFactory = (colors) =>
 			color: colors.text,
 		},
 		finance: {
-			flex: 1,
+			// flex: 1,
 			flexDirection: "column",
 			justifyContent: "flex-end",
 			width: "100%",
@@ -205,7 +251,7 @@ const stylesFactory = (colors) =>
 			// alignItems: "center",
 			// justifyContent: "center",
 		},
-		price: {
+		profit: {
 			// flex: 1,
 			fontSize: 14,
 			width: "100%",
@@ -223,9 +269,14 @@ const stylesFactory = (colors) =>
 		},
 		menuOptions: {
 			padding: 20,
+			borderColor: colors.border,
+			borderWidth: 1,
+			// borderRadius: 20,
+			backgroundColor: colors.card,
 		},
 		row: {
 			flexDirection: "row",
 			justifyContent: "space-between",
+			alignItems: "center",
 		},
 	})

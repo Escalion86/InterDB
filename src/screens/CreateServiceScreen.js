@@ -9,6 +9,7 @@ import { addService, updateService } from "../store/actions/service"
 import {
 	TextInputBlock,
 	ImagePickerBlock,
+	TitleBlock,
 } from "../components/createComponents"
 import trimingArrayValues from "../helpers/trimingArrayValues"
 
@@ -60,6 +61,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
 	return (
 		<ScrollView style={styles.container}>
 			{/* <TitleBlock title="Финансы" /> */}
+			<TitleBlock title="Основные" />
 			<TextInputBlock
 				title="Название"
 				value={newService.name}
@@ -72,6 +74,12 @@ const CreateServiceScreen = ({ navigation, route }) => {
 				onChangeText={(text) => setServiceItem({ description: text })}
 				multiline={true}
 			/>
+			<ImagePickerBlock
+				title={"Картинка"}
+				image={newService.image}
+				onPick={(img) => setServiceItem({ image: img })}
+			/>
+			<TitleBlock title="Затраты времени" />
 			<TextInputBlock
 				title="Продолжительность"
 				value={newService.length}
@@ -96,18 +104,32 @@ const CreateServiceScreen = ({ navigation, route }) => {
 				postfix="мин"
 				placeholder="0"
 			/>
+			<TitleBlock title="Финансы по умолчанию" />
 			<TextInputBlock
 				title="Стоимость"
-				value={newService.price}
+				value={newService.finance_price}
 				onChangeText={(text) => setServiceItem({ price: text })}
 				keyboardType="numeric"
 				postfix="&#8381;"
 				placeholder="0"
 			/>
-			<ImagePickerBlock
-				title={"Картинка"}
-				image={newService.image}
-				onPick={(img) => setServiceItem({ image: img })}
+			<TextInputBlock
+				title="Затраты на расходники"
+				value={newService.finance_consumables}
+				onChangeText={(text) => setServiceItem({ price: text })}
+				keyboardType="numeric"
+				prefix="-"
+				postfix="&#8381;"
+				placeholder="0"
+			/>
+			<TextInputBlock
+				title="Затраты на ассистентов"
+				value={newService.finance_assistants}
+				onChangeText={(text) => setServiceItem({ price: text })}
+				keyboardType="numeric"
+				prefix="-"
+				postfix="&#8381;"
+				placeholder="0"
 			/>
 		</ScrollView>
 	)
