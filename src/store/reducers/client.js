@@ -22,7 +22,7 @@ export const clientReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOAD_CLIENTS:
 			clients = action.clients.map((client) => {
-				client.date = client.date * 1000
+				client.birthday = client.birthday * 1000
 				client.loading = false
 				return client
 			})
