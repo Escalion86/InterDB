@@ -38,8 +38,8 @@ const ModalBottomMenu = ({
 					<View
 						style={{
 							...styles.panel,
-							backgroundColor: colors.card,
-							borderColor: colors.border,
+							backgroundColor: colors.border,
+							borderColor: colors.card,
 						}}
 					>
 						{title || subtitle ? (
@@ -68,21 +68,22 @@ export const ModalBottomMenuYesNo = ({
 	title = "",
 	subtitle = "",
 	onAccept = () => {},
+	opener = () => {},
 	children = null,
 	btnTitleConfirm = "Да",
 	btnTitleDecline = "Нет",
 	visible = false,
 	closer = null,
 }) => {
-	const withState = !children
-	const [modalVisible, setModalVisible] = useState(visible)
+	// const withState = !children
+	// const [modalVisible, setModalVisible] = useState(visible)
 
 	return (
 		<View>
 			{children ? (
 				<TouchableOpacity
 					onPress={() => {
-						setModalVisible(true)
+						opener()
 					}}
 				>
 					{children}
@@ -91,16 +92,16 @@ export const ModalBottomMenuYesNo = ({
 			<ModalBottomMenu
 				title={title}
 				subtitle={subtitle}
-				visible={withState ? modalVisible : visible}
+				visible={visible}
 				onOuterClick={() => {
-					withState ? setModalVisible(false) : closer()
+					closer()
 				}}
 			>
 				<Button
 					title={btnTitleConfirm}
 					btnDecline={false}
 					onPress={() => {
-						withState ? setModalVisible(false) : closer()
+						closer()
 						onAccept()
 					}}
 				/>
@@ -108,7 +109,7 @@ export const ModalBottomMenuYesNo = ({
 					title={btnTitleDecline}
 					btnDecline={true}
 					onPress={() => {
-						withState ? setModalVisible(false) : closer()
+						closer()
 					}}
 				/>
 			</ModalBottomMenu>
@@ -128,9 +129,9 @@ const styles = StyleSheet.create({
 		paddingTop: 20,
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20,
-		borderLeftWidth: 1,
-		borderTopWidth: 1,
-		borderRightWidth: 1,
+		borderLeftWidth: 3,
+		borderTopWidth: 3,
+		borderRightWidth: 3,
 		maxHeight: 500,
 		// shadowColor: '#000000',
 		// shadowOffset: {width: 0, height: 0},
