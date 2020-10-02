@@ -67,6 +67,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
 				value={newService.name}
 				onChangeText={(text) => setServiceItem({ name: text })}
 				fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
+				multiline={true}
 			/>
 			<TextInputBlock
 				title="Описание"

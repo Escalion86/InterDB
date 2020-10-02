@@ -179,8 +179,17 @@ export const TextInputBlock = ({
 	value = value ? value.toString() : ""
 	const { colors } = useTheme()
 
+	const multilineStyle = multiline
+		? { height: null, maxHeight: 200, minHeight: 45 }
+		: {}
+
 	return (
-		<View style={styles.row}>
+		<View
+			style={{
+				...styles.row,
+				...multilineStyle,
+			}}
+		>
 			<Text style={{ ...styles.text, color: colors.text }}>{title}</Text>
 			<View
 				style={{
@@ -245,8 +254,7 @@ export const TextInputBlock = ({
 							textAlign: "center",
 							fontSize: 18,
 							color: colors.text,
-							// borderWidth: 1,
-							// borderColor: "#fff",
+							padding: 5,
 						}}
 						multiline={multiline}
 						keyboardType={keyboardType}
