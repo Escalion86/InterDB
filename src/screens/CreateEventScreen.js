@@ -123,6 +123,13 @@ const CreateEventScreen = ({ navigation, route }) => {
 				dateValue={newEvent.date}
 				onChange={(value) => setEventItem({ date: value })}
 			/>
+			<TextInputBlock
+				title="Комментарий"
+				value={newEvent.comment}
+				onChangeText={(text) => setEventItem({ comment: text })}
+				multiline={true}
+				keyboardType="numeric"
+			/>
 			<TitleBlock title="Услуга" />
 			{/* <DropDownPickerBlock
 				name="Услуга"
