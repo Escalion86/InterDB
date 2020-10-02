@@ -362,6 +362,8 @@ export const DateTimePickerBlock = ({
 	dateValue = null,
 	onChange,
 	pickTime = true,
+	showWeek = true,
+	neutralButton = false,
 }) => {
 	const { colors } = useTheme()
 	const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
@@ -383,7 +385,7 @@ export const DateTimePickerBlock = ({
 							borderColor: colors.border,
 						}}
 					>
-						{dateValue ? formatDate(dateValue, true, true) : "не выбрана"}
+						{dateValue ? formatDate(dateValue, true, showWeek) : "не выбрана"}
 					</Text>
 					{dateTimePickerShow === "eventDateStart" ? (
 						<DateTimePicker
@@ -398,10 +400,13 @@ export const DateTimePickerBlock = ({
 							display="default"
 							onChange={(event, selectedDate) => {
 								setDateTimePickerShow(null)
-								if (selectedDate) {
+								if (event.type === "neutralButtonPressed") {
+									onChange("")
+								} else if (selectedDate) {
 									onChange(Date.parse(selectedDate))
 								}
 							}}
+							neutralButtonLabel={neutralButton ? "Очистить" : null}
 						/>
 					) : null}
 				</TouchableOpacity>
