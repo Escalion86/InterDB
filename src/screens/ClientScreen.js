@@ -13,12 +13,16 @@ import { TitleBlock } from "../components/createComponents"
 import { useTheme } from "@react-navigation/native"
 import { TextBlock, ContactIcon } from "../components/infoComponents"
 import { contactsIcons } from "../db/dependencies"
+import wordForm from "../helpers/wordForm"
+import { formatDate, calculateAge } from "../helpers/date"
 
 const ClientScreen = ({ navigation, route }) => {
 	const client =
 		route.params !== undefined && route.params.client !== undefined
 			? route.params.client
 			: navigation.navigate("Clients")
+
+	const age = calculateAge(client.birthday)
 
 	const { dark, colors } = useTheme()
 
@@ -37,8 +41,16 @@ const ClientScreen = ({ navigation, route }) => {
 		return event.client === client.id
 	})
 
+	const wordEventsDependency = `Клиент зависим от ${wordForm(
+		eventsDependency.length,
+		["события", "событий", "событий"]
+	)}`
+
 	const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
 	const [modalEventsVisible, setModalEventsVisible] = useState(false)
+	const [modalDeclineDeleteVisible, setModalDeclineDeleteVisible] = useState(
+		false
+	)
 
 	const dispatch = useDispatch()
 
@@ -51,16 +63,22 @@ const ClientScreen = ({ navigation, route }) => {
 				navigation.goBack()
 			}}
 			visible={modalDeleteVisible}
+			// opener={() => setModalDeleteVisible(true)}
 			closer={() => setModalDeleteVisible(false)}
 		/>
 	)
 
-	const ModalDeleteDecline = () => (
+	const ModalEventsDependency = (
+		title = "События клиента",
+		subtitle = wordEventsDependency,
+		visible = modalEventsVisible,
+		onOuterClick = () => setModalEventsVisible(false)
+	) => (
 		<ModalBottomMenu
-			title="Удаление клиента невозможно"
-			subtitle={`Клиент зависим от ${eventsDependency.length} событий`}
-			visible={modalEventsVisible}
-			onOuterClick={() => setModalEventsVisible(false)}
+			title={title}
+			subtitle={subtitle}
+			visible={visible}
+			onOuterClick={onOuterClick}
 		>
 			<MainFlatListWithFab
 				data={eventsDependency}
@@ -81,6 +99,14 @@ const ClientScreen = ({ navigation, route }) => {
 		</ModalBottomMenu>
 	)
 
+	const ModalDeclineDelete = () =>
+		ModalEventsDependency(
+			"Удаление клиента невозможно",
+			wordEventsDependency,
+			modalDeclineDeleteVisible,
+			() => setModalDeclineDeleteVisible(false)
+		)
+
 	navigation.setOptions({
 		title: `Клиент`,
 		headerRight: () => (
@@ -90,7 +116,7 @@ const ClientScreen = ({ navigation, route }) => {
 					iconName="ios-trash"
 					onPress={() => {
 						eventsDependency.length > 0
-							? setModalEventsVisible(true)
+							? setModalDeclineDeleteVisible(true)
 							: setModalDeleteVisible(true)
 					}}
 				/>
@@ -102,7 +128,8 @@ const ClientScreen = ({ navigation, route }) => {
 					}}
 				/>
 				<ModalDeleteConfirm />
-				<ModalDeleteDecline />
+				<ModalEventsDependency />
+				<ModalDeclineDelete />
 			</HeaderButtons>
 		),
 	})
@@ -134,12 +161,20 @@ const ClientScreen = ({ navigation, route }) => {
 					}}
 				>
 					<TextBlock
-						text={`${client.surname} ${client.name} ${client.thirdname}`}
+						text={`${client.surname} ${client.name} ${client.thirdname}`.trim()}
 						center
 						big
 					/>
-					{/* <TextBlock text={client.name} center big />
-					<TextBlock text={client.thirdname} center big /> */}
+					{client.birthday ? (
+						<TextBlock
+							text={`${formatDate(client.birthday, true)} (${wordForm(age, [
+								"год",
+								"года",
+								"лет",
+							])})`}
+							center
+						/>
+					) : null}
 				</View>
 			</View>
 			<TitleBlock title="Связь" />
