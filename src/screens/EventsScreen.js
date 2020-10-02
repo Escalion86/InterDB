@@ -6,6 +6,7 @@ import {
 	View,
 	ActivityIndicator,
 	TouchableOpacity,
+	ToastAndroid,
 } from "react-native"
 import {
 	Menu,
@@ -37,6 +38,8 @@ const EventsScreen = ({ navigation, route }) => {
 	//   dispatch(loadEvents())
 	// }, [dispatch])
 	const events = useSelector((state) => state.event.events)
+	const services = useSelector((state) => state.service.services)
+	const clients = useSelector((state) => state.client.clients)
 	const loading = useSelector((state) => state.event.loading)
 
 	let sortMenu = null
@@ -162,8 +165,15 @@ const EventsScreen = ({ navigation, route }) => {
 					title="Add random event"
 					iconName="ios-add-circle-outline"
 					onPress={() => {
-						const tmp = dbGenerator("event")
-						dispatch(addEvent(tmp))
+						if (services.length === 0 || clients.length === 0) {
+							ToastAndroid.show(
+								"Чтобы сгенерировать событие, нужно создать хотябы одного клиента и услугу",
+								ToastAndroid.LONG
+							)
+						} else {
+							const tmp = dbGenerator("event", services, clients)
+							dispatch(addEvent(tmp))
+						}
 					}}
 				/>
 				{/* <Item

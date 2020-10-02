@@ -29,13 +29,23 @@ export const prepareForDB = (dbTableName, data) => {
 	return preperedData
 }
 
-export const dbGenerator = (table = "event") => {
+export const dbGenerator = (table = "event", services = [], clients = []) => {
 	const town = rndArray(["Красноярск", "Сосновоборск"])
+	const servicesIds = []
+	services.forEach((service) => {
+		servicesIds.push(service.id)
+	})
+	console.log("servicesIds", servicesIds)
+	const clientsIds = []
+	clients.forEach((client) => {
+		clientsIds.push(client.id)
+	})
 	switch (table) {
 		case "event":
 			return {
 				// auditory: rndArray(["Взрослые", "Дети", "Подростки", "Смешанная"]),
-				service: rndArray([0, 1, 2]),
+				service: rndArray(servicesIds),
+				client: rndArray(clientsIds),
 				date: new Date().setSeconds(0, 0),
 				duration: rndArray([20, 30, 40, 60]),
 				location_town: town,
