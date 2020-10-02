@@ -175,9 +175,11 @@ export const TextInputBlock = ({
 	mask = null,
 	multiline = false,
 	fieldStyle = {},
+	success = false,
 }) => {
 	value = value ? value.toString() : ""
 	const { colors } = useTheme()
+	const textColor = success ? colors.success : colors.text
 
 	const multilineStyle = multiline
 		? { height: null, maxHeight: 200, minHeight: 45 }
@@ -253,13 +255,14 @@ export const TextInputBlock = ({
 							flex: 1,
 							textAlign: "center",
 							fontSize: 18,
-							color: colors.text,
+							color: textColor,
 							padding: 5,
 						}}
 						multiline={multiline}
 						keyboardType={keyboardType}
 						onChangeText={onChangeText}
 						placeholder={placeholder}
+						placeholderTextColor={textColor}
 						value={value}
 					/>
 				)}

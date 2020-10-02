@@ -171,7 +171,12 @@ const CreateEventScreen = ({ navigation, route }) => {
 							navigation={navigation}
 							service={item}
 							onPress={() => {
-								setEventItem({ service: item.id })
+								setEventItem({
+									service: item.id,
+									finance_price: item.finance_price,
+									finance_consumables: item.finance_consumables,
+									finance_assistants: item.finance_assistants,
+								})
 								setModalServicesVisible(false)
 							}}
 							listMode={true}
@@ -241,6 +246,37 @@ const CreateEventScreen = ({ navigation, route }) => {
 				keyboardType="numeric"
 				placeholder="0"
 				postfix="&#8381;"
+				success={
+					serviceObj && newEvent.finance_price == serviceObj.finance_price
+				}
+			/>
+			<TextInputBlock
+				title="Расходные материалы"
+				value={newEvent.finance_consumables}
+				onChangeText={(text) =>
+					setEventItem({ finance_consumables: Math.floor(text) })
+				}
+				keyboardType="numeric"
+				placeholder="0"
+				success={
+					serviceObj &&
+					newEvent.finance_consumables == serviceObj.finance_consumables
+				}
+				postfix="&#8381;"
+			/>
+			<TextInputBlock
+				title="Ассистентам"
+				value={newEvent.finance_assistants}
+				onChangeText={(text) =>
+					setEventItem({ finance_assistants: Math.floor(text) })
+				}
+				keyboardType="numeric"
+				placeholder="0"
+				postfix="&#8381;"
+				success={
+					serviceObj &&
+					newEvent.finance_assistants == serviceObj.finance_assistants
+				}
 			/>
 			<TextInputBlock
 				title="За дорогу"
@@ -262,16 +298,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 				placeholder="0"
 				postfix="&#8381;"
 			/>
-			<TextInputBlock
-				title="Ассистентам"
-				value={newEvent.finance_assistants}
-				onChangeText={(text) =>
-					setEventItem({ finance_assistants: Math.floor(text) })
-				}
-				keyboardType="numeric"
-				placeholder="0"
-				postfix="&#8381;"
-			/>
+
 			<TextInputBlock
 				title="Чаевые"
 				value={newEvent.finance_tips}
@@ -282,16 +309,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 				placeholder="0"
 				postfix="&#8381;"
 			/>
-			<TextInputBlock
-				title="Расходные материалы"
-				value={newEvent.finance_consumables}
-				onChangeText={(text) =>
-					setEventItem({ finance_consumables: Math.floor(text) })
-				}
-				keyboardType="numeric"
-				placeholder="0"
-				postfix="&#8381;"
-			/>
+
 			<TitleBlock title="Адрес" />
 			<TextInputBlock
 				title="Название заведения"
