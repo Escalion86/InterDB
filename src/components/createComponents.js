@@ -357,15 +357,18 @@ export const EventRowDropDownPicker = ({
 	)
 }
 
-export const DateTimePickerBlock = ({ dateValue, onChangeStoreHook }) => {
+export const DateTimePickerBlock = ({
+	title = "",
+	dateValue = null,
+	onChange,
+	pickTime = true,
+}) => {
 	const { colors } = useTheme()
 	const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
 
 	return (
 		<View style={styles.row}>
-			<Text style={{ ...styles.text, color: colors.text }}>
-				Дата и время начала
-			</Text>
+			<Text style={{ ...styles.text, color: colors.text }}>{title}</Text>
 			<View style={styles.datetimecontainer}>
 				<TouchableOpacity
 					onPress={() => setDateTimePickerShow("eventDateStart")}
@@ -380,56 +383,61 @@ export const DateTimePickerBlock = ({ dateValue, onChangeStoreHook }) => {
 							borderColor: colors.border,
 						}}
 					>
-						{formatDate(dateValue, true, true)}
+						{dateValue ? formatDate(dateValue, true, true) : "не выбрана"}
 					</Text>
 					{dateTimePickerShow === "eventDateStart" ? (
 						<DateTimePicker
 							testID="dateTimePicker"
-							value={new Date(dateValue)}
+							value={
+								new Date(
+									dateValue ? dateValue : new Date().setHours(0, 0, 0, 0)
+								)
+							}
 							mode={"date"}
 							is24Hour={true}
 							display="default"
 							onChange={(event, selectedDate) => {
 								setDateTimePickerShow(null)
 								if (selectedDate) {
-									onChangeStoreHook({ date: Date.parse(selectedDate) })
+									onChange(Date.parse(selectedDate))
 								}
 							}}
 						/>
 					) : null}
 				</TouchableOpacity>
-				<TouchableOpacity
-					onPress={() => setDateTimePickerShow("eventTimeStart")}
-					style={{ flex: 2 }}
-				>
-					<Text
-						style={{
-							...styles.datetime,
-
-							color: colors.text,
-							backgroundColor: colors.card,
-							borderColor: colors.border,
-						}}
+				{pickTime ? (
+					<TouchableOpacity
+						onPress={() => setDateTimePickerShow("eventTimeStart")}
+						style={{ flex: 2 }}
 					>
-						{formatTime(dateValue, true, true)}
-					</Text>
-					{dateTimePickerShow === "eventTimeStart" ? (
-						<DateTimePicker
-							testID="timeTimePicker"
-							value={new Date(dateValue)}
-							mode={"time"}
-							is24Hour={true}
-							display="default"
-							onChange={(event, selectedDate) => {
-								setDateTimePickerShow(null)
-								if (selectedDate)
-									onChangeStoreHook({
-										date: Date.parse(selectedDate),
-									})
+						<Text
+							style={{
+								...styles.datetime,
+
+								color: colors.text,
+								backgroundColor: colors.card,
+								borderColor: colors.border,
 							}}
-						/>
-					) : null}
-				</TouchableOpacity>
+						>
+							{dateValue ? formatTime(dateValue, true, true) : "не выбрана"}
+						</Text>
+						{dateTimePickerShow === "eventTimeStart" ? (
+							<DateTimePicker
+								testID="timeTimePicker"
+								value={
+									new Date(dateValue ? dateValue : new Date().setSeconds(0, 0))
+								}
+								mode={"time"}
+								is24Hour={true}
+								display="default"
+								onChange={(event, selectedDate) => {
+									setDateTimePickerShow(null)
+									if (selectedDate) onChange(Date.parse(selectedDate))
+								}}
+							/>
+						) : null}
+					</TouchableOpacity>
+				) : null}
 			</View>
 		</View>
 	)
