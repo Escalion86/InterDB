@@ -9,7 +9,6 @@ import {
 } from "react-native"
 import {
 	Menu,
-	MenuProvider,
 	MenuOptions,
 	MenuTrigger,
 	renderers,
@@ -20,6 +19,7 @@ import { useTheme } from "@react-navigation/native"
 
 import IconMenu from "./IconMenu"
 import LinkTo from "../helpers/LinkTo"
+import ContactsMenu from "./ContactsMenu"
 
 const EventCard = ({ navigation, event, onPress = null }) => {
 	const { Popover } = renderers
@@ -85,7 +85,9 @@ const EventCard = ({ navigation, event, onPress = null }) => {
 			if (data.id == event.service) return data
 		})[0]
 
-		if (!service) service = { name: "[ Услуга не найдена ]" }
+		let client = clients.filter((data) => {
+			if (data.id == event.client) return data
+		})[0]
 
 		const MenuRow = ({ title = "", num = 0, style = {} }) => (
 			<View style={{ ...styles.row, ...style }}>
@@ -122,7 +124,7 @@ const EventCard = ({ navigation, event, onPress = null }) => {
 					<View style={styles.cardheader}>
 						<Text style={styles.cardtitle}>
 							{/* {event.auditory},  */}
-							{service.name}
+							{service ? service.name : "[услуга не найдена]"}
 						</Text>
 					</View>
 					<View style={styles.carddesc}>
@@ -136,9 +138,9 @@ const EventCard = ({ navigation, event, onPress = null }) => {
 						</Text>
 						<Ionicons
 							name="md-navigate"
-							size={22}
+							size={28}
 							color={colors.text}
-							style={{ marginLeft: 5 }}
+							style={{ marginHorizontal: 5 }}
 							onPress={
 								() =>
 									LinkTo(
@@ -165,18 +167,25 @@ const EventCard = ({ navigation, event, onPress = null }) => {
 							}
 						/>
 					</View>
+
+					<View style={styles.carddesc}>
+						<Text style={styles.carddesctext}>
+							{client
+								? `${client.surname} ${client.name} ${client.thirdname}`.trim()
+								: "[клиент не найден]"}
+						</Text>
+						{client ? <ContactsMenu client={client} /> : null}
+					</View>
 				</View>
 				<View style={styles.right}>
 					<View style={styles.carddate}>
-						<View>
-							<Text style={styles.datetime}>
-								{formatDate(new Date(event.date))}
-							</Text>
-							<Text style={styles.datetime}>
-								{getWeekDay(new Date(event.date))}{" "}
-								{formatTime(new Date(event.date))}
-							</Text>
-						</View>
+						<Text style={styles.datetime}>
+							{formatDate(new Date(event.date))}
+						</Text>
+						<Text style={styles.datetime}>
+							{getWeekDay(new Date(event.date))}{" "}
+							{formatTime(new Date(event.date))}
+						</Text>
 					</View>
 					<Menu
 						style={styles.finance}
@@ -239,6 +248,8 @@ const stylesFactory = (colors) =>
 			padding: 5,
 			alignItems: "center",
 			justifyContent: "center",
+			// borderColor: "red",
+			// borderWidth: 1,
 		},
 		middle: {
 			// padding: 10,
@@ -255,11 +266,13 @@ const stylesFactory = (colors) =>
 			padding: 5,
 			alignItems: "center",
 			justifyContent: "center",
+			minHeight: 40,
 		},
 		cardtitle: {
 			fontFamily: "open-bold",
 			fontSize: 16,
 			color: colors.text,
+			textAlign: "center",
 		},
 		carddesctext: {
 			flex: 1,
@@ -269,10 +282,10 @@ const stylesFactory = (colors) =>
 		},
 		carddesc: {
 			flexDirection: "row",
-			minHeight: 46,
+			minHeight: 40,
 			// borderColor: "red",
 			// borderWidth: 1,
-			paddingHorizontal: 5,
+			padding: 5,
 			justifyContent: "center",
 			alignItems: "center",
 			borderTopWidth: 1,
@@ -289,7 +302,7 @@ const stylesFactory = (colors) =>
 			color: colors.text,
 		},
 		finance: {
-			flex: 1,
+			// flex: 1,
 			flexDirection: "column",
 			justifyContent: "flex-end",
 			width: "100%",

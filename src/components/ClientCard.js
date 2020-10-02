@@ -10,6 +10,8 @@ import {
 import { Ionicons } from "@expo/vector-icons"
 import { useTheme } from "@react-navigation/native"
 import ContactsMenu from "./ContactsMenu"
+import wordForm from "../helpers/wordForm"
+import { formatDate, calculateAge } from "../helpers/date"
 
 const ClientCard = ({
 	navigation,
@@ -41,6 +43,8 @@ const ClientCard = ({
 			onPress = () => {
 				navigation.navigate("Client", { client: client })
 			}
+
+		const age = calculateAge(client.birthday)
 
 		const noImageUrl =
 			client.gender === 0
@@ -106,11 +110,22 @@ const ClientCard = ({
 							{client.surname} {client.name} {client.thirdname}
 						</Text>
 					</View>
+					{client.birthday ? (
+						<View style={styles.carddesc}>
+							<Text style={{ ...styles.carddesctext, textAlign: "center" }}>
+								{`${formatDate(client.birthday, true)} (${wordForm(age, [
+									"год",
+									"года",
+									"лет",
+								])})`}
+							</Text>
+						</View>
+					) : null}
 					{/* {service.description ? <CardDesc desc={service.description} /> : null} */}
 				</View>
 				{listMode ? null : (
 					<View style={styles.right}>
-						<ContactsMenu client={client} triggerIconName="phone" />
+						<ContactsMenu client={client} />
 					</View>
 				)}
 			</TouchableOpacity>
@@ -159,7 +174,8 @@ const stylesFactory = (colors) =>
 		},
 		cardheader: {
 			flex: 1,
-			padding: 10,
+			padding: 5,
+			minHeight: 40,
 			alignItems: "center",
 			justifyContent: "center",
 		},
@@ -177,10 +193,10 @@ const stylesFactory = (colors) =>
 		},
 		carddesc: {
 			flexDirection: "row",
-			height: 46,
+			minHeight: 40,
 			// borderColor: "red",
 			// borderWidth: 1,
-			paddingHorizontal: 10,
+			padding: 5,
 			justifyContent: "center",
 			alignItems: "center",
 			borderTopWidth: 1,

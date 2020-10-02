@@ -206,6 +206,7 @@ const stylesFactory = (colors) =>
 			padding: 5,
 			alignItems: "center",
 			justifyContent: "center",
+			minHeight: 40,
 		},
 		cardtitle: {
 			fontFamily: "open-bold",
@@ -221,7 +222,7 @@ const stylesFactory = (colors) =>
 		},
 		carddesc: {
 			flexDirection: "row",
-			minHeight: 46,
+			minHeight: 40,
 			// borderColor: "red",
 			// borderWidth: 1,
 			paddingHorizontal: 10,
