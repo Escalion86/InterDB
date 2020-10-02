@@ -150,6 +150,7 @@ export const dbGenerator = (table = "event") => {
 								"Астахов",
 						  ]),
 				gender: gender,
+				birthday: "",
 				phone: rndArray(["+79123456789", "+79234567890", "+793456789012"]),
 				email: "",
 				whatsapp: "",
@@ -175,7 +176,9 @@ export const dbGenerator = (table = "event") => {
 					"Детский день рождения, шоу",
 				]),
 				description: "Описание",
-				price: rndArray([5000, 7000, 9000]),
+				finance_price: rndArray([5000, 6000, 7000, 8000, 9000, 10000]),
+				finance_consumables: rndArray([0, 200, 300]),
+				finance_assistants: rndArray([0, 0, 1000, 2000]),
 				length: 30,
 				preparetime: 20,
 				collecttime: 20,
@@ -189,14 +192,6 @@ export const dbGenerator = (table = "event") => {
 
 export default dbTemplate = {
 	events: [
-		// {
-		//   db_name: "auditory",
-		//   desc: "Взрослые, дети, подростки, смешанная",
-		//   type: "list",
-		//   db_type: "TEXT",
-		//   not_null: true,
-		//   default: "Взрослые",
-		// },
 		{
 			db_name: "service",
 			desc: "Услуга",
@@ -390,6 +385,15 @@ export default dbTemplate = {
 			db_default: "",
 		},
 		{
+			db_name: "birthday",
+			desc: "Дата рождения",
+			type: "date",
+			db_type: "TEXT",
+			not_null: false,
+			default: "",
+			db_default: "",
+		},
+		{
 			db_name: "surname",
 			desc: "Фамилия",
 			type: "text",
@@ -519,9 +523,27 @@ export default dbTemplate = {
 			db_default: "",
 		},
 		{
-			db_name: "price",
+			db_name: "finance_price",
 			desc: "Цена",
 			type: "text",
+			db_type: "INTEGER",
+			not_null: true,
+			default: 0,
+			db_default: 0,
+		},
+		{
+			db_name: "finance_assistants",
+			desc: "Финансы - ассистентам",
+			type: "integer",
+			db_type: "INTEGER",
+			not_null: true,
+			default: 0,
+			db_default: 0,
+		},
+		{
+			db_name: "finance_consumables",
+			desc: "Финансы - расходные материалы",
+			type: "integer",
 			db_type: "INTEGER",
 			not_null: true,
 			default: 0,
