@@ -11,6 +11,7 @@ import {
 	TitleBlock,
 	ImagePickerBlock,
 	GenderSwitch,
+	DateTimePickerBlock,
 } from "../components/createComponents"
 import trimingArrayValues from "../helpers/trimingArrayValues"
 
@@ -18,7 +19,9 @@ const CreateClientScreen = ({ navigation, route }) => {
 	const client =
 		route.params !== undefined && route.params.client !== undefined
 			? route.params.client
-			: dbDefault("clients")
+			: { ...dbDefault("clients"), birthday: null }
+
+	console.log("client.birthday", client.birthday)
 
 	const dispatch = useDispatch()
 	const [newClient, setNewClient] = useState(client)
@@ -124,6 +127,14 @@ const CreateClientScreen = ({ navigation, route }) => {
 				onSwitch={(text) => {
 					setClientItem({ gender: text ? 1 : 0 })
 				}}
+			/>
+			<DateTimePickerBlock
+				title="Дата рождения"
+				dateValue={newClient.birthday}
+				onChange={(value) => setClientItem({ birthday: value })}
+				pickTime={false}
+				showWeek={false}
+				neutralButton={true}
 			/>
 			<TitleBlock title="Связь" />
 			<TextInputBlock
