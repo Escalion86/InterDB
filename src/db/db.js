@@ -334,6 +334,7 @@ export class DB {
 
 	static addClient(client) {
 		const newClient = prepareForDB("clients", client)
+		newClient.birthday = Math.floor(newClient.birthday / 1000)
 
 		return new Promise((resolve, reject) => {
 			const clientKeys = Object.keys(newClient)
@@ -353,6 +354,7 @@ export class DB {
 
 	static updateClient(client) {
 		const clientToSend = prepareForDB("clients", client)
+		clientToSend.birthday = Math.floor(clientToSend.birthday / 1000)
 
 		const clientKeys = Object.keys(clientToSend)
 
