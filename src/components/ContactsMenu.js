@@ -13,12 +13,12 @@ import { contactsIcons } from "../db/dependencies"
 const ContactsMenu = ({
 	client,
 	style = {},
-	triggerIconName = "none",
+	triggerIconName = "phone",
+	triggerIconSize = 22,
 	triggerBackgroundColor = null,
 	triggerIconColor = "white",
 }) => {
 	const { colors } = useTheme()
-	const size = 30
 
 	const menuObjects = contactsIcons(client)
 
@@ -37,22 +37,22 @@ const ContactsMenu = ({
 							<View
 								style={{
 									...styles.button,
-									width: size + Math.floor(size / 2),
-									height: size + Math.floor(size / 2),
-									padding: Math.floor(size / 16),
+									width: triggerIconSize + Math.floor(triggerIconSize / 2),
+									height: triggerIconSize + Math.floor(triggerIconSize / 2),
+									padding: Math.floor(triggerIconSize / 16),
 									backgroundColor: menuObjects[i].color,
 								}}
 							>
 								<FontAwesome5
 									name={menuObjects[i].icon}
-									size={size}
+									size={triggerIconSize}
 									color={"white"}
 								/>
 							</View>
 							<Text
 								style={{
 									...styles.text,
-									fontSize: 10 + Math.floor(size / 3),
+									fontSize: 10 + Math.floor(triggerIconSize / 3),
 									color: colors.text,
 								}}
 							>
@@ -77,15 +77,15 @@ const ContactsMenu = ({
 					<View
 						style={{
 							...styles.button,
-							width: size + Math.floor(size / 2),
-							height: size + Math.floor(size / 2),
-							padding: Math.floor(size / 16),
+							width: triggerIconSize + Math.floor(triggerIconSize / 2),
+							height: triggerIconSize + Math.floor(triggerIconSize / 2),
+							padding: Math.floor(triggerIconSize / 16),
 							backgroundColor: triggerBackgroundColor,
 						}}
 					>
 						<FontAwesome5
 							name={triggerIconName}
-							size={size}
+							size={triggerIconSize}
 							color={triggerIconColor}
 						/>
 					</View>
