@@ -1,5 +1,5 @@
-import React from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React, { useState } from "react"
+import { useSelector } from "react-redux"
 import {
 	StyleSheet,
 	Text,
@@ -21,13 +21,15 @@ import IconMenu from "./IconMenu"
 import LinkTo from "../helpers/LinkTo"
 import ContactsMenu from "./ContactsMenu"
 import SwipeableCard from "../components/SwipeableCard"
-import { deleteEvent } from "../store/actions/event"
+// import { deleteEvent } from "../store/actions/event"
+import ModalDeleteEvent from "./ModalDeleteEvent"
 
 const EventCard = ({ navigation, event, onPress = null }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
 	const colors = theme.colors
 	const styles = stylesFactory(colors)
+	const [modal, setModal] = useState(null)
 
 	if (!event) {
 		return (
@@ -50,7 +52,7 @@ const EventCard = ({ navigation, event, onPress = null }) => {
 				navigation.navigate("Event", { event: event })
 			}
 
-		const dispatch = useDispatch()
+		// const dispatch = useDispatch()
 
 		const profit =
 			event.finance_price -
@@ -104,12 +106,20 @@ const EventCard = ({ navigation, event, onPress = null }) => {
 
 		return (
 			<SwipeableCard
-				onLeftOpen={() => {
+				onLeftOpen={() =>
 					navigation.navigate("CreateEvent", {
 						event: event,
 					})
+				}
+				onRightOpen={() => {
+					setModal(
+						<ModalDeleteEvent
+							event={event}
+							navigation={navigation}
+							callbackToCloseModal={() => setModal(null)}
+						/>
+					)
 				}}
-				onRightOpen={() => dispatch(deleteEvent(event.id))}
 			>
 				<TouchableHighlight
 					// activeOpacity={1}
@@ -243,6 +253,7 @@ const EventCard = ({ navigation, event, onPress = null }) => {
 						</View>
 					</View>
 				</TouchableHighlight>
+				{modal}
 			</SwipeableCard>
 		)
 	}

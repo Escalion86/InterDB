@@ -1,5 +1,4 @@
-import React, { useRef } from "react"
-import { useDispatch } from "react-redux"
+import React, { useState } from "react"
 import {
 	StyleSheet,
 	Text,
@@ -17,7 +16,8 @@ import {
 import { Ionicons } from "@expo/vector-icons"
 import { useTheme } from "@react-navigation/native"
 import SwipeableCard from "../components/SwipeableCard"
-import { deleteService } from "../store/actions/service"
+// import { deleteService } from "../store/actions/service"
+import ModalDeleteService from "./ModalDeleteService"
 
 const ServiceCard = ({
 	navigation,
@@ -29,6 +29,8 @@ const ServiceCard = ({
 	const theme = useTheme()
 	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
+
+	const [modal, setModal] = useState(null)
 
 	if (!service) {
 		return (
@@ -50,8 +52,6 @@ const ServiceCard = ({
 			onPress = () => {
 				navigation.navigate("Service", { service: service })
 			}
-
-		const dispatch = useDispatch()
 
 		const profit =
 			service.finance_price -
@@ -105,7 +105,18 @@ const ServiceCard = ({
 						service: service,
 					})
 				}}
-				onRightOpen={() => dispatch(deleteService(service.id))}
+				onRightOpen={
+					// () => dispatch(deleteService(service.id))
+					() => {
+						setModal(
+							<ModalDeleteService
+								service={service}
+								navigation={navigation}
+								callbackToCloseModal={() => setModal(null)}
+							/>
+						)
+					}
+				}
 			>
 				<TouchableHighlight
 					// activeOpacity={1}
@@ -181,6 +192,7 @@ const ServiceCard = ({
 						</View>
 					</View>
 				</TouchableHighlight>
+				{modal}
 			</SwipeableCard>
 		)
 	}

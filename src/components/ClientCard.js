@@ -1,5 +1,4 @@
-import React from "react"
-import { useDispatch } from "react-redux"
+import React, { useState } from "react"
 import {
 	StyleSheet,
 	Text,
@@ -14,7 +13,8 @@ import ContactsMenu from "./ContactsMenu"
 import wordForm from "../helpers/wordForm"
 import { formatDate, calculateAge } from "../helpers/date"
 import SwipeableCard from "../components/SwipeableCard"
-import { deleteClient } from "../store/actions/client"
+// import { deleteClient } from "../store/actions/client"
+import ModalDeleteClient from "./ModalDeleteClient"
 
 const ClientCard = ({
 	navigation,
@@ -25,6 +25,8 @@ const ClientCard = ({
 	const theme = useTheme()
 	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
+
+	const [modal, setModal] = useState(null)
 
 	if (!client) {
 		return (
@@ -46,8 +48,6 @@ const ClientCard = ({
 			onPress = () => {
 				navigation.navigate("Client", { client: client })
 			}
-
-		const dispatch = useDispatch()
 
 		const age = calculateAge(client.birthday)
 
@@ -94,7 +94,15 @@ const ClientCard = ({
 						client: client,
 					})
 				}}
-				onRightOpen={() => dispatch(deleteClient(client.id))}
+				onRightOpen={() => {
+					setModal(
+						<ModalDeleteClient
+							client={client}
+							navigation={navigation}
+							callbackToCloseModal={() => setModal(null)}
+						/>
+					)
+				}}
 			>
 				<TouchableHighlight
 					// activeOpacity={1}
@@ -143,6 +151,7 @@ const ClientCard = ({
 						)}
 					</View>
 				</TouchableHighlight>
+				{modal}
 			</SwipeableCard>
 		)
 	}
