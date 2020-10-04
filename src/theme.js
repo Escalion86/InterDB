@@ -3,7 +3,7 @@ export const darkTheme = {
 		scale: 1,
 	},
 	colors: {
-		abort: "rgb(255, 50, 35)",
+		abort: "#ff3223",
 		abortText: "#ffffff",
 		accent: "#03dac4", //Переключатель
 		accentText: "#ffffff",
@@ -20,7 +20,7 @@ export const darkTheme = {
 		placeholder: "rgba(0, 0, 0, 0.54)",
 		primary: "rgb(229, 229, 231)",
 		surface: "#ffffff",
-		success: "#66ff66",
+		success: "#55ce55",
 		text: "rgb(229, 229, 231)",
 		money: "#ffff99",
 	},
@@ -68,7 +68,7 @@ export const lightTheme = {
 		placeholder: "rgba(0, 0, 0, 0.54)",
 		primary: "#6200ee",
 		surface: "#ffffff",
-		success: "#66ff66",
+		success: "#55ce55",
 		text: "#000000",
 		money: "#ffff66",
 	},
