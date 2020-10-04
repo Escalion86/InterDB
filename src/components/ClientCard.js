@@ -1,10 +1,11 @@
 import React from "react"
+import { useDispatch } from "react-redux"
 import {
 	StyleSheet,
 	Text,
 	View,
 	ActivityIndicator,
-	TouchableOpacity,
+	TouchableHighlight,
 	Image,
 } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
@@ -12,6 +13,8 @@ import { useTheme } from "@react-navigation/native"
 import ContactsMenu from "./ContactsMenu"
 import wordForm from "../helpers/wordForm"
 import { formatDate, calculateAge } from "../helpers/date"
+import SwipeableCard from "../components/SwipeableCard"
+import { deleteClient } from "../store/actions/client"
 
 const ClientCard = ({
 	navigation,
@@ -25,7 +28,7 @@ const ClientCard = ({
 
 	if (!client) {
 		return (
-			<TouchableOpacity
+			<TouchableHighlight
 				// activeOpacity={1}
 				delayPressIn={50}
 				style={styles.card}
@@ -36,13 +39,15 @@ const ClientCard = ({
 						<Text style={styles.cardtitle}>Ошибка! Клиент не найден</Text>
 					</View>
 				</View>
-			</TouchableOpacity>
+			</TouchableHighlight>
 		)
 	} else {
 		if (!onPress)
 			onPress = () => {
 				navigation.navigate("Client", { client: client })
 			}
+
+		const dispatch = useDispatch()
 
 		const age = calculateAge(client.birthday)
 
@@ -83,52 +88,62 @@ const ClientCard = ({
 		// )
 
 		return (
-			<TouchableOpacity
-				// activeOpacity={1}
-				delayPressIn={50}
-				style={styles.card}
-				onPress={onPress}
+			<SwipeableCard
+				onLeftOpen={() => {
+					navigation.navigate("CreateClient", {
+						client: client,
+					})
+				}}
+				onRightOpen={() => dispatch(deleteClient(client.id))}
 			>
-				<View style={styles.left}>
-					<Image
-						style={{
-							// flex: 1,
-							borderRadius: 5,
-							borderWidth: 1,
-							borderColor: colors.border,
-							width: 80,
-							height: 80,
-						}}
-						source={!client.avatar ? noImageUrl : { uri: client.avatar }}
-						// resizeMethod="scale"
-						resizeMode="cover"
-					/>
-				</View>
-				<View style={styles.middle}>
-					<View style={styles.cardheader}>
-						<Text style={styles.cardtitle}>
-							{client.surname} {client.name} {client.thirdname}
-						</Text>
-					</View>
-					{client.birthday ? (
-						<View style={styles.carddesc}>
-							<Text style={{ ...styles.carddesctext, textAlign: "center" }}>
-								{`${formatDate(client.birthday, true)} (${wordForm(age, [
-									"год",
-									"года",
-									"лет",
-								])})`}
-							</Text>
+				<TouchableHighlight
+					// activeOpacity={1}
+					delayPressIn={50}
+					onPress={onPress}
+				>
+					<View style={styles.card}>
+						<View style={styles.left}>
+							<Image
+								style={{
+									// flex: 1,
+									borderRadius: 5,
+									borderWidth: 1,
+									borderColor: colors.border,
+									width: 80,
+									height: 80,
+								}}
+								source={!client.avatar ? noImageUrl : { uri: client.avatar }}
+								// resizeMethod="scale"
+								resizeMode="cover"
+							/>
 						</View>
-					) : null}
-					{/* {service.description ? <CardDesc desc={service.description} /> : null} */}
-				</View>
-				{listMode ? null : (
-					<View style={styles.right}>
-						<ContactsMenu client={client} />
+						<View style={styles.middle}>
+							<View style={styles.cardheader}>
+								<Text style={styles.cardtitle}>
+									{client.surname} {client.name} {client.thirdname}
+								</Text>
+							</View>
+							{client.birthday ? (
+								<View style={styles.carddesc}>
+									<Text style={{ ...styles.carddesctext, textAlign: "center" }}>
+										{`${formatDate(client.birthday, true)} (${wordForm(age, [
+											"год",
+											"года",
+											"лет",
+										])})`}
+									</Text>
+								</View>
+							) : null}
+							{/* {service.description ? <CardDesc desc={service.description} /> : null} */}
+						</View>
+						{listMode ? null : (
+							<View style={styles.right}>
+								<ContactsMenu client={client} />
+							</View>
+						)}
 					</View>
-				)}
-			</TouchableOpacity>
+				</TouchableHighlight>
+			</SwipeableCard>
 		)
 	}
 }

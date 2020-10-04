@@ -1,11 +1,11 @@
 import React from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import {
 	StyleSheet,
 	Text,
 	View,
 	ActivityIndicator,
-	TouchableOpacity,
+	TouchableHighlight,
 } from "react-native"
 import {
 	Menu,
@@ -20,6 +20,8 @@ import { useTheme } from "@react-navigation/native"
 import IconMenu from "./IconMenu"
 import LinkTo from "../helpers/LinkTo"
 import ContactsMenu from "./ContactsMenu"
+import SwipeableCard from "../components/SwipeableCard"
+import { deleteEvent } from "../store/actions/event"
 
 const EventCard = ({ navigation, event, onPress = null }) => {
 	const { Popover } = renderers
@@ -29,7 +31,7 @@ const EventCard = ({ navigation, event, onPress = null }) => {
 
 	if (!event) {
 		return (
-			<TouchableOpacity
+			<TouchableHighlight
 				// activeOpacity={1}
 				delayPressIn={50}
 				style={styles.card}
@@ -40,13 +42,15 @@ const EventCard = ({ navigation, event, onPress = null }) => {
 						<Text style={styles.cardtitle}>Ошибка! Событие не найдено</Text>
 					</View>
 				</View>
-			</TouchableOpacity>
+			</TouchableHighlight>
 		)
 	} else {
 		if (!onPress)
 			onPress = () => {
 				navigation.navigate("Event", { event: event })
 			}
+
+		const dispatch = useDispatch()
 
 		const profit =
 			event.finance_price -
@@ -99,124 +103,147 @@ const EventCard = ({ navigation, event, onPress = null }) => {
 		)
 
 		return (
-			<TouchableOpacity
-				// activeOpacity={1}
-				delayPressIn={50}
-				style={styles.card}
-				onPress={onPress}
+			<SwipeableCard
+				onLeftOpen={() => {
+					navigation.navigate("CreateEvent", {
+						event: event,
+					})
+				}}
+				onRightOpen={() => dispatch(deleteEvent(event.id))}
 			>
-				<View style={styles.left}>
-					<IconMenu
-						event={event}
-						// theme={theme}
-						eventPartName="status"
-						// actionOnSelect={setEventStatus}
-					/>
-					<IconMenu
-						event={event}
-						// theme={theme}
-						style={{ marginTop: 6 }}
-						eventPartName="finance_status"
-						// actionOnSelect={setFinanceStatus}
-					/>
-				</View>
-				<View style={styles.middle}>
-					<View style={styles.cardheader}>
-						<Text style={styles.cardtitle}>
-							{/* {event.auditory},  */}
-							{service ? service.name : "[услуга не найдена]"}
-						</Text>
-					</View>
-					<View style={styles.carddesc}>
-						<Text style={styles.carddesctext}>
-							{event.location_town}, {event.location_street},{" "}
-							{Math.trunc(event.location_house)}
-							{event.location_room
-								? ` - ${Math.trunc(event.location_room)}`
-								: null}
-							{event.location_name ? ` (${event.location_name})` : null}
-						</Text>
-						<Ionicons
-							name="md-navigate"
-							size={28}
-							color={colors.text}
-							style={{ marginHorizontal: 5 }}
-							onPress={
-								() =>
-									LinkTo(
-										`yandexnavi://map_search?text=${event.location_town},%20${event.location_street}%20${event.location_house}`
-									)
-								// fetch(
-								//   "https://geocode-maps.yandex.ru/1.x/?format=json&apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=Красноярск+Линейная+109"
-								// )
-								//   .then((response) => response.json())
-								//   .then((result) => {
-								//     let geoObject =
-								//       result.response.GeoObjectCollection.featureMember[0].GeoObject
-								//         .Point.pos
-								//     geoObject = geoObject.split(" ") //.join(",")
-								//     console.log("geoObject :>> ", geoObject)
-								//     // Linking.openURL(
-								//     //   `https://geocode-maps.yandex.ru/1.x/?apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=${geoObject}`
-								//     // )
-								//     Linking.openURL(
-								//       //`yandexnavi://show_point_on_map?lat=${geoObject[1]}&lon=${geoObject[0]}&zoom=12&no-balloon=0&desc=кафе с wi-fi`
-								//       `yandexnavi://build_route_on_map?lat_to=${geoObject[1]}&lon_to=${geoObject[0]}`
-								//     )
-								//   })
-							}
-						/>
-					</View>
-
-					<View style={styles.carddesc}>
-						<Text style={styles.carddesctext}>
-							{client
-								? `${client.surname} ${client.name} ${client.thirdname}`.trim()
-								: "[клиент не найден]"}
-						</Text>
-						{client ? <ContactsMenu client={client} /> : null}
-					</View>
-				</View>
-				<View style={styles.right}>
-					<View style={styles.carddate}>
-						<Text style={styles.datetime}>
-							{formatDate(new Date(event.date))}
-						</Text>
-						<Text style={styles.datetime}>
-							{getWeekDay(new Date(event.date))}{" "}
-							{formatTime(new Date(event.date))}
-						</Text>
-					</View>
-					<Menu
-						style={styles.finance}
-						renderer={Popover}
-						rendererProps={{ preferredPlacement: "left" }}
-					>
-						<MenuTrigger>
-							{/* <TouchableOpacity style={styles.finance}> */}
-							<Text style={styles.profit}>{profit}</Text>
-							{/* </TouchableOpacity> */}
-						</MenuTrigger>
-						<MenuOptions style={styles.menuOptions}>
-							<MenuRow title="Цена клиента" num={event.finance_price} />
-							<MenuRow title="За дорогу" num={-event.finance_road} />
-							<MenuRow title="Организатору" num={-event.finance_organizator} />
-							<MenuRow title="Расходники" num={-event.finance_consumables} />
-							<MenuRow title="Ассистентам" num={-event.finance_assistants} />
-							<MenuRow
-								title="Чаевые"
-								num={event.finance_tips}
-								style={{
-									borderBottomColor: colors.text,
-									borderBottomWidth: 1,
-									paddingBottom: 5,
-								}}
+				<TouchableHighlight
+					// activeOpacity={1}
+					delayPressIn={50}
+					onPress={onPress}
+				>
+					<View style={styles.card}>
+						<View style={styles.left}>
+							<IconMenu
+								event={event}
+								// theme={theme}
+								eventPartName="status"
+								// actionOnSelect={setEventStatus}
 							/>
-							<MenuRow title="ИТОГО" num={profit} style={{ paddingTop: 5 }} />
-						</MenuOptions>
-					</Menu>
-				</View>
-			</TouchableOpacity>
+							<IconMenu
+								event={event}
+								// theme={theme}
+								style={{ marginTop: 6 }}
+								eventPartName="finance_status"
+								// actionOnSelect={setFinanceStatus}
+							/>
+						</View>
+						<View style={styles.middle}>
+							<View style={styles.cardheader}>
+								<Text style={styles.cardtitle}>
+									{/* {event.auditory},  */}
+									{service ? service.name : "[услуга не найдена]"}
+								</Text>
+							</View>
+							<View style={styles.carddesc}>
+								<Text style={styles.carddesctext}>
+									{event.location_town}, {event.location_street},{" "}
+									{Math.trunc(event.location_house)}
+									{event.location_room
+										? ` - ${Math.trunc(event.location_room)}`
+										: null}
+									{event.location_name ? ` (${event.location_name})` : null}
+								</Text>
+								<Ionicons
+									name="md-navigate"
+									size={28}
+									color={colors.text}
+									style={{ marginHorizontal: 5 }}
+									onPress={
+										() =>
+											LinkTo(
+												`yandexnavi://map_search?text=${event.location_town},%20${event.location_street}%20${event.location_house}`
+											)
+										// fetch(
+										//   "https://geocode-maps.yandex.ru/1.x/?format=json&apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=Красноярск+Линейная+109"
+										// )
+										//   .then((response) => response.json())
+										//   .then((result) => {
+										//     let geoObject =
+										//       result.response.GeoObjectCollection.featureMember[0].GeoObject
+										//         .Point.pos
+										//     geoObject = geoObject.split(" ") //.join(",")
+										//     console.log("geoObject :>> ", geoObject)
+										//     // Linking.openURL(
+										//     //   `https://geocode-maps.yandex.ru/1.x/?apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=${geoObject}`
+										//     // )
+										//     Linking.openURL(
+										//       //`yandexnavi://show_point_on_map?lat=${geoObject[1]}&lon=${geoObject[0]}&zoom=12&no-balloon=0&desc=кафе с wi-fi`
+										//       `yandexnavi://build_route_on_map?lat_to=${geoObject[1]}&lon_to=${geoObject[0]}`
+										//     )
+										//   })
+									}
+								/>
+							</View>
+
+							<View style={styles.carddesc}>
+								<Text style={styles.carddesctext}>
+									{client
+										? `${client.surname} ${client.name} ${client.thirdname}`.trim()
+										: "[клиент не найден]"}
+								</Text>
+								{client ? <ContactsMenu client={client} /> : null}
+							</View>
+						</View>
+						<View style={styles.right}>
+							<View style={styles.carddate}>
+								<Text style={styles.datetime}>
+									{formatDate(new Date(event.date))}
+								</Text>
+								<Text style={styles.datetime}>
+									{getWeekDay(new Date(event.date))}{" "}
+									{formatTime(new Date(event.date))}
+								</Text>
+							</View>
+							<Menu
+								style={styles.finance}
+								renderer={Popover}
+								rendererProps={{ preferredPlacement: "left" }}
+							>
+								<MenuTrigger>
+									{/* <TouchableOpacity style={styles.finance}> */}
+									<Text style={styles.profit}>{profit}</Text>
+									{/* </TouchableOpacity> */}
+								</MenuTrigger>
+								<MenuOptions style={styles.menuOptions}>
+									<MenuRow title="Цена клиента" num={event.finance_price} />
+									<MenuRow title="За дорогу" num={-event.finance_road} />
+									<MenuRow
+										title="Организатору"
+										num={-event.finance_organizator}
+									/>
+									<MenuRow
+										title="Расходники"
+										num={-event.finance_consumables}
+									/>
+									<MenuRow
+										title="Ассистентам"
+										num={-event.finance_assistants}
+									/>
+									<MenuRow
+										title="Чаевые"
+										num={event.finance_tips}
+										style={{
+											borderBottomColor: colors.text,
+											borderBottomWidth: 1,
+											paddingBottom: 5,
+										}}
+									/>
+									<MenuRow
+										title="ИТОГО"
+										num={profit}
+										style={{ paddingTop: 5 }}
+									/>
+								</MenuOptions>
+							</Menu>
+						</View>
+					</View>
+				</TouchableHighlight>
+			</SwipeableCard>
 		)
 	}
 }
