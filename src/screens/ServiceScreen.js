@@ -1,6 +1,12 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native"
+import {
+	StyleSheet,
+	Text,
+	View,
+	TouchableOpacity,
+	ToastAndroid,
+} from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import { updateServicePartially } from "../store/actions/service"
@@ -42,6 +48,10 @@ const ServiceScreen = ({ navigation, route }) => {
 
 	const toggleArchive = () => {
 		dispatch(updateServicePartially(service.id, { archive: !archive }))
+		ToastAndroid.show(
+			!archive ? "Услуга архивирована" : "Услуга восстановлена из архива",
+			ToastAndroid.SHORT
+		)
 		setArchive(!archive)
 	}
 
