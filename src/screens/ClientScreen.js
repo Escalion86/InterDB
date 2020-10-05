@@ -16,6 +16,8 @@ import { contactsIcons } from "../db/dependencies"
 import wordForm from "../helpers/wordForm"
 import { formatDate, calculateAge } from "../helpers/date"
 import ModalDeleteClient from "../components/ModalDeleteClient"
+import ModalDeleteEvent from "../components/ModalDeleteEvent"
+import EventCard from "../components/EventCard"
 
 const ClientScreen = ({ navigation, route }) => {
 	const client =
@@ -29,13 +31,24 @@ const ClientScreen = ({ navigation, route }) => {
 
 	const [modal, setModal] = useState(null)
 
-	const modalDelete = (client) => {
+	const modalDeleteClient = (client) => {
 		setModal(
 			<ModalDeleteClient
 				client={client}
 				// navigation={navigation}
 				callbackToCloseModal={() => setModal(null)}
 				callbackAfterAccept={() => navigation.goBack()}
+			/>
+		)
+	}
+
+	const modalDeleteEvent = (event) => {
+		setModal(
+			<ModalDeleteEvent
+				event={event}
+				// navigation={navigation}
+				callbackToCloseModal={() => setModal(null)}
+				callbackAfterAccept={() => {}}
 			/>
 		)
 	}
@@ -55,71 +68,28 @@ const ClientScreen = ({ navigation, route }) => {
 		return event.client === client.id
 	})
 
-	const wordEventsDependency = `Клиент зависим от ${wordForm(
-		eventsDependency.length,
-		["события", "событий", "событий"]
-	)}`
+	const eventCards = eventsDependency.map((event) => (
+		<EventCard
+			key={event.id}
+			navigation={navigation}
+			event={event}
+			onPress={() => {
+				navigation.navigate("Event", { event: event })
+			}}
+			// listMode={true}
+			showClient={false}
+			onDelete={() => modalDeleteEvent(event)}
+		/>
+	))
 
-	// const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
-	// const [modalEventsVisible, setModalEventsVisible] = useState(false)
-	// const [modalDeclineDeleteVisible, setModalDeclineDeleteVisible] = useState(
-	// 	false
-	// )
-
-	// const dispatch = useDispatch()
-
-	// const ModalDeleteConfirm = () => (
-	// 	<ModalBottomMenuYesNo
-	// 		title="Удаление клиента"
-	// 		subtitle="Вы уверены что хотите удалить клиента?"
-	// 		onAccept={() => {
-	// 			dispatch(deleteClient(client.id))
-	// 			navigation.goBack()
-	// 		}}
-	// 		visible={modalDeleteVisible}
-	// 		// opener={() => setModalDeleteVisible(true)}
-	// 		closer={() => setModalDeleteVisible(false)}
-	// 	/>
-	// )
-
-	// const ModalEventsDependency = (
-	// 	title = "События клиента",
-	// 	subtitle = wordEventsDependency,
-	// 	visible = modalEventsVisible,
-	// 	onOuterClick = () => setModalEventsVisible(false)
-	// ) => (
-	// 	<ModalBottomMenu
-	// 		title={title}
-	// 		subtitle={subtitle}
-	// 		visible={visible}
-	// 		onOuterClick={onOuterClick}
-	// 	>
-	// 		<MainFlatListWithFab
-	// 			data={eventsDependency}
-	// 			renderItem={({ item }) => (
-	// 				<EventCard
-	// 					navigation={navigation}
-	// 					event={item}
-	// 					onPress={() => {
-	// 						// setEventItem({ service: item.id })
-	// 						setModalEventsVisible(false)
-	// 						navigation.navigate("Event", { event: item })
-	// 					}}
-	// 					listMode={true}
-	// 				/>
-	// 			)}
-	// 			fabVisible={false}
-	// 		/>
-	// 	</ModalBottomMenu>
-	// )
-
-	// const ModalDeclineDelete = () =>
-	// 	ModalEventsDependency(
-	// 		"Удаление клиента невозможно",
-	// 		wordEventsDependency,
-	// 		modalDeclineDeleteVisible,
-	// 		() => setModalDeclineDeleteVisible(false)
-	// 	)
+	// const wordEventsDependency =
+	// 	eventsDependency.length === 0
+	// 		? "Нет связанных с клиентом событий"
+	// 		: `С клиентом связано ${wordForm(eventsDependency.length, [
+	// 				"событие",
+	// 				"события",
+	// 				"событий",
+	// 		  ])}`
 
 	navigation.setOptions({
 		title: `Клиент`,
@@ -128,7 +98,7 @@ const ClientScreen = ({ navigation, route }) => {
 				<Item
 					title="Delete Client"
 					iconName="ios-trash"
-					onPress={() => modalDelete(client)}
+					onPress={() => modalDeleteClient(client)}
 				/>
 				<Item
 					title="Edit Client"
@@ -221,6 +191,29 @@ const ClientScreen = ({ navigation, route }) => {
 				/>
 				: null} */}
 			</View>
+			<TitleBlock title={`События (${eventsDependency.length})`} />
+			{
+				eventsDependency.length === 0 ? (
+					<TextBlock text="Нет связанных с клиентом событий" center />
+				) : (
+					eventCards
+				)
+				// <MainFlatListWithFab
+				// 	data={eventsDependency}
+				// 	renderItem={({ item }) => (
+				// 		<EventCard
+				// 			navigation={navigation}
+				// 			event={item}
+				// 			onPress={() => {
+				// 				navigation.navigate("Event", { event: item })
+				// 			}}
+				// 			listMode={true}
+				// 			showClient={false}
+				// 		/>
+				// 	)}
+				// 	fabVisible={false}
+				// />
+			}
 			{modal}
 		</ScrollView>
 	)
