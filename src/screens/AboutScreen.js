@@ -30,29 +30,28 @@ const AboutScreen = ({ navigation, route }) => {
 		}
 	}
 
-	if (startToOpenDev)
-		navigation.setOptions({
-			title: `О приложении`,
-			// headerRight: () => (
-			// 	<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-			// 		<Item
-			// 			title="Delete Client"
-			// 			iconName="ios-trash"
-			// 			onPress={() => {
-			// 				dispatch(deleteClient(client.id))
-			// 				navigation.navigate("Clients")
-			// 			}}
-			// 		/>
-			// 		<Item
-			// 			title="Edit Client"
-			// 			iconName="md-create"
-			// 			onPress={() => {
-			// 				navigation.navigate("CreateClient", { client: client })
-			// 			}}
-			// 		/>
-			// 	</HeaderButtons>
-			// ),
-		})
+	navigation.setOptions({
+		title: `О приложении`,
+		// headerRight: () => (
+		// 	<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+		// 		<Item
+		// 			title="Delete Client"
+		// 			iconName="ios-trash"
+		// 			onPress={() => {
+		// 				dispatch(deleteClient(client.id))
+		// 				navigation.navigate("Clients")
+		// 			}}
+		// 		/>
+		// 		<Item
+		// 			title="Edit Client"
+		// 			iconName="md-create"
+		// 			onPress={() => {
+		// 				navigation.navigate("CreateClient", { client: client })
+		// 			}}
+		// 		/>
+		// 	</HeaderButtons>
+		// ),
+	})
 
 	return (
 		<View style={styles.container}>
@@ -61,10 +60,6 @@ const AboutScreen = ({ navigation, route }) => {
 					{"\t\t\t\t"}Цель приложения - упрощение взаимодействия с клиентами при
 					продаже своих услуг.
 				</Text>
-				<Text style={{ ...styles.paragraph, color: colors.text }}>
-					{"\t\t\t\t"}На сегодняшний день приложение находится в разработке
-				</Text>
-
 				<Text style={{ ...styles.paragraph, color: colors.text }}>
 					{"\t\t\t\t"}Если у Вас появились предложения или замечания по
 					приложению, то сообщите об этом разработчику напрямую:
