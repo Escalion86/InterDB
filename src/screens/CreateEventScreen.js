@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { StyleSheet, ScrollView, View, ToastAndroid } from "react-native"
+import { StyleSheet, ScrollView, View, ToastAndroid, Text } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
@@ -21,6 +21,13 @@ import ServiceCard from "../components/ServiceCard"
 import ClientCard from "../components/ClientCard"
 import { useTheme } from "@react-navigation/native"
 import Button from "../components/Button"
+import { Ionicons } from "@expo/vector-icons"
+import {
+	Menu,
+	MenuOptions,
+	MenuTrigger,
+	renderers,
+} from "react-native-popup-menu"
 
 const CreateEventScreen = ({ navigation, route }) => {
 	const event =
@@ -38,6 +45,8 @@ const CreateEventScreen = ({ navigation, route }) => {
 	const dispatch = useDispatch()
 	const [newEvent, setNewEvent] = useState(event)
 	// const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
+
+	const { Popover } = renderers
 
 	const serviceObj = services.find((item) => item.id == newEvent.service)
 	const clientObj = clients.find((item) => item.id == newEvent.client)
@@ -236,7 +245,60 @@ const CreateEventScreen = ({ navigation, route }) => {
 				onChangeItem={(item) => setEventItem({ client: item.value })}
 				searchable={clients.length > 8}
 			/> */}
-			<TitleBlock title="Финансы" />
+			<View style={{ flexDirection: "row" }}>
+				<TitleBlock title="Финансы" />
+				<Menu
+					style={{
+						position: "absolute",
+						right: 10,
+						alignSelf: "center",
+					}}
+					renderer={Popover}
+					rendererProps={{ preferredPlacement: "left" }}
+				>
+					<MenuTrigger>
+						<Ionicons
+							name="md-information-circle-outline"
+							size={22}
+							color={colors.text}
+						/>
+					</MenuTrigger>
+					<MenuOptions
+						style={{
+							padding: 10,
+							borderColor: colors.border,
+							borderWidth: 1,
+							// borderRadius: 20,
+							backgroundColor: colors.card,
+							width: 290,
+							flexDirection: "row",
+							flexWrap: "wrap",
+							// display: "inline",
+						}}
+					>
+						<Text style={{ color: colors.text, fontSize: 14, lineHeight: 20 }}>
+							Если сумма выделена{" "}
+						</Text>
+						<Text
+							style={{
+								color: colors.success,
+								fontSize: 14,
+								padding: 0,
+								margin: 0,
+							}}
+						>
+							цветом
+						</Text>
+						<Text style={{ color: colors.text, fontSize: 14, lineHeight: 20 }}>
+							, значит
+						</Text>
+						<Text style={{ color: colors.text, fontSize: 14, lineHeight: 20 }}>
+							она совпадает со стандартным значением указанным в услуге
+						</Text>
+					</MenuOptions>
+				</Menu>
+			</View>
+
 			<TextInputBlock
 				title="Цена для клиента"
 				value={newEvent.finance_price}
