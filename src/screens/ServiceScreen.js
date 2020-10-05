@@ -6,6 +6,8 @@ import {
 	View,
 	TouchableOpacity,
 	ToastAndroid,
+	ScrollView,
+	Image,
 } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
@@ -17,6 +19,10 @@ import { useTheme } from "@react-navigation/native"
 // import MainFlatListWithFab from "../components/MainFlatListWithFab"
 // import EventCard from "../components/EventCard"
 import ModalDeleteService from "../components/ModalDeleteService"
+import ModalDeleteEvent from "../components/ModalDeleteEvent"
+import { TextBlock } from "../components/infoComponents"
+import EventCard from "../components/EventCard"
+import { TitleBlock } from "../components/createComponents"
 
 const ServiceScreen = ({ navigation, route }) => {
 	const service =
@@ -24,24 +30,29 @@ const ServiceScreen = ({ navigation, route }) => {
 			? route.params.service
 			: navigation.navigate("Services")
 
-	const events = useSelector((state) => state.event.events)
-
-	const eventsDependency = events.filter((event) => {
-		return event.service === service.id
-	})
-
-	const { colors } = useTheme()
+	const { dark, colors } = useTheme()
 
 	const [archive, setArchive] = useState(service.archive)
 	const [modal, setModal] = useState(null)
 
-	const modalDelete = (service) => {
+	const modalDeleteService = (service) => {
 		setModal(
 			<ModalDeleteService
 				service={service}
 				// navigation={navigation}
 				callbackToCloseModal={() => setModal(null)}
 				callbackAfterAccept={() => navigation.goBack()}
+			/>
+		)
+	}
+
+	const modalDeleteEvent = (event) => {
+		setModal(
+			<ModalDeleteEvent
+				event={event}
+				// navigation={navigation}
+				callbackToCloseModal={() => setModal(null)}
+				callbackAfterAccept={() => {}}
 			/>
 		)
 	}
@@ -56,6 +67,30 @@ const ServiceScreen = ({ navigation, route }) => {
 	}
 
 	const dispatch = useDispatch()
+
+	const noImageUrl = dark
+		? require("../../assets/no_image_dark.jpg")
+		: require("../../assets/no_image.jpg")
+
+	const events = useSelector((state) => state.event.events)
+
+	const eventsDependency = events.filter((event) => {
+		return event.service === service.id
+	})
+
+	const eventCards = eventsDependency.map((event) => (
+		<EventCard
+			key={event.id}
+			navigation={navigation}
+			event={event}
+			onPress={() => {
+				navigation.navigate("Event", { event: event })
+			}}
+			// listMode={true}
+			showService={false}
+			onDelete={() => modalDeleteEvent(event)}
+		/>
+	))
 
 	navigation.setOptions({
 		title: `Услуга`,
@@ -73,7 +108,7 @@ const ServiceScreen = ({ navigation, route }) => {
 					title="Delete Service"
 					iconName="ios-trash"
 					onPress={() => {
-						modalDelete(service)
+						modalDeleteService(service)
 					}}
 				/>
 				<Item
@@ -89,38 +124,81 @@ const ServiceScreen = ({ navigation, route }) => {
 	})
 
 	return (
-		<View>
-			<Text></Text>
-			{/* <ModalBottomMenu
-				title="Удаление услуги"
-				subtitle="Вы уверены что хотите удалить услугу?"
-				visible={modalDeleteVisible}
-				onOuterClick={() => setModalDeleteVisible(false)}
-			>
-				<TouchableOpacity
-					style={{ ...styles.panelButton, backgroundColor: colors.accent }}
-					onPress={() => {
-						setModalDeleteVisible(false)
-						dispatch(deleteService(service.id))
-						navigation.goBack()
+		<ScrollView style={styles.container}>
+			<TitleBlock title="Основные" />
+			<View style={{ flexDirection: "row", height: 120, marginBottom: 10 }}>
+				<Image
+					style={{
+						// flex: 1,
+						borderRadius: 5,
+						borderWidth: 1,
+						borderColor: colors.card,
+						// backgroundColor: colors.card,
+						width: "30%",
+						height: "100%",
+					}}
+					source={!service.image ? noImageUrl : { uri: service.image }}
+					// resizeMethod="scale"
+					resizeMode="cover"
+				/>
+				<View
+					style={{
+						marginLeft: 10,
+						flex: 1,
+						alignItems: "center",
+						justifyContent: "center",
 					}}
 				>
-					<Text
-						style={{ ...styles.panelButtonTitle, color: colors.accentText }}
-					>
-						Удалить
-					</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={{ ...styles.panelButton, backgroundColor: colors.abort }}
-					onPress={() => {
-						setModalDeleteVisible(false)
-					}}
-				>
-					<Text style={{ ...styles.panelButtonTitle }}>Отмена</Text>
-				</TouchableOpacity>
-			</ModalBottomMenu> */}
-		</View>
+					<TextBlock text={service.name} center big />
+				</View>
+			</View>
+			<TextBlock text={service.description} />
+			<TitleBlock title="Затраты времени" />
+			<TextBlock text={`Продолжительность: ${service.duration} мин`} />
+			<TextBlock text={`Время на подготовку: ${service.preparetime} мин`} />
+			<TextBlock
+				text={`Время на сбор: ${service.collecttime} мин`}
+				style={{ marginBottom: 5 }}
+			/>
+			<TextBlock
+				text={`ИТОГО: ${
+					service.duration + service.preparetime + service.collecttime
+				} мин`}
+				style={{
+					borderTopColor: colors.text,
+					borderTopWidth: 1,
+					paddingTop: 5,
+				}}
+			/>
+			<TitleBlock title="Финансы по умолчанию" />
+			<TextBlock text={`Стоимость: ${service.finance_price} руб`} />
+			<TextBlock
+				text={`Затраты на расходники: ${service.finance_consumables} руб`}
+			/>
+			<TextBlock
+				text={`Затраты на ассистентов: ${service.finance_assistants} руб`}
+				style={{ marginBottom: 5 }}
+			/>
+			<TextBlock
+				text={`ИТОГО: ${
+					service.finance_price +
+					service.finance_consumables +
+					service.finance_assistants
+				} руб`}
+				style={{
+					borderTopColor: colors.text,
+					borderTopWidth: 1,
+					paddingTop: 5,
+				}}
+			/>
+			<TitleBlock title={`События (${eventsDependency.length})`} />
+			{eventsDependency.length === 0 ? (
+				<TextBlock text="Нет связанных с услугой событий" center />
+			) : (
+				eventCards
+			)}
+			{modal}
+		</ScrollView>
 	)
 }
 
