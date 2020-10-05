@@ -12,7 +12,12 @@ import {
 import { useTheme } from "@react-navigation/native"
 import { FontAwesome5 } from "@expo/vector-icons"
 
-export const TextBlock = ({ text = "", center = false, big = false }) => {
+export const TextBlock = ({
+	text = "",
+	center = false,
+	big = false,
+	style = {},
+}) => {
 	const { colors } = useTheme()
 	return (
 		<Text
@@ -21,6 +26,7 @@ export const TextBlock = ({ text = "", center = false, big = false }) => {
 				color: colors.text,
 				textAlign: center ? "center" : "auto",
 				fontSize: big ? 18 : 16,
+				...style,
 			}}
 		>
 			{text}
