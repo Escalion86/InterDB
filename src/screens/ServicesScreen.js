@@ -9,6 +9,7 @@ import ServiceCard from "../components/ServiceCard"
 import { useTheme } from "@react-navigation/native"
 import Fab from "../components/Fab"
 import MainFlatListWithFab from "../components/MainFlatListWithFab"
+import ModalDeleteService from "../components/ModalDeleteService"
 
 const ServicesScreen = ({ navigation, route }) => {
 	const dispatch = useDispatch()
@@ -23,6 +24,18 @@ const ServicesScreen = ({ navigation, route }) => {
 
 	let services = useSelector((state) => state.service.services)
 	const loading = useSelector((state) => state.service.loading)
+
+	const [modal, setModal] = useState(null)
+
+	const modalDelete = (service) => {
+		setModal(
+			<ModalDeleteService
+				service={service}
+				// navigation={navigation}
+				callbackToCloseModal={() => setModal(null)}
+			/>
+		)
+	}
 
 	// console.log("services", services)
 
@@ -90,16 +103,25 @@ const ServicesScreen = ({ navigation, route }) => {
 	}
 
 	return (
-		<MainFlatListWithFab
-			data={services}
-			fabVisible={!showArchvedOnly}
-			renderItem={({ item }) => (
-				<ServiceCard navigation={navigation} service={item} />
-			)}
-			onPressFab={() => {
-				navigation.navigate("CreateService")
-			}}
-		/>
+		<View>
+			<MainFlatListWithFab
+				data={services}
+				fabVisible={!showArchvedOnly}
+				renderItem={({ item }) => (
+					<ServiceCard
+						navigation={navigation}
+						service={item}
+						onDelete={() => {
+							modalDelete(item)
+						}}
+					/>
+				)}
+				onPressFab={() => {
+					navigation.navigate("CreateService")
+				}}
+			/>
+			{modal}
+		</View>
 	)
 }
 

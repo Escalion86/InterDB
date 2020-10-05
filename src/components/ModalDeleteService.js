@@ -4,8 +4,16 @@ import ModalBottomMenu, { ModalBottomMenuYesNo } from "./ModalBottomMenu"
 import MainFlatListWithFab from "./MainFlatListWithFab"
 import EventCard from "./EventCard"
 import { deleteService } from "../store/actions/service"
+import wordForm from "../helpers/wordForm"
 
-const ModalDeleteService = ({ service, navigation, callbackToCloseModal }) => {
+const ModalDeleteService = ({
+	service,
+	navigation,
+	callbackToCloseModal,
+	callbackAfterAccept = () => {},
+}) => {
+	// if (!callbackAfterAccept)
+	// 	callbackAfterAccept = () => navigation.navigate("Services")
 	// const [modalDeleteVisible, setModalDeleteVisible] = useState(true)
 	const dispatch = useDispatch()
 
@@ -17,12 +25,12 @@ const ModalDeleteService = ({ service, navigation, callbackToCloseModal }) => {
 
 	const ModalDeleteConfirm = (
 		<ModalBottomMenuYesNo
-			title="Удаление услуги"
+			title={`Удаление услуги\n"${service.name}"`}
 			subtitle="Вы уверены что хотите удалить услугу?"
 			onAccept={() => {
 				callbackToCloseModal()
 				dispatch(deleteService(service.id))
-				navigation.navigate("Services")
+				callbackAfterAccept()
 			}}
 			visible={true}
 			closer={callbackToCloseModal}
@@ -31,8 +39,12 @@ const ModalDeleteService = ({ service, navigation, callbackToCloseModal }) => {
 
 	const ModalDeleteDecline = (
 		<ModalBottomMenu
-			title="Удаление услуги невозможно"
-			subtitle={`Услуга зависима от ${eventsDependency.length} событий`}
+			title={`Удаление услуги\n"${service.name}"\nневозможно`}
+			subtitle={`Услуга зависима от ${wordForm(
+				eventsDependency.length,
+				["события", "событий", "событий"],
+				true
+			)}`}
 			visible={true}
 			onOuterClick={callbackToCloseModal}
 		>

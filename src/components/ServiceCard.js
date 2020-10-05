@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import {
 	StyleSheet,
 	Text,
@@ -17,20 +17,21 @@ import { Ionicons } from "@expo/vector-icons"
 import { useTheme } from "@react-navigation/native"
 import SwipeableCard from "../components/SwipeableCard"
 // import { deleteService } from "../store/actions/service"
-import ModalDeleteService from "./ModalDeleteService"
+// import ModalDeleteService from "./ModalDeleteService"
 
 const ServiceCard = ({
 	navigation,
 	service,
 	onPress = null,
 	listMode = false,
+	onDelete = null,
 }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
 	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
 
-	const [modal, setModal] = useState(null)
+	// const [modal, setModal] = useState(null)
 
 	if (!service) {
 		return (
@@ -105,18 +106,7 @@ const ServiceCard = ({
 						service: service,
 					})
 				}}
-				onRightOpen={
-					// () => dispatch(deleteService(service.id))
-					() => {
-						setModal(
-							<ModalDeleteService
-								service={service}
-								navigation={navigation}
-								callbackToCloseModal={() => setModal(null)}
-							/>
-						)
-					}
-				}
+				onRightOpen={onDelete}
 			>
 				<TouchableHighlight
 					// activeOpacity={1}
@@ -192,7 +182,7 @@ const ServiceCard = ({
 						</View>
 					</View>
 				</TouchableHighlight>
-				{modal}
+				{/* {modal} */}
 			</SwipeableCard>
 		)
 	}

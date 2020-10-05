@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import {
 	StyleSheet,
 	Text,
@@ -14,19 +14,20 @@ import wordForm from "../helpers/wordForm"
 import { formatDate, calculateAge } from "../helpers/date"
 import SwipeableCard from "../components/SwipeableCard"
 // import { deleteClient } from "../store/actions/client"
-import ModalDeleteClient from "./ModalDeleteClient"
+// import ModalDeleteClient from "./ModalDeleteClient"
 
 const ClientCard = ({
 	navigation,
 	client,
 	onPress = null,
 	listMode = false,
+	onDelete = null,
 }) => {
 	const theme = useTheme()
 	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
 
-	const [modal, setModal] = useState(null)
+	// const [modal, setModal] = useState(null)
 
 	if (!client) {
 		return (
@@ -94,15 +95,7 @@ const ClientCard = ({
 						client: client,
 					})
 				}}
-				onRightOpen={() => {
-					setModal(
-						<ModalDeleteClient
-							client={client}
-							navigation={navigation}
-							callbackToCloseModal={() => setModal(null)}
-						/>
-					)
-				}}
+				onRightOpen={onDelete}
 			>
 				<TouchableHighlight
 					// activeOpacity={1}
@@ -128,7 +121,7 @@ const ClientCard = ({
 						<View style={styles.middle}>
 							<View style={styles.cardheader}>
 								<Text style={styles.cardtitle}>
-									{client.surname} {client.name} {client.thirdname}
+									{`${client.surname} ${client.name} ${client.thirdname}`.trim()}
 								</Text>
 							</View>
 							{client.birthday ? (
@@ -151,7 +144,7 @@ const ClientCard = ({
 						)}
 					</View>
 				</TouchableHighlight>
-				{modal}
+				{/* {modal} */}
 			</SwipeableCard>
 		)
 	}

@@ -22,14 +22,14 @@ import LinkTo from "../helpers/LinkTo"
 import ContactsMenu from "./ContactsMenu"
 import SwipeableCard from "../components/SwipeableCard"
 // import { deleteEvent } from "../store/actions/event"
-import ModalDeleteEvent from "./ModalDeleteEvent"
+// import ModalDeleteEvent from "./ModalDeleteEvent"
 
-const EventCard = ({ navigation, event, onPress = null }) => {
+const EventCard = ({ navigation, event, onPress = null, onDelete = null }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
 	const colors = theme.colors
 	const styles = stylesFactory(colors)
-	const [modal, setModal] = useState(null)
+	// const [modal, setModal] = useState(null)
 
 	if (!event) {
 		return (
@@ -111,15 +111,18 @@ const EventCard = ({ navigation, event, onPress = null }) => {
 						event: event,
 					})
 				}
-				onRightOpen={() => {
-					setModal(
-						<ModalDeleteEvent
-							event={event}
-							navigation={navigation}
-							callbackToCloseModal={() => setModal(null)}
-						/>
-					)
-				}}
+				onRightOpen={
+					onDelete
+					// 	() => {
+					// 	setModal(
+					// 		<ModalDeleteEvent
+					// 			event={event}
+					// 			navigation={navigation}
+					// 			callbackToCloseModal={() => setModal(null)}
+					// 		/>
+					// 	)
+					// }
+				}
 			>
 				<TouchableHighlight
 					// activeOpacity={1}
@@ -253,7 +256,7 @@ const EventCard = ({ navigation, event, onPress = null }) => {
 						</View>
 					</View>
 				</TouchableHighlight>
-				{modal}
+				{/* {modal} */}
 			</SwipeableCard>
 		)
 	}

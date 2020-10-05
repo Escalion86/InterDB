@@ -24,12 +24,14 @@ import { Ionicons } from "@expo/vector-icons"
 import * as Animatable from "react-native-animatable"
 import Fab from "../components/Fab"
 import MainFlatListWithFab from "../components/MainFlatListWithFab"
+import ModalDeleteEvent from "../components/ModalDeleteEvent"
 
 const EventsScreen = ({ navigation, route }) => {
 	const { colors } = useTheme()
 	const dispatch = useDispatch()
 	const { Popover } = renderers
 	const [sorting, setSorting] = useState("dateDESC")
+	const [modal, setModal] = useState(null)
 
 	// useEffect(() => {
 	// 	dispatch(loadAll())
@@ -45,6 +47,16 @@ const EventsScreen = ({ navigation, route }) => {
 	let sortMenu = null
 	const srtMenu = (r) => {
 		sortMenu = r
+	}
+
+	const modalDelete = (event) => {
+		setModal(
+			<ModalDeleteEvent
+				event={event}
+				// navigation={navigation}
+				callbackToCloseModal={() => setModal(null)}
+			/>
+		)
 	}
 
 	navigation.setOptions({
@@ -239,15 +251,22 @@ const EventsScreen = ({ navigation, route }) => {
 	// </Animatable.Text>
 
 	return (
-		<MainFlatListWithFab
-			data={events}
-			renderItem={({ item }) => (
-				<EventCard navigation={navigation} event={item} />
-			)}
-			onPressFab={() => {
-				navigation.navigate("CreateEvent")
-			}}
-		/>
+		<View>
+			<MainFlatListWithFab
+				data={events}
+				renderItem={({ item }) => (
+					<EventCard
+						navigation={navigation}
+						event={item}
+						onDelete={() => modalDelete(item)}
+					/>
+				)}
+				onPressFab={() => {
+					navigation.navigate("CreateEvent")
+				}}
+			/>
+			{modal}
+		</View>
 	)
 }
 

@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
-import { deleteService, updateServicePartially } from "../store/actions/service"
-import ModalBottomMenu, {
-	ModalBottomMenuYesNo,
-} from "../components/ModalBottomMenu"
+import { updateServicePartially } from "../store/actions/service"
+// import ModalBottomMenu, {
+// 	ModalBottomMenuYesNo,
+// } from "../components/ModalBottomMenu"
 import { useTheme } from "@react-navigation/native"
-import MainFlatListWithFab from "../components/MainFlatListWithFab"
-import EventCard from "../components/EventCard"
+// import MainFlatListWithFab from "../components/MainFlatListWithFab"
+// import EventCard from "../components/EventCard"
+import ModalDeleteService from "../components/ModalDeleteService"
 
 const ServiceScreen = ({ navigation, route }) => {
 	const service =
@@ -26,8 +27,18 @@ const ServiceScreen = ({ navigation, route }) => {
 	const { colors } = useTheme()
 
 	const [archive, setArchive] = useState(service.archive)
-	const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
-	const [modalEventsVisible, setModalEventsVisible] = useState(false)
+	const [modal, setModal] = useState(null)
+
+	const modalDelete = (service) => {
+		setModal(
+			<ModalDeleteService
+				service={service}
+				// navigation={navigation}
+				callbackToCloseModal={() => setModal(null)}
+				callbackAfterAccept={() => navigation.goBack()}
+			/>
+		)
+	}
 
 	const toggleArchive = () => {
 		dispatch(updateServicePartially(service.id, { archive: !archive }))
@@ -35,45 +46,6 @@ const ServiceScreen = ({ navigation, route }) => {
 	}
 
 	const dispatch = useDispatch()
-
-	const ModalDeleteConfirm = () => (
-		<ModalBottomMenuYesNo
-			title="Удаление услуги"
-			subtitle="Вы уверены что хотите удалить услугу?"
-			onAccept={() => {
-				dispatch(deleteService(service.id))
-				navigation.goBack()
-			}}
-			visible={modalDeleteVisible}
-			closer={() => setModalDeleteVisible(false)}
-		/>
-	)
-
-	const ModalDeleteDecline = () => (
-		<ModalBottomMenu
-			title="Удаление услуги невозможно"
-			subtitle={`Услуга зависима от ${eventsDependency.length} событий`}
-			visible={modalEventsVisible}
-			onOuterClick={() => setModalEventsVisible(false)}
-		>
-			<MainFlatListWithFab
-				data={eventsDependency}
-				renderItem={({ item }) => (
-					<EventCard
-						navigation={navigation}
-						event={item}
-						onPress={() => {
-							// setEventItem({ service: item.id })
-							setModalEventsVisible(false)
-							navigation.navigate("Event", { event: item })
-						}}
-						listMode={true}
-					/>
-				)}
-				fabVisible={false}
-			/>
-		</ModalBottomMenu>
-	)
 
 	navigation.setOptions({
 		title: `Услуга`,
@@ -91,9 +63,7 @@ const ServiceScreen = ({ navigation, route }) => {
 					title="Delete Service"
 					iconName="ios-trash"
 					onPress={() => {
-						eventsDependency.length > 0
-							? setModalEventsVisible(true)
-							: setModalDeleteVisible(true)
+						modalDelete(service)
 					}}
 				/>
 				<Item
@@ -103,8 +73,7 @@ const ServiceScreen = ({ navigation, route }) => {
 						navigation.navigate("CreateService", { service: service })
 					}}
 				/>
-				<ModalDeleteConfirm />
-				<ModalDeleteDecline />
+				{modal}
 			</HeaderButtons>
 		),
 	})

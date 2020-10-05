@@ -4,8 +4,16 @@ import ModalBottomMenu, { ModalBottomMenuYesNo } from "./ModalBottomMenu"
 import MainFlatListWithFab from "./MainFlatListWithFab"
 import EventCard from "./EventCard"
 import { deleteClient } from "../store/actions/client"
+import wordForm from "../helpers/wordForm"
 
-const ModalDeleteClient = ({ client, navigation, callbackToCloseModal }) => {
+const ModalDeleteClient = ({
+	client,
+	navigation,
+	callbackToCloseModal,
+	callbackAfterAccept = () => {},
+}) => {
+	// if (!callbackAfterAccept)
+	// 	callbackAfterAccept = () => navigation.navigate("Clients")
 	const dispatch = useDispatch()
 
 	const events = useSelector((state) => state.event.events)
@@ -16,12 +24,12 @@ const ModalDeleteClient = ({ client, navigation, callbackToCloseModal }) => {
 
 	const ModalDeleteConfirm = (
 		<ModalBottomMenuYesNo
-			title="Удаление клиента"
+			title={`Удаление клиента\n"${`${client.surname} ${client.name} ${client.thirdname}`.trim()}"`}
 			subtitle="Вы уверены что хотите удалить клиента?"
 			onAccept={() => {
 				callbackToCloseModal()
 				dispatch(deleteClient(client.id))
-				navigation.navigate("Clients")
+				callbackAfterAccept()
 			}}
 			visible={true}
 			closer={callbackToCloseModal}
@@ -30,8 +38,12 @@ const ModalDeleteClient = ({ client, navigation, callbackToCloseModal }) => {
 
 	const ModalDeleteDecline = (
 		<ModalBottomMenu
-			title="Удаление клиента невозможно"
-			subtitle={`Клиент зависим от ${eventsDependency.length} событий`}
+			title={`Удаление клиента\n"${`${client.surname} ${client.name} ${client.thirdname}`.trim()}"\nневозможно`}
+			subtitle={`Клиент зависим от ${wordForm(
+				eventsDependency.length,
+				["события", "событий", "событий"],
+				true
+			)}`}
 			visible={true}
 			onOuterClick={callbackToCloseModal}
 		>

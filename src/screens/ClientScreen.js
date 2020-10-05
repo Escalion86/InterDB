@@ -3,18 +3,19 @@ import { useDispatch, useSelector } from "react-redux"
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
-import { deleteClient } from "../store/actions/client"
-import ModalBottomMenu, {
-	ModalBottomMenuYesNo,
-} from "../components/ModalBottomMenu"
-import MainFlatListWithFab from "../components/MainFlatListWithFab"
-import EventCard from "../components/EventCard"
+// import { deleteClient } from "../store/actions/client"
+// import ModalBottomMenu, {
+// 	ModalBottomMenuYesNo,
+// } from "../components/ModalBottomMenu"
+// import MainFlatListWithFab from "../components/MainFlatListWithFab"
+// import EventCard from "../components/EventCard"
 import { TitleBlock } from "../components/createComponents"
 import { useTheme } from "@react-navigation/native"
 import { TextBlock, ContactIcon } from "../components/infoComponents"
 import { contactsIcons } from "../db/dependencies"
 import wordForm from "../helpers/wordForm"
 import { formatDate, calculateAge } from "../helpers/date"
+import ModalDeleteClient from "../components/ModalDeleteClient"
 
 const ClientScreen = ({ navigation, route }) => {
 	const client =
@@ -25,6 +26,19 @@ const ClientScreen = ({ navigation, route }) => {
 	const age = calculateAge(client.birthday)
 
 	const { dark, colors } = useTheme()
+
+	const [modal, setModal] = useState(null)
+
+	const modalDelete = (client) => {
+		setModal(
+			<ModalDeleteClient
+				client={client}
+				// navigation={navigation}
+				callbackToCloseModal={() => setModal(null)}
+				callbackAfterAccept={() => navigation.goBack()}
+			/>
+		)
+	}
 
 	const noImageUrl =
 		client.gender === 0
@@ -46,66 +60,66 @@ const ClientScreen = ({ navigation, route }) => {
 		["события", "событий", "событий"]
 	)}`
 
-	const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
-	const [modalEventsVisible, setModalEventsVisible] = useState(false)
-	const [modalDeclineDeleteVisible, setModalDeclineDeleteVisible] = useState(
-		false
-	)
+	// const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
+	// const [modalEventsVisible, setModalEventsVisible] = useState(false)
+	// const [modalDeclineDeleteVisible, setModalDeclineDeleteVisible] = useState(
+	// 	false
+	// )
 
-	const dispatch = useDispatch()
+	// const dispatch = useDispatch()
 
-	const ModalDeleteConfirm = () => (
-		<ModalBottomMenuYesNo
-			title="Удаление клиента"
-			subtitle="Вы уверены что хотите удалить клиента?"
-			onAccept={() => {
-				dispatch(deleteClient(client.id))
-				navigation.goBack()
-			}}
-			visible={modalDeleteVisible}
-			// opener={() => setModalDeleteVisible(true)}
-			closer={() => setModalDeleteVisible(false)}
-		/>
-	)
+	// const ModalDeleteConfirm = () => (
+	// 	<ModalBottomMenuYesNo
+	// 		title="Удаление клиента"
+	// 		subtitle="Вы уверены что хотите удалить клиента?"
+	// 		onAccept={() => {
+	// 			dispatch(deleteClient(client.id))
+	// 			navigation.goBack()
+	// 		}}
+	// 		visible={modalDeleteVisible}
+	// 		// opener={() => setModalDeleteVisible(true)}
+	// 		closer={() => setModalDeleteVisible(false)}
+	// 	/>
+	// )
 
-	const ModalEventsDependency = (
-		title = "События клиента",
-		subtitle = wordEventsDependency,
-		visible = modalEventsVisible,
-		onOuterClick = () => setModalEventsVisible(false)
-	) => (
-		<ModalBottomMenu
-			title={title}
-			subtitle={subtitle}
-			visible={visible}
-			onOuterClick={onOuterClick}
-		>
-			<MainFlatListWithFab
-				data={eventsDependency}
-				renderItem={({ item }) => (
-					<EventCard
-						navigation={navigation}
-						event={item}
-						onPress={() => {
-							// setEventItem({ service: item.id })
-							setModalEventsVisible(false)
-							navigation.navigate("Event", { event: item })
-						}}
-						listMode={true}
-					/>
-				)}
-				fabVisible={false}
-			/>
-		</ModalBottomMenu>
-	)
+	// const ModalEventsDependency = (
+	// 	title = "События клиента",
+	// 	subtitle = wordEventsDependency,
+	// 	visible = modalEventsVisible,
+	// 	onOuterClick = () => setModalEventsVisible(false)
+	// ) => (
+	// 	<ModalBottomMenu
+	// 		title={title}
+	// 		subtitle={subtitle}
+	// 		visible={visible}
+	// 		onOuterClick={onOuterClick}
+	// 	>
+	// 		<MainFlatListWithFab
+	// 			data={eventsDependency}
+	// 			renderItem={({ item }) => (
+	// 				<EventCard
+	// 					navigation={navigation}
+	// 					event={item}
+	// 					onPress={() => {
+	// 						// setEventItem({ service: item.id })
+	// 						setModalEventsVisible(false)
+	// 						navigation.navigate("Event", { event: item })
+	// 					}}
+	// 					listMode={true}
+	// 				/>
+	// 			)}
+	// 			fabVisible={false}
+	// 		/>
+	// 	</ModalBottomMenu>
+	// )
 
-	const ModalDeclineDelete = () =>
-		ModalEventsDependency(
-			"Удаление клиента невозможно",
-			wordEventsDependency,
-			modalDeclineDeleteVisible,
-			() => setModalDeclineDeleteVisible(false)
-		)
+	// const ModalDeclineDelete = () =>
+	// 	ModalEventsDependency(
+	// 		"Удаление клиента невозможно",
+	// 		wordEventsDependency,
+	// 		modalDeclineDeleteVisible,
+	// 		() => setModalDeclineDeleteVisible(false)
+	// 	)
 
 	navigation.setOptions({
 		title: `Клиент`,
@@ -114,11 +128,7 @@ const ClientScreen = ({ navigation, route }) => {
 				<Item
 					title="Delete Client"
 					iconName="ios-trash"
-					onPress={() => {
-						eventsDependency.length > 0
-							? setModalDeclineDeleteVisible(true)
-							: setModalDeleteVisible(true)
-					}}
+					onPress={() => modalDelete(client)}
 				/>
 				<Item
 					title="Edit Client"
@@ -127,9 +137,9 @@ const ClientScreen = ({ navigation, route }) => {
 						navigation.navigate("CreateClient", { client: client })
 					}}
 				/>
-				<ModalDeleteConfirm />
+				{/* <ModalDeleteConfirm />
 				<ModalEventsDependency />
-				<ModalDeclineDelete />
+				<ModalDeclineDelete /> */}
 			</HeaderButtons>
 		),
 	})
@@ -211,6 +221,7 @@ const ClientScreen = ({ navigation, route }) => {
 				/>
 				: null} */}
 			</View>
+			{modal}
 		</ScrollView>
 	)
 }

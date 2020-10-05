@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { StyleSheet, Text, View } from "react-native"
 import { useTheme } from "@react-navigation/native"
@@ -9,6 +9,7 @@ import Fab from "../components/Fab"
 import MainFlatListWithFab from "../components/MainFlatListWithFab"
 import { dbGenerator } from "../db/dbTemplate"
 import { addClient, deleteAllClients } from "../store/actions/client"
+import ModalDeleteClient from "../components/ModalDeleteClient"
 
 const ClientsScreen = ({ navigation, route }) => {
 	const { colors } = useTheme()
@@ -16,6 +17,18 @@ const ClientsScreen = ({ navigation, route }) => {
 
 	const clients = useSelector((state) => state.client.clients)
 	const loading = useSelector((state) => state.client.loading)
+
+	const [modal, setModal] = useState(null)
+
+	const modalDelete = (client) => {
+		setModal(
+			<ModalDeleteClient
+				client={client}
+				// navigation={navigation}
+				callbackToCloseModal={() => setModal(null)}
+			/>
+		)
+	}
 
 	navigation.setOptions({
 		title: `Клиенты (${clients.length})`,
@@ -64,15 +77,22 @@ const ClientsScreen = ({ navigation, route }) => {
 	}
 
 	return (
-		<MainFlatListWithFab
-			data={clients}
-			renderItem={({ item }) => (
-				<ClientCard navigation={navigation} client={item} />
-			)}
-			onPressFab={() => {
-				navigation.navigate("CreateClient")
-			}}
-		/>
+		<View>
+			<MainFlatListWithFab
+				data={clients}
+				renderItem={({ item }) => (
+					<ClientCard
+						navigation={navigation}
+						client={item}
+						onDelete={() => modalDelete(item)}
+					/>
+				)}
+				onPressFab={() => {
+					navigation.navigate("CreateClient")
+				}}
+			/>
+			{modal}
+		</View>
 	)
 }
 
