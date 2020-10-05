@@ -72,9 +72,9 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 								"9 Пятилетки",
 								"проспект Мира",
 						  ]),
-				location_house: Math.floor(Math.random() * 80) + 1,
-				location_room: Math.floor(Math.random() * 200) + 1,
-				location_name: "Дом",
+				location_house: Math.floor(Math.random() * 80 + 1) + "",
+				location_room: Math.floor(Math.random() * 200 + 1) + "",
+				location_name: rndArray(["", "ТЦ", "Дом"]),
 				location_floor: null,
 				finance_price: rndArray([5000, 6000, 7000, 8000, 9000, 10000]),
 				finance_status: rndArray([
@@ -311,7 +311,7 @@ export default dbTemplate = {
 			type: "text",
 			db_type: "TEXT",
 			not_null: false,
-			default: "Дом",
+			default: "",
 			db_default: "",
 		},
 		{
