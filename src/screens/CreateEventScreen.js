@@ -15,7 +15,9 @@ import {
 	DateTimePickerBlock,
 	TitleBlock,
 } from "../components/createComponents"
-import ModalBottomMenu from "../components/ModalBottomMenu"
+import ModalBottomMenu, {
+	ModalBottomMenuYesNo,
+} from "../components/ModalBottomMenu"
 import MainFlatListWithFab from "../components/MainFlatListWithFab"
 import ServiceCard from "../components/ServiceCard"
 import ClientCard from "../components/ClientCard"
@@ -79,9 +81,75 @@ const CreateEventScreen = ({ navigation, route }) => {
 			</>
 		),
 	})
+	const [modal, setModal] = useState(null)
 
-	const [modalServicesVisible, setModalServicesVisible] = useState(false)
-	const [modalClientsVisible, setModalClientsVisible] = useState(false)
+	const modalUpdateFinance = (
+		<ModalBottomMenuYesNo
+			title="Обновить данные финансов"
+			subtitle="Внести финансовые данные услуги в собитие?"
+			visible={true}
+			onAccept={() => {
+				setEventItem({
+					finance_price: serviceObj.finance_price,
+					finance_consumables: serviceObj.finance_consumables,
+					finance_assistants: serviceObj.finance_assistants,
+				})
+			}}
+			closer={() => setModal(null)}
+		/>
+	)
+
+	const modalClients = (
+		<ModalBottomMenu
+			title="Выберите клиента"
+			visible={true}
+			onOuterClick={() => setModal(null)}
+		>
+			<MainFlatListWithFab
+				data={clients}
+				renderItem={({ item }) => (
+					<ClientCard
+						navigation={navigation}
+						client={item}
+						onPress={() => {
+							setEventItem({ client: item.id })
+							setModal(null)
+						}}
+						listMode={true}
+					/>
+				)}
+				fabVisible={false}
+			/>
+		</ModalBottomMenu>
+	)
+
+	const modalServices = (
+		<ModalBottomMenu
+			title="Выберите услугу"
+			visible={true}
+			onOuterClick={() => setModal(null)}
+		>
+			<MainFlatListWithFab
+				data={services}
+				renderItem={({ item }) => (
+					<ServiceCard
+						navigation={navigation}
+						service={item}
+						onPress={() => {
+							//Если сервис был выбран, то нужно спросить об обновлении финансовых данных
+							setModal(null)
+							setEventItem({
+								service: item.id,
+							})
+							if (servicePicked) setModal(modalUpdateFinance)
+						}}
+						listMode={true}
+					/>
+				)}
+				fabVisible={false}
+			/>
+		</ModalBottomMenu>
+	)
 
 	return (
 		<ScrollView style={styles.container}>
@@ -153,7 +221,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 				<View style={{ zIndex: 0 }}>
 					<Button
 						onPress={() => {
-							setModalServicesVisible(true)
+							setModal(modalServices)
 						}}
 						title={`Выберите услугу`}
 					/>
@@ -163,44 +231,17 @@ const CreateEventScreen = ({ navigation, route }) => {
 					navigation={navigation}
 					service={serviceObj}
 					onPress={() => {
-						setModalServicesVisible(true)
+						setModal(modalServices)
 					}}
 				/>
 			)}
-
-			<ModalBottomMenu
-				title="Выберите услугу"
-				visible={modalServicesVisible}
-				onOuterClick={() => setModalServicesVisible(false)}
-			>
-				<MainFlatListWithFab
-					data={services}
-					renderItem={({ item }) => (
-						<ServiceCard
-							navigation={navigation}
-							service={item}
-							onPress={() => {
-								setEventItem({
-									service: item.id,
-									finance_price: item.finance_price,
-									finance_consumables: item.finance_consumables,
-									finance_assistants: item.finance_assistants,
-								})
-								setModalServicesVisible(false)
-							}}
-							listMode={true}
-						/>
-					)}
-					fabVisible={false}
-				/>
-			</ModalBottomMenu>
 
 			<TitleBlock title="Клиент" />
 			{!clientObj ? (
 				<View style={{ zIndex: 0 }}>
 					<Button
 						onPress={() => {
-							setModalClientsVisible(true)
+							setModal(modalClients)
 						}}
 						title={`Выберите клиента`}
 					/>
@@ -210,41 +251,11 @@ const CreateEventScreen = ({ navigation, route }) => {
 					navigation={navigation}
 					client={clientObj}
 					onPress={() => {
-						setModalClientsVisible(true)
+						setModal(modalClients)
 					}}
 				/>
 			)}
 
-			<ModalBottomMenu
-				title="Выберите клиента"
-				visible={modalClientsVisible}
-				onOuterClick={() => setModalClientsVisible(false)}
-			>
-				<MainFlatListWithFab
-					data={clients}
-					renderItem={({ item }) => (
-						<ClientCard
-							navigation={navigation}
-							client={item}
-							onPress={() => {
-								setEventItem({ client: item.id })
-								setModalClientsVisible(false)
-							}}
-							listMode={true}
-						/>
-					)}
-					fabVisible={false}
-				/>
-			</ModalBottomMenu>
-			{/* <DropDownPickerBlock
-				name="Клиент"
-				db={clients}
-				defeultValue={newEvent.client}
-				placeholder={"[ Выберите клиента ]"}
-				zeroItem={{ label: "Новый клиент", value: 0 }}
-				onChangeItem={(item) => setEventItem({ client: item.value })}
-				searchable={clients.length > 8}
-			/> */}
 			<View style={{ flexDirection: "row" }}>
 				<TitleBlock title="Финансы" />
 				<Menu
@@ -404,6 +415,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 				keyboardType="numeric"
 				onChangeText={(text) => setEventItem({ location_floor: text })}
 			/>
+			{modal}
 		</ScrollView>
 	)
 }
