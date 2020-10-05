@@ -102,6 +102,7 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 			}
 		case "client":
 			const gender = rndArray([0, 1, 3])
+			const phone = rndArray(["+79123456789", "+79234567890", "+793456789012"])
 			return {
 				name:
 					gender === 0
@@ -164,10 +165,10 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 						  ]),
 				gender: gender,
 				birthday: "",
-				phone: rndArray(["+79123456789", "+79234567890", "+793456789012"]),
-				email: "",
-				whatsapp: "",
-				viber: "",
+				phone: phone,
+				email: rndArray(["test@test.ru", ""]),
+				whatsapp: rndArray([phone, ""]),
+				viber: rndArray([phone, ""]),
 				telegram: "",
 				instagram: "",
 				vk: "",
