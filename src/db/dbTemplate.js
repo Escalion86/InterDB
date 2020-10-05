@@ -189,7 +189,7 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 				finance_price: rndArray([5000, 6000, 7000, 8000, 9000, 10000]),
 				finance_consumables: rndArray([0, 200, 300]),
 				finance_assistants: rndArray([0, 0, 1000, 2000]),
-				length: 30,
+				duration: 30,
 				preparetime: 20,
 				collecttime: 20,
 				image: "",
@@ -560,7 +560,7 @@ export default dbTemplate = {
 			db_default: 0,
 		},
 		{
-			db_name: "length",
+			db_name: "duration",
 			desc: "Продолжительность минут",
 			type: "integer",
 			db_type: "INTEGER",
