@@ -24,7 +24,14 @@ import SwipeableCard from "../components/SwipeableCard"
 // import { deleteEvent } from "../store/actions/event"
 // import ModalDeleteEvent from "./ModalDeleteEvent"
 
-const EventCard = ({ navigation, event, onPress = null, onDelete = null }) => {
+const EventCard = ({
+	navigation,
+	event,
+	onPress = null,
+	onDelete = null,
+	showClient = true,
+	showAdress = true,
+}) => {
 	const { Popover } = renderers
 	const theme = useTheme()
 	const colors = theme.colors
@@ -152,55 +159,59 @@ const EventCard = ({ navigation, event, onPress = null, onDelete = null }) => {
 									{service ? service.name : "[услуга не найдена]"}
 								</Text>
 							</View>
-							<View style={styles.carddesc}>
-								<Text style={styles.carddesctext}>
-									{event.location_town}, {event.location_street},{" "}
-									{Math.trunc(event.location_house)}
-									{event.location_room
-										? ` - ${Math.trunc(event.location_room)}`
-										: null}
-									{event.location_name ? ` (${event.location_name})` : null}
-								</Text>
-								<Ionicons
-									name="md-navigate"
-									size={28}
-									color={colors.text}
-									style={{ marginHorizontal: 5 }}
-									onPress={
-										() =>
-											LinkTo(
-												`yandexnavi://map_search?text=${event.location_town},%20${event.location_street}%20${event.location_house}`
-											)
-										// fetch(
-										//   "https://geocode-maps.yandex.ru/1.x/?format=json&apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=Красноярск+Линейная+109"
-										// )
-										//   .then((response) => response.json())
-										//   .then((result) => {
-										//     let geoObject =
-										//       result.response.GeoObjectCollection.featureMember[0].GeoObject
-										//         .Point.pos
-										//     geoObject = geoObject.split(" ") //.join(",")
-										//     console.log("geoObject :>> ", geoObject)
-										//     // Linking.openURL(
-										//     //   `https://geocode-maps.yandex.ru/1.x/?apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=${geoObject}`
-										//     // )
-										//     Linking.openURL(
-										//       //`yandexnavi://show_point_on_map?lat=${geoObject[1]}&lon=${geoObject[0]}&zoom=12&no-balloon=0&desc=кафе с wi-fi`
-										//       `yandexnavi://build_route_on_map?lat_to=${geoObject[1]}&lon_to=${geoObject[0]}`
-										//     )
-										//   })
-									}
-								/>
-							</View>
+							{showAdress ? (
+								<View style={styles.carddesc}>
+									<Text style={styles.carddesctext}>
+										{event.location_town}, {event.location_street},{" "}
+										{Math.trunc(event.location_house)}
+										{event.location_room
+											? ` - ${Math.trunc(event.location_room)}`
+											: null}
+										{event.location_name ? ` (${event.location_name})` : null}
+									</Text>
+									<Ionicons
+										name="md-navigate"
+										size={28}
+										color={colors.text}
+										style={{ marginHorizontal: 5 }}
+										onPress={
+											() =>
+												LinkTo(
+													`yandexnavi://map_search?text=${event.location_town},%20${event.location_street}%20${event.location_house}`
+												)
+											// fetch(
+											//   "https://geocode-maps.yandex.ru/1.x/?format=json&apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=Красноярск+Линейная+109"
+											// )
+											//   .then((response) => response.json())
+											//   .then((result) => {
+											//     let geoObject =
+											//       result.response.GeoObjectCollection.featureMember[0].GeoObject
+											//         .Point.pos
+											//     geoObject = geoObject.split(" ") //.join(",")
+											//     console.log("geoObject :>> ", geoObject)
+											//     // Linking.openURL(
+											//     //   `https://geocode-maps.yandex.ru/1.x/?apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=${geoObject}`
+											//     // )
+											//     Linking.openURL(
+											//       //`yandexnavi://show_point_on_map?lat=${geoObject[1]}&lon=${geoObject[0]}&zoom=12&no-balloon=0&desc=кафе с wi-fi`
+											//       `yandexnavi://build_route_on_map?lat_to=${geoObject[1]}&lon_to=${geoObject[0]}`
+											//     )
+											//   })
+										}
+									/>
+								</View>
+							) : null}
 
-							<View style={styles.carddesc}>
-								<Text style={styles.carddesctext}>
-									{client
-										? `${client.surname} ${client.name} ${client.thirdname}`.trim()
-										: "[клиент не найден]"}
-								</Text>
-								{client ? <ContactsMenu client={client} /> : null}
-							</View>
+							{showClient ? (
+								<View style={styles.carddesc}>
+									<Text style={styles.carddesctext}>
+										{client
+											? `${client.surname} ${client.name} ${client.thirdname}`.trim()
+											: "[клиент не найден]"}
+									</Text>
+									{client ? <ContactsMenu client={client} /> : null}
+								</View>
+							) : null}
 						</View>
 						<View style={styles.right}>
 							<View style={styles.carddate}>
@@ -208,8 +219,12 @@ const EventCard = ({ navigation, event, onPress = null, onDelete = null }) => {
 									{formatDate(new Date(event.date))}
 								</Text>
 								<Text style={styles.datetime}>
-									{getWeekDay(new Date(event.date))}{" "}
-									{formatTime(new Date(event.date))}
+									{`${getWeekDay(new Date(event.date))} ${formatTime(
+										new Date(event.date)
+									)}`}
+								</Text>
+								<Text style={styles.datetime}>
+									{service.duration + service.preparetime + service.collecttime}
 								</Text>
 							</View>
 							<Menu
