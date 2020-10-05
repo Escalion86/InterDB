@@ -31,7 +31,6 @@ export const dbTemplateToSqlFull = () => {
 	tables.forEach((table) => {
 		sql += `${dbTemplateToSql(table)}; `
 	})
-	console.log("dbTemplateToSqlFull :>> ", sql)
 	return sql
 }
 
@@ -162,8 +161,6 @@ export class DB {
 	static addEvent(event) {
 		const newEvent = prepareForDB("events", event)
 		newEvent.date = Math.floor(newEvent.date / 1000)
-
-		console.log("newEvent", newEvent)
 
 		return new Promise((resolve, reject) => {
 			const eventKeys = Object.keys(newEvent)

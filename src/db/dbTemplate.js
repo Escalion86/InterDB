@@ -35,7 +35,6 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 	services.forEach((service) => {
 		servicesIds.push(service.id)
 	})
-	console.log("servicesIds", servicesIds)
 	const clientsIds = []
 	clients.forEach((client) => {
 		clientsIds.push(client.id)

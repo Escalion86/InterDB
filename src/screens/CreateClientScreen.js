@@ -21,11 +21,9 @@ const CreateClientScreen = ({ navigation, route }) => {
 			? route.params.client
 			: { ...dbDefault("clients"), birthday: null }
 
-	console.log("client.birthday", client.birthday)
-
 	const dispatch = useDispatch()
 	const [newClient, setNewClient] = useState(client)
-	console.log("newClient", newClient)
+
 	const nameFieldFilled =
 		newClient.name.trim() ||
 		newClient.surname.trim() ||

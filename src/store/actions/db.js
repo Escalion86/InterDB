@@ -9,7 +9,6 @@ export const loadAll = () => {
 		await dispatch(loadServices())
 		await dispatch(loadClients())
 		await dispatch(loadEvents())
-		console.log("loadAll Complite")
 	}
 }
 
