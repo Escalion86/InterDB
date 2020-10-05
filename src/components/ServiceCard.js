@@ -142,7 +142,7 @@ const ServiceCard = ({
 						<View style={styles.right}>
 							<View style={styles.carddate}>
 								<Text style={styles.datetime}>
-									{service.preparetime + service.collecttime + service.length}{" "}
+									{service.preparetime + service.collecttime + service.duration}{" "}
 									мин
 								</Text>
 							</View>
