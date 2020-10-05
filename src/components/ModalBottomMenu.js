@@ -27,7 +27,7 @@ const ModalBottomMenu = ({
 				onOuterClick()
 			}}
 			config={{
-				velocityThreshold: 0.3,
+				velocityThreshold: 0.1,
 				directionalOffsetThreshold: 80,
 			}}
 		>
