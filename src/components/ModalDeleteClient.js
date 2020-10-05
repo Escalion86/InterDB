@@ -16,6 +16,8 @@ const ModalDeleteClient = ({
 	// 	callbackAfterAccept = () => navigation.navigate("Clients")
 	const dispatch = useDispatch()
 
+	const clientName = `${client.surname} ${client.name} ${client.thirdname}`.trim()
+
 	const events = useSelector((state) => state.event.events)
 
 	const eventsDependency = events.filter((event) => {
@@ -24,7 +26,7 @@ const ModalDeleteClient = ({
 
 	const ModalDeleteConfirm = (
 		<ModalBottomMenuYesNo
-			title={`Удаление клиента\n"${`${client.surname} ${client.name} ${client.thirdname}`.trim()}"`}
+			title={`Удаление клиента\n"${clientName}"`}
 			subtitle="Вы уверены что хотите удалить клиента?"
 			onAccept={() => {
 				callbackToCloseModal()
@@ -38,7 +40,7 @@ const ModalDeleteClient = ({
 
 	const ModalDeleteDecline = (
 		<ModalBottomMenu
-			title={`Удаление клиента\n"${`${client.surname} ${client.name} ${client.thirdname}`.trim()}"\nневозможно`}
+			title={`Удаление клиента\n"${clientName}"\nневозможно`}
 			subtitle={`Клиент зависим от ${wordForm(
 				eventsDependency.length,
 				["события", "событий", "событий"],
