@@ -70,6 +70,12 @@ const EventCard = ({
 			event.finance_consumables +
 			event.finance_tips
 
+		const timing =
+			event.timing_duration +
+			event.timing_preparetime +
+			event.timing_collecttime +
+			event.timing_road * 2
+
 		if (event.loading || event.deleting) {
 			return (
 				<View
@@ -103,11 +109,11 @@ const EventCard = ({
 			if (data.id == event.client) return data
 		})[0]
 
-		const MenuRow = ({ title = "", num = 0, style = {} }) => (
+		const MenuRow = ({ title = "", value = "0", style = {} }) => (
 			<View style={{ ...styles.row, ...style }}>
 				<Text style={{ fontSize: 16, color: colors.text }}>{title}</Text>
 				<Text style={{ fontSize: 16, marginLeft: 20, color: colors.text }}>
-					{num}
+					{value}
 				</Text>
 			</View>
 		)
@@ -226,39 +232,31 @@ const EventCard = ({
 										new Date(event.date)
 									)}`}
 								</Text>
-								<Text style={styles.datetime}>
-									{service.duration + service.preparetime + service.collecttime}{" "}
-									мин
-								</Text>
 							</View>
 							<Menu
-								style={styles.finance}
+								// style={styles.cardtiming}
 								renderer={Popover}
 								rendererProps={{ preferredPlacement: "left" }}
 							>
 								<MenuTrigger>
-									{/* <TouchableOpacity style={styles.finance}> */}
-									<Text style={styles.profit}>{profit}</Text>
-									{/* </TouchableOpacity> */}
+									<Text style={styles.timing}>{`${timing} мин`}</Text>
 								</MenuTrigger>
 								<MenuOptions style={styles.menuOptions}>
-									<MenuRow title="Цена клиента" num={event.finance_price} />
-									<MenuRow title="За дорогу" num={-event.finance_road} />
 									<MenuRow
-										title="Организатору"
-										num={-event.finance_organizator}
+										title="Продолжительность"
+										value={event.timing_duration + " мин"}
 									/>
 									<MenuRow
-										title="Расходники"
-										num={-event.finance_consumables}
+										title="На подготовку"
+										value={event.timing_preparetime + " мин"}
 									/>
 									<MenuRow
-										title="Ассистентам"
-										num={-event.finance_assistants}
+										title="На сбор"
+										value={event.timing_collecttime + " мин"}
 									/>
 									<MenuRow
-										title="Чаевые"
-										num={event.finance_tips}
+										title={`На транспортировку\nтуда и обратно`}
+										value={event.timing_road * 2 + " мин"}
 										style={{
 											borderBottomColor: colors.text,
 											borderBottomWidth: 1,
@@ -267,7 +265,52 @@ const EventCard = ({
 									/>
 									<MenuRow
 										title="ИТОГО"
-										num={profit}
+										value={timing + " мин"}
+										style={{ paddingTop: 5 }}
+									/>
+								</MenuOptions>
+							</Menu>
+							<Menu
+								style={styles.finance}
+								renderer={Popover}
+								rendererProps={{ preferredPlacement: "left" }}
+							>
+								<MenuTrigger>
+									<Text style={styles.profit}>{profit}</Text>
+								</MenuTrigger>
+								<MenuOptions style={styles.menuOptions}>
+									<MenuRow
+										title="Цена клиента"
+										value={event.finance_price + " руб"}
+									/>
+									<MenuRow
+										title="За дорогу"
+										value={-event.finance_road + " руб"}
+									/>
+									<MenuRow
+										title="Организатору"
+										value={-event.finance_organizator + " руб"}
+									/>
+									<MenuRow
+										title="Расходники"
+										value={-event.finance_consumables + " руб"}
+									/>
+									<MenuRow
+										title="Ассистентам"
+										value={-event.finance_assistants + " руб"}
+									/>
+									<MenuRow
+										title="Чаевые"
+										value={event.finance_tips + " руб"}
+										style={{
+											borderBottomColor: colors.text,
+											borderBottomWidth: 1,
+											paddingBottom: 5,
+										}}
+									/>
+									<MenuRow
+										title="ИТОГО"
+										value={profit + " руб"}
 										style={{ paddingTop: 5 }}
 									/>
 								</MenuOptions>
@@ -304,13 +347,19 @@ const stylesFactory = (colors) =>
 		},
 		carddate: {
 			flex: 1,
-			// height: 50,
+			minHeight: 36,
 			padding: 5,
 			alignItems: "center",
 			justifyContent: "center",
-			// borderColor: "red",
-			// borderWidth: 1,
 		},
+		// cardtiming: {
+		// 	flex: 1,
+		// 	minHeight: 36,
+		// 	alignItems: "center",
+		// 	justifyContent: "center",
+		// 	borderColor: colors.border,
+		// 	borderTopWidth: 1,
+		// },
 		middle: {
 			// padding: 10,
 			flex: 1,
@@ -362,22 +411,11 @@ const stylesFactory = (colors) =>
 			textAlign: "right",
 			color: colors.text,
 		},
-		finance: {
-			// flex: 1,
-			flexDirection: "column",
-			justifyContent: "flex-end",
-			width: "100%",
-			// borderColor: "#fff",
-			// borderWidth: 2,
-			// height: "100%",
-			// alignItems: "center",
-			// justifyContent: "center",
-		},
 		profit: {
 			// flex: 1,
 			fontSize: 14,
 			width: "100%",
-			height: 46,
+			height: 44,
 			textAlignVertical: "center",
 			textAlign: "center",
 			color: colors.money,
@@ -387,6 +425,16 @@ const stylesFactory = (colors) =>
 			borderBottomRightRadius: 10,
 			borderColor: colors.border,
 			backgroundColor: colors.active,
+		},
+		timing: {
+			flex: 1,
+			color: colors.text,
+			textAlignVertical: "center",
+			textAlign: "center",
+			fontSize: 14,
+			minHeight: 40,
+			borderColor: colors.border,
+			borderTopWidth: 1,
 		},
 		menuOptions: {
 			padding: 20,
