@@ -31,6 +31,7 @@ const EventCard = ({
 	onDelete = null,
 	showClient = true,
 	showAdress = true,
+	showService = true,
 }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
@@ -153,12 +154,14 @@ const EventCard = ({
 							/>
 						</View>
 						<View style={styles.middle}>
-							<View style={styles.cardheader}>
-								<Text style={styles.cardtitle}>
-									{/* {event.auditory},  */}
-									{service ? service.name : "[услуга не найдена]"}
-								</Text>
-							</View>
+							{showService ? (
+								<View style={styles.cardheader}>
+									<Text style={styles.cardtitle}>
+										{/* {event.auditory},  */}
+										{service ? service.name : "[услуга не найдена]"}
+									</Text>
+								</View>
+							) : null}
 							{showAdress ? (
 								<View style={styles.carddesc}>
 									<Text style={styles.carddesctext}>
@@ -224,7 +227,8 @@ const EventCard = ({
 									)}`}
 								</Text>
 								<Text style={styles.datetime}>
-									{service.duration + service.preparetime + service.collecttime}
+									{service.duration + service.preparetime + service.collecttime}{" "}
+									мин
 								</Text>
 							</View>
 							<Menu
@@ -318,7 +322,7 @@ const stylesFactory = (colors) =>
 			justifyContent: "space-between",
 		},
 		cardheader: {
-			flex: 1,
+			flex: 3,
 			padding: 5,
 			alignItems: "center",
 			justifyContent: "center",
@@ -337,6 +341,7 @@ const stylesFactory = (colors) =>
 			color: colors.text,
 		},
 		carddesc: {
+			flex: 2,
 			flexDirection: "row",
 			minHeight: 40,
 			// borderColor: "red",
