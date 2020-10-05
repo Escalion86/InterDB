@@ -284,7 +284,7 @@ const stylesFactory = (colors) =>
 			// flex: 1,
 			fontSize: 14,
 			width: "100%",
-			height: 46,
+			height: 44,
 			textAlignVertical: "center",
 			textAlign: "center",
 			color: "#ffff99",

@@ -83,20 +83,124 @@ const CreateEventScreen = ({ navigation, route }) => {
 	})
 	const [modal, setModal] = useState(null)
 
-	const modalUpdateFinance = (
-		<ModalBottomMenuYesNo
-			title="Обновить данные финансов"
-			subtitle="Внести финансовые данные услуги в собитие?"
-			visible={true}
-			onAccept={() => {
-				setEventItem({
-					finance_price: serviceObj.finance_price,
-					finance_consumables: serviceObj.finance_consumables,
-					finance_assistants: serviceObj.finance_assistants,
-				})
+	const InfoMenu = () => (
+		<Menu
+			style={{
+				position: "absolute",
+				right: 10,
+				alignSelf: "center",
 			}}
-			closer={() => setModal(null)}
-		/>
+			renderer={Popover}
+			rendererProps={{ preferredPlacement: "left" }}
+		>
+			<MenuTrigger>
+				<Ionicons
+					name="md-information-circle-outline"
+					size={22}
+					color={colors.text}
+				/>
+			</MenuTrigger>
+			<MenuOptions
+				style={{
+					padding: 10,
+					borderColor: colors.border,
+					borderWidth: 1,
+					// borderRadius: 20,
+					backgroundColor: colors.card,
+					width: 290,
+					flexDirection: "row",
+					flexWrap: "wrap",
+					// display: "inline",
+				}}
+			>
+				<Text style={{ color: colors.text, fontSize: 14, lineHeight: 20 }}>
+					Если выделено{" "}
+				</Text>
+				<Text
+					style={{
+						color: colors.success,
+						fontSize: 14,
+						padding: 0,
+						margin: 0,
+					}}
+				>
+					цветом
+				</Text>
+				<Text style={{ color: colors.text, fontSize: 14, lineHeight: 20 }}>
+					, значит
+				</Text>
+				<Text style={{ color: colors.text, fontSize: 14, lineHeight: 20 }}>
+					совпадает со стандартным значением указанным в услуге
+				</Text>
+			</MenuOptions>
+		</Menu>
+	)
+
+	const modalUpdateFinance = (
+		<ModalBottomMenu
+			title="Обновление данных события"
+			subtitle="Внести данные услуги в собитие?"
+			visible={true}
+			onOuterClick={() => setModal(null)}
+		>
+			<Button
+				title="Обновить все данные"
+				btnDecline={false}
+				onPress={() => {
+					setEventItem({
+						finance_price: serviceObj.finance_price,
+						finance_consumables: serviceObj.finance_consumables,
+						finance_assistants: serviceObj.finance_assistants,
+						timing_duration: serviceObj.duration,
+						timing_preparetime: serviceObj.preparetime,
+						timing_collecttime: serviceObj.collecttime,
+					})
+					setModal(null)
+				}}
+			/>
+			<Button
+				title="Обновить только финансовые данные"
+				btnDecline={false}
+				onPress={() => {
+					setEventItem({
+						finance_price: serviceObj.finance_price,
+						finance_consumables: serviceObj.finance_consumables,
+						finance_assistants: serviceObj.finance_assistants,
+					})
+					setModal(null)
+				}}
+			/>
+			<Button
+				title="Обновить только данные тайминга"
+				btnDecline={false}
+				onPress={() => {
+					setEventItem({
+						timing_duration: serviceObj.duration,
+						timing_preparetime: serviceObj.preparetime,
+						timing_collecttime: serviceObj.collecttime,
+					})
+					setModal(null)
+				}}
+			/>
+			<Button
+				title="Не обновлять"
+				btnDecline={true}
+				onPress={() => setModal(null)}
+			/>
+		</ModalBottomMenu>
+		// <ModalBottomMenuYesNo
+		// 	title="Обновление данных финансов"
+		// 	subtitle="Внести финансовые данные услуги в собитие?"
+		// 	visible={true}
+		// 	onAccept={() => {
+		// 		setEventItem({
+		// 			finance_price: serviceObj.finance_price,
+		// 			finance_consumables: serviceObj.finance_consumables,
+		// 			finance_assistants: serviceObj.finance_assistants,
+		// 		})
+		// 	}}
+		// 	closer={() => setModal(null)}
+		// />
 	)
 
 	const modalClients = (
@@ -258,56 +362,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 
 			<View style={{ flexDirection: "row" }}>
 				<TitleBlock title="Финансы" />
-				<Menu
-					style={{
-						position: "absolute",
-						right: 10,
-						alignSelf: "center",
-					}}
-					renderer={Popover}
-					rendererProps={{ preferredPlacement: "left" }}
-				>
-					<MenuTrigger>
-						<Ionicons
-							name="md-information-circle-outline"
-							size={22}
-							color={colors.text}
-						/>
-					</MenuTrigger>
-					<MenuOptions
-						style={{
-							padding: 10,
-							borderColor: colors.border,
-							borderWidth: 1,
-							// borderRadius: 20,
-							backgroundColor: colors.card,
-							width: 290,
-							flexDirection: "row",
-							flexWrap: "wrap",
-							// display: "inline",
-						}}
-					>
-						<Text style={{ color: colors.text, fontSize: 14, lineHeight: 20 }}>
-							Если сумма выделена{" "}
-						</Text>
-						<Text
-							style={{
-								color: colors.success,
-								fontSize: 14,
-								padding: 0,
-								margin: 0,
-							}}
-						>
-							цветом
-						</Text>
-						<Text style={{ color: colors.text, fontSize: 14, lineHeight: 20 }}>
-							, значит
-						</Text>
-						<Text style={{ color: colors.text, fontSize: 14, lineHeight: 20 }}>
-							она совпадает со стандартным значением указанным в услуге
-						</Text>
-					</MenuOptions>
-				</Menu>
+				<InfoMenu />
 			</View>
 
 			<TextInputBlock
@@ -414,6 +469,55 @@ const CreateEventScreen = ({ navigation, route }) => {
 				value={newEvent.location_floor}
 				keyboardType="numeric"
 				onChangeText={(text) => setEventItem({ location_floor: text })}
+			/>
+			<View style={{ flexDirection: "row" }}>
+				<TitleBlock title="Тайминг" />
+				<InfoMenu />
+			</View>
+			<TextInputBlock
+				title="Продолжительность"
+				value={newEvent.timing_duration}
+				onChangeText={(text) =>
+					setEventItem({ timing_duration: Math.floor(text) })
+				}
+				keyboardType="numeric"
+				placeholder="0"
+				postfix="мин"
+				success={serviceObj && newEvent.timing_duration == serviceObj.duration}
+			/>
+			<TextInputBlock
+				title="На подготовку"
+				value={newEvent.timing_preparetime}
+				onChangeText={(text) =>
+					setEventItem({ timing_preparetime: Math.floor(text) })
+				}
+				keyboardType="numeric"
+				placeholder="0"
+				postfix="мин"
+				success={
+					serviceObj && newEvent.timing_preparetime == serviceObj.preparetime
+				}
+			/>
+			<TextInputBlock
+				title="На сбор"
+				value={newEvent.timing_collecttime}
+				onChangeText={(text) =>
+					setEventItem({ timing_collecttime: Math.floor(text) })
+				}
+				keyboardType="numeric"
+				placeholder="0"
+				postfix="мин"
+				success={
+					serviceObj && newEvent.timing_collecttime == serviceObj.collecttime
+				}
+			/>
+			<TextInputBlock
+				title="На транспортировку в одну сторону"
+				value={newEvent.timing_road}
+				onChangeText={(text) => setEventItem({ timing_road: Math.floor(text) })}
+				keyboardType="numeric"
+				placeholder="0"
+				postfix="мин"
 			/>
 			{modal}
 		</ScrollView>
