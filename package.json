@@ -43,6 +43,7 @@
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
     "react-native-slider-color-picker": "^2.1.1",
+    "react-native-swipe-gestures": "^1.0.5",
     "react-native-switch": "^2.0.0",
     "react-native-text-input-mask": "^2.0.0",
     "react-native-web": "~0.11.7",

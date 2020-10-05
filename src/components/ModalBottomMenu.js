@@ -9,6 +9,7 @@ import {
 } from "react-native"
 import { useTheme } from "@react-navigation/native"
 import Button from "./Button"
+import GestureRecognizer from "react-native-swipe-gestures"
 
 const ModalBottomMenu = ({
 	children,
@@ -20,26 +21,39 @@ const ModalBottomMenu = ({
 	const { colors } = useTheme()
 
 	return (
-		<Modal
-			animationType="slide"
-			transparent={true}
-			visible={visible}
-			// onRequestClose={() => {
-			// 	Alert.alert("Modal has been closed.")
-			// }}
+		<GestureRecognizer
+			onSwipeDown={() => {
+				console.log("DOWN")
+				onOuterClick()
+			}}
+			config={{
+				velocityThreshold: 0.3,
+				directionalOffsetThreshold: 80,
+			}}
 		>
-			<TouchableOpacity
-				style={styles.modal}
-				onPressOut={() => {
-					onOuterClick()
-				}}
+			<Modal
+				animationType="slide"
+				transparent={true}
+				visible={visible}
+				// onRequestClose={() => {
+				// 	Alert.alert("Modal has been closed.")
+				// }}
 			>
-				<TouchableWithoutFeedback>
+				<View
+					style={styles.modal}
+					// onPressOut={() => {
+					// 	onOuterClick()
+					// }}
+				>
+					{/* <TouchableWithoutFeedback> */}
 					<View
 						style={{
 							...styles.panel,
 							backgroundColor: colors.border,
 							borderColor: colors.card,
+						}}
+						onSwipePerformed={(action) => {
+							if (action === "down") onOuterClick()
 						}}
 					>
 						{title || subtitle ? (
@@ -58,9 +72,10 @@ const ModalBottomMenu = ({
 						) : null}
 						{children}
 					</View>
-				</TouchableWithoutFeedback>
-			</TouchableOpacity>
-		</Modal>
+					{/* </TouchableWithoutFeedback> */}
+				</View>
+			</Modal>
+		</GestureRecognizer>
 	)
 }
 
