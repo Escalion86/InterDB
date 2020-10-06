@@ -181,8 +181,8 @@ const ServiceScreen = ({ navigation, route }) => {
 			/>
 			<TextBlock
 				text={`ИТОГО: ${
-					service.finance_price +
-					service.finance_consumables +
+					service.finance_price -
+					service.finance_consumables -
 					service.finance_assistants
 				} руб`}
 				style={{
