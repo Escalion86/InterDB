@@ -58,14 +58,28 @@ const ModalBottomMenu = ({
 						}}
 					>
 						<TouchableOpacity
-							style={{ position: "absolute", right: 20, top: 10 }}
+							style={{ position: "absolute", right: 20, top: 8 }}
 							onPress={() => {
 								onOuterClick()
 							}}
 						>
 							<Ionicons name="ios-close" size={36} color={colors.text} />
 						</TouchableOpacity>
-						<View style={{ alignItems: "center", marginBottom: 10 }}>
+						<View
+							style={{
+								width: "20%",
+								height: 7,
+								borderColor: colors.border,
+								borderWidth: 1,
+								backgroundColor: colors.active,
+								borderRadius: 5,
+								alignSelf: "center",
+								marginBottom: 6,
+							}}
+						></View>
+						<View
+							style={{ alignItems: "center", marginBottom: 10, minHeight: 12 }}
+						>
 							{title ? (
 								<Text style={{ ...styles.panelTitle, color: colors.text }}>
 									{title}
@@ -148,7 +162,7 @@ const styles = StyleSheet.create({
 	},
 	panel: {
 		padding: 5,
-		paddingTop: 20,
+		paddingTop: 15,
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20,
 		borderLeftWidth: 3,
