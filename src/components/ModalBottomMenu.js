@@ -10,6 +10,7 @@ import {
 import { useTheme } from "@react-navigation/native"
 import Button from "./Button"
 import GestureRecognizer from "react-native-swipe-gestures"
+import { Ionicons } from "@expo/vector-icons"
 
 const ModalBottomMenu = ({
 	children,
@@ -56,20 +57,26 @@ const ModalBottomMenu = ({
 							if (action === "down") onOuterClick()
 						}}
 					>
-						{title || subtitle ? (
-							<View style={{ alignItems: "center", marginBottom: 10 }}>
-								{title ? (
-									<Text style={{ ...styles.panelTitle, color: colors.text }}>
-										{title}
-									</Text>
-								) : null}
-								{subtitle ? (
-									<Text style={{ ...styles.panelSubtitle, color: colors.text }}>
-										{subtitle}
-									</Text>
-								) : null}
-							</View>
-						) : null}
+						<TouchableOpacity
+							style={{ position: "absolute", right: 20, top: 10 }}
+							onPress={() => {
+								onOuterClick()
+							}}
+						>
+							<Ionicons name="ios-close" size={36} color={colors.text} />
+						</TouchableOpacity>
+						<View style={{ alignItems: "center", marginBottom: 10 }}>
+							{title ? (
+								<Text style={{ ...styles.panelTitle, color: colors.text }}>
+									{title}
+								</Text>
+							) : null}
+							{subtitle ? (
+								<Text style={{ ...styles.panelSubtitle, color: colors.text }}>
+									{subtitle}
+								</Text>
+							) : null}
+						</View>
 						{children}
 					</View>
 					{/* </TouchableWithoutFeedback> */}
