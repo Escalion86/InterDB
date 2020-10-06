@@ -61,7 +61,7 @@ const CreateClientScreen = ({ navigation, route }) => {
 			client.id
 				? dispatch(updateClient(trimingArrayValues(newClient)))
 				: dispatch(addClient(trimingArrayValues(newClient)))
-			navigation.navigate("Clients")
+			navigation.goBack()
 		} else {
 			ToastAndroid.show(
 				`Необходимо заполнить хотябы одно поле Имени и хотябы одно поле Контакта`,

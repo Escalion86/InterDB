@@ -34,7 +34,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
 			service.id
 				? dispatch(updateService(trimingArrayValues(newService)))
 				: dispatch(addService(trimingArrayValues(newService)))
-			navigation.navigate("Services")
+			navigation.goBack()
 		} else {
 			ToastAndroid.show(
 				`Необходимо заполнить Название услуги`,

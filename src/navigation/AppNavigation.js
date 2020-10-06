@@ -85,6 +85,8 @@ const EventsStackScreen = ({ navigation }) => (
 		/>
 		<EventsStack.Screen name="Event" component={EventScreen} />
 		<EventsStack.Screen name="CreateEvent" component={CreateEventScreen} />
+		<EventsStack.Screen name="CreateClient" component={CreateClientScreen} />
+		<EventsStack.Screen name="CreateService" component={CreateServiceScreen} />
 	</StackNavigator>
 )
 

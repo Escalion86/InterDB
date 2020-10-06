@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { StyleSheet, ScrollView, View, ToastAndroid, Text } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
@@ -18,7 +18,7 @@ import {
 import ModalBottomMenu, {
 	ModalBottomMenuYesNo,
 } from "../components/ModalBottomMenu"
-import MainFlatListWithFab from "../components/MainFlatListWithFab"
+import ScrollCardList from "../components/ScrollCardList"
 import ServiceCard from "../components/ServiceCard"
 import ClientCard from "../components/ClientCard"
 import { useTheme } from "@react-navigation/native"
@@ -42,11 +42,33 @@ const CreateEventScreen = ({ navigation, route }) => {
 	const services = useSelector((state) => state.service.services).filter(
 		(item) => !item.archive
 	)
+
 	const clients = useSelector((state) => state.client.clients)
 
 	const dispatch = useDispatch()
 	const [newEvent, setNewEvent] = useState(event)
+	const [modal, setModal] = useState(null)
 	// const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
+
+	const setEventItem = (item) => {
+		setNewEvent({ ...newEvent, ...item })
+	}
+
+	const [lastAddedService, setLastAddedService] = useState(services[0].id)
+	const [lastAddedClient, setLastAddedClient] = useState(clients[0].id)
+
+	useEffect(() => {
+		if (lastAddedService !== services[0].id) {
+			setEventItem({ service: services[0].id })
+			setLastAddedService(services[0].id)
+		}
+		if (lastAddedClient !== clients[0].id) {
+			setEventItem({ client: clients[0].id })
+			setLastAddedClient(clients[0].id)
+		}
+	}, [services[0].id, clients[0].id])
+
+	// console.log("services[0]", services[0])
 
 	const { Popover } = renderers
 
@@ -55,14 +77,11 @@ const CreateEventScreen = ({ navigation, route }) => {
 	const servicePicked = serviceObj ? true : false
 	const clientPicked = clientObj ? true : false
 
-	const setEventItem = (item) => {
-		setNewEvent({ ...newEvent, ...item })
-	}
 	//TODO Сделать проверку на заполнение необходимых полей
 	const saveHandler = () => {
 		if (servicePicked && clientPicked) {
 			event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
-			navigation.navigate("Events")
+			navigation.goBack()
 		} else {
 			ToastAndroid.show(
 				`Необходимо выбрать Услугу и Клиента`,
@@ -81,7 +100,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 			</>
 		),
 	})
-	const [modal, setModal] = useState(null)
 
 	const InfoMenu = () => (
 		<Menu
@@ -209,9 +227,16 @@ const CreateEventScreen = ({ navigation, route }) => {
 			visible={true}
 			onOuterClick={() => setModal(null)}
 		>
-			<MainFlatListWithFab
+			<Button
+				onPress={() => {
+					setModal(null)
+					navigation.navigate("CreateClient")
+				}}
+				title={`Создать клиента`}
+			/>
+			<ScrollCardList
 				data={clients}
-				renderItem={({ item }) => (
+				renderItem={(item) => (
 					<ClientCard
 						navigation={navigation}
 						client={item}
@@ -222,7 +247,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 						listMode={true}
 					/>
 				)}
-				fabVisible={false}
+				containerStyle={{ height: 358 }}
 			/>
 		</ModalBottomMenu>
 	)
@@ -233,9 +258,16 @@ const CreateEventScreen = ({ navigation, route }) => {
 			visible={true}
 			onOuterClick={() => setModal(null)}
 		>
-			<MainFlatListWithFab
+			<Button
+				onPress={() => {
+					setModal(null)
+					navigation.navigate("CreateService")
+				}}
+				title={`Создать услугу`}
+			/>
+			<ScrollCardList
 				data={services}
-				renderItem={({ item }) => (
+				renderItem={(item) => (
 					<ServiceCard
 						navigation={navigation}
 						service={item}
@@ -250,7 +282,8 @@ const CreateEventScreen = ({ navigation, route }) => {
 						listMode={true}
 					/>
 				)}
-				fabVisible={false}
+				containerStyle={{ height: 358 }}
+				// fabVisible={false}
 			/>
 		</ModalBottomMenu>
 	)
