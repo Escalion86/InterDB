@@ -165,7 +165,10 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 				gender: gender,
 				birthday_day: Math.floor(Math.random() * 27 + 1) + "",
 				birthday_month: Math.floor(Math.random() * 12) + "",
-				birthday_year: Math.floor(Math.random() * 40 + 1960) + "",
+				birthday_year: rndArray([
+					"",
+					Math.floor(Math.random() * 40 + 1960) + "",
+				]),
 				phone: phone,
 				email: rndArray(["test@test.ru", ""]),
 				whatsapp: rndArray([phone, ""]),
