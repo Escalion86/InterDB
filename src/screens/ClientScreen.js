@@ -1,20 +1,14 @@
 import React, { useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { StyleSheet, Text, View, ScrollView, Image } from "react-native"
+import { useSelector } from "react-redux"
+import { StyleSheet, View, ScrollView, Image } from "react-native"
+
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
-// import { deleteClient } from "../store/actions/client"
-// import ModalBottomMenu, {
-// 	ModalBottomMenuYesNo,
-// } from "../components/ModalBottomMenu"
-// import MainFlatListWithFab from "../components/MainFlatListWithFab"
-// import EventCard from "../components/EventCard"
 import { TitleBlock } from "../components/createComponents"
 import { useTheme } from "@react-navigation/native"
 import { TextBlock, ContactIcon } from "../components/infoComponents"
 import { contactsIcons } from "../db/dependencies"
-import wordForm from "../helpers/wordForm"
-import { formatDate, calculateAge } from "../helpers/date"
+import { formatBirthday } from "../helpers/date"
 import ModalDeleteClient from "../components/ModalDeleteClient"
 import ModalDeleteEvent from "../components/ModalDeleteEvent"
 import EventCard from "../components/EventCard"
@@ -24,8 +18,6 @@ const ClientScreen = ({ navigation, route }) => {
 		route.params !== undefined && route.params.client !== undefined
 			? route.params.client
 			: navigation.navigate("Clients")
-
-	const age = calculateAge(client.birthday)
 
 	const { dark, colors } = useTheme()
 
@@ -82,14 +74,11 @@ const ClientScreen = ({ navigation, route }) => {
 		/>
 	))
 
-	// const wordEventsDependency =
-	// 	eventsDependency.length === 0
-	// 		? "Нет связанных с клиентом событий"
-	// 		: `С клиентом связано ${wordForm(eventsDependency.length, [
-	// 				"событие",
-	// 				"события",
-	// 				"событий",
-	// 		  ])}`
+	const birthday = formatBirthday(
+		client.birthday_year,
+		client.birthday_month,
+		client.birthday_day
+	)
 
 	navigation.setOptions({
 		title: `Клиент`,
@@ -107,9 +96,6 @@ const ClientScreen = ({ navigation, route }) => {
 						navigation.navigate("CreateClient", { client: client })
 					}}
 				/>
-				{/* <ModalDeleteConfirm />
-				<ModalEventsDependency />
-				<ModalDeclineDelete /> */}
 			</HeaderButtons>
 		),
 	})
@@ -145,18 +131,10 @@ const ClientScreen = ({ navigation, route }) => {
 						center
 						big
 					/>
-					{client.birthday ? (
-						<TextBlock
-							text={`${formatDate(client.birthday, true)} (${wordForm(age, [
-								"год",
-								"года",
-								"лет",
-							])})`}
-							center
-						/>
-					) : null}
+					{birthday ? <TextBlock text={birthday} center /> : null}
 				</View>
 			</View>
+
 			<TitleBlock title="Связь" />
 			<View
 				style={{

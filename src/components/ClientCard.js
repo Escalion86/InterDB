@@ -10,11 +10,8 @@ import {
 import { Ionicons } from "@expo/vector-icons"
 import { useTheme } from "@react-navigation/native"
 import ContactsMenu from "./ContactsMenu"
-import wordForm from "../helpers/wordForm"
-import { formatDate, calculateAge } from "../helpers/date"
+import { formatBirthday } from "../helpers/date"
 import SwipeableCard from "../components/SwipeableCard"
-// import { deleteClient } from "../store/actions/client"
-// import ModalDeleteClient from "./ModalDeleteClient"
 
 const ClientCard = ({
 	navigation,
@@ -26,8 +23,6 @@ const ClientCard = ({
 	const theme = useTheme()
 	const { colors, dark } = theme
 	const styles = stylesFactory(colors)
-
-	// const [modal, setModal] = useState(null)
 
 	if (!client) {
 		return (
@@ -49,8 +44,11 @@ const ClientCard = ({
 			onPress = () => {
 				navigation.navigate("Client", { client: client })
 			}
-
-		const age = calculateAge(client.birthday)
+		const birthday = formatBirthday(
+			client.birthday_year,
+			client.birthday_month,
+			client.birthday_day
+		)
 
 		const noImageUrl =
 			client.gender === 0
@@ -124,18 +122,13 @@ const ClientCard = ({
 									{`${client.surname} ${client.name} ${client.thirdname}`.trim()}
 								</Text>
 							</View>
-							{client.birthday ? (
+							{birthday ? (
 								<View style={styles.carddesc}>
 									<Text style={{ ...styles.carddesctext, textAlign: "center" }}>
-										{`${formatDate(client.birthday, true)} (${wordForm(age, [
-											"год",
-											"года",
-											"лет",
-										])})`}
+										{birthday}
 									</Text>
 								</View>
 							) : null}
-							{/* {service.description ? <CardDesc desc={service.description} /> : null} */}
 						</View>
 						{listMode ? null : (
 							<View style={styles.right}>

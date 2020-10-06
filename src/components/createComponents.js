@@ -18,6 +18,7 @@ import * as ImagePicker from "expo-image-picker"
 import { Switch } from "react-native-switch"
 import ModalBottomMenu from "./ModalBottomMenu"
 import Button from "./Button"
+import { Picker } from "@react-native-community/picker"
 // import TextInputMask from "./TextInputMask"
 // import TextInputMask from "react-native-text-input-mask"
 
@@ -362,6 +363,123 @@ export const EventRowDropDownPicker = ({
 					activeItemStyle={{ backgroundColor: colors.active }}
 					arrowColor={colors.text}
 					onChangeItem={onChangeItem}
+				/>
+			</View>
+		</View>
+	)
+}
+
+export const BirthdayPicker = ({
+	title = "День рождения",
+	day = null,
+	month = null,
+	year = null,
+	onDayChange = () => {},
+	onMonthChange = () => {},
+	onYearChange = () => {},
+}) => {
+	if (!day) day = 1
+	if (!month) month = 0
+	if (!year) year = 2020
+	day += ""
+	year += ""
+	const { colors } = useTheme()
+	const monthsNames = [
+		"Январь",
+		"Февраль",
+		"Март",
+		"Апрель",
+		"Май",
+		"Июнь",
+		"Июль",
+		"Август",
+		"Сентябрь",
+		"Октябрь",
+		"Ноябрь",
+		"Декабрь",
+	]
+	let daysNames = []
+	for (let i = 1; i <= 31; i++) {
+		daysNames.push(i + "")
+	}
+
+	let yearsNames = ["----"]
+	for (let i = 2020; i >= 1900; i--) {
+		yearsNames.push(i + "")
+	}
+
+	const daysPickerItems = daysNames.map((day, index) => (
+		<Picker.Item key={index} label={day} value={day} />
+	))
+
+	const monthsPickerItems = monthsNames.map((month, index) => (
+		<Picker.Item key={index} label={month} value={index + ""} />
+	))
+
+	const yearsPickerItems = yearsNames.map((year, index) => {
+		if (index === 0) {
+			return <Picker.Item key={index} label={year} value={""} />
+		} else {
+			return <Picker.Item key={index} label={year} value={year} />
+		}
+	})
+
+	const ObjPicker = ({
+		items,
+		defaultValue = null,
+		style = {},
+		onValueChange = () => {},
+	}) => (
+		<View
+			style={{
+				...styles.datetime,
+				flex: 1,
+				backgroundColor: colors.card,
+				borderColor: colors.border,
+				...style,
+				// backgroundColor: "#888888",
+			}}
+		>
+			<Picker
+				selectedValue={defaultValue}
+				style={{
+					flex: 1,
+					color: colors.text,
+					backgroundColor: colors.card,
+				}}
+				onValueChange={
+					onValueChange
+					// (itemValue, itemIndex) =>
+					// console.log("itemValue", itemValue)
+				}
+				mode="dropdown"
+			>
+				{items}
+			</Picker>
+		</View>
+	)
+
+	return (
+		<View style={styles.row}>
+			<Text style={{ ...styles.text, color: colors.text }}>{title}</Text>
+			<View style={styles.datetimecontainer}>
+				<ObjPicker
+					items={daysPickerItems}
+					style={{ flex: 2 }}
+					defaultValue={day}
+					onValueChange={onDayChange}
+				/>
+				<ObjPicker
+					items={monthsPickerItems}
+					style={{ flex: 5 }}
+					defaultValue={month}
+					onValueChange={onMonthChange}
+				/>
+				<ObjPicker
+					items={yearsPickerItems}
+					style={{ flex: 3 }}
+					defaultValue={year}
+					onValueChange={onYearChange}
 				/>
 			</View>
 		</View>

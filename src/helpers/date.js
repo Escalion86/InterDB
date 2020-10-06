@@ -1,26 +1,74 @@
+import wordForm from "../helpers/wordForm"
+
+const monthsNames = [
+	"января",
+	"февраля",
+	"марта",
+	"апреля",
+	"мая",
+	"июня",
+	"июля",
+	"августа",
+	"сентября",
+	"октября",
+	"ноября",
+	"декабря",
+]
+
 export const formatDate = (
 	date = new Date(),
 	fullYear = false,
-	showWeek = false
+	showWeek = false,
+	monthLong = false
 ) => {
 	date = new Date(date)
 	var dd = date.getDate()
-	if (dd < 10) dd = "0" + dd
+	if (!monthLong && dd < 10) dd = "0" + dd
 
-	var mm = date.getMonth() + 1
-	if (mm < 10) mm = "0" + mm
+	var mm = ""
+	if (monthLong) {
+		mm = ` ${monthsNames[date.getMonth()]} `
+	} else {
+		mm = date.getMonth() + 1
+		if (mm < 10) mm = "0" + mm
+	}
 
 	var yy = date.getFullYear() % 100
 	if (yy < 10) yy = "0" + yy
 
 	return (
 		dd +
-		"." +
-		mm +
-		"." +
+		(monthLong ? mm : `.${mm}.`) +
 		(fullYear ? date.getFullYear() : yy) +
 		(showWeek ? " " + getWeekDay(date) : "")
 	)
+}
+
+export const formatBirthday = (
+	year,
+	month,
+	day,
+	monthLong = true,
+	showAge = true
+) => {
+	let birthday = ""
+	if (day && month) {
+		if (year) {
+			//Известна полная дата рождения
+			const date = new Date(year, month, day)
+			birthday = `${formatDate(date, true, false, monthLong)}${
+				showAge
+					? ` (${wordForm(calculateAge(date), ["год", "года", "лет"])})`
+					: ""
+			}`
+		} else {
+			//Известны только день и месяц
+			birthday = `${!monthLong && day < 10 ? `0${day}` : day}${
+				monthLong ? ` ${monthsNames[month]}` : month < 10 ? `0${month}` : month
+			}`
+		}
+	}
+	return birthday
 }
 
 export const formatTime = (date) => {
