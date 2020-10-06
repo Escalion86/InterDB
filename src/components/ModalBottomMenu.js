@@ -58,7 +58,7 @@ const ModalBottomMenu = ({
 						}}
 					>
 						<TouchableOpacity
-							style={{ position: "absolute", right: 20, top: 8 }}
+							style={{ position: "absolute", right: 18, top: 5 }}
 							onPress={() => {
 								onOuterClick()
 							}}
@@ -91,7 +91,7 @@ const ModalBottomMenu = ({
 								</Text>
 							) : null}
 						</View>
-						{children}
+						<View style={{ maxHeight: 417 }}>{children}</View>
 					</View>
 					{/* </TouchableWithoutFeedback> */}
 				</View>
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
 	},
 	panel: {
 		padding: 5,
-		paddingTop: 15,
+		paddingTop: 16,
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20,
 		borderLeftWidth: 3,

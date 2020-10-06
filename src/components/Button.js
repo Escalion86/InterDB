@@ -33,10 +33,11 @@ const Button = ({
 }
 const styles = StyleSheet.create({
 	button: {
-		padding: 13,
+		padding: 12,
 		borderRadius: 10,
 		alignItems: "center",
 		marginVertical: 7,
+		width: "100%",
 	},
 	buttonTitle: {
 		fontSize: 17,
