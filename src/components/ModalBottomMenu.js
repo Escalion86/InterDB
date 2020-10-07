@@ -24,7 +24,6 @@ const ModalBottomMenu = ({
 	return (
 		<GestureRecognizer
 			onSwipeDown={() => {
-				console.log("DOWN")
 				onOuterClick()
 			}}
 			config={{
