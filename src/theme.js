@@ -2,15 +2,27 @@ import { Dimensions, PixelRatio } from "react-native"
 
 const screenWidth = Dimensions.get("window").width * PixelRatio.get()
 
-let fontCorrection = 0
-if (screenWidth < 800) fontCorrection = -2
+let fontSizeCorrection = 0
+let iconSizeCorrection = 0
+if (screenWidth < 800) {
+	fontSizeCorrection = -2
+	iconSizeCorrection = -2
+}
 
 const fontSize = {
-	tiny: 12 + fontCorrection,
-	small: 14 + fontCorrection,
-	medium: 16 + fontCorrection,
-	big: 18 + fontCorrection,
-	giant: 20 + fontCorrection,
+	tiny: 12 + fontSizeCorrection,
+	small: 14 + fontSizeCorrection,
+	medium: 16 + fontSizeCorrection,
+	big: 18 + fontSizeCorrection,
+	giant: 20 + fontSizeCorrection,
+}
+
+const iconSize = {
+	tiny: 22 + iconSizeCorrection,
+	small: 24 + iconSizeCorrection,
+	medium: 28 + iconSizeCorrection,
+	big: 32 + iconSizeCorrection,
+	giant: 36 + iconSizeCorrection,
 }
 
 const fonts = {
@@ -62,6 +74,7 @@ export const darkTheme = {
 	dark: true,
 	fonts: fonts,
 	fontSize: fontSize,
+	iconSize: iconSize,
 	roundness: 2,
 }
 
@@ -95,5 +108,6 @@ export const lightTheme = {
 	dark: false,
 	fonts: fonts,
 	fontSize: fontSize,
+	iconSize: iconSize,
 	roundness: 2,
 }
