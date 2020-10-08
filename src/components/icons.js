@@ -1,16 +1,32 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Ionicons } from "@expo/vector-icons"
 import { statusIconDependencies } from "../db/dependencies"
 import { View, Text, StyleSheet } from "react-native"
+import { useTheme } from "@react-navigation/native"
+import { ThemeContext } from "../ThemeContext"
 
 export const MainIcon = ({
 	dependencies = statusIconDependencies,
 	status = null,
-	size = 36,
+	size = "medium",
 	showtext = false,
 	textcolor = null,
 	style = {},
+	theme = null,
 }) => {
+	if (!theme) theme = useTheme()
+
+	const { iconSize } = theme
+
+	const IconSizeNum =
+		(iconSize ? iconSize[size] : null) ||
+		(iconSize ? iconSize.medium : null) ||
+		28
+	const fontSizeNum = 9 + Math.floor(IconSizeNum / 3)
+
+	const iconDemention = IconSizeNum + Math.floor(IconSizeNum / 2)
+	const IconPadding = Math.floor(IconSizeNum / 16)
+
 	if (!status) {
 		return null
 	} else {
@@ -19,9 +35,9 @@ export const MainIcon = ({
 				<View
 					style={{
 						...styles.button,
-						width: size + Math.floor(size / 2),
-						height: size + Math.floor(size / 2),
-						padding: Math.floor(size / 16),
+						width: iconDemention,
+						height: iconDemention,
+						padding: IconPadding,
 						backgroundColor: dependencies[status].color,
 					}}
 				>
@@ -29,7 +45,7 @@ export const MainIcon = ({
 						name={
 							dependencies[status].name ? dependencies[status].name : "ios-bug"
 						}
-						size={size}
+						size={IconSizeNum}
 						color={dependencies[status].color ? "white" : "black"}
 					/>
 				</View>
@@ -37,7 +53,7 @@ export const MainIcon = ({
 					<Text
 						style={{
 							...styles.text,
-							fontSize: 9 + Math.floor(size / 3),
+							fontSize: fontSizeNum,
 							color: textcolor,
 						}}
 					>

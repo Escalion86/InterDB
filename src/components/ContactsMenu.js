@@ -14,11 +14,26 @@ const ContactsMenu = ({
 	client,
 	style = {},
 	triggerIconName = "phone",
-	triggerIconSize = 22,
+	size = "medium",
 	triggerBackgroundColor = null,
 	triggerIconColor = null,
+	theme = null,
 }) => {
-	const { colors } = useTheme()
+	if (!theme) theme = useTheme()
+
+	const { colors, fontSize, iconSize } = theme
+
+	const IconSizeNum =
+		((iconSize ? iconSize[size] : null) ||
+			(iconSize ? iconSize.medium : null) ||
+			28) - 6
+	const fontSizeNum =
+		(fontSize ? fontSize[size] : null) ||
+		(fontSize ? fontSize.medium : null) ||
+		16
+
+	const iconDemention = IconSizeNum + Math.floor(IconSizeNum / 2)
+	const IconPadding = Math.floor(IconSizeNum / 16)
 
 	if (!triggerIconColor) triggerIconColor = colors.icon
 
@@ -39,22 +54,22 @@ const ContactsMenu = ({
 							<View
 								style={{
 									...styles.button,
-									width: triggerIconSize + Math.floor(triggerIconSize / 2),
-									height: triggerIconSize + Math.floor(triggerIconSize / 2),
-									padding: Math.floor(triggerIconSize / 16),
+									width: iconDemention,
+									height: iconDemention,
+									padding: IconPadding,
 									backgroundColor: menuObjects[i].color,
 								}}
 							>
 								<FontAwesome5
 									name={menuObjects[i].icon}
-									size={triggerIconSize}
+									size={IconSizeNum}
 									color={"white"}
 								/>
 							</View>
 							<Text
 								style={{
 									...styles.text,
-									fontSize: 10 + Math.floor(triggerIconSize / 3),
+									fontSize: fontSizeNum,
 									color: colors.text,
 								}}
 							>
@@ -79,15 +94,15 @@ const ContactsMenu = ({
 					<View
 						style={{
 							...styles.button,
-							width: triggerIconSize + Math.floor(triggerIconSize / 2),
-							height: triggerIconSize + Math.floor(triggerIconSize / 2),
-							padding: Math.floor(triggerIconSize / 16),
+							width: iconDemention,
+							height: iconDemention,
+							padding: IconPadding,
 							backgroundColor: triggerBackgroundColor,
 						}}
 					>
 						<FontAwesome5
 							name={triggerIconName}
-							size={triggerIconSize}
+							size={IconSizeNum}
 							color={triggerIconColor}
 						/>
 					</View>

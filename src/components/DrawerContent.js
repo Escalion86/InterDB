@@ -17,7 +17,7 @@ import { AppContext } from "../AppContext"
 
 const DrawerContent = (props) => {
 	const theme = useTheme()
-	const { colors } = theme
+	const { colors, iconSize } = theme
 
 	const { dev } = useContext(AppContext)
 
@@ -66,8 +66,8 @@ const DrawerContent = (props) => {
 							icon={({ color, size }) => (
 								<Ionicons
 									name="md-calendar"
-									size={22}
-									color={colors.text}
+									size={iconSize.small}
+									color={colors.icon}
 									style={{ marginLeft: 5 }}
 								/>
 							)}
@@ -80,8 +80,8 @@ const DrawerContent = (props) => {
 							icon={({ color, size }) => (
 								<Ionicons
 									name="md-people"
-									size={22}
-									color={colors.text}
+									size={iconSize.small}
+									color={colors.icon}
 									style={{ marginLeft: 5 }}
 								/>
 							)}
@@ -94,8 +94,8 @@ const DrawerContent = (props) => {
 							icon={({ color, size }) => (
 								<Ionicons
 									name="md-briefcase"
-									size={22}
-									color={colors.text}
+									size={iconSize.small}
+									color={colors.icon}
 									style={{ marginLeft: 5 }}
 								/>
 							)}
@@ -126,8 +126,8 @@ const DrawerContent = (props) => {
 					icon={({ color, size }) => (
 						<Ionicons
 							name="md-settings"
-							size={22}
-							color={colors.text}
+							size={iconSize.small}
+							color={colors.icon}
 							style={{ marginLeft: 5 }}
 						/>
 					)}
@@ -140,8 +140,8 @@ const DrawerContent = (props) => {
 					icon={({ color, size }) => (
 						<Ionicons
 							name="md-information-circle-outline"
-							size={22}
-							color={colors.text}
+							size={iconSize.small}
+							color={colors.icon}
 							style={{ marginLeft: 5 }}
 						/>
 					)}
@@ -155,8 +155,8 @@ const DrawerContent = (props) => {
 						icon={({ color, size }) => (
 							<Ionicons
 								name="md-bug"
-								size={22}
-								color={colors.text}
+								size={iconSize.small}
+								color={colors.icon}
 								style={{ marginLeft: 5 }}
 							/>
 						)}
@@ -171,7 +171,7 @@ const DrawerContent = (props) => {
 						<Ionicons
 							name="ios-log-out"
 							size={22}
-							color="white"
+							color={colors.icon}
 							style={{ marginLeft: 5 }}
 						/>
 					)}

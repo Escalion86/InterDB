@@ -38,7 +38,8 @@ const IconMenu = ({ event, eventPartName = null, style = {} }) => {
 					<MainIcon
 						dependencies={dependencies}
 						status={key}
-						size={24}
+						size="small"
+						theme={theme}
 						showtext={true}
 						textcolor={theme.colors.text}
 					/>
@@ -60,7 +61,8 @@ const IconMenu = ({ event, eventPartName = null, style = {} }) => {
 					<MainIcon
 						dependencies={dependencies}
 						status={activeValue}
-						size={24}
+						size="small"
+						theme={theme}
 					/>
 				}
 			/>

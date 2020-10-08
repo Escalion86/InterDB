@@ -18,7 +18,7 @@ const fontSize = {
 }
 
 const iconSize = {
-	tiny: 22 + iconSizeCorrection,
+	tiny: 20 + iconSizeCorrection,
 	small: 24 + iconSizeCorrection,
 	medium: 28 + iconSizeCorrection,
 	big: 32 + iconSizeCorrection,

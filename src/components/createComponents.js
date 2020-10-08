@@ -341,7 +341,8 @@ export const EventRowDropDownPicker = ({
 	onChangeItem = null,
 	style = {},
 }) => {
-	const { colors, fontSize } = useTheme()
+	const theme = useTheme()
+	const { colors, fontSize } = theme
 	let arrayItems = []
 	for (let item in dependencies) {
 		arrayItems.push({
@@ -351,8 +352,9 @@ export const EventRowDropDownPicker = ({
 				<MainIcon
 					dependencies={dependencies}
 					status={item}
-					size={20}
+					size="tiny"
 					showtext={true}
+					theme={theme}
 					textcolor={colors.text}
 					style={{ paddingHorizontal: 10 }}
 				/>
