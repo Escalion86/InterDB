@@ -181,7 +181,7 @@ const EventCard = ({
 									<Ionicons
 										name="md-navigate"
 										size={28}
-										color={colors.text}
+										color={colors.icon}
 										style={{ marginHorizontal: 5 }}
 										onPress={
 											() =>

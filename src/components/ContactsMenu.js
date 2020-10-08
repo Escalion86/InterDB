@@ -16,9 +16,11 @@ const ContactsMenu = ({
 	triggerIconName = "phone",
 	triggerIconSize = 22,
 	triggerBackgroundColor = null,
-	triggerIconColor = "white",
+	triggerIconColor = null,
 }) => {
 	const { colors } = useTheme()
+
+	if (!triggerIconColor) triggerIconColor = colors.icon
 
 	const menuObjects = contactsIcons(client)
 
