@@ -205,15 +205,8 @@ const ServiceScreen = ({ navigation, route }) => {
 export default ServiceScreen
 
 const styles = StyleSheet.create({
-	panelButton: {
-		padding: 13,
-		borderRadius: 10,
-		alignItems: "center",
-		marginVertical: 7,
-	},
-	panelButtonTitle: {
-		fontSize: 17,
-		fontWeight: "bold",
-		color: "white",
+	container: {
+		flex: 1,
+		paddingHorizontal: 5,
 	},
 })

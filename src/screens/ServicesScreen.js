@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { AppContext } from "../AppContext"
 import { StyleSheet, Text, View, FlatList } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
@@ -13,6 +14,8 @@ import ModalDeleteService from "../components/ModalDeleteService"
 
 const ServicesScreen = ({ navigation, route }) => {
 	const dispatch = useDispatch()
+
+	const { dev } = useContext(AppContext)
 
 	const showArchvedOnly = route.name === "Archive"
 
@@ -54,25 +57,29 @@ const ServicesScreen = ({ navigation, route }) => {
 			title: `Услуги (${services.length})`,
 			headerRight: () => (
 				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-					<Item
-						title="Delete all services"
-						iconName="ios-trash"
-						onPress={() => {
-							dispatch(deleteAllServices())
-						}}
-					/>
+					{dev ? (
+						<Item
+							title="Delete all services"
+							iconName="ios-trash"
+							onPress={() => {
+								dispatch(deleteAllServices())
+							}}
+						/>
+					) : null}
+					{dev ? (
+						<Item
+							title="Add random service"
+							iconName="ios-add-circle-outline"
+							onPress={() => {
+								const tmp = dbGenerator("service")
+								dispatch(addService(tmp))
+							}}
+						/>
+					) : null}
 					<Item
 						title="Archive"
 						iconName="ios-archive"
 						onPress={() => navigation.navigate("Archive")}
-					/>
-					<Item
-						title="Add random service"
-						iconName="ios-add-circle-outline"
-						onPress={() => {
-							const tmp = dbGenerator("service")
-							dispatch(addService(tmp))
-						}}
 					/>
 					{/* <Item
 						title="Add Service"
@@ -103,7 +110,7 @@ const ServicesScreen = ({ navigation, route }) => {
 	}
 
 	return (
-		<View>
+		<View style={styles.container}>
 			<MainFlatListWithFab
 				data={services}
 				fabVisible={!showArchvedOnly}
@@ -128,6 +135,10 @@ const ServicesScreen = ({ navigation, route }) => {
 export default ServicesScreen
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		paddingHorizontal: 5,
+	},
 	center: {
 		flex: 1,
 		justifyContent: "center",

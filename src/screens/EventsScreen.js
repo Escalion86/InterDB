@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import {
 	StyleSheet,
@@ -14,6 +14,7 @@ import {
 	MenuTrigger,
 	renderers,
 } from "react-native-popup-menu"
+import { AppContext } from "../AppContext"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
 import { addEvent, deleteAllEvents } from "../store/actions/event"
@@ -43,6 +44,8 @@ const EventsScreen = ({ navigation, route }) => {
 	const services = useSelector((state) => state.service.services)
 	const clients = useSelector((state) => state.client.clients)
 	const loading = useSelector((state) => state.event.loading)
+
+	const { dev } = useContext(AppContext)
 
 	let sortMenu = null
 	const srtMenu = (r) => {
@@ -165,29 +168,32 @@ const EventsScreen = ({ navigation, route }) => {
 						</View>
 					</MenuOptions>
 				</Menu>
-
-				<Item
-					title="Delete all events"
-					iconName="ios-trash"
-					onPress={() => {
-						dispatch(deleteAllEvents())
-					}}
-				/>
-				<Item
-					title="Add random event"
-					iconName="ios-add-circle-outline"
-					onPress={() => {
-						if (services.length === 0 || clients.length === 0) {
-							ToastAndroid.show(
-								"Чтобы сгенерировать событие, нужно создать хотябы одного клиента и услугу",
-								ToastAndroid.LONG
-							)
-						} else {
-							const tmp = dbGenerator("event", services, clients)
-							dispatch(addEvent(tmp))
-						}
-					}}
-				/>
+				{dev ? (
+					<Item
+						title="Delete all events"
+						iconName="ios-trash"
+						onPress={() => {
+							dispatch(deleteAllEvents())
+						}}
+					/>
+				) : null}
+				{dev ? (
+					<Item
+						title="Add random event"
+						iconName="ios-add-circle-outline"
+						onPress={() => {
+							if (services.length === 0 || clients.length === 0) {
+								ToastAndroid.show(
+									"Чтобы сгенерировать событие, нужно создать хотябы одного клиента и услугу",
+									ToastAndroid.LONG
+								)
+							} else {
+								const tmp = dbGenerator("event", services, clients)
+								dispatch(addEvent(tmp))
+							}
+						}}
+					/>
+				) : null}
 				{/* <Item
 					title="Add event"
 					iconName="ios-add-circle"
@@ -251,7 +257,7 @@ const EventsScreen = ({ navigation, route }) => {
 	// </Animatable.Text>
 
 	return (
-		<View>
+		<View style={styles.container}>
 			<MainFlatListWithFab
 				data={events}
 				renderItem={({ item }) => (
@@ -273,6 +279,10 @@ const EventsScreen = ({ navigation, route }) => {
 export default EventsScreen
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		paddingHorizontal: 5,
+	},
 	center: {
 		flex: 1,
 		justifyContent: "center",

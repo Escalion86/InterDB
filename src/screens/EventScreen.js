@@ -70,7 +70,7 @@ const EventScreen = ({ navigation, route }) => {
 	})
 
 	return (
-		<View>
+		<View style={styles.container}>
 			<Text></Text>
 			{modal}
 		</View>
@@ -79,4 +79,9 @@ const EventScreen = ({ navigation, route }) => {
 
 export default EventScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		paddingHorizontal: 5,
+	},
+})

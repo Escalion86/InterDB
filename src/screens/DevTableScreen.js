@@ -188,7 +188,7 @@ export default DevTableScreen
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 5,
+		paddingHorizontal: 5,
 	},
 	title: {
 		// alignItems: "center",

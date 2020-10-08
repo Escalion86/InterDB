@@ -2,7 +2,7 @@ import React from "react"
 import { View, ScrollView, StyleSheet } from "react-native"
 
 const ScrollCardList = ({ data, renderItem, containerStyle = {} }) => {
-	const items = data.map((item) => renderItem(item))
+	const items = data.map((item, index) => renderItem(item, index))
 
 	return (
 		<View style={containerStyle}>

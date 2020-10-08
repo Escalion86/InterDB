@@ -54,21 +54,23 @@ const CreateEventScreen = ({ navigation, route }) => {
 		setNewEvent({ ...newEvent, ...item })
 	}
 
-	const [lastAddedService, setLastAddedService] = useState(services[0].id)
-	const [lastAddedClient, setLastAddedClient] = useState(clients[0].id)
+	const [lastAddedService, setLastAddedService] = useState(
+		services.length > 0 ? services[0].id : null
+	)
+	const [lastAddedClient, setLastAddedClient] = useState(
+		clients.length > 0 ? clients[0].id : null
+	)
 
 	useEffect(() => {
-		if (lastAddedService !== services[0].id) {
+		if (services.length > 0 && lastAddedService !== services[0].id) {
 			setEventItem({ service: services[0].id })
 			setLastAddedService(services[0].id)
 		}
-		if (lastAddedClient !== clients[0].id) {
+		if (clients.length > 0 && lastAddedClient !== clients[0].id) {
 			setEventItem({ client: clients[0].id })
 			setLastAddedClient(clients[0].id)
 		}
-	}, [services[0].id, clients[0].id])
-
-	// console.log("services[0]", services[0])
+	}, [services, clients])
 
 	const { Popover } = renderers
 
@@ -236,8 +238,9 @@ const CreateEventScreen = ({ navigation, route }) => {
 			/>
 			<ScrollCardList
 				data={clients}
-				renderItem={(item) => (
+				renderItem={(item, index) => (
 					<ClientCard
+						key={index}
 						navigation={navigation}
 						client={item}
 						onPress={() => {
@@ -267,8 +270,9 @@ const CreateEventScreen = ({ navigation, route }) => {
 			/>
 			<ScrollCardList
 				data={services}
-				renderItem={(item) => (
+				renderItem={(item, index) => (
 					<ServiceCard
+						key={index}
 						navigation={navigation}
 						service={item}
 						onPress={() => {
@@ -356,12 +360,21 @@ const CreateEventScreen = ({ navigation, route }) => {
 			/> */}
 			{!serviceObj ? (
 				<View style={{ zIndex: 0 }}>
-					<Button
-						onPress={() => {
-							setModal(modalServices)
-						}}
-						title={`Выберите услугу`}
-					/>
+					{services.length > 0 ? (
+						<Button
+							onPress={() => {
+								setModal(modalServices)
+							}}
+							title={`Выберите услугу`}
+						/>
+					) : (
+						<Button
+							onPress={() => {
+								navigation.navigate("CreateService")
+							}}
+							title={`Создать услугу`}
+						/>
+					)}
 				</View>
 			) : (
 				<ServiceCard
@@ -376,12 +389,21 @@ const CreateEventScreen = ({ navigation, route }) => {
 			<TitleBlock title="Клиент" />
 			{!clientObj ? (
 				<View style={{ zIndex: 0 }}>
-					<Button
-						onPress={() => {
-							setModal(modalClients)
-						}}
-						title={`Выберите клиента`}
-					/>
+					{services.length > 0 ? (
+						<Button
+							onPress={() => {
+								setModal(modalClients)
+							}}
+							title={`Выберите клиента`}
+						/>
+					) : (
+						<Button
+							onPress={() => {
+								navigation.navigate("CreateClient")
+							}}
+							title={`Создать клиента`}
+						/>
+					)}
 				</View>
 			) : (
 				<ClientCard
@@ -561,6 +583,7 @@ export default CreateEventScreen
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		paddingHorizontal: 5,
 	},
 })

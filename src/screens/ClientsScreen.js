@@ -1,9 +1,10 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { StyleSheet, Text, View } from "react-native"
 import { useTheme } from "@react-navigation/native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
+import { AppContext } from "../AppContext"
 import ClientCard from "../components/ClientCard"
 import Fab from "../components/Fab"
 import MainFlatListWithFab from "../components/MainFlatListWithFab"
@@ -17,6 +18,8 @@ const ClientsScreen = ({ navigation, route }) => {
 
 	const clients = useSelector((state) => state.client.clients)
 	const loading = useSelector((state) => state.client.loading)
+
+	const { dev } = useContext(AppContext)
 
 	const [modal, setModal] = useState(null)
 
@@ -34,21 +37,25 @@ const ClientsScreen = ({ navigation, route }) => {
 		title: `Клиенты (${clients.length})`,
 		headerRight: () => (
 			<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-				<Item
-					title="Delete all clients"
-					iconName="ios-trash"
-					onPress={() => {
-						dispatch(deleteAllClients())
-					}}
-				/>
-				<Item
-					title="Add random client"
-					iconName="ios-add-circle-outline"
-					onPress={() => {
-						const tmp = dbGenerator("client")
-						dispatch(addClient(tmp))
-					}}
-				/>
+				{dev ? (
+					<Item
+						title="Delete all clients"
+						iconName="ios-trash"
+						onPress={() => {
+							dispatch(deleteAllClients())
+						}}
+					/>
+				) : null}
+				{dev ? (
+					<Item
+						title="Add random client"
+						iconName="ios-add-circle-outline"
+						onPress={() => {
+							const tmp = dbGenerator("client")
+							dispatch(addClient(tmp))
+						}}
+					/>
+				) : null}
 			</HeaderButtons>
 		),
 	})
@@ -77,7 +84,7 @@ const ClientsScreen = ({ navigation, route }) => {
 	}
 
 	return (
-		<View>
+		<View style={styles.container}>
 			<MainFlatListWithFab
 				data={clients}
 				renderItem={({ item }) => (
@@ -99,6 +106,10 @@ const ClientsScreen = ({ navigation, route }) => {
 export default ClientsScreen
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		paddingHorizontal: 5,
+	},
 	center: {
 		flex: 1,
 		justifyContent: "center",
