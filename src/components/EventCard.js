@@ -6,6 +6,7 @@ import {
 	View,
 	ActivityIndicator,
 	TouchableHighlight,
+	ToastAndroid,
 } from "react-native"
 import {
 	Menu,
@@ -18,7 +19,7 @@ import { formatDate, formatTime, getWeekDay } from "../helpers/date"
 import { useTheme } from "@react-navigation/native"
 
 import IconMenu from "./IconMenu"
-import LinkTo from "../helpers/LinkTo"
+import linkTo from "../helpers/linkTo"
 import ContactsMenu from "./ContactsMenu"
 import SwipeableCard from "../components/SwipeableCard"
 // import { deleteEvent } from "../store/actions/event"
@@ -193,8 +194,13 @@ const EventCard = ({
 										style={{ marginHorizontal: 5 }}
 										onPress={
 											() =>
-												LinkTo(
-													`yandexnavi://map_search?text=${event.location_town},%20${event.location_street}%20${event.location_house}`
+												linkTo(
+													`yandexnavi://map_search?text=${event.location_town},%20${event.location_street}%20${event.location_house}`,
+													() =>
+														ToastAndroid.show(
+															`Невозможно открыть Яндекс Навигатор`,
+															ToastAndroid.LONG
+														)
 												)
 											// fetch(
 											//   "https://geocode-maps.yandex.ru/1.x/?format=json&apikey=224f268f-765e-49ec-a76b-9192418e4648&geocode=Красноярск+Линейная+109"
