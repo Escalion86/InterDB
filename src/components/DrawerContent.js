@@ -40,23 +40,23 @@ const DrawerContent = (props) => {
 										// borderColor: "red",
 									}}
 								>
-									<Title style={styles.title}>Алексей Белинский</Title>
-									<Caption style={styles.caption}>@escalion</Caption>
+									<Title style={{...styles.title, fontSize: fontSize.medium}}>Алексей Белинский</Title>
+									<Caption style={{...styles.caption, fontSize: fontSize.small}}>@escalion</Caption>
 								</View>
 							</View>
 
 							<View style={styles.row}>
 							<View style={styles.section}>
-								<Paragraph style={[styles.paragraph, styles.caption]}>
+								<Paragraph style={()...styles.paragraph, ...styles.caption, fontSize: fontSize.small}}>
 									80
 								</Paragraph>
-								<Caption style={styles.caption}>Following</Caption>
+								<Caption style={{...styles.caption, fontSize: fontSize.small}}>Following</Caption>
 							</View>
 							<View style={styles.section}>
 								<Paragraph style={[styles.paragraph, styles.caption]}>
 									100
 								</Paragraph>
-								<Caption style={styles.caption}>Followers</Caption>
+								<Caption style={{...styles.caption, fontSize: fontSize.small}}>Followers</Caption>
 							</View>
 						</View>
 						</View> */}
@@ -192,17 +192,15 @@ const styles = StyleSheet.create({
 		paddingLeft: 20,
 		height: 75,
 	},
-	title: {
-		// marginTop: 3,
-		fontSize: 16,
-		fontWeight: "bold",
-		marginTop: 0,
-	},
-	caption: {
-		fontSize: 14,
-		lineHeight: 14,
-		marginTop: 0,
-	},
+	// title: {
+	// 	// marginTop: 3,
+	// 	fontWeight: "bold",
+	// 	marginTop: 0,
+	// },
+	// caption: {
+	// 	lineHeight: 14,
+	// 	marginTop: 0,
+	// },
 	row: {
 		marginTop: 20,
 		flexDirection: "row",

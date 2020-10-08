@@ -23,7 +23,7 @@ const ServicesScreen = ({ navigation, route }) => {
 	//   dispatch(loadServices())
 	// }, [dispatch])
 
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 
 	let services = useSelector((state) => state.service.services)
 	const loading = useSelector((state) => state.service.loading)
@@ -94,7 +94,7 @@ const ServicesScreen = ({ navigation, route }) => {
 	if (services.length == 0) {
 		return (
 			<View style={styles.center}>
-				<Text style={{ fontSize: 20, color: colors.text }}>
+				<Text style={{ fontSize: fontSize.giant, color: colors.text }}>
 					{showArchvedOnly ? "Архив пуст" : "Услуг нет"}
 				</Text>
 

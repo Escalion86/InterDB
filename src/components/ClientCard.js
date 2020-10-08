@@ -22,7 +22,7 @@ const ClientCard = ({
 }) => {
 	const theme = useTheme()
 	const { colors, dark } = theme
-	const styles = stylesFactory(colors)
+	const styles = stylesFactory(theme)
 
 	if (!client) {
 		return (
@@ -145,7 +145,7 @@ const ClientCard = ({
 
 export default ClientCard
 
-const stylesFactory = (colors) =>
+const stylesFactory = ({ colors, fontSize }) =>
 	StyleSheet.create({
 		card: {
 			width: "100%",
@@ -191,14 +191,14 @@ const stylesFactory = (colors) =>
 		},
 		cardtitle: {
 			fontFamily: "open-bold",
-			fontSize: 16,
+			fontSize: fontSize.medium,
 			textAlign: "center",
 			color: colors.text,
 		},
 		carddesctext: {
 			flex: 1,
 			fontFamily: "open-regular",
-			fontSize: 14,
+			fontSize: fontSize.small,
 			color: colors.text,
 		},
 		carddesc: {
@@ -218,7 +218,7 @@ const stylesFactory = (colors) =>
 			alignItems: "center",
 		},
 		datetime: {
-			fontSize: 14,
+			fontSize: fontSize.small,
 			textAlign: "center",
 			color: colors.text,
 		},
@@ -235,7 +235,7 @@ const stylesFactory = (colors) =>
 		},
 		price: {
 			// flex: 1,
-			fontSize: 14,
+			fontSize: fontSize.small,
 			width: "100%",
 			height: 46,
 			textAlignVertical: "center",

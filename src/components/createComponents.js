@@ -23,8 +23,14 @@ import { Picker } from "@react-native-community/picker"
 // import TextInputMask from "react-native-text-input-mask"
 
 export const TitleBlock = ({ title = "" }) => {
-	const { colors } = useTheme()
-	return <Text style={{ ...styles.title, color: colors.text }}>{title}</Text>
+	const { colors, fontSize } = useTheme()
+	return (
+		<Text
+			style={{ ...styles.title, fontSize: fontSize.giant, color: colors.text }}
+		>
+			{title}
+		</Text>
+	)
 }
 
 export const GenderSwitch = ({
@@ -32,11 +38,19 @@ export const GenderSwitch = ({
 	onSwitch = () => {},
 	value = false,
 }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 
 	return (
 		<View style={styles.row}>
-			<Text style={{ ...styles.text, color: colors.text }}>{title}</Text>
+			<Text
+				style={{
+					...styles.text,
+					fontSize: fontSize.medium,
+					color: colors.text,
+				}}
+			>
+				{title}
+			</Text>
 			<View style={styles.block}>
 				<Switch
 					value={value}
@@ -74,7 +88,7 @@ export const ImagePickerBlock = ({
 	onPick = () => {},
 	noImageUrl = null,
 }) => {
-	const { colors, dark } = useTheme()
+	const { colors, dark, fontSize } = useTheme()
 	if (!noImageUrl) {
 		noImageUrl = dark
 			? require("../../assets/no_image_dark.jpg")
@@ -139,7 +153,15 @@ export const ImagePickerBlock = ({
 	return (
 		<View style={{ ...styles.row, height: null }}>
 			<ModalChoosePhotoSource />
-			<Text style={{ ...styles.text, color: colors.text }}>{title}</Text>
+			<Text
+				style={{
+					...styles.text,
+					fontSize: fontSize.medium,
+					color: colors.text,
+				}}
+			>
+				{title}
+			</Text>
 			<TouchableOpacity
 				style={styles.block}
 				onPress={async () => setModalVisible(true)}
@@ -179,7 +201,7 @@ export const TextInputBlock = ({
 	success = false,
 }) => {
 	value = value ? value.toString() : ""
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	const textColor = success ? colors.success : colors.text
 
 	const multilineStyle = multiline
@@ -193,7 +215,15 @@ export const TextInputBlock = ({
 				...multilineStyle,
 			}}
 		>
-			<Text style={{ ...styles.text, color: colors.text }}>{title}</Text>
+			<Text
+				style={{
+					...styles.text,
+					fontSize: fontSize.medium,
+					color: colors.text,
+				}}
+			>
+				{title}
+			</Text>
 			<View
 				style={{
 					flex: 3,
@@ -225,7 +255,11 @@ export const TextInputBlock = ({
 						}}
 					>
 						<Text
-							style={{ fontSize: 18, color: colors.text, textAlign: "center" }}
+							style={{
+								color: colors.text,
+								fontSize: fontSize.medium,
+								textAlign: "center",
+							}}
 						>
 							{prefix}
 						</Text>
@@ -255,7 +289,7 @@ export const TextInputBlock = ({
 						style={{
 							flex: 1,
 							textAlign: "center",
-							fontSize: 18,
+							fontSize: fontSize.medium,
 							color: textColor,
 							padding: 5,
 						}}
@@ -284,7 +318,11 @@ export const TextInputBlock = ({
 						}}
 					>
 						<Text
-							style={{ fontSize: 18, color: colors.text, textAlign: "center" }}
+							style={{
+								fontSize: fontSize.medium,
+								color: colors.text,
+								textAlign: "center",
+							}}
 						>
 							{postfix}
 						</Text>
@@ -303,7 +341,7 @@ export const EventRowDropDownPicker = ({
 	onChangeItem = null,
 	style = {},
 }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	let arrayItems = []
 	for (let item in dependencies) {
 		arrayItems.push({
@@ -330,7 +368,15 @@ export const EventRowDropDownPicker = ({
 
 	return (
 		<View style={styles.row}>
-			<Text style={{ ...styles.text, color: colors.text }}>{name}</Text>
+			<Text
+				style={{
+					...styles.text,
+					fontSize: fontSize.medium,
+					color: colors.text,
+				}}
+			>
+				{name}
+			</Text>
 			<View style={styles.block}>
 				<DropDownPicker
 					placeholder={placeholder}
@@ -361,7 +407,7 @@ export const EventRowDropDownPicker = ({
 					}}
 					// containerStyle={{ padding: 0, margin: 0, paddingHorizontal: 0 }}
 					activeItemStyle={{ backgroundColor: colors.active }}
-					arrowColor={colors.text}
+					arrowColor={colors.icon}
 					onChangeItem={onChangeItem}
 				/>
 			</View>
@@ -383,7 +429,7 @@ export const BirthdayPicker = ({
 	if (!year) year = 2020
 	day += ""
 	year += ""
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	const monthsNames = [
 		"Январь",
 		"Февраль",
@@ -434,6 +480,7 @@ export const BirthdayPicker = ({
 			style={{
 				...styles.datetime,
 				flex: 1,
+				fontSize: fontSize.medium,
 				backgroundColor: colors.card,
 				borderColor: colors.border,
 				...style,
@@ -461,7 +508,15 @@ export const BirthdayPicker = ({
 
 	return (
 		<View style={styles.row}>
-			<Text style={{ ...styles.text, color: colors.text }}>{title}</Text>
+			<Text
+				style={{
+					...styles.text,
+					fontSize: fontSize.medium,
+					color: colors.text,
+				}}
+			>
+				{title}
+			</Text>
 			<View style={styles.datetimecontainer}>
 				<ObjPicker
 					items={daysPickerItems}
@@ -494,12 +549,20 @@ export const DateTimePickerBlock = ({
 	showWeek = true,
 	neutralButton = false,
 }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
 
 	return (
 		<View style={styles.row}>
-			<Text style={{ ...styles.text, color: colors.text }}>{title}</Text>
+			<Text
+				style={{
+					...styles.text,
+					fontSize: fontSize.medium,
+					color: colors.text,
+				}}
+			>
+				{title}
+			</Text>
 			<View style={styles.datetimecontainer}>
 				<TouchableOpacity
 					onPress={() => setDateTimePickerShow("eventDateStart")}
@@ -510,6 +573,7 @@ export const DateTimePickerBlock = ({
 							...styles.datetime,
 
 							color: colors.text,
+							fontSize: fontSize.medium,
 							backgroundColor: colors.card,
 							borderColor: colors.border,
 						}}
@@ -547,7 +611,7 @@ export const DateTimePickerBlock = ({
 						<Text
 							style={{
 								...styles.datetime,
-
+								fontSize: fontSize.medium,
 								color: colors.text,
 								backgroundColor: colors.card,
 								borderColor: colors.border,
@@ -586,7 +650,7 @@ export const DropDownPickerBlock = ({
 	zeroItem = null,
 	searchable = false,
 }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	let defaultExists = false
 	let arrayItems = zeroItem ? [zeroItem] : []
 	if (zeroItem && zeroItem.value === defeultValue) {
@@ -616,7 +680,15 @@ export const DropDownPickerBlock = ({
 	return (
 		<View style={styles.row}>
 			{name ? (
-				<Text style={{ ...styles.text, color: colors.text }}>{name}</Text>
+				<Text
+					style={{
+						...styles.text,
+						fontSize: fontSize.medium,
+						color: colors.text,
+					}}
+				>
+					{name}
+				</Text>
 			) : null}
 			<View style={styles.block}>
 				<DropDownPicker
@@ -624,7 +696,7 @@ export const DropDownPickerBlock = ({
 					items={arrayItems}
 					defaultValue={defaultExists ? defeultValue : null}
 					labelStyle={{
-						fontSize: 16,
+						fontSize: fontSize.medium,
 						textAlign: "left",
 						color: colors.text,
 					}}
@@ -661,15 +733,12 @@ const styles = StyleSheet.create({
 	title: {
 		// flex: 1,
 		width: "100%",
-		fontSize: 20,
 		textAlign: "center",
 		fontWeight: "bold",
 		marginTop: 6,
 		height: 40,
 	},
 	text: {
-		fontSize: 16,
-		// width: 170,
 		flex: 2,
 	},
 	row: {
@@ -679,8 +748,6 @@ const styles = StyleSheet.create({
 		height: 45,
 	},
 	datetime: {
-		fontSize: 16,
-		// flex: 1,
 		height: "100%",
 		paddingHorizontal: 5,
 		textAlign: "center",
@@ -734,35 +801,5 @@ const styles = StyleSheet.create({
 		paddingTop: 20,
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20,
-	},
-	panelHeader: {
-		alignItems: "center",
-	},
-	panelHandle: {
-		width: 40,
-		height: 8,
-		borderRadius: 4,
-		backgroundColor: "#00000040",
-		marginBottom: 10,
-	},
-	panelTitle: {
-		fontSize: 27,
-		height: 35,
-	},
-	panelSubtitle: {
-		fontSize: 14,
-		color: "gray",
-		marginBottom: 10,
-	},
-	panelButton: {
-		padding: 13,
-		borderRadius: 10,
-		alignItems: "center",
-		marginVertical: 7,
-	},
-	panelButtonTitle: {
-		fontSize: 17,
-		fontWeight: "bold",
-		color: "white",
 	},
 })

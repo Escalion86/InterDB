@@ -15,7 +15,7 @@ import { AppContext } from "../AppContext"
 import { ContactIcon } from "../components/infoComponents"
 
 const AboutScreen = ({ navigation, route }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	const { toggleDev, dev } = useContext(AppContext)
 
 	const [startToOpenDev, setStartToOpenDev] = useState(null)
@@ -56,11 +56,23 @@ const AboutScreen = ({ navigation, route }) => {
 	return (
 		<View style={styles.container}>
 			<ScrollView style={styles.content}>
-				<Text style={{ ...styles.paragraph, color: colors.text }}>
+				<Text
+					style={{
+						...styles.paragraph,
+						fontSize: fontSize.big,
+						color: colors.text,
+					}}
+				>
 					{"\t\t\t\t"}Цель приложения - упрощение взаимодействия с клиентами при
 					продаже своих услуг.
 				</Text>
-				<Text style={{ ...styles.paragraph, color: colors.text }}>
+				<Text
+					style={{
+						...styles.paragraph,
+						fontSize: fontSize.big,
+						color: colors.text,
+					}}
+				>
 					{"\t\t\t\t"}Если у Вас появились предложения или замечания по
 					приложению, то сообщите об этом разработчику напрямую:
 				</Text>
@@ -83,12 +95,19 @@ const AboutScreen = ({ navigation, route }) => {
 				</View>
 				<View style={{ ...styles.developer, borderColor: colors.card }}>
 					<View style={{ flex: 1 }}>
-						<Text style={{ ...styles.paragraph, color: colors.text }}>
+						<Text
+							style={{
+								...styles.paragraph,
+								fontSize: fontSize.big,
+								color: colors.text,
+							}}
+						>
 							Разработчик:
 						</Text>
 						<Text
 							style={{
 								...styles.paragraph,
+								fontSize: fontSize.big,
 								fontStyle: "italic",
 								color: colors.text,
 							}}
@@ -102,6 +121,7 @@ const AboutScreen = ({ navigation, route }) => {
 								style={{
 									...styles.paragraph,
 									fontStyle: "italic",
+									fontSize: fontSize.big,
 									color: colors.accent,
 								}}
 							>
@@ -137,7 +157,7 @@ const AboutScreen = ({ navigation, route }) => {
 			</ScrollView>
 
 			<View style={{ ...styles.bottom, borderColor: colors.card }}>
-				<Text style={{ ...styles.version, color: colors.text }}>
+				<Text style={{ fontSize: fontSize.tiny, color: colors.text }}>
 					Версия: 0.1.2
 				</Text>
 			</View>
@@ -166,7 +186,6 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 	},
 	paragraph: {
-		fontSize: 18,
 		marginBottom: 6,
 	},
 	content: {
@@ -177,8 +196,5 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		paddingTop: 5,
 		borderTopWidth: 1,
-	},
-	version: {
-		fontSize: 14,
 	},
 })

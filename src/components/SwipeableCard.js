@@ -13,7 +13,7 @@ const SwipeableCard = ({
 	backgroundColorLeft = null,
 	backgroundColorRight = null,
 }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	const swipeableRef = useRef(null)
 	const closeSwipeable = () => {
 		swipeableRef.current.close()
@@ -36,7 +36,12 @@ const SwipeableCard = ({
 					{ borderColor: colors.border, backgroundColor: backgroundColorLeft },
 				]}
 			>
-				<Animated.Text style={[styles.actionText, { transform: [{ scale }] }]}>
+				<Animated.Text
+					style={[
+						styles.actionText,
+						{ transform: [{ scale }], fontSize: fontSize.medium },
+					]}
+				>
 					{leftText}
 				</Animated.Text>
 			</View>
@@ -57,7 +62,12 @@ const SwipeableCard = ({
 					{ borderColor: colors.border, backgroundColor: backgroundColorRight },
 				]}
 			>
-				<Animated.Text style={[styles.actionText, { transform: [{ scale }] }]}>
+				<Animated.Text
+					style={[
+						styles.actionText,
+						{ transform: [{ scale }], fontSize: fontSize.medium },
+					]}
+				>
 					{rightText}
 				</Animated.Text>
 			</View>
@@ -113,6 +123,5 @@ const styles = StyleSheet.create({
 		color: "#fff",
 		fontWeight: "bold",
 		padding: 20,
-		fontSize: 16,
 	},
 })

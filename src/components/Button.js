@@ -9,7 +9,7 @@ const Button = ({
 	onLongPress = () => {},
 	style = {},
 }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	return (
 		<TouchableOpacity
 			style={{
@@ -23,6 +23,7 @@ const Button = ({
 			<Text
 				style={{
 					...styles.buttonTitle,
+					fontSize: fontSize.medium,
 					color: btnDecline ? colors.abortText : colors.accentText,
 				}}
 			>
@@ -40,7 +41,6 @@ const styles = StyleSheet.create({
 		width: "100%",
 	},
 	buttonTitle: {
-		fontSize: 17,
 		fontWeight: "bold",
 		color: "white",
 		textAlign: "center",

@@ -1,14 +1,5 @@
 import React, { useState } from "react"
-import {
-	StyleSheet,
-	Text,
-	View,
-	TouchableOpacity,
-	TextInput,
-	Image,
-	Dimensions,
-	Linking,
-} from "react-native"
+import { StyleSheet, Text, TouchableOpacity, Linking } from "react-native"
 import { useTheme } from "@react-navigation/native"
 import { FontAwesome5 } from "@expo/vector-icons"
 
@@ -18,14 +9,14 @@ export const TextBlock = ({
 	big = false,
 	style = {},
 }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	return (
 		<Text
 			style={{
 				...styles.text,
 				color: colors.text,
 				textAlign: center ? "center" : "auto",
-				fontSize: big ? 18 : 16,
+				fontSize: big ? fontSize.big : fontSize.medium,
 				...style,
 			}}
 		>

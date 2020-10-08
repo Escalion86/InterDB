@@ -22,7 +22,7 @@ import {
 } from "react-native-popup-menu"
 
 const DevTableScreen = ({ navigation, route }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	const [columns, setColumns] = useState([])
 	const selectedTable = route.params.table
 	const { Popover } = renderers
@@ -49,7 +49,7 @@ const DevTableScreen = ({ navigation, route }) => {
 			{selectedTable ? (
 				<>
 					{/* <Text
-            style={{ ...styles.title, color: colors.text }}
+            style={{ ...styles.title, color: colors.text,fontSize:  fontSize.giant }}
           >{`Таблица "${selectedTable}"`}</Text> */}
 					<DevInputBtn
 						title="Переименовать таблицу"
@@ -105,7 +105,7 @@ const DevTableScreen = ({ navigation, route }) => {
 								<Text
 									style={{
 										color: colors.text,
-										fontSize: 16,
+										fontSize: fontSize.medium,
 										borderColor: "#fff",
 										textAlign: "center",
 									}}
@@ -123,53 +123,97 @@ const DevTableScreen = ({ navigation, route }) => {
 								}}
 							>
 								<View style={styles.row}>
-									<Text style={{ fontSize: 16, color: colors.text }}>cid</Text>
 									<Text
-										style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+										style={{ fontSize: fontSize.medium, color: colors.text }}
+									>
+										cid
+									</Text>
+									<Text
+										style={{
+											fontSize: fontSize.medium,
+											marginLeft: 20,
+											color: colors.text,
+										}}
 									>
 										{item.cid}
 									</Text>
 								</View>
 								<View style={styles.row}>
-									<Text style={{ fontSize: 16, color: colors.text }}>
+									<Text
+										style={{ fontSize: fontSize.medium, color: colors.text }}
+									>
 										dflt_value
 									</Text>
 									<Text
-										style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+										style={{
+											fontSize: fontSize.medium,
+											marginLeft: 20,
+											color: colors.text,
+										}}
 									>
 										{item.dflt_value === null ? "null" : item.dflt_value}
 									</Text>
 								</View>
 								<View style={styles.row}>
-									<Text style={{ fontSize: 16, color: colors.text }}>name</Text>
 									<Text
-										style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+										style={{ fontSize: fontSize.medium, color: colors.text }}
+									>
+										name
+									</Text>
+									<Text
+										style={{
+											fontSize: fontSize.medium,
+											marginLeft: 20,
+											color: colors.text,
+										}}
 									>
 										{item.name}
 									</Text>
 								</View>
 								<View style={styles.row}>
-									<Text style={{ fontSize: 16, color: colors.text }}>
+									<Text
+										style={{ fontSize: fontSize.medium, color: colors.text }}
+									>
 										notnull
 									</Text>
 									<Text
-										style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+										style={{
+											fontSize: fontSize.medium,
+											marginLeft: 20,
+											color: colors.text,
+										}}
 									>
 										{item.notnull ? "true" : "false"}
 									</Text>
 								</View>
 								<View style={styles.row}>
-									<Text style={{ fontSize: 16, color: colors.text }}>pk</Text>
 									<Text
-										style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+										style={{ fontSize: fontSize.medium, color: colors.text }}
+									>
+										pk
+									</Text>
+									<Text
+										style={{
+											fontSize: fontSize.medium,
+											marginLeft: 20,
+											color: colors.text,
+										}}
 									>
 										{item.pk}
 									</Text>
 								</View>
 								<View style={styles.row}>
-									<Text style={{ fontSize: 16, color: colors.text }}>type</Text>
 									<Text
-										style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+										style={{ fontSize: fontSize.medium, color: colors.text }}
+									>
+										type
+									</Text>
+									<Text
+										style={{
+											fontSize: fontSize.medium,
+											marginLeft: 20,
+											color: colors.text,
+										}}
 									>
 										{item.type}
 									</Text>
@@ -190,15 +234,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingHorizontal: 5,
 	},
-	title: {
-		// alignItems: "center",
-		// justifyContent: "center",
-		fontWeight: "bold",
-		textAlign: "center",
-		fontSize: 20,
-		width: "100%",
-		marginBottom: 10,
-	},
+	// title: {
+	// 	// alignItems: "center",
+	// 	// justifyContent: "center",
+	// 	fontWeight: "bold",
+	// 	textAlign: "center",
+	// 	width: "100%",
+	// 	marginBottom: 10,
+	// },
 	button: {
 		borderWidth: 1,
 		height: 40,

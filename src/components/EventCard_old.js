@@ -20,7 +20,7 @@ import IconMenu from "./IconMenu"
 export const EventCard = ({ navigation, event }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
-	const colors = theme.colors
+	const { colors, fontSize } = theme
 	const profit =
 		event.finance_price -
 		event.finance_road -
@@ -71,11 +71,23 @@ export const EventCard = ({ navigation, event }) => {
 				/>
 			</View>
 			<View style={styles.middle}>
-				<Text style={{ ...styles.cardtitle, color: colors.text }}>
+				<Text
+					style={{
+						...styles.cardtitle,
+						fontSize: fontSize.medium,
+						color: colors.text,
+					}}
+				>
 					{/*  {event.auditory},  */}
 					{event.event}
 				</Text>
-				<Text style={{ ...styles.carddesc, color: colors.text }}>
+				<Text
+					style={{
+						...styles.carddesc,
+						fontSize: fontSize.small,
+						color: colors.text,
+					}}
+				>
 					{event.location_town}, {event.location_street},{" "}
 					{Math.trunc(event.location_house)}
 					{event.location_room ? ` - ${Math.trunc(event.location_room)}` : null}
@@ -84,10 +96,22 @@ export const EventCard = ({ navigation, event }) => {
 			</View>
 			<View style={styles.right}>
 				<View style={{ height: 52, padding: 5 }}>
-					<Text style={{ ...styles.datetime, color: colors.text }}>
+					<Text
+						style={{
+							...styles.datetime,
+							fontSize: fontSize.small,
+							color: colors.text,
+						}}
+					>
 						{formatDate(new Date(event.date))}
 					</Text>
-					<Text style={{ ...styles.datetime, color: colors.text }}>
+					<Text
+						style={{
+							...styles.datetime,
+							fontSize: fontSize.small,
+							color: colors.text,
+						}}
+					>
 						{getWeekDay(new Date(event.date))}{" "}
 						{formatTime(new Date(event.date))}
 					</Text>
@@ -102,6 +126,7 @@ export const EventCard = ({ navigation, event }) => {
 						<Text
 							style={{
 								...styles.profit,
+								fontSize: fontSize.small,
 								borderTopColor: colors.background,
 								borderLeftColor: colors.background,
 								backgroundColor: colors.border,
@@ -121,31 +146,43 @@ export const EventCard = ({ navigation, event }) => {
 						}}
 					>
 						<View style={styles.row}>
-							<Text style={{ fontSize: 16, color: colors.text }}>
+							<Text style={{ fontSize: fontSize.medium, color: colors.text }}>
 								Цена клиента
 							</Text>
 							<Text
-								style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+								style={{
+									fontSize: fontSize.medium,
+									marginLeft: 20,
+									color: colors.text,
+								}}
 							>
 								{event.finance_price}
 							</Text>
 						</View>
 						<View style={styles.row}>
-							<Text style={{ fontSize: 16, color: colors.text }}>
+							<Text style={{ fontSize: fontSize.medium, color: colors.text }}>
 								За дорогу
 							</Text>
 							<Text
-								style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+								style={{
+									fontSize: fontSize.medium,
+									marginLeft: 20,
+									color: colors.text,
+								}}
 							>
 								{-event.finance_road}
 							</Text>
 						</View>
 						<View style={styles.row}>
-							<Text style={{ fontSize: 16, color: colors.text }}>
+							<Text style={{ fontSize: fontSize.medium, color: colors.text }}>
 								Организатору
 							</Text>
 							<Text
-								style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+								style={{
+									fontSize: fontSize.medium,
+									marginLeft: 20,
+									color: colors.text,
+								}}
 							>
 								{-event.finance_organizator}
 							</Text>
@@ -158,21 +195,35 @@ export const EventCard = ({ navigation, event }) => {
 								paddingBottom: 5,
 							}}
 						>
-							<Text style={{ fontSize: 16, color: colors.text }}>
+							<Text style={{ fontSize: fontSize.medium, color: colors.text }}>
 								Ассистентам
 							</Text>
 							<Text
-								style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+								style={{
+									fontSize: fontSize.medium,
+									marginLeft: 20,
+									color: colors.text,
+								}}
 							>
 								{-event.finance_assistants}
 							</Text>
 						</View>
 						<View style={styles.row}>
-							<Text style={{ paddingTop: 5, fontSize: 16, color: colors.text }}>
+							<Text
+								style={{
+									paddingTop: 5,
+									fontSize: fontSize.medium,
+									color: colors.text,
+								}}
+							>
 								ИТОГО
 							</Text>
 							<Text
-								style={{ fontSize: 16, marginLeft: 20, color: colors.text }}
+								style={{
+									fontSize: fontSize.medium,
+									marginLeft: 20,
+									color: colors.text,
+								}}
 							>
 								{profit}
 							</Text>
@@ -209,11 +260,9 @@ const styles = StyleSheet.create({
 	},
 	cardtitle: {
 		fontFamily: "open-bold",
-		fontSize: 16,
 	},
 	carddesc: {
 		fontFamily: "open-regular",
-		fontSize: 15,
 	},
 	center: {
 		flex: 1,
@@ -221,7 +270,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	datetime: {
-		fontSize: 14,
 		textAlign: "right",
 	},
 	finance: {
@@ -237,7 +285,6 @@ const styles = StyleSheet.create({
 	},
 	profit: {
 		// flex: 1,
-		fontSize: 14,
 		width: "100%",
 		height: 40,
 		textAlignVertical: "center",

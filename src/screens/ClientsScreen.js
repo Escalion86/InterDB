@@ -13,7 +13,7 @@ import { addClient, deleteAllClients } from "../store/actions/client"
 import ModalDeleteClient from "../components/ModalDeleteClient"
 
 const ClientsScreen = ({ navigation, route }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	const dispatch = useDispatch()
 
 	const clients = useSelector((state) => state.client.clients)
@@ -71,7 +71,9 @@ const ClientsScreen = ({ navigation, route }) => {
 	if (clients.length == 0) {
 		return (
 			<View style={styles.center}>
-				<Text style={{ fontSize: 20, color: colors.text }}>Клиентов нет</Text>
+				<Text style={{ fontSize: fontSize.giant, color: colors.text }}>
+					Клиентов нет
+				</Text>
 				<Fab
 					visible={true}
 					onPress={() => {

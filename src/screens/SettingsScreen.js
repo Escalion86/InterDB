@@ -19,7 +19,7 @@ const { width } = Dimensions.get("window")
 
 const SettingsScreen = ({ navigation, route }) => {
 	const theme = useTheme()
-	const { colors } = theme
+	const { colors, fontSize } = theme
 	const { setDark, setAccent } = useContext(ThemeContext)
 
 	navigation.setOptions({
@@ -59,7 +59,9 @@ const SettingsScreen = ({ navigation, route }) => {
 			<TitleBlock title="Настройка цветовой схемы" />
 			<View style={styles.row}>
 				<View style={styles.switchcontainer}>
-					<Text style={{ fontSize: 16, color: colors.text }}>Тёмная тема</Text>
+					<Text style={{ fontSize: fontSize.medium, color: colors.text }}>
+						Тёмная тема
+					</Text>
 					<Switch
 						value={theme.dark}
 						onValueChange={(value) => setDark(value)}
@@ -67,7 +69,7 @@ const SettingsScreen = ({ navigation, route }) => {
 				</View>
 			</View>
 			<View style={styles.row}>
-				<Text style={{ fontSize: 16, color: colors.text }}>
+				<Text style={{ fontSize: fontSize.medium, color: colors.text }}>
 					Цвет активных элементов
 				</Text>
 				<View
@@ -113,7 +115,9 @@ const SettingsScreen = ({ navigation, route }) => {
 					/>
 				</View>
 			</View>
-			<Text style={{ fontSize: 16, color: colors.text }}>Пример:</Text>
+			<Text style={{ fontSize: fontSize.medium, color: colors.text }}>
+				Пример:
+			</Text>
 			<View style={styles.row}>
 				<Button title="Цвет текста подбирается автоматически" />
 			</View>

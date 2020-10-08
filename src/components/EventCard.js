@@ -35,8 +35,8 @@ const EventCard = ({
 }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
-	const colors = theme.colors
-	const styles = stylesFactory(colors)
+	const { colors, fontSize } = theme
+	const styles = stylesFactory(theme)
 	// const [modal, setModal] = useState(null)
 
 	if (!event) {
@@ -111,8 +111,16 @@ const EventCard = ({
 
 		const MenuRow = ({ title = "", value = "0", style = {} }) => (
 			<View style={{ ...styles.row, ...style }}>
-				<Text style={{ fontSize: 16, color: colors.text }}>{title}</Text>
-				<Text style={{ fontSize: 16, marginLeft: 20, color: colors.text }}>
+				<Text style={{ fontSize: fontSize.medium, color: colors.text }}>
+					{title}
+				</Text>
+				<Text
+					style={{
+						fontSize: fontSize.medium,
+						marginLeft: 20,
+						color: colors.text,
+					}}
+				>
 					{value}
 				</Text>
 			</View>
@@ -326,7 +334,7 @@ const EventCard = ({
 
 export default EventCard
 
-const stylesFactory = (colors) =>
+const stylesFactory = ({ colors, fontSize }) =>
 	StyleSheet.create({
 		card: {
 			width: "100%",
@@ -379,14 +387,14 @@ const stylesFactory = (colors) =>
 		},
 		cardtitle: {
 			fontFamily: "open-bold",
-			fontSize: 16,
+			fontSize: fontSize.medium,
 			color: colors.text,
 			textAlign: "center",
 		},
 		carddesctext: {
 			flex: 1,
 			fontFamily: "open-regular",
-			fontSize: 14,
+			fontSize: fontSize.small,
 			color: colors.text,
 		},
 		carddesc: {
@@ -407,13 +415,13 @@ const stylesFactory = (colors) =>
 			alignItems: "center",
 		},
 		datetime: {
-			fontSize: 14,
+			fontSize: fontSize.small,
 			textAlign: "right",
 			color: colors.text,
 		},
 		profit: {
 			// flex: 1,
-			fontSize: 14,
+			fontSize: fontSize.small,
 			width: "100%",
 			height: 44,
 			textAlignVertical: "center",
@@ -431,7 +439,7 @@ const stylesFactory = (colors) =>
 			color: colors.text,
 			textAlignVertical: "center",
 			textAlign: "center",
-			fontSize: 14,
+			fontSize: fontSize.small,
 			minHeight: 40,
 			borderColor: colors.border,
 			borderTopWidth: 1,

@@ -16,7 +16,7 @@ export const DevBtn = ({
 	style = {},
 	disabled = false,
 }) => {
-	const { colors } = theme
+	const { colors, fontSize } = theme
 	return (
 		<TouchableOpacity
 			style={{
@@ -29,7 +29,10 @@ export const DevBtn = ({
 			disabled={disabled}
 		>
 			<Text
-				style={{ color: disabled ? colors.border : colors.text, fontSize: 16 }}
+				style={{
+					color: disabled ? colors.border : colors.text,
+					fontSize: fontSize.medium,
+				}}
 			>
 				{title}
 			</Text>
@@ -48,7 +51,7 @@ export const DevDropDownPicker = ({
 	placeholder = "",
 }) => {
 	if (tables.length === 0) return null
-	const { colors } = theme
+	const { colors, fontSize } = theme
 	const tablesItems = []
 	tables.forEach((table) => {
 		tablesItems.push({
@@ -63,7 +66,7 @@ export const DevDropDownPicker = ({
 			items={tablesItems}
 			defaultValue={defaultValue ? defaultValue : null}
 			labelStyle={{
-				fontSize: 16,
+				fontSize: fontSize.medium,
 				textAlign: "left",
 				color: colors.text,
 			}}
@@ -93,7 +96,7 @@ export const DevInputBtn = ({
 	theme = useTheme(),
 	style = {},
 }) => {
-	const { colors } = theme
+	const { colors, fontSize } = theme
 	const [value, setValue] = useState("")
 	return (
 		<View style={{ ...style, flexDirection: "row" }}>
@@ -101,7 +104,7 @@ export const DevInputBtn = ({
 				style={{
 					flex: 1,
 					textAlign: "center",
-					fontSize: 16,
+					fontSize: fontSize.medium,
 					color: colors.text,
 					borderWidth: 1,
 					borderColor: colors.border,
@@ -117,7 +120,9 @@ export const DevInputBtn = ({
 				}}
 				onPress={() => onPress(value)}
 			>
-				<Text style={{ color: colors.text, fontSize: 16 }}>{title}</Text>
+				<Text style={{ color: colors.text, fontSize: fontSize.medium }}>
+					{title}
+				</Text>
 			</TouchableOpacity>
 		</View>
 	)
@@ -129,7 +134,7 @@ export const DevTwoInputBtn = ({
 	theme = useTheme(),
 	style = {},
 }) => {
-	const { colors } = theme
+	const { colors, fontSize } = theme
 	const [oldValue, setOldValue] = useState("")
 	const [newValue, setNewValue] = useState("")
 	return (
@@ -138,7 +143,7 @@ export const DevTwoInputBtn = ({
 				style={{
 					flex: 1,
 					textAlign: "center",
-					fontSize: 16,
+					fontSize: fontSize.medium,
 					color: colors.text,
 					borderWidth: 1,
 					borderColor: colors.border,
@@ -151,7 +156,7 @@ export const DevTwoInputBtn = ({
 				style={{
 					flex: 1,
 					textAlign: "center",
-					fontSize: 16,
+					fontSize: fontSize.medium,
 					color: colors.text,
 					borderWidth: 1,
 					borderColor: colors.border,
@@ -168,7 +173,9 @@ export const DevTwoInputBtn = ({
 				}}
 				onPress={() => onPress(oldValue, newValue)}
 			>
-				<Text style={{ color: colors.text, fontSize: 14 }}>{title}</Text>
+				<Text style={{ color: colors.text, fontSize: fontSize.small }}>
+					{title}
+				</Text>
 			</TouchableOpacity>
 		</View>
 	)

@@ -28,7 +28,7 @@ import MainFlatListWithFab from "../components/MainFlatListWithFab"
 import ModalDeleteEvent from "../components/ModalDeleteEvent"
 
 const EventsScreen = ({ navigation, route }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	const dispatch = useDispatch()
 	const { Popover } = renderers
 	const [sorting, setSorting] = useState("dateDESC")
@@ -95,7 +95,7 @@ const EventsScreen = ({ navigation, route }) => {
 						<View style={{ width: 180 }}>
 							<Text
 								style={{
-									fontSize: 16,
+									fontSize: fontSize.medium,
 									borderBottomWidth: 1,
 									borderBottomColor: colors.text,
 									color: colors.text,
@@ -127,7 +127,7 @@ const EventsScreen = ({ navigation, route }) => {
 								) : null}
 								<Text
 									style={{
-										fontSize: 16,
+										fontSize: fontSize.medium,
 										color: colors.text,
 										width: 150,
 									}}
@@ -157,7 +157,7 @@ const EventsScreen = ({ navigation, route }) => {
 								) : null}
 								<Text
 									style={{
-										fontSize: 16,
+										fontSize: fontSize.medium,
 										color: colors.text,
 										width: 150,
 									}}
@@ -227,7 +227,9 @@ const EventsScreen = ({ navigation, route }) => {
 	if (events.length == 0) {
 		return (
 			<View style={styles.center}>
-				<Text style={{ fontSize: 20, color: colors.text }}>Событей нет</Text>
+				<Text style={{ fontSize: fontSize.giant, color: colors.text }}>
+					Событей нет
+				</Text>
 				<Fab
 					visible={true}
 					onPress={() => {

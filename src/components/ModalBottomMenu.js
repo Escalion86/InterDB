@@ -19,7 +19,7 @@ const ModalBottomMenu = ({
 	visible = false,
 	onOuterClick = () => {},
 }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 
 	return (
 		<GestureRecognizer
@@ -80,12 +80,25 @@ const ModalBottomMenu = ({
 							style={{ alignItems: "center", marginBottom: 10, minHeight: 12 }}
 						>
 							{title ? (
-								<Text style={{ ...styles.panelTitle, color: colors.text }}>
+								<Text
+									style={{
+										...styles.panelTitle,
+										fontSize: fontSize.giant,
+										fontWeight: "bold",
+										color: colors.text,
+									}}
+								>
 									{title}
 								</Text>
 							) : null}
 							{subtitle ? (
-								<Text style={{ ...styles.panelSubtitle, color: colors.text }}>
+								<Text
+									style={{
+										...styles.panelSubtitle,
+										fontSize: fontSize.small,
+										color: colors.text,
+									}}
+								>
 									{subtitle}
 								</Text>
 							) : null}
@@ -174,12 +187,10 @@ const styles = StyleSheet.create({
 		// shadowOpacity: 0.4,
 	},
 	panelTitle: {
-		fontSize: 27,
 		// height: 35,
 		textAlign: "center",
 	},
 	panelSubtitle: {
-		fontSize: 14,
 		// color: "gray",
 		textAlign: "center",
 		// marginBottom: 10,

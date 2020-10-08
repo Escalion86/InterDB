@@ -37,7 +37,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 			? route.params.event
 			: { ...dbDefault("events"), date: new Date().setSeconds(0, 0) }
 
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 
 	const services = useSelector((state) => state.service.services).filter(
 		(item) => !item.archive
@@ -133,23 +133,41 @@ const CreateEventScreen = ({ navigation, route }) => {
 					// display: "inline",
 				}}
 			>
-				<Text style={{ color: colors.text, fontSize: 14, lineHeight: 20 }}>
+				<Text
+					style={{
+						color: colors.text,
+						fontSize: fontSize.medium,
+						lineHeight: 20,
+					}}
+				>
 					Если выделено{" "}
 				</Text>
 				<Text
 					style={{
 						color: colors.success,
-						fontSize: 14,
+						fontSize: fontSize.small,
 						padding: 0,
 						margin: 0,
 					}}
 				>
 					цветом
 				</Text>
-				<Text style={{ color: colors.text, fontSize: 14, lineHeight: 20 }}>
+				<Text
+					style={{
+						color: colors.text,
+						fontSize: fontSize.small,
+						lineHeight: 20,
+					}}
+				>
 					, значит
 				</Text>
-				<Text style={{ color: colors.text, fontSize: 14, lineHeight: 20 }}>
+				<Text
+					style={{
+						color: colors.text,
+						fontSize: fontSize.small,
+						lineHeight: 20,
+					}}
+				>
 					совпадает со стандартным значением указанным в услуге
 				</Text>
 			</MenuOptions>

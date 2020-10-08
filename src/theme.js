@@ -1,3 +1,37 @@
+import { Dimensions, PixelRatio } from "react-native"
+
+const screenWidth = Dimensions.get("window").width * PixelRatio.get()
+
+let fontCorrection = 0
+if (screenWidth < 800) fontCorrection = -2
+
+const fontSize = {
+	tiny: 12 + fontCorrection,
+	small: 14 + fontCorrection,
+	medium: 16 + fontCorrection,
+	big: 18 + fontCorrection,
+	giant: 20 + fontCorrection,
+}
+
+const fonts = {
+	light: {
+		fontFamily: "sans-serif-light",
+		fontWeight: "normal",
+	},
+	medium: {
+		fontFamily: "sans-serif-medium",
+		fontWeight: "normal",
+	},
+	regular: {
+		fontFamily: "sans-serif",
+		fontWeight: "normal",
+	},
+	thin: {
+		fontFamily: "sans-serif-thin",
+		fontWeight: "normal",
+	},
+}
+
 export const darkTheme = {
 	animation: {
 		scale: 1,
@@ -26,24 +60,8 @@ export const darkTheme = {
 		money: "#ffff99",
 	},
 	dark: true,
-	fonts: {
-		light: {
-			fontFamily: "sans-serif-light",
-			fontWeight: "normal",
-		},
-		medium: {
-			fontFamily: "sans-serif-medium",
-			fontWeight: "normal",
-		},
-		regular: {
-			fontFamily: "sans-serif",
-			fontWeight: "normal",
-		},
-		thin: {
-			fontFamily: "sans-serif-thin",
-			fontWeight: "normal",
-		},
-	},
+	fonts: fonts,
+	fontSize: fontSize,
 	roundness: 2,
 }
 
@@ -75,23 +93,7 @@ export const lightTheme = {
 		money: "#ffff66",
 	},
 	dark: false,
-	fonts: {
-		light: {
-			fontFamily: "sans-serif-light",
-			fontWeight: "normal",
-		},
-		medium: {
-			fontFamily: "sans-serif-medium",
-			fontWeight: "normal",
-		},
-		regular: {
-			fontFamily: "sans-serif",
-			fontWeight: "normal",
-		},
-		thin: {
-			fontFamily: "sans-serif-thin",
-			fontWeight: "normal",
-		},
-	},
-	roundness: 4,
+	fonts: fonts,
+	fontSize: fontSize,
+	roundness: 2,
 }
