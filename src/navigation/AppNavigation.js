@@ -52,7 +52,7 @@ const SettingsStack = createStackNavigator()
 // )
 
 const StackNavigator = ({ children, navigation, initialRouteName }) => {
-	const { colors } = useTheme()
+	const { colors, fontSize } = useTheme()
 	return (
 		<Stack.Navigator
 			initialRouteName="Main"
@@ -65,6 +65,7 @@ const StackNavigator = ({ children, navigation, initialRouteName }) => {
 				},
 				headerTitleStyle: {
 					color: colors.text,
+					fontSize: fontSize.giant,
 				},
 			}}
 		>
@@ -356,10 +357,14 @@ export const AppNavigation = () => {
 
 	const { theme } = useContext(ThemeContext)
 
+	// dispatch(loadAll())
 	//После загрузки всех компонентов и state - загружаем данные БД
 	useEffect(() => {
+		console.log("Загрузка данных")
 		dispatch(loadAll())
 	}, [dispatch])
+
+	console.log("Render AppNavigation")
 
 	return (
 		<PaperProvider theme={theme}>

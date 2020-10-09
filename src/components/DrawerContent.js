@@ -17,9 +17,11 @@ import { AppContext } from "../AppContext"
 
 const DrawerContent = (props) => {
 	const theme = useTheme()
-	const { colors, iconSize } = theme
+	const { colors, iconSize, fontSize } = theme
 
 	const { dev } = useContext(AppContext)
+
+	const labelStyle = { fontSize: fontSize.medium, color: colors.text }
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -72,6 +74,7 @@ const DrawerContent = (props) => {
 								/>
 							)}
 							label="События"
+							labelStyle={labelStyle}
 							onPress={() => {
 								props.navigation.navigate("Events")
 							}}
@@ -86,6 +89,7 @@ const DrawerContent = (props) => {
 								/>
 							)}
 							label="Клиенты"
+							labelStyle={labelStyle}
 							onPress={() => {
 								props.navigation.navigate("Clients")
 							}}
@@ -100,6 +104,7 @@ const DrawerContent = (props) => {
 								/>
 							)}
 							label="Услуги"
+							labelStyle={labelStyle}
 							onPress={() => {
 								props.navigation.navigate("Services")
 							}}
@@ -132,6 +137,7 @@ const DrawerContent = (props) => {
 						/>
 					)}
 					label="Настройки"
+					labelStyle={labelStyle}
 					onPress={() => {
 						props.navigation.navigate("Settings")
 					}}
@@ -146,6 +152,7 @@ const DrawerContent = (props) => {
 						/>
 					)}
 					label="О приложении"
+					labelStyle={labelStyle}
 					onPress={() => {
 						props.navigation.navigate("About")
 					}}
@@ -161,6 +168,7 @@ const DrawerContent = (props) => {
 							/>
 						)}
 						label="Панель разработчика"
+						labelStyle={labelStyle}
 						onPress={() => {
 							props.navigation.navigate("Dev")
 						}}
