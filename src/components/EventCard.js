@@ -134,18 +134,7 @@ const EventCard = ({
 						event: event,
 					})
 				}
-				onRightOpen={
-					onDelete
-					// 	() => {
-					// 	setModal(
-					// 		<ModalDeleteEvent
-					// 			event={event}
-					// 			navigation={navigation}
-					// 			callbackToCloseModal={() => setModal(null)}
-					// 		/>
-					// 	)
-					// }
-				}
+				onRightOpen={onDelete}
 			>
 				<TouchableHighlight
 					// activeOpacity={1}
