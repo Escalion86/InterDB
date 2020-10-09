@@ -12,9 +12,6 @@ const ModalDeleteService = ({
 	callbackToCloseModal,
 	callbackAfterAccept = () => {},
 }) => {
-	// if (!callbackAfterAccept)
-	// 	callbackAfterAccept = () => navigation.navigate("Services")
-	// const [modalDeleteVisible, setModalDeleteVisible] = useState(true)
 	const dispatch = useDispatch()
 
 	const events = useSelector((state) => state.event.events)

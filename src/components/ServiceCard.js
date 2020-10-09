@@ -31,8 +31,6 @@ const ServiceCard = ({
 	const { colors, dark } = theme
 	const styles = stylesFactory(theme)
 
-	// const [modal, setModal] = useState(null)
-
 	if (!service) {
 		return (
 			<TouchableHighlight

@@ -45,8 +45,6 @@ const SettingsScreen = ({ navigation, route }) => {
 		// ),
 	})
 
-	// const [oldColor, setOldColor] = useState("#FF7700")
-
 	const changeColor = (colorHsvOrRgb, resType) => {
 		if (resType === "end") {
 			const hex = tinycolor(colorHsvOrRgb).toHexString()

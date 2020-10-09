@@ -123,9 +123,6 @@ export const ModalBottomMenuYesNo = ({
 	visible = false,
 	closer = null,
 }) => {
-	// const withState = !children
-	// const [modalVisible, setModalVisible] = useState(visible)
-
 	return (
 		<View>
 			{children ? (
