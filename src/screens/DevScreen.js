@@ -16,17 +16,13 @@ const DevScreen = ({ navigation, route }) => {
 	}
 
 	async function loadColumns(table) {
-		const data = await DB.getTableColumns(table)
+		// const data = await DB.getTableColumns(table)
 		navigation.navigate("DevTable", { table })
 	}
 
 	useEffect(() => {
 		loadTables()
 	}, [])
-
-	navigation.setOptions({
-		title: `Панель разработчика`,
-	})
 
 	return (
 		<View style={styles.container}>

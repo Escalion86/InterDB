@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 import { StyleSheet, View, ScrollView, Image } from "react-native"
 
@@ -80,25 +80,27 @@ const ClientScreen = ({ navigation, route }) => {
 		client.birthday_day
 	)
 
-	navigation.setOptions({
-		title: `Клиент`,
-		headerRight: () => (
-			<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-				<Item
-					title="Delete Client"
-					iconName="ios-trash"
-					onPress={() => modalDeleteClient(client)}
-				/>
-				<Item
-					title="Edit Client"
-					iconName="md-create"
-					onPress={() => {
-						navigation.navigate("CreateClient", { client: client })
-					}}
-				/>
-			</HeaderButtons>
-		),
-	})
+	useEffect(() => {
+		navigation.setOptions({
+			title: `Клиент`,
+			headerRight: () => (
+				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+					<Item
+						title="Delete Client"
+						iconName="ios-trash"
+						onPress={() => modalDeleteClient(client)}
+					/>
+					<Item
+						title="Edit Client"
+						iconName="md-create"
+						onPress={() => {
+							navigation.navigate("CreateClient", { client: client })
+						}}
+					/>
+				</HeaderButtons>
+			),
+		})
+	}, [client])
 
 	return (
 		<ScrollView style={styles.container}>

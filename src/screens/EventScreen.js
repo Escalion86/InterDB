@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import { useDispatch } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
@@ -29,45 +29,34 @@ const EventScreen = ({ navigation, route }) => {
 		)
 	}
 
-	// const ModalDeleteConfirm = () => (
-	// 	<ModalBottomMenuYesNo
-	// 		title="Удаление события"
-	// 		subtitle="Вы уверены что хотите удалить событие?"
-	// 		onAccept={() => {
-	// 			dispatch(deleteEvent(event.id))
-	// 			navigation.goBack()
-	// 		}}
-	// 		visible={modalDeleteVisible}
-	// 		closer={() => setModalDeleteVisible(false)}
-	// 	/>
-	// )
+	useEffect(() => {
+		navigation.setOptions({
+			title: `Событие ${formatDateTime(new Date(event.date))}`,
+			headerRight: () => (
+				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+					<Item
+						title="Delete Event"
+						iconName="ios-trash"
+						onPress={() => {
+							// setModalDeleteVisible(true)
+							// dispatch(deleteEvent(event.id))
+							// navigation.navigate("Events")
+							modalDelete(event)
+						}}
+					/>
 
-	navigation.setOptions({
-		title: `Событие ${formatDateTime(new Date(event.date))}`,
-		headerRight: () => (
-			<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-				<Item
-					title="Delete Event"
-					iconName="ios-trash"
-					onPress={() => {
-						// setModalDeleteVisible(true)
-						// dispatch(deleteEvent(event.id))
-						// navigation.navigate("Events")
-						modalDelete(event)
-					}}
-				/>
-
-				<Item
-					title="Edit Event"
-					iconName="md-create"
-					onPress={() => {
-						navigation.navigate("CreateEvent", { event: event })
-					}}
-				/>
-				{/* <ModalDeleteConfirm /> */}
-			</HeaderButtons>
-		),
-	})
+					<Item
+						title="Edit Event"
+						iconName="md-create"
+						onPress={() => {
+							navigation.navigate("CreateEvent", { event: event })
+						}}
+					/>
+					{/* <ModalDeleteConfirm /> */}
+				</HeaderButtons>
+			),
+		})
+	}, [event])
 
 	return (
 		<View style={styles.container}>

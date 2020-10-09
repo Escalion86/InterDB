@@ -38,11 +38,10 @@ const DevTableScreen = ({ navigation, route }) => {
 
 	useEffect(() => {
 		loadColumns(selectedTable)
-	}, [])
-
-	navigation.setOptions({
-		title: `Таблица "${selectedTable}"`,
-	})
+		navigation.setOptions({
+			title: `Таблица "${selectedTable}"`,
+		})
+	}, [selectedTable])
 
 	const Header = () => (
 		<View style={{ height: selectedTable ? null : 800, width: "100%" }}>

@@ -92,16 +92,22 @@ const CreateEventScreen = ({ navigation, route }) => {
 		}
 	}
 
-	navigation.setOptions({
-		title: event.id ? `Редактирование события` : `Создание события`,
-		headerRight: () => (
-			<>
-				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-					<Item title="Save Event" iconName="ios-save" onPress={saveHandler} />
-				</HeaderButtons>
-			</>
-		),
-	})
+	useEffect(() => {
+		navigation.setOptions({
+			title: event.id ? `Редактирование события` : `Создание события`,
+			headerRight: () => (
+				<>
+					<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+						<Item
+							title="Save Event"
+							iconName="ios-save"
+							onPress={saveHandler}
+						/>
+					</HeaderButtons>
+				</>
+			),
+		})
+	}, [event])
 
 	const InfoMenu = () => (
 		<Menu

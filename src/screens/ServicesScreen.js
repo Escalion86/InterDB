@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppContext } from "../AppContext"
 import { StyleSheet, Text, View, FlatList } from "react-native"
@@ -40,56 +40,51 @@ const ServicesScreen = ({ navigation, route }) => {
 		)
 	}
 
-	// console.log("services", services)
-
 	services = services.filter((item) => {
 		return (
 			(showArchvedOnly && item.archive) || (!showArchvedOnly && !item.archive)
 		)
 	})
 
-	if (showArchvedOnly) {
-		navigation.setOptions({
-			title: `Архив услуг (${services.length})`,
-		})
-	} else {
-		navigation.setOptions({
-			title: `Услуги (${services.length})`,
-			headerRight: () => (
-				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-					{dev ? (
+	useEffect(() => {
+		if (showArchvedOnly) {
+			navigation.setOptions({
+				title: `Архив услуг (${services.length})`,
+			})
+		} else {
+			navigation.setOptions({
+				title: `Услуги (${services.length})`,
+				headerRight: () => (
+					<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+						{dev ? (
+							<Item
+								title="Delete all services"
+								iconName="ios-trash"
+								onPress={() => {
+									dispatch(deleteAllServices())
+								}}
+							/>
+						) : null}
+						{dev ? (
+							<Item
+								title="Add random service"
+								iconName="ios-add-circle-outline"
+								onPress={() => {
+									const tmp = dbGenerator("service")
+									dispatch(addService(tmp))
+								}}
+							/>
+						) : null}
 						<Item
-							title="Delete all services"
-							iconName="ios-trash"
-							onPress={() => {
-								dispatch(deleteAllServices())
-							}}
+							title="Archive"
+							iconName="ios-archive"
+							onPress={() => navigation.navigate("Archive")}
 						/>
-					) : null}
-					{dev ? (
-						<Item
-							title="Add random service"
-							iconName="ios-add-circle-outline"
-							onPress={() => {
-								const tmp = dbGenerator("service")
-								dispatch(addService(tmp))
-							}}
-						/>
-					) : null}
-					<Item
-						title="Archive"
-						iconName="ios-archive"
-						onPress={() => navigation.navigate("Archive")}
-					/>
-					{/* <Item
-						title="Add Service"
-						iconName="ios-add-circle"
-						onPress={() => navigation.navigate("CreateService")}
-					/> */}
-				</HeaderButtons>
-			),
-		})
-	}
+					</HeaderButtons>
+				),
+			})
+		}
+	}, [showArchvedOnly, services, dev])
 
 	if (services.length == 0) {
 		return (

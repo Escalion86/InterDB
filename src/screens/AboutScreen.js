@@ -30,29 +30,6 @@ const AboutScreen = ({ navigation, route }) => {
 		}
 	}
 
-	navigation.setOptions({
-		title: `О приложении`,
-		// headerRight: () => (
-		// 	<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-		// 		<Item
-		// 			title="Delete Client"
-		// 			iconName="ios-trash"
-		// 			onPress={() => {
-		// 				dispatch(deleteClient(client.id))
-		// 				navigation.navigate("Clients")
-		// 			}}
-		// 		/>
-		// 		<Item
-		// 			title="Edit Client"
-		// 			iconName="md-create"
-		// 			onPress={() => {
-		// 				navigation.navigate("CreateClient", { client: client })
-		// 			}}
-		// 		/>
-		// 	</HeaderButtons>
-		// ),
-	})
-
 	return (
 		<View style={styles.container}>
 			<ScrollView style={styles.content}>

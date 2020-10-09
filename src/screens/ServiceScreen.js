@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import {
 	StyleSheet,
@@ -92,36 +92,38 @@ const ServiceScreen = ({ navigation, route }) => {
 		/>
 	))
 
-	navigation.setOptions({
-		title: `Услуга`,
-		headerRight: () => (
-			<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-				<Item
-					title="Archiving Service"
-					iconName="md-archive"
-					buttonStyle={archive ? { color: "red" } : null}
-					onPress={() => {
-						toggleArchive()
-					}}
-				/>
-				<Item
-					title="Delete Service"
-					iconName="ios-trash"
-					onPress={() => {
-						modalDeleteService(service)
-					}}
-				/>
-				<Item
-					title="Edit Service"
-					iconName="md-create"
-					onPress={() => {
-						navigation.navigate("CreateService", { service: service })
-					}}
-				/>
-				{modal}
-			</HeaderButtons>
-		),
-	})
+	useEffect(() => {
+		navigation.setOptions({
+			title: `Услуга`,
+			headerRight: () => (
+				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+					<Item
+						title="Archiving Service"
+						iconName="md-archive"
+						buttonStyle={archive ? { color: "red" } : null}
+						onPress={() => {
+							toggleArchive()
+						}}
+					/>
+					<Item
+						title="Delete Service"
+						iconName="ios-trash"
+						onPress={() => {
+							modalDeleteService(service)
+						}}
+					/>
+					<Item
+						title="Edit Service"
+						iconName="md-create"
+						onPress={() => {
+							navigation.navigate("CreateService", { service: service })
+						}}
+					/>
+					{modal}
+				</HeaderButtons>
+			),
+		})
+	}, [service, archive])
 
 	return (
 		<ScrollView style={styles.container}>

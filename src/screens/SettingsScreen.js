@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useContext } from "react"
 import { AppRegistry, Dimensions, StyleSheet, Text, View } from "react-native"
 import { useTheme } from "@react-navigation/native"
 import {
@@ -21,29 +21,6 @@ const SettingsScreen = ({ navigation, route }) => {
 	const theme = useTheme()
 	const { colors, fontSize } = theme
 	const { setDark, setAccent } = useContext(ThemeContext)
-
-	navigation.setOptions({
-		title: `Настройки`,
-		// headerRight: () => (
-		// 	<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-		// 		<Item
-		// 			title="Delete Client"
-		// 			iconName="ios-trash"
-		// 			onPress={() => {
-		// 				dispatch(deleteClient(client.id))
-		// 				navigation.navigate("Clients")
-		// 			}}
-		// 		/>
-		// 		<Item
-		// 			title="Edit Client"
-		// 			iconName="md-create"
-		// 			onPress={() => {
-		// 				navigation.navigate("CreateClient", { client: client })
-		// 			}}
-		// 		/>
-		// 	</HeaderButtons>
-		// ),
-	})
 
 	const changeColor = (colorHsvOrRgb, resType) => {
 		if (resType === "end") {

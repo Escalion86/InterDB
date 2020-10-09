@@ -81,13 +81,38 @@ const EventsStackScreen = ({ navigation }) => (
 			component={EventsScreen}
 			// initialParams={{ actual: false }}
 			options={{
+				title: "События",
 				headerLeft: () => burgerButton(navigation),
 			}}
 		/>
-		<EventsStack.Screen name="Event" component={EventScreen} />
-		<EventsStack.Screen name="CreateEvent" component={CreateEventScreen} />
-		<EventsStack.Screen name="CreateClient" component={CreateClientScreen} />
-		<EventsStack.Screen name="CreateService" component={CreateServiceScreen} />
+		<EventsStack.Screen
+			name="Event"
+			component={EventScreen}
+			options={{
+				title: "Событие",
+			}}
+		/>
+		<EventsStack.Screen
+			name="CreateEvent"
+			component={CreateEventScreen}
+			options={{
+				title: "",
+			}}
+		/>
+		<EventsStack.Screen
+			name="CreateClient"
+			component={CreateClientScreen}
+			options={{
+				title: "",
+			}}
+		/>
+		<EventsStack.Screen
+			name="CreateService"
+			component={CreateServiceScreen}
+			options={{
+				title: "",
+			}}
+		/>
 	</StackNavigator>
 )
 
@@ -98,13 +123,38 @@ const ClientsStackScreen = ({ navigation }) => (
 			component={ClientsScreen}
 			initialParams={{ actual: false }}
 			options={{
+				title: "Клиенты",
 				headerLeft: () => burgerButton(navigation),
 			}}
 		/>
-		<ClientsStack.Screen name="Client" component={ClientScreen} />
-		<ClientsStack.Screen name="CreateClient" component={CreateClientScreen} />
-		<ClientsStack.Screen name="Event" component={EventScreen} />
-		<ClientsStack.Screen name="CreateEvent" component={CreateEventScreen} />
+		<ClientsStack.Screen
+			name="Client"
+			component={ClientScreen}
+			options={{
+				title: "Клиент",
+			}}
+		/>
+		<ClientsStack.Screen
+			name="CreateClient"
+			component={CreateClientScreen}
+			options={{
+				title: "",
+			}}
+		/>
+		<ClientsStack.Screen
+			name="Event"
+			component={EventScreen}
+			options={{
+				title: "Событие",
+			}}
+		/>
+		<ClientsStack.Screen
+			name="CreateEvent"
+			component={CreateEventScreen}
+			options={{
+				title: "",
+			}}
+		/>
 	</StackNavigator>
 )
 
@@ -114,10 +164,17 @@ const DevStackScreen = ({ navigation }) => (
 			name="DevDB"
 			component={DevScreen}
 			options={{
+				title: `Панель разработчика`,
 				headerLeft: () => burgerButton(navigation),
 			}}
 		/>
-		<DevStack.Screen name="DevTable" component={DevTableScreen} />
+		<DevStack.Screen
+			name="DevTable"
+			component={DevTableScreen}
+			options={{
+				title: `Таблица`,
+			}}
+		/>
 		{/* <DevStack.Screen
       name="DevColumn"
       component={DevColumnScreen}
@@ -131,6 +188,7 @@ const AboutStackScreen = ({ navigation }) => (
 			name="About"
 			component={AboutScreen}
 			options={{
+				title: `О приложении`,
 				headerLeft: () => burgerButton(navigation),
 			}}
 		/>
@@ -148,6 +206,7 @@ const SettingsStackScreen = ({ navigation }) => (
 			name="Settings"
 			component={SettingsScreen}
 			options={{
+				title: "Настройки",
 				headerLeft: () => burgerButton(navigation),
 			}}
 		/>
@@ -162,23 +221,45 @@ const ServicesStackScreen = ({ navigation }) => (
 			name="Services"
 			component={ServicesScreen}
 			options={{
+				title: "Услуги",
 				headerLeft: () => burgerButton(navigation),
 			}}
 		/>
 		<ServicesStack.Screen
 			name="Archive"
 			component={ServicesScreen}
-			// options={{
-			// 	headerLeft: () => burgerButton(navigation),
-			// }}
+			options={{
+				title: "Архив услуг",
+			}}
 		/>
-		<ServicesStack.Screen name="Service" component={ServiceScreen} />
+		<ServicesStack.Screen
+			name="Service"
+			component={ServiceScreen}
+			options={{
+				title: "Услуга",
+			}}
+		/>
 		<ServicesStack.Screen
 			name="CreateService"
 			component={CreateServiceScreen}
+			options={{
+				title: "",
+			}}
 		/>
-		<ServicesStack.Screen name="Event" component={EventScreen} />
-		<ServicesStack.Screen name="CreateEvent" component={CreateEventScreen} />
+		<ServicesStack.Screen
+			name="Event"
+			component={EventScreen}
+			options={{
+				title: "Событие",
+			}}
+		/>
+		<ServicesStack.Screen
+			name="CreateEvent"
+			component={CreateEventScreen}
+			options={{
+				title: "",
+			}}
+		/>
 	</StackNavigator>
 )
 

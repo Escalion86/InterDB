@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { StyleSheet, ScrollView, ToastAndroid } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
@@ -43,20 +43,22 @@ const CreateServiceScreen = ({ navigation, route }) => {
 		}
 	}
 
-	navigation.setOptions({
-		title: service.id ? `Редактирование услуги` : `Создание услуги`,
-		headerRight: () => (
-			<>
-				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-					<Item
-						title="Save Service"
-						iconName="ios-save"
-						onPress={saveHandler}
-					/>
-				</HeaderButtons>
-			</>
-		),
-	})
+	useEffect(() => {
+		navigation.setOptions({
+			title: service.id ? `Редактирование услуги` : `Создание услуги`,
+			headerRight: () => (
+				<>
+					<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+						<Item
+							title="Save Service"
+							iconName="ios-save"
+							onPress={saveHandler}
+						/>
+					</HeaderButtons>
+				</>
+			),
+		})
+	}, [service])
 
 	return (
 		<ScrollView style={styles.container}>

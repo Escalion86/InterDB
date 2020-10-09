@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { StyleSheet, Text, View, ScrollView, ToastAndroid } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
@@ -68,14 +68,16 @@ const CreateClientScreen = ({ navigation, route }) => {
 		}
 	}
 
-	navigation.setOptions({
-		title: client.id ? `Редактирование клиента` : `Создание клиента`,
-		headerRight: () => (
-			<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-				<Item title="Save Client" iconName="ios-save" onPress={saveHandler} />
-			</HeaderButtons>
-		),
-	})
+	useEffect(() => {
+		navigation.setOptions({
+			title: client.id ? `Редактирование клиента` : `Создание клиента`,
+			headerRight: () => (
+				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+					<Item title="Save Client" iconName="ios-save" onPress={saveHandler} />
+				</HeaderButtons>
+			),
+		})
+	}, [client])
 
 	return (
 		<ScrollView style={styles.container}>

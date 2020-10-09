@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { StyleSheet, Text, View } from "react-native"
 import { useTheme } from "@react-navigation/native"
@@ -33,32 +33,34 @@ const ClientsScreen = ({ navigation, route }) => {
 		)
 	}
 
-	navigation.setOptions({
-		title: `Клиенты (${clients.length})`,
-		headerRight: () => (
-			<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-				{dev ? (
-					<Item
-						title="Delete all clients"
-						iconName="ios-trash"
-						onPress={() => {
-							dispatch(deleteAllClients())
-						}}
-					/>
-				) : null}
-				{dev ? (
-					<Item
-						title="Add random client"
-						iconName="ios-add-circle-outline"
-						onPress={() => {
-							const tmp = dbGenerator("client")
-							dispatch(addClient(tmp))
-						}}
-					/>
-				) : null}
-			</HeaderButtons>
-		),
-	})
+	useEffect(() => {
+		navigation.setOptions({
+			title: `Клиенты (${clients.length})`,
+			headerRight: () => (
+				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+					{dev ? (
+						<Item
+							title="Delete all clients"
+							iconName="ios-trash"
+							onPress={() => {
+								dispatch(deleteAllClients())
+							}}
+						/>
+					) : null}
+					{dev ? (
+						<Item
+							title="Add random client"
+							iconName="ios-add-circle-outline"
+							onPress={() => {
+								const tmp = dbGenerator("client")
+								dispatch(addClient(tmp))
+							}}
+						/>
+					) : null}
+				</HeaderButtons>
+			),
+		})
+	}, [clients, dev])
 
 	if (loading) {
 		return (
