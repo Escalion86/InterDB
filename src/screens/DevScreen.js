@@ -3,7 +3,8 @@ import { StyleSheet, View } from "react-native"
 import { useDispatch } from "react-redux"
 import { reInitTable } from "../store/actions/db"
 import { DB } from "../db/db"
-import { DevBtn, DevDropDownPicker } from "../components/devComponents"
+import { DevDropDownPicker } from "../components/devComponents"
+import Button from "../components/Button"
 
 const DevScreen = ({ navigation, route }) => {
 	const dispatch = useDispatch()
@@ -26,16 +27,16 @@ const DevScreen = ({ navigation, route }) => {
 
 	return (
 		<View style={styles.container}>
-			<DevBtn
+			<Button
 				title="Очистить и перезапустить БД"
 				onPress={() => {
 					dispatch(reInitTable())
 				}}
 			/>
-			<DevBtn title="Инициализировать БД" onPress={() => DB.init()} />
+			<Button title="Инициализировать БД" onPress={() => DB.init()} />
 
-			<DevBtn title="Закрыть БД" onPress={() => DB.closeDB()} />
-			<DevBtn title="Открыть БД" onPress={() => DB.openDB()} />
+			<Button title="Закрыть БД" onPress={() => DB.closeDB()} />
+			<Button title="Открыть БД" onPress={() => DB.openDB()} />
 			<View style={{ flexDirection: "row" }}>
 				<DevDropDownPicker
 					tables={tables}
@@ -44,13 +45,10 @@ const DevScreen = ({ navigation, route }) => {
 					onChangeItem={(value) => {
 						setSelectedTable(value.value)
 					}}
-					style={{ flex: 1 }}
-				/>
-				<DevBtn
-					title="Открыть Таблицу"
 					onPress={() => loadColumns(selectedTable)}
-					style={{ marginLeft: 6 }}
 					disabled={!selectedTable}
+					style={{ flex: 1 }}
+					buttonTitle="Открыть таблицу"
 				/>
 			</View>
 			{/* <Timer /> */}

@@ -8,6 +8,8 @@ const Button = ({
 	onPress = () => {},
 	onLongPress = () => {},
 	style = {},
+	disabled = false,
+	textFontSize = "medium",
 }) => {
 	const { colors, fontSize } = useTheme()
 	return (
@@ -23,8 +25,12 @@ const Button = ({
 			<Text
 				style={{
 					...styles.buttonTitle,
-					fontSize: fontSize.medium,
-					color: btnDecline ? colors.abortText : colors.accentText,
+					fontSize: fontSize[textFontSize],
+					color: disabled
+						? colors.disabled
+						: btnDecline
+						? colors.abortText
+						: colors.accentText,
 				}}
 			>
 				{title}
@@ -34,11 +40,13 @@ const Button = ({
 }
 const styles = StyleSheet.create({
 	button: {
-		padding: 12,
+		justifyContent: "center",
+		paddingHorizontal: 12,
 		borderRadius: 10,
 		alignItems: "center",
 		marginVertical: 7,
 		width: "100%",
+		minHeight: 44,
 	},
 	buttonTitle: {
 		fontWeight: "bold",

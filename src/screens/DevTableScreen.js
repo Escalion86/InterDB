@@ -20,6 +20,7 @@ import {
 	MenuTrigger,
 	renderers,
 } from "react-native-popup-menu"
+import Button from "../components/Button"
 
 const DevTableScreen = ({ navigation, route }) => {
 	const { colors, fontSize } = useTheme()
@@ -68,7 +69,7 @@ const DevTableScreen = ({ navigation, route }) => {
 							loadColumns(selectedTable)
 						}}
 					/>
-					<DevBtn
+					<Button
 						title="Удалить таблицу"
 						onPress={() => {
 							DB.deleteTable(selectedTable)
