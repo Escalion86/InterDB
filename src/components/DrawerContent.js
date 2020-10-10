@@ -21,7 +21,10 @@ const DrawerContent = (props) => {
 
 	const { dev } = useContext(AppContext)
 
-	const labelStyle = { fontSize: fontSize.medium, color: colors.text }
+	const labelStyle = {
+		fontSize: fontSize.medium,
+		color: colors.text,
+	}
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -70,7 +73,7 @@ const DrawerContent = (props) => {
 									name="md-calendar"
 									size={iconSize.small}
 									color={colors.icon}
-									style={{ marginLeft: 5 }}
+									// style={{ marginLeft: 5 }}
 								/>
 							)}
 							label="События"
@@ -85,7 +88,7 @@ const DrawerContent = (props) => {
 									name="md-people"
 									size={iconSize.small}
 									color={colors.icon}
-									style={{ marginLeft: 5 }}
+									// style={{ marginLeft: 5 }}
 								/>
 							)}
 							label="Клиенты"
@@ -100,7 +103,7 @@ const DrawerContent = (props) => {
 									name="md-briefcase"
 									size={iconSize.small}
 									color={colors.icon}
-									style={{ marginLeft: 5 }}
+									// style={{ marginLeft: 5 }}
 								/>
 							)}
 							label="Услуги"
@@ -133,7 +136,7 @@ const DrawerContent = (props) => {
 							name="md-settings"
 							size={iconSize.small}
 							color={colors.icon}
-							style={{ marginLeft: 5 }}
+							// style={{ marginLeft: 5 }}
 						/>
 					)}
 					label="Настройки"
@@ -148,7 +151,7 @@ const DrawerContent = (props) => {
 							name="md-information-circle-outline"
 							size={iconSize.small}
 							color={colors.icon}
-							style={{ marginLeft: 5 }}
+							// style={{ marginLeft: 5 }}
 						/>
 					)}
 					label="О приложении"
@@ -164,7 +167,7 @@ const DrawerContent = (props) => {
 								name="md-bug"
 								size={iconSize.small}
 								color={colors.icon}
-								style={{ marginLeft: 5 }}
+								// style={{ marginLeft: 5 }}
 							/>
 						)}
 						label="Панель разработчика"

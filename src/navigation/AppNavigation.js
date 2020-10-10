@@ -363,6 +363,10 @@ const DrawerScreen = () => {
 			// 		// },
 			// 	}
 			// }
+			// drawerStyle={{
+			// 	// backgroundColor: '#c6cbef',
+			// 	width: 300,
+			// }}
 			drawerContent={(props) => <DrawerContent {...props} />}
 		>
 			<Drawer.Screen
