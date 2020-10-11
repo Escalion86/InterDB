@@ -27,7 +27,7 @@ const ClientScreen = ({ navigation, route }) => {
 		setModal(
 			<ModalDeleteClient
 				client={client}
-				// navigation={navigation}
+				navigation={navigation}
 				callbackToCloseModal={() => setModal(null)}
 				callbackAfterAccept={() => navigation.goBack()}
 			/>
@@ -38,7 +38,7 @@ const ClientScreen = ({ navigation, route }) => {
 		setModal(
 			<ModalDeleteEvent
 				event={event}
-				// navigation={navigation}
+				navigation={navigation}
 				callbackToCloseModal={() => setModal(null)}
 				callbackAfterAccept={() => {}}
 			/>

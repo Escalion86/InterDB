@@ -47,7 +47,7 @@ const EventScreen = ({ navigation, route }) => {
 		setModal(
 			<ModalDeleteEvent
 				event={event}
-				// navigation={navigation}
+				navigation={navigation}
 				callbackToCloseModal={() => setModal(null)}
 				callbackAfterAccept={() => navigation.goBack()}
 			/>

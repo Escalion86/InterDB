@@ -39,7 +39,7 @@ const ServiceScreen = ({ navigation, route }) => {
 		setModal(
 			<ModalDeleteService
 				service={service}
-				// navigation={navigation}
+				navigation={navigation}
 				callbackToCloseModal={() => setModal(null)}
 				callbackAfterAccept={() => navigation.goBack()}
 			/>
@@ -50,7 +50,7 @@ const ServiceScreen = ({ navigation, route }) => {
 		setModal(
 			<ModalDeleteEvent
 				event={event}
-				// navigation={navigation}
+				navigation={navigation}
 				callbackToCloseModal={() => setModal(null)}
 				callbackAfterAccept={() => {}}
 			/>

@@ -34,7 +34,7 @@ const ServicesScreen = ({ navigation, route }) => {
 		setModal(
 			<ModalDeleteService
 				service={service}
-				// navigation={navigation}
+				navigation={navigation}
 				callbackToCloseModal={() => setModal(null)}
 			/>
 		)

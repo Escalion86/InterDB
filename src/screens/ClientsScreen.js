@@ -27,7 +27,7 @@ const ClientsScreen = ({ navigation, route }) => {
 		setModal(
 			<ModalDeleteClient
 				client={client}
-				// navigation={navigation}
+				navigation={navigation}
 				callbackToCloseModal={() => setModal(null)}
 			/>
 		)
