@@ -272,6 +272,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 							setModal(null)
 						}}
 						listMode={true}
+						swipeable={false}
 					/>
 				)}
 				containerStyle={{ height: 358 }}
@@ -308,6 +309,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 							if (servicePicked) setModal(modalUpdateFinance)
 						}}
 						listMode={true}
+						swipeable={false}
 					/>
 				)}
 				containerStyle={{ height: 358 }}
@@ -407,6 +409,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 					onPress={() => {
 						setModal(modalServices)
 					}}
+					swipeable={false}
 				/>
 			)}
 
@@ -436,6 +439,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 					onPress={() => {
 						setModal(modalClients)
 					}}
+					swipeable={false}
 				/>
 			)}
 

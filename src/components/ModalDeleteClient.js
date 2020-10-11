@@ -60,6 +60,7 @@ const ModalDeleteClient = ({
 							navigation.navigate("Event", { event: item })
 						}}
 						listMode={true}
+						swipeable={false}
 					/>
 				)}
 				fabVisible={false}
