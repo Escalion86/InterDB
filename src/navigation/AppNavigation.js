@@ -113,6 +113,20 @@ const EventsStackScreen = ({ navigation }) => (
 				title: "",
 			}}
 		/>
+		<EventsStack.Screen
+			name="Service"
+			component={ServiceScreen}
+			options={{
+				title: "Услуга",
+			}}
+		/>
+		<EventsStack.Screen
+			name="Client"
+			component={ClientScreen}
+			options={{
+				title: "Клиент",
+			}}
+		/>
 	</StackNavigator>
 )
 
