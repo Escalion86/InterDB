@@ -12,6 +12,7 @@ import tinycolor from "tinycolor2"
 
 // import SliderColorPicker from "../components/SliderColorPicker"
 import { ThemeContext } from "../ThemeContext"
+import { AppContext } from "../AppContext"
 
 import Button from "../components/Button"
 
@@ -21,6 +22,7 @@ const SettingsScreen = ({ navigation, route }) => {
 	const theme = useTheme()
 	const { colors, fontSize } = theme
 	const { setDark, setAccent } = useContext(ThemeContext)
+	const { dev } = useContext(AppContext)
 
 	const changeColor = (colorHsvOrRgb, resType) => {
 		if (resType === "end") {
@@ -45,30 +47,29 @@ const SettingsScreen = ({ navigation, route }) => {
 			</View>
 			<View style={styles.row}>
 				<Text style={{ fontSize: fontSize.medium, color: colors.text }}>
-					Цвет активных элементов
+					Цвет активных элементов{dev ? ` (${colors.accent})` : ""}
 				</Text>
 				<View
 					style={{
-						marginHorizontal: 20,
+						marginHorizontal: 25,
 						marginTop: 10,
 						height: 70,
-						width: width - 40,
+						width: width - 30,
 					}}
 				>
-					{/* <SliderColorPicker /> */}
-
 					<SliderHuePicker
 						// ref={(view) => {
 						// 	sliderHuePicker = view
 						// }}
 						oldColor={colors.accent}
-						trackStyle={[{ height: 12, width: width - 50 }]}
+						trackStyle={[{ height: 12, width: width - 60 }]}
 						thumbStyle={styles.thumb}
 						useNativeDriver={true}
 						onColorChange={changeColor}
 						moveVelocityThreshold={0}
 						style={{
 							marginTop: 0,
+							width: width - 60,
 						}}
 					/>
 					<SliderSaturationPicker
@@ -76,7 +77,7 @@ const SettingsScreen = ({ navigation, route }) => {
 						// 	this.sliderSaturationPicker = view
 						// }}
 						oldColor={colors.accent}
-						trackStyle={[{ height: 12, width: width - 50 }]}
+						trackStyle={[{ height: 12, width: width - 60 }]}
 						thumbStyle={styles.thumb}
 						useNativeDriver={true}
 						onColorChange={changeColor}
@@ -84,7 +85,7 @@ const SettingsScreen = ({ navigation, route }) => {
 							height: 12,
 							borderRadius: 6,
 							backgroundColor: colors.accent,
-							width: width - 50,
+							width: width - 60,
 							marginTop: 0,
 						}}
 					/>
