@@ -19,6 +19,7 @@ const ClientCard = ({
 	onPress = null,
 	listMode = false,
 	onDelete = null,
+	swipeable = true,
 }) => {
 	const theme = useTheme()
 	const { colors, dark } = theme
@@ -80,21 +81,27 @@ const ClientCard = ({
 			)
 		}
 
-		// const CardDesc = ({ desc }) => (
-		// 	<View style={styles.carddesc}>
-		// 		<Text style={styles.carddesctext}>{desc}</Text>
-		// 	</View>
-		// )
+		const Container = ({ children }) => {
+			if (swipeable) {
+				return (
+					<SwipeableCard
+						onLeftOpen={() => {
+							navigation.navigate("CreateClient", {
+								client: client,
+							})
+						}}
+						onRightOpen={onDelete}
+					>
+						{children}
+					</SwipeableCard>
+				)
+			} else {
+				return <>{children}</>
+			}
+		}
 
 		return (
-			<SwipeableCard
-				onLeftOpen={() => {
-					navigation.navigate("CreateClient", {
-						client: client,
-					})
-				}}
-				onRightOpen={onDelete}
-			>
+			<Container>
 				<TouchableHighlight
 					// activeOpacity={1}
 					delayPressIn={50}
@@ -137,8 +144,7 @@ const ClientCard = ({
 						)}
 					</View>
 				</TouchableHighlight>
-				{/* {modal} */}
-			</SwipeableCard>
+			</Container>
 		)
 	}
 }

@@ -33,6 +33,7 @@ const EventCard = ({
 	showClient = true,
 	showAdress = true,
 	showService = true,
+	swipeable = true,
 }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
@@ -127,15 +128,27 @@ const EventCard = ({
 			</View>
 		)
 
+		const Container = ({ children }) => {
+			if (swipeable) {
+				return (
+					<SwipeableCard
+						onLeftOpen={() =>
+							navigation.navigate("CreateEvent", {
+								event: event,
+							})
+						}
+						onRightOpen={onDelete}
+					>
+						{children}
+					</SwipeableCard>
+				)
+			} else {
+				return <>{children}</>
+			}
+		}
+
 		return (
-			<SwipeableCard
-				onLeftOpen={() =>
-					navigation.navigate("CreateEvent", {
-						event: event,
-					})
-				}
-				onRightOpen={onDelete}
-			>
+			<Container>
 				<TouchableHighlight
 					// activeOpacity={1}
 					delayPressIn={50}
@@ -321,8 +334,7 @@ const EventCard = ({
 						</View>
 					</View>
 				</TouchableHighlight>
-				{/* {modal} */}
-			</SwipeableCard>
+			</Container>
 		)
 	}
 }

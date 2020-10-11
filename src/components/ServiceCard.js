@@ -25,6 +25,7 @@ const ServiceCard = ({
 	onPress = null,
 	listMode = false,
 	onDelete = null,
+	swipeable = true,
 }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
@@ -105,15 +106,27 @@ const ServiceCard = ({
 			</View>
 		)
 
+		const Container = ({ children }) => {
+			if (swipeable) {
+				return (
+					<SwipeableCard
+						onLeftOpen={() => {
+							navigation.navigate("CreateService", {
+								service: service,
+							})
+						}}
+						onRightOpen={onDelete}
+					>
+						{children}
+					</SwipeableCard>
+				)
+			} else {
+				return <>{children}</>
+			}
+		}
+
 		return (
-			<SwipeableCard
-				onLeftOpen={() => {
-					navigation.navigate("CreateService", {
-						service: service,
-					})
-				}}
-				onRightOpen={onDelete}
-			>
+			<Container>
 				<TouchableHighlight
 					// activeOpacity={1}
 					delayPressIn={50}
@@ -188,8 +201,7 @@ const ServiceCard = ({
 						</View>
 					</View>
 				</TouchableHighlight>
-				{/* {modal} */}
-			</SwipeableCard>
+			</Container>
 		)
 	}
 }
