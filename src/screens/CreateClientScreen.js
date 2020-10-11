@@ -15,6 +15,9 @@ import {
 	BirthdayPicker,
 } from "../components/createComponents"
 import trimingArrayValues from "../helpers/trimingArrayValues"
+import { HeaderBackButton } from "@react-navigation/stack"
+import ModalBottomMenu from "../components/ModalBottomMenu"
+import Button from "../components/Button"
 
 const CreateClientScreen = ({ navigation, route }) => {
 	const client =
@@ -24,6 +27,7 @@ const CreateClientScreen = ({ navigation, route }) => {
 
 	const dispatch = useDispatch()
 	const [newClient, setNewClient] = useState(client)
+	const [modal, setModal] = useState(null)
 
 	const nameFieldFilled =
 		newClient.name.trim() ||
@@ -68,9 +72,55 @@ const CreateClientScreen = ({ navigation, route }) => {
 		}
 	}
 
+	const modalSaveChanges = (
+		<ModalBottomMenu
+			title="Отменить изменения"
+			subtitle="Уверены что хотите выйти без сохранения?"
+			onAccept={() => navigation.goBack()}
+			visible={true}
+			onOuterClick={() => setModal(null)}
+		>
+			<Button
+				title="Выйти без сохранения"
+				btnDecline={false}
+				onPress={() => {
+					setModal(null)
+					navigation.goBack()
+				}}
+			/>
+			<Button
+				title="Сохранить и выйти"
+				btnDecline={false}
+				onPress={() => {
+					setModal(null)
+					saveHandler()
+					navigation.goBack()
+				}}
+			/>
+			<Button
+				title="Не уходить"
+				btnDecline={true}
+				onPress={() => {
+					setModal(null)
+				}}
+			/>
+		</ModalBottomMenu>
+	)
+
+	const checkChanges = () => {
+		for (let key in newClient) {
+			if (newClient[key] !== client[key]) {
+				setModal(modalSaveChanges)
+				return
+			}
+		}
+		navigation.goBack()
+	}
+
 	useEffect(() => {
 		navigation.setOptions({
 			title: client.id ? `Редактирование клиента` : `Создание клиента`,
+			headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
 			headerRight: () => (
 				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
 					<Item title="Save Client" iconName="ios-save" onPress={saveHandler} />
@@ -78,6 +128,12 @@ const CreateClientScreen = ({ navigation, route }) => {
 			),
 		})
 	}, [client])
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
+		})
+	}, [newClient])
 
 	return (
 		<ScrollView style={styles.container}>

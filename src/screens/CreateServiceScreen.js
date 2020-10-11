@@ -12,6 +12,9 @@ import {
 	TitleBlock,
 } from "../components/createComponents"
 import trimingArrayValues from "../helpers/trimingArrayValues"
+import { HeaderBackButton } from "@react-navigation/stack"
+import ModalBottomMenu from "../components/ModalBottomMenu"
+import Button from "../components/Button"
 
 const CreateServiceScreen = ({ navigation, route }) => {
 	const service =
@@ -21,6 +24,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
 
 	const dispatch = useDispatch()
 	const [newService, setNewService] = useState(service)
+	const [modal, setModal] = useState(null)
 	const nameFieldFilled = newService.name.trim() ? true : false
 
 	const { colors } = useTheme()
@@ -43,9 +47,55 @@ const CreateServiceScreen = ({ navigation, route }) => {
 		}
 	}
 
+	const modalSaveChanges = (
+		<ModalBottomMenu
+			title="Отменить изменения"
+			subtitle="Уверены что хотите выйти без сохранения?"
+			onAccept={() => navigation.goBack()}
+			visible={true}
+			onOuterClick={() => setModal(null)}
+		>
+			<Button
+				title="Выйти без сохранения"
+				btnDecline={false}
+				onPress={() => {
+					setModal(null)
+					navigation.goBack()
+				}}
+			/>
+			<Button
+				title="Сохранить и выйти"
+				btnDecline={false}
+				onPress={() => {
+					setModal(null)
+					saveHandler()
+					navigation.goBack()
+				}}
+			/>
+			<Button
+				title="Не уходить"
+				btnDecline={true}
+				onPress={() => {
+					setModal(null)
+				}}
+			/>
+		</ModalBottomMenu>
+	)
+
+	const checkChanges = () => {
+		for (let key in newService) {
+			if (newService[key] !== service[key]) {
+				setModal(modalSaveChanges)
+				return
+			}
+		}
+		navigation.goBack()
+	}
+
 	useEffect(() => {
 		navigation.setOptions({
 			title: service.id ? `Редактирование услуги` : `Создание услуги`,
+			headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
 			headerRight: () => (
 				<>
 					<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
@@ -59,6 +109,12 @@ const CreateServiceScreen = ({ navigation, route }) => {
 			),
 		})
 	}, [service])
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
+		})
+	}, [newService])
 
 	return (
 		<ScrollView style={styles.container}>
@@ -134,6 +190,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
 				postfix="&#8381;"
 				placeholder="0"
 			/>
+			{modal}
 		</ScrollView>
 	)
 }

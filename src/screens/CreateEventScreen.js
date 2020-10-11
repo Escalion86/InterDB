@@ -15,9 +15,7 @@ import {
 	DateTimePickerBlock,
 	TitleBlock,
 } from "../components/createComponents"
-import ModalBottomMenu, {
-	ModalBottomMenuYesNo,
-} from "../components/ModalBottomMenu"
+import ModalBottomMenu from "../components/ModalBottomMenu"
 import ScrollCardList from "../components/ScrollCardList"
 import ServiceCard from "../components/ServiceCard"
 import ClientCard from "../components/ClientCard"
@@ -30,6 +28,7 @@ import {
 	MenuTrigger,
 	renderers,
 } from "react-native-popup-menu"
+import { HeaderBackButton } from "@react-navigation/stack"
 
 const CreateEventScreen = ({ navigation, route }) => {
 	const event =
@@ -92,9 +91,20 @@ const CreateEventScreen = ({ navigation, route }) => {
 		}
 	}
 
+	const checkChanges = () => {
+		for (let key in newEvent) {
+			if (newEvent[key] !== event[key]) {
+				setModal(modalSaveChanges)
+				return
+			}
+		}
+		navigation.goBack()
+	}
+
 	useEffect(() => {
 		navigation.setOptions({
 			title: event.id ? `Редактирование события` : `Создание события`,
+			headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
 			headerRight: () => (
 				<>
 					<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
@@ -108,6 +118,12 @@ const CreateEventScreen = ({ navigation, route }) => {
 			),
 		})
 	}, [event])
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
+		})
+	}, [newEvent])
 
 	const InfoMenu = () => (
 		<Menu
@@ -180,7 +196,42 @@ const CreateEventScreen = ({ navigation, route }) => {
 		</Menu>
 	)
 
-	const modalUpdateFinance = (
+	const modalSaveChanges = (
+		<ModalBottomMenu
+			title="Отменить изменения"
+			subtitle="Уверены что хотите выйти без сохранения?"
+			onAccept={() => navigation.goBack()}
+			visible={true}
+			onOuterClick={() => setModal(null)}
+		>
+			<Button
+				title="Выйти без сохранения"
+				btnDecline={false}
+				onPress={() => {
+					setModal(null)
+					navigation.goBack()
+				}}
+			/>
+			<Button
+				title="Сохранить и выйти"
+				btnDecline={false}
+				onPress={() => {
+					setModal(null)
+					saveHandler()
+					navigation.goBack()
+				}}
+			/>
+			<Button
+				title="Не уходить"
+				btnDecline={true}
+				onPress={() => {
+					setModal(null)
+				}}
+			/>
+		</ModalBottomMenu>
+	)
+
+	const modalUpdateFinance = (serviceId) => (
 		<ModalBottomMenu
 			title="Обновление данных события"
 			subtitle="Внести данные услуги в собитие?"
@@ -191,7 +242,9 @@ const CreateEventScreen = ({ navigation, route }) => {
 				title="Обновить все данные"
 				btnDecline={false}
 				onPress={() => {
+					const serviceObj = services.find((item) => item.id == serviceId)
 					setEventItem({
+						service: serviceObj.id,
 						finance_price: serviceObj.finance_price,
 						finance_consumables: serviceObj.finance_consumables,
 						finance_assistants: serviceObj.finance_assistants,
@@ -206,7 +259,9 @@ const CreateEventScreen = ({ navigation, route }) => {
 				title="Обновить только финансовые данные"
 				btnDecline={false}
 				onPress={() => {
+					const serviceObj = services.find((item) => item.id == serviceId)
 					setEventItem({
+						service: serviceObj.id,
 						finance_price: serviceObj.finance_price,
 						finance_consumables: serviceObj.finance_consumables,
 						finance_assistants: serviceObj.finance_assistants,
@@ -218,7 +273,9 @@ const CreateEventScreen = ({ navigation, route }) => {
 				title="Обновить только данные тайминга"
 				btnDecline={false}
 				onPress={() => {
+					const serviceObj = services.find((item) => item.id == serviceId)
 					setEventItem({
+						service: serviceObj.id,
 						timing_duration: serviceObj.duration,
 						timing_preparetime: serviceObj.preparetime,
 						timing_collecttime: serviceObj.collecttime,
@@ -306,7 +363,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 							setEventItem({
 								service: item.id,
 							})
-							if (servicePicked) setModal(modalUpdateFinance)
+							if (servicePicked) setModal(modalUpdateFinance(item.id))
 						}}
 						listMode={true}
 						swipeable={false}
