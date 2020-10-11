@@ -433,18 +433,18 @@ export const BirthdayPicker = ({
 	year += ""
 	const { colors, fontSize } = useTheme()
 	const monthsNames = [
-		"Январь",
-		"Февраль",
-		"Март",
-		"Апрель",
-		"Май",
-		"Июнь",
-		"Июль",
-		"Август",
-		"Сентябрь",
-		"Октябрь",
-		"Ноябрь",
-		"Декабрь",
+		"Января",
+		"Февраля",
+		"Марта",
+		"Апреля",
+		"Мая",
+		"Июня",
+		"Июля",
+		"Августа",
+		"Сентября",
+		"Октября",
+		"Ноября",
+		"Декабря",
 	]
 	let daysNames = []
 	for (let i = 1; i <= 31; i++) {
@@ -738,7 +738,8 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontWeight: "bold",
 		marginTop: 6,
-		height: 40,
+		marginBottom: 3,
+		// height: 40,
 	},
 	text: {
 		flex: 2,

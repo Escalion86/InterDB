@@ -35,6 +35,7 @@ const ModalBottomMenu = ({
 				animationType="slide"
 				transparent={true}
 				visible={visible}
+				hardwareAccelerated={true}
 				// onRequestClose={() => {
 				// 	Alert.alert("Modal has been closed.")
 				// }}
@@ -52,9 +53,9 @@ const ModalBottomMenu = ({
 							backgroundColor: colors.border,
 							borderColor: colors.card,
 						}}
-						onSwipePerformed={(action) => {
-							if (action === "down") onOuterClick()
-						}}
+						// onSwipePerformed={(action) => {
+						// 	if (action === "down") onOuterClick()
+						// }}
 					>
 						<TouchableOpacity
 							style={{ position: "absolute", right: 18, top: 5 }}

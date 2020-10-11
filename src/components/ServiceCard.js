@@ -29,7 +29,7 @@ const ServiceCard = ({
 }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
-	const { colors, dark } = theme
+	const { colors, dark, fontSize } = theme
 	const styles = stylesFactory(theme)
 
 	if (!service) {

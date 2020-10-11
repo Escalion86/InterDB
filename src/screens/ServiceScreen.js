@@ -175,7 +175,7 @@ const ServiceScreen = ({ navigation, route }) => {
 			<TitleBlock title="Финансы по умолчанию" />
 			<TextBlock text={`Стоимость: ${service.finance_price} руб`} />
 			<TextBlock
-				text={`Затраты на расходники: ${service.finance_consumables} руб`}
+				text={`Затраты на расходные материалы: ${service.finance_consumables} руб`}
 			/>
 			<TextBlock
 				text={`Затраты на ассистентов: ${service.finance_assistants} руб`}

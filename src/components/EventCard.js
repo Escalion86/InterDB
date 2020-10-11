@@ -147,6 +147,8 @@ const EventCard = ({
 			}
 		}
 
+		console.log("render EventCard id: " + event.id)
+
 		return (
 			<Container>
 				<TouchableHighlight
@@ -183,10 +185,8 @@ const EventCard = ({
 								<View style={styles.carddesc}>
 									<Text style={styles.carddesctext}>
 										{event.location_town}, {event.location_street},{" "}
-										{Math.trunc(event.location_house)}
-										{event.location_room
-											? ` - ${Math.trunc(event.location_room)}`
-											: null}
+										{event.location_house}
+										{event.location_room ? ` - ${event.location_room}` : null}
 										{event.location_name ? ` (${event.location_name})` : null}
 									</Text>
 									<Ionicons
@@ -447,7 +447,8 @@ const stylesFactory = ({ colors, fontSize }) =>
 			textAlignVertical: "center",
 			textAlign: "center",
 			fontSize: fontSize.small,
-			minHeight: 40,
+			minHeight: 35,
+			padding: 5,
 			borderColor: colors.border,
 			borderTopWidth: 1,
 		},

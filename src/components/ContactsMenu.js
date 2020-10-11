@@ -50,7 +50,7 @@ const ContactsMenu = ({
 					// 	activeValue === key ? { backgroundColor: colors.active } : null
 					// }
 					children={
-						<View style={{ ...styles.container, ...style }}>
+						<View style={styles.container}>
 							<View
 								style={{
 									...styles.button,

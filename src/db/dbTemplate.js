@@ -88,7 +88,7 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 				finance_assistants: rndArray([0, 500, 1000, 1500, 2000]),
 				finance_tips: rndArray([0, 500, 1000, 1500, 2000]),
 				finance_consumables: rndArray([0, 0, 0, 500, 1000]),
-				comment: null,
+				comment: "",
 				status: rndArray([
 					"Заметка",
 					"Есть вопросы",
@@ -193,7 +193,7 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 					"Детский день рождения, стандарт",
 					"Детский день рождения, шоу",
 				]),
-				description: "Описание",
+				description: "",
 				finance_price: rndArray([5000, 6000, 7000, 8000, 9000, 10000]),
 				finance_consumables: rndArray([0, 200, 300]),
 				finance_assistants: rndArray([0, 0, 1000, 2000]),
