@@ -136,7 +136,7 @@ export const deleteEvent = (event) => {
 		await DB.deleteDataFromTable("events", event.id)
 		dispatch({
 			type: DELETE_EVENT,
-			id,
+			id: event.id,
 		})
 	}
 }
