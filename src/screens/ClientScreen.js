@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
-import { StyleSheet, View, ScrollView, Image } from "react-native"
+import {
+	StyleSheet,
+	View,
+	ScrollView,
+	Image,
+	ActivityIndicator,
+} from "react-native"
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
@@ -15,8 +21,10 @@ import EventCard from "../components/EventCard"
 
 const ClientScreen = ({ navigation, route }) => {
 	const client =
-		route.params !== undefined && route.params.client !== undefined
-			? route.params.client
+		route.params !== undefined && route.params.clientId !== undefined
+			? useSelector((state) => state.client.clients).find(
+					(item) => item.id == route.params.clientId
+			  )
 			: navigation.navigate("Clients")
 
 	const { dark, colors } = useTheme()
@@ -66,7 +74,7 @@ const ClientScreen = ({ navigation, route }) => {
 			navigation={navigation}
 			event={event}
 			onPress={() => {
-				navigation.navigate("Event", { event: event })
+				navigation.navigate("Event", { eventId: event.id })
 			}}
 			// listMode={true}
 			showClient={false}
@@ -94,13 +102,21 @@ const ClientScreen = ({ navigation, route }) => {
 						title="Edit Client"
 						iconName="md-create"
 						onPress={() => {
-							navigation.navigate("CreateClient", { client: client })
+							navigation.navigate("CreateClient", { clientId: client.id })
 						}}
 					/>
 				</HeaderButtons>
 			),
 		})
 	}, [client])
+
+	if (client.loading || client.deleting) {
+		return (
+			<View style={styles.center}>
+				<ActivityIndicator size="large" color={colors.text} />
+			</View>
+		)
+	}
 
 	return (
 		<ScrollView style={styles.container}>
@@ -205,5 +221,10 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 5,
+	},
+	center: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 })

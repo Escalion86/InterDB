@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react"
-import { StyleSheet, Text, View, ScrollView } from "react-native"
+import {
+	StyleSheet,
+	Text,
+	View,
+	ScrollView,
+	ActivityIndicator,
+} from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
@@ -12,12 +18,17 @@ import { TitleBlock } from "../components/createComponents"
 import ServiceCard from "../components/ServiceCard"
 import ClientCard from "../components/ClientCard"
 import { formatDate, formatTime, getWeekDay } from "../helpers/date"
+import { useTheme } from "@react-navigation/native"
 
 const EventScreen = ({ navigation, route }) => {
 	const event =
-		route.params !== undefined && route.params.event !== undefined
-			? route.params.event
+		route.params !== undefined && route.params.eventId !== undefined
+			? useSelector((state) => state.event.events).find(
+					(item) => item.id == route.params.eventId
+			  )
 			: navigation.navigate("Events")
+
+	const { colors } = useTheme()
 
 	const [modal, setModal] = useState(null)
 
@@ -75,7 +86,7 @@ const EventScreen = ({ navigation, route }) => {
 						title="Edit Event"
 						iconName="md-create"
 						onPress={() => {
-							navigation.navigate("CreateEvent", { event: event })
+							navigation.navigate("CreateEvent", { eventId: event.id })
 						}}
 					/>
 					{/* <ModalDeleteConfirm /> */}
@@ -83,6 +94,14 @@ const EventScreen = ({ navigation, route }) => {
 			),
 		})
 	}, [event])
+
+	if (event.loading || event.deleting) {
+		return (
+			<View style={styles.center}>
+				<ActivityIndicator size="large" color={colors.text} />
+			</View>
+		)
+	}
 
 	return (
 		<ScrollView style={styles.container}>
@@ -177,5 +196,10 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 5,
+	},
+	center: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 })

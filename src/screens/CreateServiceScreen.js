@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { StyleSheet, ScrollView, ToastAndroid } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
@@ -18,8 +18,10 @@ import Button from "../components/Button"
 
 const CreateServiceScreen = ({ navigation, route }) => {
 	const service =
-		route.params !== undefined && route.params.service !== undefined
-			? route.params.service
+		route.params !== undefined && route.params.serviceId !== undefined
+			? useSelector((state) => state.service.services).find(
+					(item) => item.id == route.params.serviceId
+			  )
 			: dbDefault("services")
 
 	const dispatch = useDispatch()

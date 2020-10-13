@@ -33,8 +33,10 @@ import { addEventNotification } from "../helpers/notifications"
 
 const CreateEventScreen = ({ navigation, route }) => {
 	const event =
-		route.params !== undefined && route.params.event !== undefined
-			? route.params.event
+		route.params !== undefined && route.params.eventId !== undefined
+			? useSelector((state) => state.event.events).find(
+					(item) => item.id == route.params.eventId
+			  )
 			: { ...dbDefault("events"), date: new Date().setSeconds(0, 0) }
 
 	const { colors, fontSize } = useTheme()
@@ -80,7 +82,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 	const clientPicked = clientObj ? true : false
 
 	//TODO Сделать проверку на заполнение необходимых полей
-	let saveHandler = async () => {
+	const saveHandler = async () => {
 		if (servicePicked && clientPicked) {
 			newEvent.notification_id = await addEventNotification(newEvent)
 			event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))

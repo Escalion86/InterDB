@@ -50,7 +50,7 @@ const ServiceCard = ({
 	} else {
 		if (!onPress)
 			onPress = () => {
-				navigation.navigate("Service", { service: service })
+				navigation.navigate("Service", { serviceId: service.id })
 			}
 
 		const profit =

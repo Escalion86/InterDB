@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { StyleSheet, Text, View, ScrollView, ToastAndroid } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
-import { useDispatch } from "react-redux"
 import { addClient, updateClient } from "../store/actions/client"
 import { useTheme } from "@react-navigation/native"
 import { dbDefault } from "../db/dbTemplate"
@@ -21,8 +21,10 @@ import Button from "../components/Button"
 
 const CreateClientScreen = ({ navigation, route }) => {
 	const client =
-		route.params !== undefined && route.params.client !== undefined
-			? route.params.client
+		route.params !== undefined && route.params.clientId !== undefined
+			? useSelector((state) => state.client.clients).find(
+					(item) => item.id == route.params.clientId
+			  )
 			: { ...dbDefault("clients"), birthday: null }
 
 	const dispatch = useDispatch()

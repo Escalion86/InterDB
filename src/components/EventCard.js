@@ -59,7 +59,7 @@ const EventCard = ({
 	} else {
 		if (!onPress)
 			onPress = () => {
-				navigation.navigate("Event", { event: event })
+				navigation.navigate("Event", { eventId: event.id })
 			}
 
 		// const dispatch = useDispatch()

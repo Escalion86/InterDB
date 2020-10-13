@@ -43,7 +43,7 @@ const ClientCard = ({
 	} else {
 		if (!onPress)
 			onPress = () => {
-				navigation.navigate("Client", { client: client })
+				navigation.navigate("Client", { clientId: client.id })
 			}
 		const birthday = formatBirthday(
 			client.birthday_year,

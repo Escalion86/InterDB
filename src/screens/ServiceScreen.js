@@ -8,6 +8,7 @@ import {
 	ToastAndroid,
 	ScrollView,
 	Image,
+	ActivityIndicator,
 } from "react-native"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { AppHeaderIcon } from "../components/AppHeaderIcon"
@@ -26,8 +27,10 @@ import { TitleBlock } from "../components/createComponents"
 
 const ServiceScreen = ({ navigation, route }) => {
 	const service =
-		route.params !== undefined && route.params.service !== undefined
-			? route.params.service
+		route.params !== undefined && route.params.serviceId !== undefined
+			? useSelector((state) => state.service.services).find(
+					(item) => item.id == route.params.serviceId
+			  )
 			: navigation.navigate("Services")
 
 	const { dark, colors } = useTheme()
@@ -84,7 +87,7 @@ const ServiceScreen = ({ navigation, route }) => {
 			navigation={navigation}
 			event={event}
 			onPress={() => {
-				navigation.navigate("Event", { event: event })
+				navigation.navigate("Event", { eventId: event.id })
 			}}
 			// listMode={true}
 			showService={false}
@@ -116,7 +119,7 @@ const ServiceScreen = ({ navigation, route }) => {
 						title="Edit Service"
 						iconName="md-create"
 						onPress={() => {
-							navigation.navigate("CreateService", { service: service })
+							navigation.navigate("CreateService", { serviceId: service.id })
 						}}
 					/>
 					{modal}
@@ -124,6 +127,14 @@ const ServiceScreen = ({ navigation, route }) => {
 			),
 		})
 	}, [service, archive])
+
+	if (service.loading || service.deleting) {
+		return (
+			<View style={styles.center}>
+				<ActivityIndicator size="large" color={colors.text} />
+			</View>
+		)
+	}
 
 	return (
 		<ScrollView style={styles.container}>
@@ -210,5 +221,10 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 5,
+	},
+	center: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 })
