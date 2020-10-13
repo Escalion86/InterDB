@@ -22,8 +22,6 @@ import IconMenu from "./IconMenu"
 import linkTo from "../helpers/linkTo"
 import ContactsMenu from "./ContactsMenu"
 import SwipeableCard from "../components/SwipeableCard"
-// import { deleteEvent } from "../store/actions/event"
-// import ModalDeleteEvent from "./ModalDeleteEvent"
 
 const EventCard = ({
 	navigation,

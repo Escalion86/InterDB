@@ -13,6 +13,10 @@ import {
 	SET_FINANCE_STATUS,
 } from "../types"
 import { DB } from "../../db/db"
+import {
+	addEventNotification,
+	deleteNotification,
+} from "../../helpers/notifications"
 
 export const loadEvents = () => {
 	return async (dispatch) => {
@@ -54,6 +58,8 @@ export const loadingEventComplite = (id) => {
 export const addEvent = (event) => {
 	return async (dispatch) => {
 		await dispatch(loadingEvents())
+		const notificationId = await addEventNotification(event)
+		event.notification_id = notificationId
 		const eventId = await DB.addEvent(event)
 		event.id = eventId
 		dispatch({
@@ -66,6 +72,8 @@ export const addEvent = (event) => {
 export const updateEvent = (event) => {
 	return async (dispatch) => {
 		await dispatch(loadingEvent(event.id))
+		const notificationId = await addEventNotification(event)
+		event.notification_id = notificationId
 		await DB.updateEvent(event)
 		dispatch({
 			type: UPDATE_EVENT,
@@ -86,6 +94,7 @@ export const updateEventPartially = (id, parts) => {
 	}
 }
 
+//TODO Удалять все оповещения для событий
 export const deleteAllEvents = () => {
 	return async (dispatch) => {
 		await dispatch(loadingEvents())
@@ -120,10 +129,11 @@ export const setFinanceStatus = (id, status) => {
 	}
 }
 
-export const deleteEvent = (id) => {
+export const deleteEvent = (event) => {
 	return async (dispatch) => {
-		await dispatch(deletingEvent(id))
-		await DB.deleteDataFromTable("events", id)
+		await dispatch(deletingEvent(event.id))
+		await deleteNotification(event.notification_id)
+		await DB.deleteDataFromTable("events", event.id)
 		dispatch({
 			type: DELETE_EVENT,
 			id,

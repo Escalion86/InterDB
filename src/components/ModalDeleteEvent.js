@@ -21,7 +21,7 @@ const ModalDeleteEvent = ({
 			subtitle="Вы уверены что хотите удалить событие?"
 			onAccept={() => {
 				// callbackToCloseModal()
-				dispatch(deleteEvent(event.id))
+				dispatch(deleteEvent(event))
 				callbackAfterAccept()
 			}}
 			visible={true}
