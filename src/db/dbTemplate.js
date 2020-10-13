@@ -1,4 +1,4 @@
-// import { addEventNotification } from "../helpers/notifications"
+import { addEventNotification } from "../helpers/notifications"
 
 let dbTemplate = ["events", "clients", "services"]
 
@@ -52,7 +52,7 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 				0
 			)
 
-			const event = {
+			let event = {
 				// auditory: rndArray(["Взрослые", "Дети", "Подростки", "Смешанная"]),
 				service: rndArray(servicesIds),
 				client: rndArray(clientsIds),
@@ -86,7 +86,7 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 				location_house: Math.floor(Math.random() * 80 + 1) + "",
 				location_room: Math.floor(Math.random() * 200 + 1) + "",
 				location_name: rndArray(["", "ТЦ", "Дом"]),
-				location_floor: null,
+				location_floor: "",
 				finance_price: rndArray([5000, 6000, 7000, 8000, 9000, 10000]),
 				finance_status: rndArray([
 					"Бесплатное",
@@ -112,13 +112,15 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 				]),
 			}
 
+			// event.notification_id = addEventNotification(event)
+
 			// const notification_id = addEventNotification(event)
 			// event.notification_id = notification_id
 
 			return event
 		case "client":
 			const gender = rndArray([0, 1, 3])
-			const phone = rndArray(["+79123456789", "+79234567890", "+793456789012"])
+			const phone = "+79" + Math.floor(Math.random() * 899999999 + 100000000)
 			return {
 				name:
 					gender === 0
