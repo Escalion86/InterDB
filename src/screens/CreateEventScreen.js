@@ -29,7 +29,7 @@ import {
 	renderers,
 } from "react-native-popup-menu"
 import { HeaderBackButton } from "@react-navigation/stack"
-import { addEventNotification } from "../helpers/notifications"
+// import { addEventNotification } from "../helpers/notifications"
 
 const CreateEventScreen = ({ navigation, route }) => {
 	const event =
@@ -84,7 +84,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 	//TODO Сделать проверку на заполнение необходимых полей
 	const saveHandler = async () => {
 		if (servicePicked && clientPicked) {
-			newEvent.notification_id = await addEventNotification(newEvent)
+			// newEvent.notification_id = await addEventNotification(newEvent)
 			event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
 
 			navigation.goBack()

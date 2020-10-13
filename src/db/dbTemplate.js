@@ -1,4 +1,4 @@
-import { addEventNotification } from "../helpers/notifications"
+// import { addEventNotification } from "../helpers/notifications"
 
 let dbTemplate = ["events", "clients", "services"]
 
