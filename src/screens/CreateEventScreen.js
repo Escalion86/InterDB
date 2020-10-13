@@ -29,6 +29,7 @@ import {
 	renderers,
 } from "react-native-popup-menu"
 import { HeaderBackButton } from "@react-navigation/stack"
+import { addEventNotification } from "../helpers/notifications"
 
 const CreateEventScreen = ({ navigation, route }) => {
 	const event =
@@ -44,6 +45,13 @@ const CreateEventScreen = ({ navigation, route }) => {
 
 	const clients = useSelector((state) => state.client.clients)
 
+	const [lastAddedService, setLastAddedService] = useState(
+		services.length > 0 ? services[0].id : null
+	)
+	const [lastAddedClient, setLastAddedClient] = useState(
+		clients.length > 0 ? clients[0].id : null
+	)
+
 	const dispatch = useDispatch()
 	const [newEvent, setNewEvent] = useState(event)
 	const [modal, setModal] = useState(null)
@@ -52,13 +60,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 	const setEventItem = (item) => {
 		setNewEvent({ ...newEvent, ...item })
 	}
-
-	const [lastAddedService, setLastAddedService] = useState(
-		services.length > 0 ? services[0].id : null
-	)
-	const [lastAddedClient, setLastAddedClient] = useState(
-		clients.length > 0 ? clients[0].id : null
-	)
 
 	useEffect(() => {
 		if (services.length > 0 && lastAddedService !== services[0].id) {
@@ -79,9 +80,11 @@ const CreateEventScreen = ({ navigation, route }) => {
 	const clientPicked = clientObj ? true : false
 
 	//TODO Сделать проверку на заполнение необходимых полей
-	const saveHandler = () => {
+	let saveHandler = async () => {
 		if (servicePicked && clientPicked) {
+			newEvent.notification_id = await addEventNotification(newEvent)
 			event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
+
 			navigation.goBack()
 		} else {
 			ToastAndroid.show(
@@ -117,13 +120,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 				</>
 			),
 		})
-	}, [event])
-
-	useEffect(() => {
-		navigation.setOptions({
-			headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
-		})
-	}, [newEvent])
+	}, [event, newEvent])
 
 	const InfoMenu = () => (
 		<Menu

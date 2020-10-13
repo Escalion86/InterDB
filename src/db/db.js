@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite"
 import dbTemplate, { prepareForDB } from "./dbTemplate"
 
-const DBName = "events18.db"
+const DBName = "events19.db"
 
 let db = SQLite.openDatabase(DBName)
 
@@ -183,6 +183,7 @@ export class DB {
 		eventToSend.date = Math.floor(eventToSend.date / 1000)
 
 		const eventKeys = Object.keys(eventToSend)
+		const eventValues = [...Object.values(eventToSend), event.id]
 		// console.log(`UPDATE events SET ${eventKeys.join(" = ? ")} = ? WHERE id = ?`)
 		// console.log(
 		//   "DB Update Event :>> ",
@@ -196,9 +197,12 @@ export class DB {
 			db.transaction((tx) => {
 				tx.executeSql(
 					`UPDATE events SET ${eventKeys.join(" = ?, ")} = ? WHERE id = ?`,
-					[...Object.values(eventToSend), event.id],
+					eventValues,
 					resolve,
-					(_, error) => reject(error)
+					(_, error) => {
+						console.log(error)
+						reject(error)
+					}
 				)
 			})
 		)

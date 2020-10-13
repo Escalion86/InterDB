@@ -1,3 +1,5 @@
+// import { addEventNotification } from "../helpers/notifications"
+
 let dbTemplate = ["events", "clients", "services"]
 
 const rndArray = (array) => {
@@ -41,11 +43,21 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 	})
 	switch (table) {
 		case "event":
-			return {
+			const date = new Date(
+				Date.now() + Math.floor(Math.random() * 30 + 1) * 1000 * 60 * 60 * 24
+			).setHours(
+				Math.floor(Math.random() * 13 + 8),
+				rndArray([0, 15, 30, 45]),
+				0,
+				0
+			)
+
+			const event = {
 				// auditory: rndArray(["Взрослые", "Дети", "Подростки", "Смешанная"]),
 				service: rndArray(servicesIds),
 				client: rndArray(clientsIds),
-				date: new Date().setSeconds(0, 0),
+				date: date,
+				notification_id: "",
 				timing_duration: rndArray([20, 30, 40, 60]),
 				timing_preparetime: 20,
 				timing_collecttime: 15,
@@ -99,6 +111,11 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 					"Выполнено",
 				]),
 			}
+
+			// const notification_id = addEventNotification(event)
+			// event.notification_id = notification_id
+
+			return event
 		case "client":
 			const gender = rndArray([0, 1, 3])
 			const phone = rndArray(["+79123456789", "+79234567890", "+793456789012"])
@@ -169,6 +186,7 @@ export const dbGenerator = (table = "event", services = [], clients = []) => {
 					"",
 					Math.floor(Math.random() * 40 + 1960) + "",
 				]),
+				notification_id: "",
 				phone: phone,
 				email: rndArray(["test@test.ru", ""]),
 				whatsapp: rndArray([phone, ""]),
@@ -234,6 +252,15 @@ export default dbTemplate = {
 			type: "date",
 			db_type: "TEXT",
 			not_null: true,
+			default: "",
+			db_default: "",
+		},
+		{
+			db_name: "notification_id",
+			desc: "ID идентификатора оповещения",
+			type: "string",
+			db_type: "TEXT",
+			not_null: false,
 			default: "",
 			db_default: "",
 		},
@@ -451,6 +478,15 @@ export default dbTemplate = {
 			db_name: "birthday_year",
 			desc: "Дата рождения - год",
 			type: "text",
+			db_type: "TEXT",
+			not_null: false,
+			default: "",
+			db_default: "",
+		},
+		{
+			db_name: "notification_id",
+			desc: "ID идентификатора оповещения о дне рождения",
+			type: "string",
 			db_type: "TEXT",
 			not_null: false,
 			default: "",

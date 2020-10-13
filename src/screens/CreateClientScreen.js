@@ -127,13 +127,7 @@ const CreateClientScreen = ({ navigation, route }) => {
 				</HeaderButtons>
 			),
 		})
-	}, [client])
-
-	useEffect(() => {
-		navigation.setOptions({
-			headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
-		})
-	}, [newClient])
+	}, [client, newClient])
 
 	return (
 		<ScrollView style={styles.container}>

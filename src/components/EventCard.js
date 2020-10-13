@@ -181,13 +181,16 @@ const EventCard = ({
 									</Text>
 								</View>
 							) : null}
-							{showAdress ? (
+							{showAdress && event.location_town ? (
 								<View style={styles.carddesc}>
 									<Text style={styles.carddesctext}>
-										{event.location_town}, {event.location_street},{" "}
-										{event.location_house}
-										{event.location_room ? ` - ${event.location_room}` : null}
-										{event.location_name ? ` (${event.location_name})` : null}
+										{`${event.location_town}${
+											event.location_street ? `, ${event.location_street}` : ""
+										}${
+											event.location_house ? `, ${event.location_house}` : ""
+										}${event.location_room ? ` - ${event.location_room}` : ""}${
+											event.location_name ? ` (${event.location_name})` : ""
+										}`}
 									</Text>
 									<Ionicons
 										name="md-navigate"

@@ -16,6 +16,18 @@ import {
 import store from "./src/store"
 import { ThemeProvider } from "./src/ThemeContext"
 import { AppProvider } from "./src/AppContext"
+import * as Notifications from "expo-notifications"
+
+//Устанавливаем оповещения
+Notifications.setNotificationHandler({
+	handleNotification: async () => {
+		return {
+			shouldShowAlert: true,
+			shouldPlaySound: true,
+			shouldSetBadge: true,
+		}
+	},
+})
 
 export default function App() {
 	const [isReady, setIsReady] = useState(false)

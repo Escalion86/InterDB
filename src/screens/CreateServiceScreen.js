@@ -108,13 +108,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
 				</>
 			),
 		})
-	}, [service])
-
-	useEffect(() => {
-		navigation.setOptions({
-			headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
-		})
-	}, [newService])
+	}, [service, newService])
 
 	return (
 		<ScrollView style={styles.container}>
@@ -141,9 +135,9 @@ const CreateServiceScreen = ({ navigation, route }) => {
 			<TitleBlock title="Затраты времени" />
 			<TextInputBlock
 				title="Продолжительность"
-				value={newService.length}
+				value={newService.duration}
 				keyboardType="numeric"
-				onChangeText={(text) => setServiceItem({ length: text })}
+				onChangeText={(text) => setServiceItem({ duration: text })}
 				postfix="мин"
 				placeholder="0"
 			/>
