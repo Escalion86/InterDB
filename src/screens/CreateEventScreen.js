@@ -359,10 +359,23 @@ const CreateEventScreen = ({ navigation, route }) => {
 						onPress={() => {
 							//Если сервис был выбран, то нужно спросить об обновлении финансовых данных
 							setModal(null)
-							setEventItem({
-								service: item.id,
-							})
-							if (servicePicked) setModal(modalUpdateFinance(item.id))
+
+							if (servicePicked) {
+								setEventItem({
+									service: item.id,
+								})
+								setModal(modalUpdateFinance(item.id))
+							} else {
+								setEventItem({
+									service: item.id,
+									finance_price: item.finance_price,
+									finance_consumables: item.finance_consumables,
+									finance_assistants: item.finance_assistants,
+									timing_duration: item.duration,
+									timing_preparetime: item.preparetime,
+									timing_collecttime: item.collecttime,
+								})
+							}
 						}}
 						listMode={true}
 						swipeable={false}
