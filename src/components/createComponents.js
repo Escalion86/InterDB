@@ -199,6 +199,8 @@ export const TextInputBlock = ({
 	multiline = false,
 	fieldStyle = {},
 	success = false,
+	titleFlex = 2,
+	inputFlex = 3,
 }) => {
 	value = value ? value.toString() : ""
 	const { colors, fontSize } = useTheme()
@@ -217,7 +219,7 @@ export const TextInputBlock = ({
 		>
 			<Text
 				style={{
-					...styles.text,
+					flex: titleFlex,
 					fontSize: fontSize.medium,
 					color: colors.text,
 				}}
@@ -226,7 +228,7 @@ export const TextInputBlock = ({
 			</Text>
 			<View
 				style={{
-					flex: 3,
+					flex: inputFlex,
 					flexDirection: "row",
 					borderColor: colors.border,
 					backgroundColor: colors.card,
