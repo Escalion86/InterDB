@@ -7,8 +7,8 @@ import {
 	SliderValuePicker,
 } from "react-native-slider-color-picker"
 import { Switch } from "react-native-paper"
-import { TitleBlock } from "../components/createComponents"
 import tinycolor from "tinycolor2"
+import { TextInputBlock, TitleBlock } from "../components/createComponents"
 
 // import SliderColorPicker from "../components/SliderColorPicker"
 import { ThemeContext } from "../ThemeContext"
@@ -22,7 +22,13 @@ const SettingsScreen = ({ navigation, route }) => {
 	const theme = useTheme()
 	const { colors, fontSize } = theme
 	const { setDark, setAccent } = useContext(ThemeContext)
-	const { dev } = useContext(AppContext)
+	const {
+		dev,
+		notificationBeforeEventStart,
+		storeNotificationBeforeEventStart,
+		notificationBirthday,
+		storeNotificationBirthday,
+	} = useContext(AppContext)
 
 	const changeColor = (colorHsvOrRgb, resType) => {
 		if (resType === "end") {
@@ -33,7 +39,7 @@ const SettingsScreen = ({ navigation, route }) => {
 
 	return (
 		<View style={styles.container}>
-			<TitleBlock title="Настройка цветовой схемы" />
+			<TitleBlock title="Цветовая схема" />
 			<View style={styles.row}>
 				<View style={styles.switchcontainer}>
 					<Text style={{ fontSize: fontSize.medium, color: colors.text }}>
@@ -97,6 +103,22 @@ const SettingsScreen = ({ navigation, route }) => {
 			<View style={styles.row}>
 				<Button title="Цвет текста подбирается автоматически" />
 			</View>
+			<TitleBlock title="Оповещения" />
+			<TextInputBlock
+				title="Оповещать о событиях заранее за"
+				value={notificationBeforeEventStart}
+				onChangeText={(text) => storeNotificationBeforeEventStart(text)}
+				keyboardType="numeric"
+				postfix="мин"
+				inputFlex={1}
+			/>
+			<TextInputBlock
+				title="Оповещать о днях рождениях клиентов в"
+				value={notificationBirthday}
+				onChangeText={(text) => storeNotificationBirthday(text)}
+				keyboardType="numeric"
+				inputFlex={1}
+			/>
 		</View>
 	)
 }
