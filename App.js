@@ -3,16 +3,8 @@ import React, { useState } from "react"
 import { Provider } from "react-redux"
 import { AppLoading } from "expo"
 import { AppNavigation } from "./src/navigation/AppNavigation"
-import { EventsScreen } from "./src/screens/EventsScreen"
 import { bootstrap } from "./src/bootstrap"
 import { MenuProvider } from "react-native-popup-menu"
-import {
-	StyleSheet,
-	Text,
-	View,
-	FlatList,
-	ActivityIndicator,
-} from "react-native"
 import store from "./src/store"
 import { ThemeProvider } from "./src/ThemeContext"
 import { AppProvider } from "./src/AppContext"
