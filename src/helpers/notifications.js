@@ -1,5 +1,9 @@
+import React, { useState, useContext } from "react"
 import * as Notifications from "expo-notifications"
 import { formatDate, formatTime } from "./date"
+import { useSelector } from "react-redux"
+import { AppContext } from "../AppContext"
+import store from "../store"
 
 export const showAllNotifications = async () => {
 	const notifications = await Notifications.getAllScheduledNotificationsAsync()
@@ -35,25 +39,55 @@ export const deleteNotification = async (id = "") => {
 
 export const addEventNotification = async (
 	event,
-	minBefore = 90,
+	notificationBeforeEventStart = null,
 	removeOld = true
 ) => {
+	// const { notificationBeforeEventStart } = useContext(AppContext)
+	// const service = useSelector((state) => state.service.services)
+
+	// const service = getEventService(event)
+	// console.log("service :>> ", service)
+
 	if (removeOld && event.notification_id)
 		deleteNotification(event.notification_id)
 
-	return await addNotification({
-		title: `Событие через ${minBefore} мин`,
-		body: event.location_town
+	if (!notificationBeforeEventStart)
+		notificationBeforeEventStart = store.getState().app
+			.notificationEventMinBefore
+
+	const date =
+		event.date -
+		notificationBeforeEventStart * 1000 * 60 -
+		event.timing_road * 1000 * 60 -
+		event.timing_preparetime * 1000 * 60
+
+	if (date > new Date()) {
+		const adress = event.location_town
 			? `${event.location_town}${
 					event.location_street ? `, ${event.location_street}` : ""
 			  }${event.location_house ? `, ${event.location_house}` : ""}${
 					event.location_room ? ` - ${event.location_room}` : ""
 			  }${event.location_name ? ` (${event.location_name})` : ""}`
-			: null,
-		subtitle: "Напоминание о событии",
-		data: `${formatDate(new Date(event.date))} ${formatTime(
-			new Date(event.date)
-		)}`,
-		date: event.date - 1000 * 60 * minBefore,
-	})
+			: ""
+
+		const service = store
+			.getState()
+			.service.services.find((item) => item.id == event.service)
+
+		return await addNotification({
+			title: `Событие${
+				service ? ` "${service.name}"` : ""
+			} через ${notificationBeforeEventStart} мин`,
+			body: `Начало: ${formatTime(new Date(event.date))} ${formatDate(
+				new Date(event.date),
+				true,
+				false,
+				true
+			)}\nАдрес: ${adress}`,
+			subtitle: `Напоминание о событии`,
+			date: date,
+		})
+	} else {
+		return ""
+	}
 }
