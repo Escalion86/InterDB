@@ -69,6 +69,17 @@ export const addEvent = (event) => {
 	}
 }
 
+export const refreshEventsNotifications = (events, min = null) => {
+	return async (dispatch) => {
+		events.forEach(async (event) => {
+			const notificationId = await addEventNotification(event, min)
+			await dispatch(
+				updateEventPartially(event.id, { notification_id: notificationId })
+			)
+		})
+	}
+}
+
 export const updateEvent = (event) => {
 	return async (dispatch) => {
 		await dispatch(loadingEvent(event.id))

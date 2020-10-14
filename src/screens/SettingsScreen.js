@@ -1,4 +1,5 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { AppRegistry, Dimensions, StyleSheet, Text, View } from "react-native"
 import { useTheme } from "@react-navigation/native"
 import {
@@ -9,6 +10,7 @@ import {
 import { Switch } from "react-native-paper"
 import tinycolor from "tinycolor2"
 import { TextInputBlock, TitleBlock } from "../components/createComponents"
+import { setNotificationEventMinBefore } from "../store/actions/app"
 
 // import SliderColorPicker from "../components/SliderColorPicker"
 import { ThemeContext } from "../ThemeContext"
@@ -24,17 +26,30 @@ const SettingsScreen = ({ navigation, route }) => {
 	const { setDark, setAccent } = useContext(ThemeContext)
 	const {
 		dev,
-		notificationBeforeEventStart,
-		storeNotificationBeforeEventStart,
-		notificationBirthday,
-		storeNotificationBirthday,
+		// notificationBeforeEventStart,
+		// storeNotificationBeforeEventStart,
+		// notificationBirthday,
+		// storeNotificationBirthday,
 	} = useContext(AppContext)
+	const dispatch = useDispatch()
+
+	const { notificationEventMinBefore, notificationBirthday } = useSelector(
+		(state) => state.app
+	)
+
+	const [notificationEvent, setNotificationEvent] = useState(
+		notificationEventMinBefore
+	)
 
 	const changeColor = (colorHsvOrRgb, resType) => {
 		if (resType === "end") {
 			const hex = tinycolor(colorHsvOrRgb).toHexString()
 			setAccent(hex)
 		}
+	}
+
+	const saveNotificationSettings = () => {
+		dispatch(setNotificationEventMinBefore(notificationEvent))
 	}
 
 	return (
@@ -100,24 +115,37 @@ const SettingsScreen = ({ navigation, route }) => {
 			<Text style={{ fontSize: fontSize.medium, color: colors.text }}>
 				Пример:
 			</Text>
-			<View style={styles.row}>
-				<Button title="Цвет текста подбирается автоматически" />
-			</View>
+
+			<Button title="Цвет текста подбирается автоматически" />
+
 			<TitleBlock title="Оповещения" />
 			<TextInputBlock
 				title="Оповещать о событиях заранее за"
-				value={notificationBeforeEventStart}
-				onChangeText={(text) => storeNotificationBeforeEventStart(text)}
+				value={notificationEvent}
+				onChangeText={(text) => setNotificationEvent(text)}
 				keyboardType="numeric"
 				postfix="мин"
 				inputFlex={1}
 			/>
 			<TextInputBlock
 				title="Оповещать о днях рождениях клиентов в"
-				value={notificationBirthday}
-				onChangeText={(text) => storeNotificationBirthday(text)}
+				value={`${
+					notificationBirthday.hours < 10
+						? `0${notificationBirthday.hours}`
+						: notificationBirthday.hours
+				}:${
+					notificationBirthday.minutes < 10
+						? `0${notificationBirthday.minutes}`
+						: notificationBirthday.minutes
+				}`}
+				// onChangeText={(text) => storeNotificationBirthday(text)}
 				keyboardType="numeric"
 				inputFlex={1}
+			/>
+			<Button
+				title="Применить"
+				onPress={() => saveNotificationSettings()}
+				disabled={notificationEventMinBefore === notificationEvent}
 			/>
 		</View>
 	)

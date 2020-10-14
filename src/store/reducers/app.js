@@ -4,7 +4,7 @@ import {
 } from "../types"
 
 const initialState = {
-	notificationEventMinBefore: 50,
+	notificationEventMinBefore: 60,
 	notificationBirthday: { hours: 9, minutes: 0 },
 }
 
@@ -13,7 +13,9 @@ export const appReducer = (state = initialState, action) => {
 		case SET_NOTIFICATION_EVENT_MIN_BEFORE:
 			return {
 				...state,
-				notificationEventMinBefore: action.min,
+				notificationEventMinBefore: action.min
+					? action.min
+					: initialState.notificationEventMinBefore,
 			}
 
 		default:

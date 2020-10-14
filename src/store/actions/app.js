@@ -7,11 +7,14 @@ import {
 	deleteNotification,
 } from "../../helpers/notifications"
 import { storeData, retrieveData } from "../../Storage"
+import store from "../"
+import { refreshEventsNotifications } from "../actions/event"
 
 export const setNotificationEventMinBefore = (min) => {
 	return async (dispatch) => {
 		await storeData("notificationEventMinBefore", min)
-
+		const events = store.getState().event.events
+		await dispatch(refreshEventsNotifications(events, min))
 		dispatch({
 			type: SET_NOTIFICATION_EVENT_MIN_BEFORE,
 			min,
