@@ -87,7 +87,7 @@ const ClientCard = ({
 					<SwipeableCard
 						onLeftOpen={() => {
 							navigation.navigate("CreateClient", {
-								client: client,
+								clientId: client.id,
 							})
 						}}
 						onRightOpen={onDelete}

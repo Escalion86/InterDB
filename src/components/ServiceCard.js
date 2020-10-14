@@ -112,7 +112,7 @@ const ServiceCard = ({
 					<SwipeableCard
 						onLeftOpen={() => {
 							navigation.navigate("CreateService", {
-								service: service,
+								serviceId: service.id,
 							})
 						}}
 						onRightOpen={onDelete}

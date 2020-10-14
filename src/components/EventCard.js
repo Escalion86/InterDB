@@ -132,7 +132,7 @@ const EventCard = ({
 					<SwipeableCard
 						onLeftOpen={() =>
 							navigation.navigate("CreateEvent", {
-								event: event,
+								eventId: event.id,
 							})
 						}
 						onRightOpen={onDelete}
