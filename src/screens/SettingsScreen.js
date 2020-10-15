@@ -9,8 +9,12 @@ import {
 } from "react-native-slider-color-picker"
 import { Switch } from "react-native-paper"
 import tinycolor from "tinycolor2"
-import { TextInputBlock, TitleBlock } from "../components/createComponents"
-import { setNotificationEventMinBefore } from "../store/actions/app"
+import {
+	TextInputBlock,
+	TitleBlock,
+	DateTimePickerBlock,
+} from "../components/createComponents"
+import { setAllNotifications } from "../store/actions/app"
 
 // import SliderColorPicker from "../components/SliderColorPicker"
 import { ThemeContext } from "../ThemeContext"
@@ -33,13 +37,25 @@ const SettingsScreen = ({ navigation, route }) => {
 	} = useContext(AppContext)
 	const dispatch = useDispatch()
 
-	const { notificationEventMinBefore, notificationBirthday } = useSelector(
+	const { notificationBeforeEvent, notificationBirthday } = useSelector(
 		(state) => state.app
 	)
 
-	const [notificationEvent, setNotificationEvent] = useState(
-		notificationEventMinBefore
+	const [
+		notificationBeforeEventState,
+		setNotificationBeforeEventState,
+	] = useState(notificationBeforeEvent)
+	const [notificationBirthdayState, setNotificationBirthdayState] = useState(
+		notificationBirthday
 	)
+
+	const convertMinToTime = (min) => {
+		return new Date().setTime(min * 60 * 1000)
+	}
+
+	const convertTimeToMin = (time) => {
+		return new Date(time).getHours() * 60 + new Date(time).getMinutes()
+	}
 
 	const changeColor = (colorHsvOrRgb, resType) => {
 		if (resType === "end") {
@@ -49,7 +65,12 @@ const SettingsScreen = ({ navigation, route }) => {
 	}
 
 	const saveNotificationSettings = () => {
-		dispatch(setNotificationEventMinBefore(notificationEvent))
+		dispatch(
+			setAllNotifications(
+				notificationBeforeEventState,
+				notificationBirthdayState
+			)
+		)
 	}
 
 	return (
@@ -121,31 +142,36 @@ const SettingsScreen = ({ navigation, route }) => {
 			<TitleBlock title="Оповещения" />
 			<TextInputBlock
 				title="Оповещать о событиях заранее за"
-				value={notificationEvent}
-				onChangeText={(text) => setNotificationEvent(text)}
+				value={notificationBeforeEventState}
+				onChangeText={(text) => setNotificationBeforeEventState(text)}
 				keyboardType="numeric"
 				postfix="мин"
 				inputFlex={1}
 			/>
-			<TextInputBlock
+			{/* <TextInputBlock
 				title="Оповещать о днях рождениях клиентов в"
-				value={`${
-					notificationBirthday.hours < 10
-						? `0${notificationBirthday.hours}`
-						: notificationBirthday.hours
-				}:${
-					notificationBirthday.minutes < 10
-						? `0${notificationBirthday.minutes}`
-						: notificationBirthday.minutes
-				}`}
-				// onChangeText={(text) => storeNotificationBirthday(text)}
+				value={convertMinToTime(notificationBirthdayState)}
+				onChangeText={(text) =>
+					setNotificationBirthdayState(convertTimeToMin(text))
+				}
 				keyboardType="numeric"
 				inputFlex={1}
+			/> */}
+			<DateTimePickerBlock
+				title="Оповещать о днях рождениях клиентов в"
+				dateValue={convertMinToTime(notificationBirthdayState)}
+				onChange={(value) =>
+					setNotificationBirthdayState(convertTimeToMin(value))
+				}
+				pickDate={false}
 			/>
 			<Button
 				title="Применить"
 				onPress={() => saveNotificationSettings()}
-				disabled={notificationEventMinBefore === notificationEvent}
+				disabled={
+					notificationBeforeEvent === notificationBeforeEventState &&
+					notificationBirthday === notificationBirthdayState
+				}
 			/>
 		</View>
 	)

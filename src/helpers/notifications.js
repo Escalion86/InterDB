@@ -1,9 +1,8 @@
-import React, { useState, useContext } from "react"
 import * as Notifications from "expo-notifications"
 import { formatDate, formatTime } from "./date"
-import { useSelector } from "react-redux"
-import { AppContext } from "../AppContext"
 import store from "../store"
+import { calculateAge } from "../helpers/date"
+import wordForm from "../helpers/wordForm"
 
 export const showAllNotifications = async () => {
 	const notifications = await Notifications.getAllScheduledNotificationsAsync()
@@ -42,18 +41,11 @@ export const addEventNotification = async (
 	notificationBeforeEventStart = null,
 	removeOld = true
 ) => {
-	// const { notificationBeforeEventStart } = useContext(AppContext)
-	// const service = useSelector((state) => state.service.services)
-
-	// const service = getEventService(event)
-	// console.log("service :>> ", service)
-
 	if (removeOld && event.notification_id)
 		deleteNotification(event.notification_id)
 
 	if (!notificationBeforeEventStart)
-		notificationBeforeEventStart = store.getState().app
-			.notificationEventMinBefore
+		notificationBeforeEventStart = store.getState().app.notificationBeforeEvent
 
 	const date =
 		event.date -
@@ -85,6 +77,54 @@ export const addEventNotification = async (
 				true
 			)}\nАдрес: ${adress}`,
 			subtitle: `Напоминание о событии`,
+			date: date,
+		})
+	} else {
+		return ""
+	}
+}
+
+export const addClientNotification = async (
+	client,
+	notificationTime = null,
+	removeOld = true
+) => {
+	if (removeOld && client.notification_id)
+		deleteNotification(client.notification_id)
+
+	if (!notificationTime)
+		notificationTime = store.getState().app.notificationBirthday
+	const today = new Date().setHours(0, 0, 0, 0)
+	let date = new Date().setFullYear(
+		new Date().getFullYear(),
+		client.birthday_month,
+		client.birthday_day
+	)
+	date = new Date(date).setHours(0, 0, 0, 0)
+	if (today > date)
+		date = new Date(date).setFullYear(new Date(date).getFullYear() + 1)
+
+	date += notificationTime * 1000 * 60
+	console.log("date :>> ", formatDate(date, true, false, true))
+
+	if (date > new Date()) {
+		return await addNotification({
+			title: `У клиента "${client.name}" сегодня день рождения`,
+			body:
+				client.birthday_year && client.birthday_month && client.birthday_day
+					? `Исполняется ${wordForm(
+							calculateAge(
+								new Date().setFullYear(
+									client.birthday_year,
+									client.birthday_month,
+									client.birthday_day
+								),
+								1
+							),
+							["год", "года", "лет"]
+					  )}`
+					: null,
+			subtitle: `День рождения клиента`,
 			date: date,
 		})
 	} else {

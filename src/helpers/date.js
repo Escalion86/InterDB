@@ -92,10 +92,10 @@ export const getWeekDay = (date) => {
 	return days[date.getDay()]
 }
 
-export const calculateAge = (birthday = new Date()) => {
+export const calculateAge = (birthday = new Date(), addYears = 0) => {
 	// birthday is a date
 	var ageDifMs =
 		new Date().setHours(0, 0, 0, 0) - new Date(birthday).setHours(0, 0, 0, 0)
 	var ageDate = new Date(ageDifMs) // miliseconds from epoch
-	return Math.abs(ageDate.getUTCFullYear() - 1970)
+	return Math.abs(ageDate.getUTCFullYear() - 1970 + addYears)
 }

@@ -1,21 +1,41 @@
 import {
-	SET_NOTIFICATION_EVENT_MIN_BEFORE,
+	SET_NOTIFICATION_BEFORE_EVENT,
 	SET_NOTIFICATION_BIRTHDAY_TIME,
+	SET_ALL_NOTIFICATIONS,
 } from "../types"
 
 const initialState = {
-	notificationEventMinBefore: 60,
-	notificationBirthday: { hours: 9, minutes: 0 },
+	notificationBeforeEvent: 60,
+	notificationBirthday: 540, //540 min = 9:00
 }
 
 export const appReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case SET_NOTIFICATION_EVENT_MIN_BEFORE:
+		case SET_NOTIFICATION_BEFORE_EVENT:
 			return {
 				...state,
-				notificationEventMinBefore: action.min
+				notificationBeforeEvent: action.min
 					? action.min
-					: initialState.notificationEventMinBefore,
+					: initialState.notificationBeforeEvent,
+			}
+
+		case SET_NOTIFICATION_BIRTHDAY_TIME:
+			return {
+				...state,
+				notificationBirthday: action.min
+					? action.min
+					: initialState.notificationBirthday,
+			}
+
+		case SET_ALL_NOTIFICATIONS:
+			return {
+				...state,
+				notificationBeforeEvent: action.event
+					? action.event
+					: state.notificationBeforeEvent,
+				notificationBirthday: action.birthday
+					? action.birthday
+					: state.notificationBirthday,
 			}
 
 		default:

@@ -30,7 +30,7 @@ const ModalDeleteClient = ({
 			subtitle="Вы уверены что хотите удалить клиента?"
 			onAccept={() => {
 				callbackToCloseModal()
-				dispatch(deleteClient(client.id))
+				dispatch(deleteClient(client))
 				callbackAfterAccept()
 			}}
 			visible={true}

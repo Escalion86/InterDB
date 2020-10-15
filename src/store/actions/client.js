@@ -11,6 +11,21 @@ import {
 	LOADING_CLIENT_COMPLITE,
 } from "../types"
 import { DB } from "../../db/db"
+import {
+	addClientNotification,
+	deleteNotification,
+} from "../../helpers/notifications"
+
+export const refreshBirthdayNotifications = (clients, min = 0) => {
+	return async (dispatch) => {
+		clients.forEach(async (client) => {
+			const notificationId = await addClientNotification(client, min)
+			await dispatch(
+				updateClientPartially(client.id, { notification_id: notificationId })
+			)
+		})
+	}
+}
 
 export const loadClients = () => {
 	return async (dispatch) => {
@@ -52,6 +67,8 @@ export const loadingClientComplite = (id) => {
 export const addClient = (client) => {
 	return async (dispatch) => {
 		await dispatch(loadingClients())
+		const notificationId = await addClientNotification(client)
+		client.notification_id = notificationId
 		const clientId = await DB.addClient(client)
 		client.id = clientId
 		dispatch({
@@ -64,6 +81,8 @@ export const addClient = (client) => {
 export const updateClient = (client) => {
 	return async (dispatch) => {
 		await dispatch(loadingClient(client.id))
+		const notificationId = await addClientNotification(client)
+		client.notification_id = notificationId
 		await DB.updateClient(client)
 		dispatch({
 			type: UPDATE_CLIENT,
@@ -94,13 +113,14 @@ export const deleteAllClients = () => {
 	}
 }
 
-export const deleteClient = (id) => {
+export const deleteClient = (client) => {
 	return async (dispatch) => {
-		await dispatch(deletingClient(id))
-		await DB.deleteDataFromTable("clients", id)
+		await dispatch(deletingClient(client.id))
+		await deleteNotification(client.notification_id)
+		await DB.deleteDataFromTable("clients", client.id)
 		dispatch({
 			type: DELETE_CLIENT,
-			id,
+			id: client.id,
 		})
 	}
 }

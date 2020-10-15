@@ -550,6 +550,7 @@ export const DateTimePickerBlock = ({
 	dateValue = null,
 	onChange,
 	pickTime = true,
+	pickDate = true,
 	showWeek = true,
 	neutralButton = false,
 }) => {
@@ -568,45 +569,47 @@ export const DateTimePickerBlock = ({
 				{title}
 			</Text>
 			<View style={styles.datetimecontainer}>
-				<TouchableOpacity
-					onPress={() => setDateTimePickerShow("eventDateStart")}
-					style={{ flex: 4, marginRight: 8 }}
-				>
-					<Text
-						style={{
-							...styles.datetime,
-
-							color: colors.text,
-							fontSize: fontSize.medium,
-							backgroundColor: colors.card,
-							borderColor: colors.border,
-						}}
+				{pickDate ? (
+					<TouchableOpacity
+						onPress={() => setDateTimePickerShow("eventDateStart")}
+						style={{ flex: 4, marginRight: 8 }}
 					>
-						{dateValue ? formatDate(dateValue, true, showWeek) : "не выбрана"}
-					</Text>
-					{dateTimePickerShow === "eventDateStart" ? (
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={
-								new Date(
-									dateValue ? dateValue : new Date().setHours(0, 0, 0, 0)
-								)
-							}
-							mode={"date"}
-							is24Hour={true}
-							display="default"
-							onChange={(event, selectedDate) => {
-								setDateTimePickerShow(null)
-								if (event.type === "neutralButtonPressed") {
-									onChange("")
-								} else if (selectedDate) {
-									onChange(Date.parse(selectedDate))
-								}
+						<Text
+							style={{
+								...styles.datetime,
+
+								color: colors.text,
+								fontSize: fontSize.medium,
+								backgroundColor: colors.card,
+								borderColor: colors.border,
 							}}
-							neutralButtonLabel={neutralButton ? "Очистить" : null}
-						/>
-					) : null}
-				</TouchableOpacity>
+						>
+							{dateValue ? formatDate(dateValue, true, showWeek) : "не выбрана"}
+						</Text>
+						{dateTimePickerShow === "eventDateStart" ? (
+							<DateTimePicker
+								testID="dateTimePicker"
+								value={
+									new Date(
+										dateValue ? dateValue : new Date().setHours(0, 0, 0, 0)
+									)
+								}
+								mode={"date"}
+								is24Hour={true}
+								display="default"
+								onChange={(event, selectedDate) => {
+									setDateTimePickerShow(null)
+									if (event.type === "neutralButtonPressed") {
+										onChange("")
+									} else if (selectedDate) {
+										onChange(Date.parse(selectedDate))
+									}
+								}}
+								neutralButtonLabel={neutralButton ? "Очистить" : null}
+							/>
+						) : null}
+					</TouchableOpacity>
+				) : null}
 				{pickTime ? (
 					<TouchableOpacity
 						onPress={() => setDateTimePickerShow("eventTimeStart")}

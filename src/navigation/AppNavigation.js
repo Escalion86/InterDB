@@ -4,7 +4,7 @@ import { AsyncStorage } from "react-native"
 import { useDispatch } from "react-redux"
 import { loadAll } from "../store/actions/db"
 import { Provider as PaperProvider } from "react-native-paper"
-import { getNotificationEventMinBefore } from "../store/actions/app"
+import { getAllNotifications } from "../store/actions/app"
 
 import { StatusBar } from "expo-status-bar"
 import burgerButton from "../components/burgerButton"
@@ -460,7 +460,7 @@ export const AppNavigation = () => {
 	// dispatch(loadAll())
 	//После загрузки всех компонентов и state - загружаем данные БД
 	useEffect(() => {
-		dispatch(getNotificationEventMinBefore())
+		dispatch(getAllNotifications())
 		console.log("Загрузка данных")
 		dispatch(loadAll())
 	}, [dispatch])
