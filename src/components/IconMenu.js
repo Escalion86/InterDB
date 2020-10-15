@@ -15,8 +15,7 @@ import { useTheme } from "@react-navigation/native"
 const IconMenu = ({ event, eventPartName = null, style = {} }) => {
 	const eventId = event.id
 	const activeValue = event[eventPartName]
-	const theme = useTheme()
-
+	const { colors } = useTheme()
 	const dependencies = iconDependencies[eventPartName]
 	const dispatch = useDispatch()
 	let menu = []
@@ -31,17 +30,14 @@ const IconMenu = ({ event, eventPartName = null, style = {} }) => {
 						dispatch(updateEventPartially(eventId, part))
 					}
 				}}
-				style={
-					activeValue === key ? { backgroundColor: theme.colors.active } : null
-				}
+				style={activeValue === key ? { backgroundColor: colors.active } : null}
 				children={
 					<MainIcon
 						dependencies={dependencies}
 						status={key}
 						size="small"
-						theme={theme}
 						showtext={true}
-						textcolor={theme.colors.text}
+						textcolor={colors.text}
 					/>
 				}
 			/>
@@ -62,7 +58,6 @@ const IconMenu = ({ event, eventPartName = null, style = {} }) => {
 						dependencies={dependencies}
 						status={activeValue}
 						size="small"
-						theme={theme}
 					/>
 				}
 			/>
@@ -74,7 +69,7 @@ const IconMenu = ({ event, eventPartName = null, style = {} }) => {
 					},
 					optionWrapper: {
 						padding: 5,
-						backgroundColor: theme.colors.background,
+						backgroundColor: colors.background,
 					},
 				}}
 			>

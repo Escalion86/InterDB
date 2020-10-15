@@ -12,11 +12,8 @@ export const MainIcon = ({
 	showtext = false,
 	textcolor = null,
 	style = {},
-	theme = null,
 }) => {
-	if (!theme) theme = useTheme()
-
-	const { iconSize } = theme
+	const { iconSize } = useTheme()
 
 	const IconSizeNum =
 		(iconSize ? iconSize[size] : null) ||

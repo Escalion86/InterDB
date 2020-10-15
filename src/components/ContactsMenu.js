@@ -17,11 +17,8 @@ const ContactsMenu = ({
 	size = "medium",
 	triggerBackgroundColor = null,
 	triggerIconColor = null,
-	theme = null,
 }) => {
-	if (!theme) theme = useTheme()
-
-	const { colors, fontSize, iconSize } = theme
+	const { colors, fontSize, iconSize } = useTheme()
 
 	const IconSizeNum =
 		((iconSize ? iconSize[size] : null) ||

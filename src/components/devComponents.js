@@ -14,7 +14,6 @@ export const DevDropDownPicker = ({
 	tables = [],
 	defaultValue = null,
 	onChangeItem = () => {},
-	theme = useTheme(),
 	style = {},
 	placeholder = "",
 	buttonTitle = "",
@@ -22,7 +21,7 @@ export const DevDropDownPicker = ({
 	disabled = false,
 }) => {
 	if (tables.length === 0) return null
-	const { colors, fontSize } = theme
+	const { colors, fontSize } = useTheme()
 	const tablesItems = []
 	tables.forEach((table) => {
 		tablesItems.push({
@@ -71,13 +70,8 @@ export const DevDropDownPicker = ({
 	)
 }
 
-export const DevInputBtn = ({
-	title = "",
-	onPress = (value) => console.log(value),
-	theme = useTheme(),
-	style = {},
-}) => {
-	const { colors, fontSize } = theme
+export const DevInputBtn = ({ title = "", onPress = () => {}, style = {} }) => {
+	const { colors, fontSize } = useTheme()
 	const [value, setValue] = useState("")
 	return (
 		<View style={{ ...style, flexDirection: "row" }}>
@@ -110,10 +104,9 @@ export const DevInputBtn = ({
 export const DevTwoInputBtn = ({
 	title = "",
 	onPress = (oldValue, newValue) => console.log(oldValue, newValue),
-	theme = useTheme(),
 	style = {},
 }) => {
-	const { colors, fontSize } = theme
+	const { colors, fontSize } = useTheme()
 	const [oldValue, setOldValue] = useState("")
 	const [newValue, setNewValue] = useState("")
 	return (
