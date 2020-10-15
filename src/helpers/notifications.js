@@ -105,7 +105,6 @@ export const addClientNotification = async (
 		date = new Date(date).setFullYear(new Date(date).getFullYear() + 1)
 
 	date += notificationTime * 1000 * 60
-	console.log("date :>> ", formatDate(date, true, false, true))
 
 	if (date > new Date()) {
 		return await addNotification({

@@ -60,8 +60,6 @@ export const setAllNotifications = (event, birthday) => {
 	return async (dispatch) => {
 		await storeData("notificationBeforeEvent", event + "")
 		await storeData("notificationBirthday", birthday + "")
-		console.log("event :>> ", event)
-		console.log("birthday :>> ", birthday)
 		const events = store.getState().event.events
 		await dispatch(refreshEventsNotifications(events, event))
 		const clients = store.getState().client.clients
@@ -77,9 +75,7 @@ export const setAllNotifications = (event, birthday) => {
 export const getAllNotifications = () => {
 	return async (dispatch) => {
 		const event = await retrieveData("notificationBeforeEvent")
-		console.log("event :>> ", event)
 		const birthday = await retrieveData("notificationBirthday")
-		console.log("birthday :>> ", birthday)
 		dispatch({
 			type: SET_ALL_NOTIFICATIONS,
 			event,

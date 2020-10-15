@@ -13,9 +13,7 @@ import Button from "./Button"
 export const DevDropDownPicker = ({
 	tables = [],
 	defaultValue = null,
-	onChangeItem = (value) => {
-		console.log(value)
-	},
+	onChangeItem = () => {},
 	theme = useTheme(),
 	style = {},
 	placeholder = "",
