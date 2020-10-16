@@ -209,7 +209,7 @@ const ServiceCard = ({
 
 export default ServiceCard
 
-const stylesFactory = ({ colors, fontSize }) =>
+const stylesFactory = ({ colors }) =>
 	StyleSheet.create({
 		card: {
 			width: "100%",
