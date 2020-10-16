@@ -21,12 +21,13 @@ import { ThemeContext } from "../ThemeContext"
 import { AppContext } from "../AppContext"
 
 import Button from "../components/Button"
+import { fontSize } from "../theme"
 
 const { width } = Dimensions.get("window")
 
 const SettingsScreen = ({ navigation, route }) => {
 	const theme = useTheme()
-	const { colors, fontSize } = theme
+	const { colors } = theme
 	const { setDark, setAccent } = useContext(ThemeContext)
 	const {
 		dev,

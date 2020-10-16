@@ -9,6 +9,7 @@ import {
 import { useTheme } from "@react-navigation/native"
 import { FontAwesome5 } from "@expo/vector-icons"
 import { contactsIcons } from "../db/dependencies"
+import { iconSize, fontSize } from "../theme"
 
 const ContactsMenu = ({
 	client,
@@ -18,7 +19,7 @@ const ContactsMenu = ({
 	triggerBackgroundColor = null,
 	triggerIconColor = null,
 }) => {
-	const { colors, fontSize, iconSize } = useTheme()
+	const { colors } = useTheme()
 
 	const IconSizeNum =
 		((iconSize ? iconSize[size] : null) ||

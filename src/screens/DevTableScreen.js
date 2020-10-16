@@ -21,9 +21,10 @@ import {
 	renderers,
 } from "react-native-popup-menu"
 import Button from "../components/Button"
+import { fontSize } from "../theme"
 
 const DevTableScreen = ({ navigation, route }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	const [columns, setColumns] = useState([])
 	const selectedTable = route.params.table
 	const { Popover } = renderers

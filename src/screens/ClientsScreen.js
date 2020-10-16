@@ -11,9 +11,10 @@ import MainFlatListWithFab from "../components/MainFlatListWithFab"
 import { dbGenerator } from "../db/dbTemplate"
 import { addClient, deleteAllClients } from "../store/actions/client"
 import ModalDeleteClient from "../components/ModalDeleteClient"
+import { fontSize } from "../theme"
 
 const ClientsScreen = ({ navigation, route }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	const dispatch = useDispatch()
 
 	const clients = useSelector((state) => state.client.clients)

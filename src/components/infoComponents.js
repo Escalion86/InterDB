@@ -2,6 +2,7 @@ import React from "react"
 import { StyleSheet, Text, TouchableOpacity, Linking } from "react-native"
 import { useTheme } from "@react-navigation/native"
 import { FontAwesome5 } from "@expo/vector-icons"
+import { fontSize } from "../theme"
 
 export const TextBlock = ({
 	text = "",
@@ -9,7 +10,7 @@ export const TextBlock = ({
 	big = false,
 	style = {},
 }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	return (
 		<Text
 			style={{

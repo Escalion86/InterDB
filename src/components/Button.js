@@ -1,6 +1,7 @@
 import React from "react"
 import { Text, TouchableOpacity, StyleSheet } from "react-native"
 import { useTheme } from "@react-navigation/native"
+import { fontSize } from "../theme"
 
 const Button = ({
 	title = "",
@@ -11,7 +12,7 @@ const Button = ({
 	disabled = false,
 	textFontSize = "medium",
 }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	return (
 		<TouchableOpacity
 			style={{

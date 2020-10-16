@@ -9,7 +9,7 @@ if (screenWidth < 800) {
 	iconSizeCorrection = -2
 }
 
-const fontSize = {
+export const fontSize = {
 	tiny: 12 + fontSizeCorrection,
 	small: 14 + fontSizeCorrection,
 	medium: 16 + fontSizeCorrection,
@@ -17,7 +17,7 @@ const fontSize = {
 	giant: 20 + fontSizeCorrection,
 }
 
-const iconSize = {
+export const iconSize = {
 	tiny: 20 + iconSizeCorrection,
 	small: 24 + iconSizeCorrection,
 	medium: 28 + iconSizeCorrection,
@@ -25,7 +25,7 @@ const iconSize = {
 	giant: 36 + iconSizeCorrection,
 }
 
-const fonts = {
+export const fonts = {
 	light: {
 		fontFamily: "sans-serif-light",
 		fontWeight: "normal",
@@ -73,8 +73,6 @@ export const darkTheme = {
 	},
 	dark: true,
 	fonts: fonts,
-	fontSize: fontSize,
-	iconSize: iconSize,
 	roundness: 2,
 }
 
@@ -107,7 +105,5 @@ export const lightTheme = {
 	},
 	dark: false,
 	fonts: fonts,
-	fontSize: fontSize,
-	iconSize: iconSize,
 	roundness: 2,
 }

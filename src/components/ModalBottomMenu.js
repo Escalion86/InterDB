@@ -11,6 +11,7 @@ import { useTheme } from "@react-navigation/native"
 import Button from "./Button"
 import GestureRecognizer from "react-native-swipe-gestures"
 import { Ionicons } from "@expo/vector-icons"
+import { fontSize } from "../theme"
 
 const ModalBottomMenu = ({
 	children,
@@ -19,7 +20,7 @@ const ModalBottomMenu = ({
 	visible = false,
 	onOuterClick = () => {},
 }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 
 	return (
 		<GestureRecognizer

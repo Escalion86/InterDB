@@ -1,14 +1,9 @@
 import React, { useState } from "react"
-import {
-	StyleSheet,
-	Text,
-	View,
-	TouchableOpacity,
-	TextInput,
-} from "react-native"
+import { View, TextInput } from "react-native"
 import { useTheme } from "@react-navigation/native"
 import DropDownPicker from "react-native-dropdown-picker"
 import Button from "./Button"
+import { fontSize } from "../theme"
 
 export const DevDropDownPicker = ({
 	tables = [],
@@ -21,7 +16,7 @@ export const DevDropDownPicker = ({
 	disabled = false,
 }) => {
 	if (tables.length === 0) return null
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	const tablesItems = []
 	tables.forEach((table) => {
 		tablesItems.push({
@@ -71,7 +66,7 @@ export const DevDropDownPicker = ({
 }
 
 export const DevInputBtn = ({ title = "", onPress = () => {}, style = {} }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	const [value, setValue] = useState("")
 	return (
 		<View style={{ ...style, flexDirection: "row" }}>
@@ -106,7 +101,7 @@ export const DevTwoInputBtn = ({
 	onPress = (oldValue, newValue) => console.log(oldValue, newValue),
 	style = {},
 }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	const [oldValue, setOldValue] = useState("")
 	const [newValue, setNewValue] = useState("")
 	return (
@@ -153,24 +148,3 @@ export const DevTwoInputBtn = ({
 		</View>
 	)
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		padding: 5,
-	},
-	button: {
-		borderWidth: 1,
-		height: 40,
-		justifyContent: "center",
-		alignItems: "center",
-		borderRadius: 8,
-		marginVertical: 5,
-		padding: 5,
-	},
-	list: {
-		width: "100%",
-		padding: 0,
-		margin: 0,
-	},
-})

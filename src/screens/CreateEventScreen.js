@@ -29,6 +29,7 @@ import {
 	renderers,
 } from "react-native-popup-menu"
 import { HeaderBackButton } from "@react-navigation/stack"
+import { fontSize } from "../theme"
 // import { addEventNotification } from "../helpers/notifications"
 
 const CreateEventScreen = ({ navigation, route }) => {
@@ -39,7 +40,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 			  )
 			: { ...dbDefault("events"), date: new Date().setSeconds(0, 0) }
 
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 
 	const services = useSelector((state) => state.service.services).filter(
 		(item) => !item.archive
@@ -199,7 +200,6 @@ const CreateEventScreen = ({ navigation, route }) => {
 		<ModalBottomMenu
 			title="Отменить изменения"
 			subtitle="Уверены что хотите выйти без сохранения?"
-			onAccept={() => navigation.goBack()}
 			visible={true}
 			onOuterClick={() => setModal(null)}
 		>

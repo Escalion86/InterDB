@@ -2,62 +2,75 @@ import React, { useContext } from "react"
 import { Ionicons } from "@expo/vector-icons"
 import { statusIconDependencies } from "../db/dependencies"
 import { View, Text, StyleSheet } from "react-native"
-import { useTheme } from "@react-navigation/native"
-import { ThemeContext } from "../ThemeContext"
+import { iconSize } from "../theme"
 
 export const MainIcon = ({
+	iconName = "bug",
+	iconBackgroundColor = "white",
+	size = "medium",
+	text = "",
+	textColor = "white",
+	style = {},
+}) => {
+	const iconSizeNum =
+		(iconSize ? iconSize[size] : null) ||
+		(iconSize ? iconSize.medium : null) ||
+		28
+	const fontSizeNum = 9 + Math.floor(iconSizeNum / 3)
+
+	const iconDemention = iconSizeNum + Math.floor(iconSizeNum / 2)
+	const IconPadding = Math.floor(iconSizeNum / 16)
+
+	return (
+		<View style={{ ...styles.container, ...style }}>
+			<View
+				style={{
+					...styles.button,
+					width: iconDemention,
+					height: iconDemention,
+					padding: IconPadding,
+					backgroundColor: iconBackgroundColor,
+				}}
+			>
+				<Ionicons name={iconName} size={iconSizeNum} color="white" />
+			</View>
+			{text ? (
+				<Text
+					style={{
+						...styles.text,
+						fontSize: fontSizeNum,
+						color: textColor,
+					}}
+				>
+					{text}
+				</Text>
+			) : null}
+		</View>
+	)
+}
+
+export const EventIcon = ({
 	dependencies = statusIconDependencies,
 	status = null,
 	size = "medium",
 	showtext = false,
-	textcolor = null,
+	textcolor = "white",
 	style = {},
 }) => {
-	const { iconSize } = useTheme()
-
-	const IconSizeNum =
-		(iconSize ? iconSize[size] : null) ||
-		(iconSize ? iconSize.medium : null) ||
-		28
-	const fontSizeNum = 9 + Math.floor(IconSizeNum / 3)
-
-	const iconDemention = IconSizeNum + Math.floor(IconSizeNum / 2)
-	const IconPadding = Math.floor(IconSizeNum / 16)
-
 	if (!status) {
 		return null
 	} else {
 		return (
-			<View style={{ ...styles.container, ...style }}>
-				<View
-					style={{
-						...styles.button,
-						width: iconDemention,
-						height: iconDemention,
-						padding: IconPadding,
-						backgroundColor: dependencies[status].color,
-					}}
-				>
-					<Ionicons
-						name={
-							dependencies[status].name ? dependencies[status].name : "ios-bug"
-						}
-						size={IconSizeNum}
-						color={dependencies[status].color ? "white" : "black"}
-					/>
-				</View>
-				{showtext ? (
-					<Text
-						style={{
-							...styles.text,
-							fontSize: fontSizeNum,
-							color: textcolor,
-						}}
-					>
-						{status}
-					</Text>
-				) : null}
-			</View>
+			<MainIcon
+				style={style}
+				size={size}
+				iconName={
+					dependencies[status].name ? dependencies[status].name : "ios-bug"
+				}
+				text={showtext ? status : null}
+				textcolor={textcolor}
+				iconBackgroundColor={dependencies[status].color}
+			/>
 		)
 	}
 }

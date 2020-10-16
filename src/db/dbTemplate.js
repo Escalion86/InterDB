@@ -696,6 +696,44 @@ export default dbTemplate = {
 			db_default: 0,
 		},
 	],
+	finance: [
+		{
+			db_name: "event",
+			desc: "Событие",
+			type: "integer",
+			db_type: "INT",
+			not_null: true,
+			default: 0,
+			db_default: 0,
+		},
+		{
+			db_name: "type",
+			desc: "Поступление/Списание",
+			type: "text",
+			db_type: "TEXT",
+			not_null: true,
+			default: "income",
+			db_default: "income",
+		},
+		{
+			db_name: "sum",
+			desc: "Сумма",
+			type: "integer",
+			db_type: "INT",
+			not_null: true,
+			default: 0,
+			db_default: 0,
+		},
+		{
+			db_name: "comment",
+			desc: "Комментарий",
+			type: "integer",
+			db_type: "TEXT",
+			not_null: false,
+			default: "",
+			db_default: "",
+		},
+	],
 }
 
 export const dbDefault = (db) => {

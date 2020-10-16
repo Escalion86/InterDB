@@ -12,6 +12,7 @@ import { useTheme } from "@react-navigation/native"
 import ContactsMenu from "./ContactsMenu"
 import { formatBirthday } from "../helpers/date"
 import SwipeableCard from "../components/SwipeableCard"
+import { fontSize } from "../theme"
 
 const ClientCard = ({
 	navigation,
@@ -151,7 +152,7 @@ const ClientCard = ({
 
 export default ClientCard
 
-const stylesFactory = ({ colors, fontSize }) =>
+const stylesFactory = ({ colors }) =>
 	StyleSheet.create({
 		card: {
 			width: "100%",

@@ -14,10 +14,11 @@ import {
 } from "react-native-paper"
 import { Ionicons } from "@expo/vector-icons"
 import { AppContext } from "../AppContext"
+import { iconSize, fontSize } from "../theme"
 
 const DrawerContent = (props) => {
 	const theme = useTheme()
-	const { colors, iconSize, fontSize } = theme
+	const { colors } = theme
 
 	const { dev } = useContext(AppContext)
 

@@ -13,17 +13,18 @@ import { useTheme } from "@react-navigation/native"
 import DropDownPicker from "react-native-dropdown-picker"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { formatDate, formatTime } from "../helpers/date"
-import { MainIcon } from "./icons"
+import { EventIcon } from "./icons"
 import * as ImagePicker from "expo-image-picker"
 import Switch from "./Switch"
 import ModalBottomMenu from "./ModalBottomMenu"
 import Button from "./Button"
 import { Picker } from "@react-native-community/picker"
+import { fontSize } from "../theme"
 // import TextInputMask from "./TextInputMask"
 // import TextInputMask from "react-native-text-input-mask"
 
 export const TitleBlock = ({ title = "" }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	return (
 		<Text
 			style={{ ...styles.title, fontSize: fontSize.giant, color: colors.text }}
@@ -38,7 +39,7 @@ export const GenderSwitch = ({
 	onSwitch = () => {},
 	value = false,
 }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 
 	return (
 		<View style={styles.row}>
@@ -88,7 +89,7 @@ export const ImagePickerBlock = ({
 	onPick = () => {},
 	noImageUrl = null,
 }) => {
-	const { colors, dark, fontSize } = useTheme()
+	const { colors, dark } = useTheme()
 	if (!noImageUrl) {
 		noImageUrl = dark
 			? require("../../assets/no_image_dark.jpg")
@@ -203,7 +204,7 @@ export const TextInputBlock = ({
 	inputFlex = 3,
 }) => {
 	value = value ? value.toString() : ""
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	const textColor = success ? colors.success : colors.text
 
 	const multilineStyle = multiline
@@ -343,14 +344,14 @@ export const EventRowDropDownPicker = ({
 	onChangeItem = null,
 	style = {},
 }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	let arrayItems = []
 	for (let item in dependencies) {
 		arrayItems.push({
 			label: "",
 			value: item,
 			icon: () => (
-				<MainIcon
+				<EventIcon
 					dependencies={dependencies}
 					status={item}
 					size="tiny"
@@ -431,7 +432,7 @@ export const BirthdayPicker = ({
 	if (!year) year = 2020
 	day += ""
 	year += ""
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	const monthsNames = [
 		"Января",
 		"Февраля",
@@ -552,7 +553,7 @@ export const DateTimePickerBlock = ({
 	showWeek = true,
 	neutralButton = false,
 }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
 
 	return (
@@ -655,7 +656,7 @@ export const DropDownPickerBlock = ({
 	zeroItem = null,
 	searchable = false,
 }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	let defaultExists = false
 	let arrayItems = zeroItem ? [zeroItem] : []
 	if (zeroItem && zeroItem.value === defeultValue) {
@@ -670,7 +671,7 @@ export const DropDownPickerBlock = ({
 				label: data.name,
 				value: data.id,
 				// icon: () => (
-				//   <MainIcon
+				//   <EventIcon
 				//     dependencies={dependencies}
 				//     status={item}
 				//     size={20}

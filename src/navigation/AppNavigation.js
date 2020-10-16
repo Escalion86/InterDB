@@ -33,6 +33,7 @@ import DrawerContent from "../components/DrawerContent"
 
 import { useTheme } from "@react-navigation/native"
 import { ThemeContext } from "../ThemeContext"
+import { fontSize } from "../theme"
 
 const Stack = createStackNavigator()
 const EventsStack = createStackNavigator()
@@ -53,7 +54,7 @@ const SettingsStack = createStackNavigator()
 // )
 
 const StackNavigator = ({ children, navigation, initialRouteName }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	return (
 		<Stack.Navigator
 			initialRouteName="Main"

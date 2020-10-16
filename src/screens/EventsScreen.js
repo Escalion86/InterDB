@@ -26,10 +26,11 @@ import * as Animatable from "react-native-animatable"
 import Fab from "../components/Fab"
 import MainFlatListWithFab from "../components/MainFlatListWithFab"
 import ModalDeleteEvent from "../components/ModalDeleteEvent"
+import { fontSize } from "../theme"
 
 const EventsScreen = ({ navigation, route }) => {
 	const theme = useTheme()
-	const { colors, fontSize } = theme
+	const { colors } = theme
 	const dispatch = useDispatch()
 	const { Popover } = renderers
 	const [sorting, setSorting] = useState("dateDESC")

@@ -18,6 +18,7 @@ import { useTheme } from "@react-navigation/native"
 import SwipeableCard from "../components/SwipeableCard"
 // import { deleteService } from "../store/actions/service"
 // import ModalDeleteService from "./ModalDeleteService"
+import { fontSize } from "../theme"
 
 const ServiceCard = ({
 	navigation,
@@ -29,7 +30,7 @@ const ServiceCard = ({
 }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
-	const { colors, dark, fontSize } = theme
+	const { colors, dark } = theme
 	const styles = stylesFactory(theme)
 
 	if (!service) {

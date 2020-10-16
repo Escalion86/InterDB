@@ -3,6 +3,7 @@ import { StyleSheet, View, Animated } from "react-native"
 import { Swipeable } from "react-native-gesture-handler"
 
 import { useTheme } from "@react-navigation/native"
+import { fontSize } from "../theme"
 
 const SwipeableCard = ({
 	children,
@@ -13,7 +14,7 @@ const SwipeableCard = ({
 	backgroundColorLeft = null,
 	backgroundColorRight = null,
 }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	const swipeableRef = useRef(null)
 	const closeSwipeable = () => {
 		swipeableRef.current.close()

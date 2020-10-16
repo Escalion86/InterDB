@@ -6,7 +6,7 @@ import {
 	MenuTrigger,
 	// renderers,
 } from "react-native-popup-menu"
-import { MainIcon } from "./icons"
+import { EventIcon } from "./icons"
 import { iconDependencies } from "../db/dependencies"
 import { useDispatch } from "react-redux"
 import { updateEventPartially } from "../store/actions/event"
@@ -32,7 +32,7 @@ const IconMenu = ({ event, eventPartName = null, style = {} }) => {
 				}}
 				style={activeValue === key ? { backgroundColor: colors.active } : null}
 				children={
-					<MainIcon
+					<EventIcon
 						dependencies={dependencies}
 						status={key}
 						size="small"
@@ -54,7 +54,7 @@ const IconMenu = ({ event, eventPartName = null, style = {} }) => {
 			<MenuTrigger
 				// style={{ marginLeft: 20 }}
 				children={
-					<MainIcon
+					<EventIcon
 						dependencies={dependencies}
 						status={activeValue}
 						size="small"

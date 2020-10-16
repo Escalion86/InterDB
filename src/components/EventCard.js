@@ -22,6 +22,7 @@ import IconMenu from "./IconMenu"
 import linkTo from "../helpers/linkTo"
 import ContactsMenu from "./ContactsMenu"
 import SwipeableCard from "../components/SwipeableCard"
+import { fontSize } from "../theme"
 
 const EventCard = ({
 	navigation,
@@ -35,7 +36,7 @@ const EventCard = ({
 }) => {
 	const { Popover } = renderers
 	const theme = useTheme()
-	const { colors, fontSize } = theme
+	const { colors } = theme
 	const styles = stylesFactory(theme)
 	// const [modal, setModal] = useState(null)
 
@@ -342,7 +343,7 @@ const EventCard = ({
 
 export default EventCard
 
-const stylesFactory = ({ colors, fontSize }) =>
+const stylesFactory = ({ colors }) =>
 	StyleSheet.create({
 		card: {
 			width: "100%",

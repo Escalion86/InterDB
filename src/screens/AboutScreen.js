@@ -13,9 +13,10 @@ import { TouchableOpacity } from "react-native-gesture-handler"
 import Button from "../components/Button"
 import { AppContext } from "../AppContext"
 import { ContactIcon } from "../components/infoComponents"
+import { fontSize } from "../theme"
 
 const AboutScreen = ({ navigation, route }) => {
-	const { colors, fontSize } = useTheme()
+	const { colors } = useTheme()
 	const { toggleDev, dev } = useContext(AppContext)
 
 	const [startToOpenDev, setStartToOpenDev] = useState(null)
