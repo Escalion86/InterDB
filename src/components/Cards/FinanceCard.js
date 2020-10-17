@@ -5,35 +5,27 @@ import {
   View,
   ActivityIndicator,
   TouchableHighlight,
-  Image,
 } from 'react-native'
-import {
-  Menu,
-  MenuOptions,
-  MenuTrigger,
-  renderers,
-} from 'react-native-popup-menu'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
-import SwipeableCard from '../components/SwipeableCard'
+import SwipeableCard from '../SwipeableCard'
 // import { deleteService } from "../store/actions/service"
 // import ModalDeleteService from "./ModalDeleteService"
-import { fontSize } from '../theme'
+import { fontSize } from '../../theme'
 
-const ServiceCard = ({
+const FinanceCard = ({
   navigation,
-  service,
+  finance,
   onPress = null,
   listMode = false,
   onDelete = null,
   swipeable = true,
 }) => {
-  const { Popover } = renderers
   const theme = useTheme()
-  const { colors, dark } = theme
+  const { colors } = theme
   const styles = stylesFactory(theme)
 
-  if (!service) {
+  if (!finance) {
     return (
       <TouchableHighlight
         // activeOpacity={1}
@@ -43,7 +35,9 @@ const ServiceCard = ({
       >
         <View style={styles.middle}>
           <View style={styles.cardheader}>
-            <Text style={styles.cardtitle}>Ошибка! Услуга не найдена</Text>
+            <Text style={styles.cardtitle}>
+              Ошибка! Финансовая запись не найдена
+            </Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -51,20 +45,11 @@ const ServiceCard = ({
   } else {
     if (!onPress) {
       onPress = () => {
-        navigation.navigate('Service', { serviceId: service.id })
+        navigation.navigate('Finance', { financeId: finance.id })
       }
     }
 
-    const profit =
-      service.finance_price -
-      service.finance_assistants -
-      service.finance_consumables
-
-    const noImageUrl = dark
-      ? require('../../assets/no_image_dark.jpg')
-      : require('../../assets/no_image.jpg')
-
-    if (service.loading || service.deleting) {
+    if (finance.loading) {
       return (
         <View
           style={{
@@ -72,7 +57,7 @@ const ServiceCard = ({
             ...styles.card,
           }}
         >
-          {service.loading ? (
+          {finance.loading ? (
             <ActivityIndicator size="large" color={colors.text} />
           ) : (
             <Ionicons
@@ -91,30 +76,13 @@ const ServiceCard = ({
       </View>
     )
 
-    const MenuRow = ({ title = '', num = 0, style = {} }) => (
-      <View style={{ ...styles.row, ...style }}>
-        <Text style={{ fontSize: fontSize.medium, color: colors.text }}>
-          {title}
-        </Text>
-        <Text
-          style={{
-            fontSize: fontSize.medium,
-            marginLeft: 20,
-            color: colors.text,
-          }}
-        >
-          {num}
-        </Text>
-      </View>
-    )
-
     const Container = ({ children }) => {
       if (swipeable) {
         return (
           <SwipeableCard
             onLeftOpen={() => {
-              navigation.navigate('CreateService', {
-                serviceId: service.id,
+              navigation.navigate('CreateFinance', {
+                financeId: finance.id,
               })
             }}
             onRightOpen={onDelete}
@@ -135,71 +103,16 @@ const ServiceCard = ({
           onPress={onPress}
         >
           <View style={styles.card}>
-            {service.image ? (
-              <View style={styles.left}>
-                <Image
-                  style={{
-                    // flex: 1,
-                    borderRadius: 5,
-                    borderWidth: 1,
-                    borderColor: colors.border,
-                    width: '100%',
-                    height: '100%',
-                  }}
-                  source={!service.image ? noImageUrl : { uri: service.image }}
-                  // resizeMethod="scale"
-                  resizeMode="cover"
-                />
-              </View>
-            ) : null}
             <View style={styles.middle}>
               <View style={styles.cardheader}>
-                <Text style={styles.cardtitle}>{service.name}</Text>
+                <Text style={styles.cardtitle}>{finance.event}</Text>
               </View>
-              {service.description ? (
-                <CardDesc desc={service.description} />
-              ) : null}
+              {finance.type ? <CardDesc desc={finance.type} /> : null}
             </View>
             <View style={styles.right}>
               <View style={styles.carddate}>
-                <Text style={styles.datetime}>
-                  {service.preparetime + service.collecttime + service.duration}{' '}
-                  мин
-                </Text>
+                <Text style={styles.datetime}>{finance.sum} руб</Text>
               </View>
-              {/* <Text style={styles.price}>{service.price}</Text> */}
-              <Menu
-                style={styles.finance}
-                renderer={Popover}
-                rendererProps={{ preferredPlacement: 'left' }}
-              >
-                <MenuTrigger>
-                  {/* <TouchableOpacity style={styles.finance}> */}
-                  <Text style={styles.profit}>{profit}</Text>
-                  {/* </TouchableOpacity> */}
-                </MenuTrigger>
-                <MenuOptions style={styles.menuOptions}>
-                  <MenuRow title="Цена клиента" num={service.finance_price} />
-                  <MenuRow
-                    title="Расходники"
-                    num={-service.finance_consumables}
-                  />
-                  <MenuRow
-                    title="Ассистентам"
-                    num={-service.finance_assistants}
-                    style={{
-                      borderBottomColor: colors.text,
-                      borderBottomWidth: 1,
-                      paddingBottom: 5,
-                    }}
-                  />
-                  <MenuRow
-                    title="ИТОГО"
-                    num={profit}
-                    style={{ paddingTop: 5 }}
-                  />
-                </MenuOptions>
-              </Menu>
             </View>
           </View>
         </TouchableHighlight>
@@ -208,7 +121,7 @@ const ServiceCard = ({
   }
 }
 
-export default ServiceCard
+export default FinanceCard
 
 const stylesFactory = ({ colors }) =>
   StyleSheet.create({

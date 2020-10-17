@@ -15,15 +15,15 @@ import {
   renderers,
 } from 'react-native-popup-menu'
 import { Ionicons } from '@expo/vector-icons'
-import { formatDate, formatTime, getWeekDay } from '../helpers/date'
+import { formatDate, formatTime, getWeekDay } from '../../helpers/date'
 import { useTheme } from '@react-navigation/native'
 
-import IconMenu from './IconMenu'
-import FinanceMenu from './FinanceMenu'
-import linkTo from '../helpers/linkTo'
-import ContactsMenu from './ContactsMenu'
-import SwipeableCard from '../components/SwipeableCard'
-import { fontSize } from '../theme'
+import IconMenu from '../IconMenu'
+import FinanceMenu from '../FinanceMenu'
+import linkTo from '../../helpers/linkTo'
+import ContactsMenu from '../ContactsMenu'
+import SwipeableCard from '../SwipeableCard'
+import { fontSize } from '../../theme'
 
 const EventCard = ({
   navigation,

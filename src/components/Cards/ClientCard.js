@@ -5,27 +5,28 @@ import {
   View,
   ActivityIndicator,
   TouchableHighlight,
+  Image,
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
-import SwipeableCard from '../components/SwipeableCard'
-// import { deleteService } from "../store/actions/service"
-// import ModalDeleteService from "./ModalDeleteService"
-import { fontSize } from '../theme'
+import ContactsMenu from '../ContactsMenu'
+import { formatBirthday } from '../../helpers/date'
+import SwipeableCard from '../SwipeableCard'
+import { fontSize } from '../../theme'
 
-const FinanceCard = ({
+const ClientCard = ({
   navigation,
-  finance,
+  client,
   onPress = null,
   listMode = false,
   onDelete = null,
   swipeable = true,
 }) => {
   const theme = useTheme()
-  const { colors } = theme
+  const { colors, dark } = theme
   const styles = stylesFactory(theme)
 
-  if (!finance) {
+  if (!client) {
     return (
       <TouchableHighlight
         // activeOpacity={1}
@@ -35,9 +36,7 @@ const FinanceCard = ({
       >
         <View style={styles.middle}>
           <View style={styles.cardheader}>
-            <Text style={styles.cardtitle}>
-              Ошибка! Финансовая запись не найдена
-            </Text>
+            <Text style={styles.cardtitle}>Ошибка! Клиент не найден</Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -45,11 +44,25 @@ const FinanceCard = ({
   } else {
     if (!onPress) {
       onPress = () => {
-        navigation.navigate('Finance', { financeId: finance.id })
+        navigation.navigate('Client', { clientId: client.id })
       }
     }
+    const birthday = formatBirthday(
+      client.birthday_year,
+      client.birthday_month,
+      client.birthday_day
+    )
 
-    if (finance.loading) {
+    const noImageUrl =
+      client.gender === 0
+        ? dark
+          ? require('../../../assets/avatar/famale_dark.jpg')
+          : require('../../../assets/avatar/famale.jpg')
+        : dark
+          ? require('../../../assets/avatar/male_dark.jpg')
+          : require('../../../assets/avatar/male.jpg')
+
+    if (client.loading || client.deleting) {
       return (
         <View
           style={{
@@ -57,7 +70,7 @@ const FinanceCard = ({
             ...styles.card,
           }}
         >
-          {finance.loading ? (
+          {client.loading ? (
             <ActivityIndicator size="large" color={colors.text} />
           ) : (
             <Ionicons
@@ -70,19 +83,13 @@ const FinanceCard = ({
       )
     }
 
-    const CardDesc = ({ desc }) => (
-      <View style={styles.carddesc}>
-        <Text style={styles.carddesctext}>{desc}</Text>
-      </View>
-    )
-
     const Container = ({ children }) => {
       if (swipeable) {
         return (
           <SwipeableCard
             onLeftOpen={() => {
-              navigation.navigate('CreateFinance', {
-                financeId: finance.id,
+              navigation.navigate('CreateClient', {
+                clientId: client.id,
               })
             }}
             onRightOpen={onDelete}
@@ -103,17 +110,40 @@ const FinanceCard = ({
           onPress={onPress}
         >
           <View style={styles.card}>
+            <View style={styles.left}>
+              <Image
+                style={{
+                  // flex: 1,
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderColor: colors.border,
+                  width: 80,
+                  height: 80,
+                }}
+                source={!client.avatar ? noImageUrl : { uri: client.avatar }}
+                // resizeMethod="scale"
+                resizeMode="cover"
+              />
+            </View>
             <View style={styles.middle}>
               <View style={styles.cardheader}>
-                <Text style={styles.cardtitle}>{finance.event}</Text>
+                <Text style={styles.cardtitle}>
+                  {`${client.surname} ${client.name} ${client.thirdname}`.trim()}
+                </Text>
               </View>
-              {finance.type ? <CardDesc desc={finance.type} /> : null}
+              {birthday ? (
+                <View style={styles.carddesc}>
+                  <Text style={{ ...styles.carddesctext, textAlign: 'center' }}>
+                    {birthday}
+                  </Text>
+                </View>
+              ) : null}
             </View>
-            <View style={styles.right}>
-              <View style={styles.carddate}>
-                <Text style={styles.datetime}>{finance.sum} руб</Text>
+            {listMode ? null : (
+              <View style={styles.right}>
+                <ContactsMenu client={client} />
               </View>
-            </View>
+            )}
           </View>
         </TouchableHighlight>
       </Container>
@@ -121,7 +151,7 @@ const FinanceCard = ({
   }
 }
 
-export default FinanceCard
+export default ClientCard
 
 const stylesFactory = ({ colors }) =>
   StyleSheet.create({
@@ -137,12 +167,10 @@ const stylesFactory = ({ colors }) =>
       minHeight: 80,
     },
     left: {
-      flex: 1,
       padding: 5,
       // borderRightColor: "black",
-      flexDirection: 'row',
       borderRightWidth: 1,
-      // justifyContent: "space-around",
+      justifyContent: 'space-around',
       borderRightColor: colors.border,
     },
     carddate: {
@@ -153,21 +181,21 @@ const stylesFactory = ({ colors }) =>
     },
     middle: {
       // padding: 10,
-      flex: 3,
+      flex: 1,
     },
     right: {
       borderLeftWidth: 1,
       borderLeftColor: colors.border,
-      width: 70,
-
-      justifyContent: 'space-between',
+      width: 50,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     cardheader: {
       flex: 1,
       padding: 5,
+      minHeight: 40,
       alignItems: 'center',
       justifyContent: 'center',
-      minHeight: 40,
     },
     cardtitle: {
       fontFamily: 'open-bold',
@@ -186,7 +214,7 @@ const stylesFactory = ({ colors }) =>
       minHeight: 40,
       // borderColor: "red",
       // borderWidth: 1,
-      paddingHorizontal: 10,
+      padding: 5,
       justifyContent: 'center',
       alignItems: 'center',
       borderTopWidth: 1,
@@ -203,7 +231,7 @@ const stylesFactory = ({ colors }) =>
       color: colors.text,
     },
     finance: {
-      // flex: 1,
+      flex: 1,
       flexDirection: 'column',
       justifyContent: 'flex-end',
       width: '100%',
@@ -213,11 +241,11 @@ const stylesFactory = ({ colors }) =>
       // alignItems: "center",
       // justifyContent: "center",
     },
-    profit: {
+    price: {
       // flex: 1,
       fontSize: fontSize.small,
       width: '100%',
-      height: 44,
+      height: 46,
       textAlignVertical: 'center',
       textAlign: 'center',
       color: '#ffff99',
@@ -231,14 +259,9 @@ const stylesFactory = ({ colors }) =>
     },
     menuOptions: {
       padding: 20,
-      borderColor: colors.border,
-      borderWidth: 1,
-      // borderRadius: 20,
-      backgroundColor: colors.card,
     },
     row: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
     },
   })

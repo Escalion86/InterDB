@@ -18,7 +18,7 @@ import { AppContext } from '../AppContext'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { addEvent, deleteAllEvents } from '../store/actions/event'
-import EventCard from '../components/EventCard'
+import EventCard from '../components/Cards/EventCard'
 import { dbGenerator } from '../db/dbTemplate'
 import { useTheme } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
@@ -46,8 +46,6 @@ const EventsScreen = ({ navigation, route }) => {
   const clients = useSelector((state) => state.client.clients)
   const finances = useSelector((state) => state.finance.finances)
   const loading = useSelector((state) => state.event.loading)
-  console.log('events :>> ', events)
-  console.log('finances :>> ', finances)
 
   const { dev } = useContext(AppContext)
 
@@ -304,14 +302,14 @@ const EventsScreen = ({ navigation, route }) => {
           title="Внести"
           onPress={() => {
             setModalFinanceEventIncome(false)
-            // dispatch(
-            //   addFinance({
-            //     event: modalFinanceEventIncome.id,
-            //     type: 'income',
-            //     sum: income,
-            //     comment: '',
-            //   })
-            // )
+            dispatch(
+              addFinance({
+                event: modalFinanceEventIncome.id,
+                type: 'income',
+                sum: income,
+                comment: '',
+              })
+            )
           }}
         />
         <Button

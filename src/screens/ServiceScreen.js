@@ -16,11 +16,11 @@ import { updateServicePartially } from '../store/actions/service'
 // } from "../components/ModalBottomMenu"
 import { useTheme } from '@react-navigation/native'
 // import MainFlatListWithFab from "../components/MainFlatListWithFab"
-// import EventCard from "../components/EventCard"
+// import EventCard from "../components/Cards/EventCard"
 import ModalDeleteService from '../components/ModalDeleteService'
 import ModalDeleteEvent from '../components/ModalDeleteEvent'
 import { TextBlock } from '../components/infoComponents'
-import EventCard from '../components/EventCard'
+import EventCard from '../components/Cards/EventCard'
 import { TitleBlock } from '../components/createComponents'
 
 const ServiceScreen = ({ navigation, route }) => {

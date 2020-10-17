@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ModalBottomMenu, { ModalBottomMenuYesNo } from './ModalBottomMenu'
 import MainFlatListWithFab from './MainFlatListWithFab'
-import EventCard from './EventCard'
+import EventCard from './Cards/EventCard'
 import { deleteClient } from '../store/actions/client'
 import wordForm from '../helpers/wordForm'
 

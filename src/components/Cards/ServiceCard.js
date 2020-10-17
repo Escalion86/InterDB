@@ -7,26 +7,33 @@ import {
   TouchableHighlight,
   Image,
 } from 'react-native'
+import {
+  Menu,
+  MenuOptions,
+  MenuTrigger,
+  renderers,
+} from 'react-native-popup-menu'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
-import ContactsMenu from './ContactsMenu'
-import { formatBirthday } from '../helpers/date'
-import SwipeableCard from '../components/SwipeableCard'
-import { fontSize } from '../theme'
+import SwipeableCard from '../SwipeableCard'
+// import { deleteService } from "../store/actions/service"
+// import ModalDeleteService from "./ModalDeleteService"
+import { fontSize } from '../../theme'
 
-const ClientCard = ({
+const ServiceCard = ({
   navigation,
-  client,
+  service,
   onPress = null,
   listMode = false,
   onDelete = null,
   swipeable = true,
 }) => {
+  const { Popover } = renderers
   const theme = useTheme()
   const { colors, dark } = theme
   const styles = stylesFactory(theme)
 
-  if (!client) {
+  if (!service) {
     return (
       <TouchableHighlight
         // activeOpacity={1}
@@ -36,7 +43,7 @@ const ClientCard = ({
       >
         <View style={styles.middle}>
           <View style={styles.cardheader}>
-            <Text style={styles.cardtitle}>Ошибка! Клиент не найден</Text>
+            <Text style={styles.cardtitle}>Ошибка! Услуга не найдена</Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -44,25 +51,20 @@ const ClientCard = ({
   } else {
     if (!onPress) {
       onPress = () => {
-        navigation.navigate('Client', { clientId: client.id })
+        navigation.navigate('Service', { serviceId: service.id })
       }
     }
-    const birthday = formatBirthday(
-      client.birthday_year,
-      client.birthday_month,
-      client.birthday_day
-    )
 
-    const noImageUrl =
-      client.gender === 0
-        ? dark
-          ? require('../../assets/avatar/famale_dark.jpg')
-          : require('../../assets/avatar/famale.jpg')
-        : dark
-          ? require('../../assets/avatar/male_dark.jpg')
-          : require('../../assets/avatar/male.jpg')
+    const profit =
+      service.finance_price -
+      service.finance_assistants -
+      service.finance_consumables
 
-    if (client.loading || client.deleting) {
+    const noImageUrl = dark
+      ? require('../../../assets/no_image_dark.jpg')
+      : require('../../../assets/no_image.jpg')
+
+    if (service.loading || service.deleting) {
       return (
         <View
           style={{
@@ -70,7 +72,7 @@ const ClientCard = ({
             ...styles.card,
           }}
         >
-          {client.loading ? (
+          {service.loading ? (
             <ActivityIndicator size="large" color={colors.text} />
           ) : (
             <Ionicons
@@ -83,13 +85,36 @@ const ClientCard = ({
       )
     }
 
+    const CardDesc = ({ desc }) => (
+      <View style={styles.carddesc}>
+        <Text style={styles.carddesctext}>{desc}</Text>
+      </View>
+    )
+
+    const MenuRow = ({ title = '', num = 0, style = {} }) => (
+      <View style={{ ...styles.row, ...style }}>
+        <Text style={{ fontSize: fontSize.medium, color: colors.text }}>
+          {title}
+        </Text>
+        <Text
+          style={{
+            fontSize: fontSize.medium,
+            marginLeft: 20,
+            color: colors.text,
+          }}
+        >
+          {num}
+        </Text>
+      </View>
+    )
+
     const Container = ({ children }) => {
       if (swipeable) {
         return (
           <SwipeableCard
             onLeftOpen={() => {
-              navigation.navigate('CreateClient', {
-                clientId: client.id,
+              navigation.navigate('CreateService', {
+                serviceId: service.id,
               })
             }}
             onRightOpen={onDelete}
@@ -110,40 +135,72 @@ const ClientCard = ({
           onPress={onPress}
         >
           <View style={styles.card}>
-            <View style={styles.left}>
-              <Image
-                style={{
-                  // flex: 1,
-                  borderRadius: 5,
-                  borderWidth: 1,
-                  borderColor: colors.border,
-                  width: 80,
-                  height: 80,
-                }}
-                source={!client.avatar ? noImageUrl : { uri: client.avatar }}
-                // resizeMethod="scale"
-                resizeMode="cover"
-              />
-            </View>
+            {service.image ? (
+              <View style={styles.left}>
+                <Image
+                  style={{
+                    // flex: 1,
+                    borderRadius: 5,
+                    borderWidth: 1,
+                    borderColor: colors.border,
+                    width: '100%',
+                    height: '100%',
+                  }}
+                  source={!service.image ? noImageUrl : { uri: service.image }}
+                  // resizeMethod="scale"
+                  resizeMode="cover"
+                />
+              </View>
+            ) : null}
             <View style={styles.middle}>
               <View style={styles.cardheader}>
-                <Text style={styles.cardtitle}>
-                  {`${client.surname} ${client.name} ${client.thirdname}`.trim()}
-                </Text>
+                <Text style={styles.cardtitle}>{service.name}</Text>
               </View>
-              {birthday ? (
-                <View style={styles.carddesc}>
-                  <Text style={{ ...styles.carddesctext, textAlign: 'center' }}>
-                    {birthday}
-                  </Text>
-                </View>
+              {service.description ? (
+                <CardDesc desc={service.description} />
               ) : null}
             </View>
-            {listMode ? null : (
-              <View style={styles.right}>
-                <ContactsMenu client={client} />
+            <View style={styles.right}>
+              <View style={styles.carddate}>
+                <Text style={styles.datetime}>
+                  {service.preparetime + service.collecttime + service.duration}{' '}
+                  мин
+                </Text>
               </View>
-            )}
+              {/* <Text style={styles.price}>{service.price}</Text> */}
+              <Menu
+                style={styles.finance}
+                renderer={Popover}
+                rendererProps={{ preferredPlacement: 'left' }}
+              >
+                <MenuTrigger>
+                  {/* <TouchableOpacity style={styles.finance}> */}
+                  <Text style={styles.profit}>{profit}</Text>
+                  {/* </TouchableOpacity> */}
+                </MenuTrigger>
+                <MenuOptions style={styles.menuOptions}>
+                  <MenuRow title="Цена клиента" num={service.finance_price} />
+                  <MenuRow
+                    title="Расходники"
+                    num={-service.finance_consumables}
+                  />
+                  <MenuRow
+                    title="Ассистентам"
+                    num={-service.finance_assistants}
+                    style={{
+                      borderBottomColor: colors.text,
+                      borderBottomWidth: 1,
+                      paddingBottom: 5,
+                    }}
+                  />
+                  <MenuRow
+                    title="ИТОГО"
+                    num={profit}
+                    style={{ paddingTop: 5 }}
+                  />
+                </MenuOptions>
+              </Menu>
+            </View>
           </View>
         </TouchableHighlight>
       </Container>
@@ -151,7 +208,7 @@ const ClientCard = ({
   }
 }
 
-export default ClientCard
+export default ServiceCard
 
 const stylesFactory = ({ colors }) =>
   StyleSheet.create({
@@ -167,10 +224,12 @@ const stylesFactory = ({ colors }) =>
       minHeight: 80,
     },
     left: {
+      flex: 1,
       padding: 5,
       // borderRightColor: "black",
+      flexDirection: 'row',
       borderRightWidth: 1,
-      justifyContent: 'space-around',
+      // justifyContent: "space-around",
       borderRightColor: colors.border,
     },
     carddate: {
@@ -181,21 +240,21 @@ const stylesFactory = ({ colors }) =>
     },
     middle: {
       // padding: 10,
-      flex: 1,
+      flex: 3,
     },
     right: {
       borderLeftWidth: 1,
       borderLeftColor: colors.border,
-      width: 50,
-      justifyContent: 'center',
-      alignItems: 'center',
+      width: 70,
+
+      justifyContent: 'space-between',
     },
     cardheader: {
       flex: 1,
       padding: 5,
-      minHeight: 40,
       alignItems: 'center',
       justifyContent: 'center',
+      minHeight: 40,
     },
     cardtitle: {
       fontFamily: 'open-bold',
@@ -214,7 +273,7 @@ const stylesFactory = ({ colors }) =>
       minHeight: 40,
       // borderColor: "red",
       // borderWidth: 1,
-      padding: 5,
+      paddingHorizontal: 10,
       justifyContent: 'center',
       alignItems: 'center',
       borderTopWidth: 1,
@@ -231,7 +290,7 @@ const stylesFactory = ({ colors }) =>
       color: colors.text,
     },
     finance: {
-      flex: 1,
+      // flex: 1,
       flexDirection: 'column',
       justifyContent: 'flex-end',
       width: '100%',
@@ -241,11 +300,11 @@ const stylesFactory = ({ colors }) =>
       // alignItems: "center",
       // justifyContent: "center",
     },
-    price: {
+    profit: {
       // flex: 1,
       fontSize: fontSize.small,
       width: '100%',
-      height: 46,
+      height: 44,
       textAlignVertical: 'center',
       textAlign: 'center',
       color: '#ffff99',
@@ -259,9 +318,14 @@ const stylesFactory = ({ colors }) =>
     },
     menuOptions: {
       padding: 20,
+      borderColor: colors.border,
+      borderWidth: 1,
+      // borderRadius: 20,
+      backgroundColor: colors.card,
     },
     row: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+      alignItems: 'center',
     },
   })

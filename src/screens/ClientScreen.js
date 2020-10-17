@@ -17,7 +17,7 @@ import { contactsIcons } from '../db/dependencies'
 import { formatBirthday } from '../helpers/date'
 import ModalDeleteClient from '../components/ModalDeleteClient'
 import ModalDeleteEvent from '../components/ModalDeleteEvent'
-import EventCard from '../components/EventCard'
+import EventCard from '../components/Cards/EventCard'
 
 const ClientScreen = ({ navigation, route }) => {
   const client =
