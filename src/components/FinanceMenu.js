@@ -6,13 +6,17 @@ import {
   MenuTrigger,
   // renderers,
 } from 'react-native-popup-menu'
+import { Text, View } from 'react-native'
 import { MainIcon } from './icons'
 import { useTheme } from '@react-navigation/native'
+import { fontSize } from '../theme'
 
 const FinanceMenu = ({
   iconBackgroundColor = 'green',
-  financeIncome = () => {},
-  financeOutcome = () => {},
+  addIncome = () => {},
+  addOutcome = () => {},
+  incomeValue = 0,
+  outcomeValue = 0,
   style = {},
 }) => {
   const { colors } = useTheme()
@@ -37,7 +41,18 @@ const FinanceMenu = ({
           },
         }}
       >
-        <MenuOption key="income" onSelect={financeIncome}>
+        <View style={{ padding: 5, backgroundColor: colors.background }}>
+          <Text style={{ color: colors.text, fontSize: fontSize.medium }}>
+            Поступление: {incomeValue}
+          </Text>
+          <Text style={{ color: colors.text, fontSize: fontSize.medium }}>
+            Списание: {outcomeValue}
+          </Text>
+          <Text style={{ color: colors.text, fontSize: fontSize.medium }}>
+            Остаток: {incomeValue - outcomeValue}
+          </Text>
+        </View>
+        <MenuOption key="income" onSelect={addIncome}>
           <MainIcon
             iconName="ios-add"
             size="small"
@@ -46,7 +61,7 @@ const FinanceMenu = ({
             textColor={colors.text}
           />
         </MenuOption>
-        <MenuOption key="outcome" onSelect={financeOutcome}>
+        <MenuOption key="outcome" onSelect={addOutcome}>
           <MainIcon
             iconName="ios-remove"
             size="small"

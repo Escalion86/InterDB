@@ -9,8 +9,6 @@ import {
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
 import SwipeableCard from '../SwipeableCard'
-// import { deleteService } from "../store/actions/service"
-// import ModalDeleteService from "./ModalDeleteService"
 import { fontSize } from '../../theme'
 
 const FinanceCard = ({
@@ -107,7 +105,9 @@ const FinanceCard = ({
               <View style={styles.cardheader}>
                 <Text style={styles.cardtitle}>{finance.event}</Text>
               </View>
-              {finance.type ? <CardDesc desc={finance.type} /> : null}
+              <CardDesc
+                desc={finance.type === 'income' ? 'Поступление' : 'Списание'}
+              />
             </View>
             <View style={styles.right}>
               <View style={styles.carddate}>

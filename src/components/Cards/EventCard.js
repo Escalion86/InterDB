@@ -105,6 +105,33 @@ const EventCard = ({
 
     const services = useSelector((state) => state.service.services)
     const clients = useSelector((state) => state.client.clients)
+    const finances = useSelector((state) => state.finance.finances).filter(
+      (finance) => {
+        return finance.event === event.id
+      }
+    )
+
+    let incomeSum = 0
+    let outcomeSum = 0
+    finances.forEach((finance) => {
+      if (finance.type === 'income') {
+        incomeSum += +finance.sum
+      } else {
+        outcomeSum += +finance.sum
+      }
+    })
+    const resultSum = incomeSum - outcomeSum
+
+    const financeSumToColor = (sum, profit) => {
+      if (sum <= 0) return 'red'
+      if (sum < profit) return 'orange'
+      if (sum === profit) return 'green'
+      if (sum > profit) return 'blue'
+    }
+
+    const financeColor = financeSumToColor(resultSum, profit)
+
+    console.log('finances :>> ', finances)
 
     const service = services.filter((data) => {
       if (data.id === event.service) return data
@@ -175,9 +202,11 @@ const EventCard = ({
                 // actionOnSelect={setFinanceStatus}
               /> */}
               <FinanceMenu
-                iconBackgroundColor="red"
-                financeIncome={financeIncome}
-                financeOutcome={financeOutcome}
+                iconBackgroundColor={financeColor}
+                addIncome={financeIncome}
+                addOutcome={financeOutcome}
+                incomeValue={incomeSum}
+                outcomeValue={outcomeSum}
               />
             </View>
             <View style={styles.middle}>
@@ -307,38 +336,48 @@ const EventCard = ({
                 </MenuTrigger>
                 <MenuOptions style={styles.menuOptions}>
                   <MenuRow
-                    title="Цена клиента"
+                    title="Цена для клиента"
                     value={event.finance_price + ' руб'}
                   />
-                  <MenuRow
-                    title="За дорогу"
-                    value={-event.finance_road + ' руб'}
-                  />
-                  <MenuRow
-                    title="Организатору"
-                    value={-event.finance_organizator + ' руб'}
-                  />
-                  <MenuRow
-                    title="Расходники"
-                    value={-event.finance_consumables + ' руб'}
-                  />
-                  <MenuRow
-                    title="Ассистентам"
-                    value={-event.finance_assistants + ' руб'}
-                  />
-                  <MenuRow
-                    title="Чаевые"
-                    value={event.finance_tips + ' руб'}
-                    style={{
-                      borderBottomColor: colors.text,
-                      borderBottomWidth: 1,
-                      paddingBottom: 5,
-                    }}
-                  />
+                  {event.finance_road ? (
+                    <MenuRow
+                      title="За дорогу"
+                      value={-event.finance_road + ' руб'}
+                    />
+                  ) : null}
+                  {event.finance_organizator ? (
+                    <MenuRow
+                      title="Организатору"
+                      value={-event.finance_organizator + ' руб'}
+                    />
+                  ) : null}
+                  {event.finance_consumables ? (
+                    <MenuRow
+                      title="Расходники"
+                      value={-event.finance_consumables + ' руб'}
+                    />
+                  ) : null}
+                  {event.finance_assistants ? (
+                    <MenuRow
+                      title="Ассистентам"
+                      value={-event.finance_assistants + ' руб'}
+                    />
+                  ) : null}
+                  {event.finance_tips ? (
+                    <MenuRow
+                      title="Чаевые"
+                      value={event.finance_tips + ' руб'}
+                    />
+                  ) : null}
                   <MenuRow
                     title="ИТОГО"
                     value={profit + ' руб'}
-                    style={{ paddingTop: 5 }}
+                    style={{
+                      borderTopColor: colors.text,
+                      borderTopWidth: 1,
+                      paddingTop: 5,
+                      marginTop: 5,
+                    }}
                   />
                 </MenuOptions>
               </Menu>
