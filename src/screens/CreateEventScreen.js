@@ -110,7 +110,7 @@ const CreateEventScreen = ({ navigation, route }) => {
   useEffect(() => {
     navigation.setOptions({
       title: event.id ? 'Редактирование события' : 'Создание события',
-      headerLeft: <HeaderBackButton onPress={() => checkChanges()} />,
+      headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
           <Item title="Save Event" iconName="ios-save" onPress={saveHandler} />

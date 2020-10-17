@@ -97,7 +97,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
   useEffect(() => {
     navigation.setOptions({
       title: service.id ? 'Редактирование услуги' : 'Создание услуги',
-      headerLeft: <HeaderBackButton onPress={() => checkChanges()} />,
+      headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
           <Item
