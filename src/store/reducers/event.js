@@ -11,7 +11,7 @@ import {
   LOADING_EVENT_COMPLITE,
   SET_FINANCE_STATUS,
   UPDATE_EVENT_PARTIALLY,
-} from "../types"
+} from '../types'
 
 const initialState = {
   events: [],
@@ -108,7 +108,7 @@ export const eventReducer = (state = initialState, action) => {
         events,
       }
 
-    case UPDATE_EVENT_PARTIALLY: //action (id, parts)
+    case UPDATE_EVENT_PARTIALLY: // action (id, parts)
       events = state.events.map((event) => {
         if (event.id === action.id) {
           event = { ...event, ...action.parts, loading: false }

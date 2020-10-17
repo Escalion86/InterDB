@@ -1,280 +1,272 @@
-import React, { useState, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { StyleSheet, Text, View, ScrollView, ToastAndroid } from "react-native"
-import { HeaderButtons, Item } from "react-navigation-header-buttons"
-import { AppHeaderIcon } from "../components/AppHeaderIcon"
-import { addClient, updateClient } from "../store/actions/client"
-import { useTheme } from "@react-navigation/native"
-import { dbDefault } from "../db/dbTemplate"
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { StyleSheet, ScrollView, ToastAndroid } from 'react-native'
+import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { AppHeaderIcon } from '../components/AppHeaderIcon'
+import { addClient, updateClient } from '../store/actions/client'
+import { useTheme } from '@react-navigation/native'
+import { dbDefault } from '../db/dbTemplate'
 import {
-	TextInputBlock,
-	TitleBlock,
-	ImagePickerBlock,
-	GenderSwitch,
-	DateTimePickerBlock,
-	BirthdayPicker,
-} from "../components/createComponents"
-import trimingArrayValues from "../helpers/trimingArrayValues"
-import { HeaderBackButton } from "@react-navigation/stack"
-import ModalBottomMenu from "../components/ModalBottomMenu"
-import Button from "../components/Button"
+  TextInputBlock,
+  TitleBlock,
+  ImagePickerBlock,
+  GenderSwitch,
+  BirthdayPicker,
+} from '../components/createComponents'
+import trimingArrayValues from '../helpers/trimingArrayValues'
+import { HeaderBackButton } from '@react-navigation/stack'
+import ModalBottomMenu from '../components/ModalBottomMenu'
+import Button from '../components/Button'
 
 const CreateClientScreen = ({ navigation, route }) => {
-	const client =
-		route.params !== undefined && route.params.clientId !== undefined
-			? useSelector((state) => state.client.clients).find(
-					(item) => item.id == route.params.clientId
-			  )
-			: { ...dbDefault("clients"), birthday: null }
+  const client =
+    route.params !== undefined && route.params.clientId !== undefined
+      ? useSelector((state) => state.client.clients).find(
+        (item) => item.id === route.params.clientId
+      )
+      : { ...dbDefault('clients'), birthday: null }
 
-	const dispatch = useDispatch()
-	const [newClient, setNewClient] = useState(client)
-	const [modal, setModal] = useState(null)
+  const dispatch = useDispatch()
+  const [newClient, setNewClient] = useState(client)
+  const [modal, setModal] = useState(null)
 
-	const nameFieldFilled =
-		newClient.name.trim() ||
-		newClient.surname.trim() ||
-		newClient.thirdname.trim()
-	const contactsFieldFilled =
-		newClient.phone.trim() ||
-		newClient.email.trim() ||
-		newClient.whatsapp.trim() ||
-		newClient.viber.trim() ||
-		newClient.telegram.trim() ||
-		newClient.instagram.trim() ||
-		newClient.vk.trim() ||
-		newClient.facebook.trim()
+  const nameFieldFilled =
+    newClient.name.trim() ||
+    newClient.surname.trim() ||
+    newClient.thirdname.trim()
+  const contactsFieldFilled =
+    newClient.phone.trim() ||
+    newClient.email.trim() ||
+    newClient.whatsapp.trim() ||
+    newClient.viber.trim() ||
+    newClient.telegram.trim() ||
+    newClient.instagram.trim() ||
+    newClient.vk.trim() ||
+    newClient.facebook.trim()
 
-	const { dark, colors } = useTheme()
+  const { dark, colors } = useTheme()
 
-	const noImageUrl =
-		newClient.gender === 0
-			? dark
-				? require("../../assets/avatar/famale_dark.jpg")
-				: require("../../assets/avatar/famale.jpg")
-			: dark
-			? require("../../assets/avatar/male_dark.jpg")
-			: require("../../assets/avatar/male.jpg")
+  const noImageUrl =
+    newClient.gender === 0
+      ? dark
+        ? require('../../assets/avatar/famale_dark.jpg')
+        : require('../../assets/avatar/famale.jpg')
+      : dark
+        ? require('../../assets/avatar/male_dark.jpg')
+        : require('../../assets/avatar/male.jpg')
 
-	const setClientItem = (item) => {
-		setNewClient({ ...newClient, ...item })
-	}
-	//TODO Сделать проверку на заполнение необходимых полей
-	const saveHandler = () => {
-		if (nameFieldFilled && contactsFieldFilled) {
-			client.id
-				? dispatch(updateClient(trimingArrayValues(newClient)))
-				: dispatch(addClient(trimingArrayValues(newClient)))
-			navigation.goBack()
-		} else {
-			ToastAndroid.show(
-				`Необходимо заполнить хотябы одно поле Имени и хотябы одно поле Контакта`,
-				ToastAndroid.LONG
-			)
-		}
-	}
+  const setClientItem = (item) => {
+    setNewClient({ ...newClient, ...item })
+  }
+  // TODO Сделать проверку на заполнение необходимых полей
+  const saveHandler = () => {
+    if (nameFieldFilled && contactsFieldFilled) {
+      client.id
+        ? dispatch(updateClient(trimingArrayValues(newClient)))
+        : dispatch(addClient(trimingArrayValues(newClient)))
+      navigation.goBack()
+    } else {
+      ToastAndroid.show(
+        'Необходимо заполнить хотябы одно поле Имени и хотябы одно поле Контакта',
+        ToastAndroid.LONG
+      )
+    }
+  }
 
-	const modalSaveChanges = (
-		<ModalBottomMenu
-			title="Отменить изменения"
-			subtitle="Уверены что хотите выйти без сохранения?"
-			onAccept={() => navigation.goBack()}
-			visible={true}
-			onOuterClick={() => setModal(null)}
-		>
-			<Button
-				title="Выйти без сохранения"
-				btnDecline={false}
-				onPress={() => {
-					setModal(null)
-					navigation.goBack()
-				}}
-			/>
-			<Button
-				title="Сохранить и выйти"
-				btnDecline={false}
-				onPress={() => {
-					setModal(null)
-					saveHandler()
-					navigation.goBack()
-				}}
-			/>
-			<Button
-				title="Не уходить"
-				btnDecline={true}
-				onPress={() => {
-					setModal(null)
-				}}
-			/>
-		</ModalBottomMenu>
-	)
+  const modalSaveChanges = (
+    <ModalBottomMenu
+      title="Отменить изменения"
+      subtitle="Уверены что хотите выйти без сохранения?"
+      onAccept={() => navigation.goBack()}
+      visible={true}
+      onOuterClick={() => setModal(null)}
+    >
+      <Button
+        title="Выйти без сохранения"
+        btnDecline={false}
+        onPress={() => {
+          setModal(null)
+          navigation.goBack()
+        }}
+      />
+      <Button
+        title="Сохранить и выйти"
+        btnDecline={false}
+        onPress={() => {
+          setModal(null)
+          saveHandler()
+          navigation.goBack()
+        }}
+      />
+      <Button
+        title="Не уходить"
+        btnDecline={true}
+        onPress={() => {
+          setModal(null)
+        }}
+      />
+    </ModalBottomMenu>
+  )
 
-	const checkChanges = () => {
-		for (let key in newClient) {
-			if (newClient[key] !== client[key]) {
-				setModal(modalSaveChanges)
-				return
-			}
-		}
-		navigation.goBack()
-	}
+  const checkChanges = () => {
+    for (const key in newClient) {
+      if (newClient[key] !== client[key]) {
+        setModal(modalSaveChanges)
+        return
+      }
+    }
+    navigation.goBack()
+  }
 
-	useEffect(() => {
-		navigation.setOptions({
-			title: client.id ? `Редактирование клиента` : `Создание клиента`,
-			headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
-			headerRight: () => (
-				<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-					<Item title="Save Client" iconName="ios-save" onPress={saveHandler} />
-				</HeaderButtons>
-			),
-		})
-	}, [client, newClient])
+  useEffect(() => {
+    navigation.setOptions({
+      title: client.id ? 'Редактирование клиента' : 'Создание клиента',
+      headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+          <Item title="Save Client" iconName="ios-save" onPress={saveHandler} />
+        </HeaderButtons>
+      ),
+    })
+  }, [client, newClient])
 
-	return (
-		<ScrollView style={styles.container}>
-			<TitleBlock title="Основные" />
-			<TextInputBlock
-				title="Фамилия"
-				value={newClient.surname}
-				onChangeText={(text) =>
-					setClientItem({ surname: text.replace(/ +/g, "") })
-				}
-				fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
-				// keyboardType="numeric"
-				// postfix="&#8381;"
-				// placeholder="Иванов Иван Иванович"
-			/>
-			<TextInputBlock
-				title="Имя"
-				value={newClient.name}
-				onChangeText={(text) =>
-					setClientItem({ name: text.replace(/ +/g, "") })
-				}
-				fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
-				// keyboardType="numeric"
-				// postfix="&#8381;"
-				// placeholder="Иванов Иван Иванович"
-			/>
-			<TextInputBlock
-				title="Отчество"
-				value={newClient.thirdname}
-				onChangeText={(text) =>
-					setClientItem({ thirdname: text.replace(/ +/g, "") })
-				}
-				fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
-				// keyboardType="numeric"
-				// postfix="&#8381;"
-				// placeholder="Иванов Иван Иванович"
-			/>
-			<ImagePickerBlock
-				title={"Аватар"}
-				image={newClient.avatar}
-				noImageUrl={noImageUrl}
-				onPick={(img) => setClientItem({ avatar: img })}
-			/>
+  return (
+    <ScrollView style={styles.container}>
+      <TitleBlock title="Основные" />
+      <TextInputBlock
+        title="Фамилия"
+        value={newClient.surname}
+        onChangeText={(text) =>
+          setClientItem({ surname: text.replace(/ +/g, '') })
+        }
+        fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
+        // keyboardType="numeric"
+        // postfix="&#8381;"
+        // placeholder="Иванов Иван Иванович"
+      />
+      <TextInputBlock
+        title="Имя"
+        value={newClient.name}
+        onChangeText={(text) =>
+          setClientItem({ name: text.replace(/ +/g, '') })
+        }
+        fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
+        // keyboardType="numeric"
+        // postfix="&#8381;"
+        // placeholder="Иванов Иван Иванович"
+      />
+      <TextInputBlock
+        title="Отчество"
+        value={newClient.thirdname}
+        onChangeText={(text) =>
+          setClientItem({ thirdname: text.replace(/ +/g, '') })
+        }
+        fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
+        // keyboardType="numeric"
+        // postfix="&#8381;"
+        // placeholder="Иванов Иван Иванович"
+      />
+      <ImagePickerBlock
+        title={'Аватар'}
+        image={newClient.avatar}
+        noImageUrl={noImageUrl}
+        onPick={(img) => setClientItem({ avatar: img })}
+      />
 
-			<GenderSwitch
-				title="Пол"
-				value={newClient.gender === 1}
-				onSwitch={(text) => {
-					setClientItem({ gender: text ? 1 : 0 })
-				}}
-			/>
-			{/* <DateTimePickerBlock
-				title="Дата рождения"
-				dateValue={newClient.birthday}
-				onChange={(value) => setClientItem({ birthday: value })}
-				pickTime={false}
-				showWeek={false}
-				neutralButton={true}
-			/> */}
-			<BirthdayPicker
-				day={newClient.birthday_day}
-				month={newClient.birthday_month}
-				year={newClient.birthday_year}
-				onDayChange={(value) => setClientItem({ birthday_day: value })}
-				onMonthChange={(value) => setClientItem({ birthday_month: value })}
-				onYearChange={(value) => setClientItem({ birthday_year: value })}
-			/>
-			<TitleBlock title="Связь" />
-			<TextInputBlock
-				title="Телефон"
-				value={newClient.phone}
-				// mask="+1 ([000]) [000] [00] [00]"
-				onChangeText={(text) =>
-					setClientItem({ phone: text.replace(/ +/g, "") })
-				}
-				// prefix="+7"
-				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
-			/>
-			<TextInputBlock
-				title="WhatsApp"
-				value={newClient.whatsapp}
-				onChangeText={(text) =>
-					setClientItem({ whatsapp: text.replace(/ +/g, "") })
-				}
-				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
-			/>
-			<TextInputBlock
-				title="Viber"
-				value={newClient.viber}
-				onChangeText={(text) =>
-					setClientItem({ viber: text.replace(/ +/g, "") })
-				}
-				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
-			/>
-			<TextInputBlock
-				title="Telegram"
-				value={newClient.telegram}
-				prefix="@"
-				onChangeText={(text) =>
-					setClientItem({ telegram: text.replace(/ +/g, "") })
-				}
-				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
-			/>
-			<TextInputBlock
-				title="Email"
-				value={newClient.email}
-				onChangeText={(text) =>
-					setClientItem({ email: text.replace(/ +/g, "") })
-				}
-				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
-			/>
-			<TextInputBlock
-				title="Instagram"
-				value={newClient.instagram}
-				onChangeText={(text) =>
-					setClientItem({ instagram: text.replace(/ +/g, "") })
-				}
-				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
-				prefix="@"
-			/>
-			<TextInputBlock
-				title="ВКонтакте"
-				value={newClient.vk}
-				onChangeText={(text) => setClientItem({ vk: text.replace(/ +/g, "") })}
-				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
-				prefix="@"
-			/>
-			<TextInputBlock
-				title="FaceBook"
-				value={newClient.facebook}
-				onChangeText={(text) =>
-					setClientItem({ facebook: text.replace(/ +/g, "") })
-				}
-				fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
-				prefix="@"
-			/>
-		</ScrollView>
-	)
+      <GenderSwitch
+        title="Пол"
+        value={newClient.gender === 1}
+        onSwitch={(text) => {
+          setClientItem({ gender: text ? 1 : 0 })
+        }}
+      />
+      <BirthdayPicker
+        day={newClient.birthday_day}
+        month={newClient.birthday_month}
+        year={newClient.birthday_year}
+        onDayChange={(value) => setClientItem({ birthday_day: value })}
+        onMonthChange={(value) => setClientItem({ birthday_month: value })}
+        onYearChange={(value) => setClientItem({ birthday_year: value })}
+      />
+      <TitleBlock title="Связь" />
+      <TextInputBlock
+        title="Телефон"
+        value={newClient.phone}
+        // mask="+1 ([000]) [000] [00] [00]"
+        onChangeText={(text) =>
+          setClientItem({ phone: text.replace(/ +/g, '') })
+        }
+        // prefix="+7"
+        fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
+      />
+      <TextInputBlock
+        title="WhatsApp"
+        value={newClient.whatsapp}
+        onChangeText={(text) =>
+          setClientItem({ whatsapp: text.replace(/ +/g, '') })
+        }
+        fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
+      />
+      <TextInputBlock
+        title="Viber"
+        value={newClient.viber}
+        onChangeText={(text) =>
+          setClientItem({ viber: text.replace(/ +/g, '') })
+        }
+        fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
+      />
+      <TextInputBlock
+        title="Telegram"
+        value={newClient.telegram}
+        prefix="@"
+        onChangeText={(text) =>
+          setClientItem({ telegram: text.replace(/ +/g, '') })
+        }
+        fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
+      />
+      <TextInputBlock
+        title="Email"
+        value={newClient.email}
+        onChangeText={(text) =>
+          setClientItem({ email: text.replace(/ +/g, '') })
+        }
+        fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
+      />
+      <TextInputBlock
+        title="Instagram"
+        value={newClient.instagram}
+        onChangeText={(text) =>
+          setClientItem({ instagram: text.replace(/ +/g, '') })
+        }
+        fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
+        prefix="@"
+      />
+      <TextInputBlock
+        title="ВКонтакте"
+        value={newClient.vk}
+        onChangeText={(text) => setClientItem({ vk: text.replace(/ +/g, '') })}
+        fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
+        prefix="@"
+      />
+      <TextInputBlock
+        title="FaceBook"
+        value={newClient.facebook}
+        onChangeText={(text) =>
+          setClientItem({ facebook: text.replace(/ +/g, '') })
+        }
+        fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
+        prefix="@"
+      />
+      {modal}
+    </ScrollView>
+  )
 }
 
 export default CreateClientScreen
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		paddingHorizontal: 5,
-	},
+  container: {
+    flex: 1,
+    paddingHorizontal: 5,
+  },
 })

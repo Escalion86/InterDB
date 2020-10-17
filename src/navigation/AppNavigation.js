@@ -1,39 +1,35 @@
-import React, { useContext, useEffect, useState } from "react"
-import { AsyncStorage } from "react-native"
+import React, { useContext, useEffect } from 'react'
 
-import { useDispatch } from "react-redux"
-import { loadAll } from "../store/actions/db"
-import { Provider as PaperProvider } from "react-native-paper"
-import { getAllNotifications } from "../store/actions/app"
+import { useDispatch } from 'react-redux'
+import { loadAll } from '../store/actions/db'
+import { Provider as PaperProvider } from 'react-native-paper'
+import { getAllNotifications } from '../store/actions/app'
 
-import { StatusBar } from "expo-status-bar"
-import burgerButton from "../components/burgerButton"
+import { StatusBar } from 'expo-status-bar'
+import burgerButton from '../components/burgerButton'
 
-import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator } from "@react-navigation/stack"
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"
-import { createDrawerNavigator } from "@react-navigation/drawer"
-import { Ionicons } from "@expo/vector-icons"
-import EventsScreen from "../screens/EventsScreen"
-import EventScreen from "../screens/EventScreen"
-import CreateEventScreen from "../screens/CreateEventScreen"
-import ClientsScreen from "../screens/ClientsScreen"
-import ClientScreen from "../screens/ClientScreen"
-import SettingsScreen from "../screens/SettingsScreen"
-import CreateClientScreen from "../screens/CreateClientScreen"
-import DevScreen from "../screens/DevScreen"
-import DevTableScreen from "../screens/DevTableScreen"
-import ServicesScreen from "../screens/ServicesScreen"
-import ServiceScreen from "../screens/ServiceScreen"
-import AboutScreen from "../screens/AboutScreen"
-import CreateServiceScreen from "../screens/CreateServiceScreen"
+import { NavigationContainer, useTheme } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createDrawerNavigator } from '@react-navigation/drawer'
+import { Ionicons } from '@expo/vector-icons'
+import EventsScreen from '../screens/EventsScreen'
+import EventScreen from '../screens/EventScreen'
+import CreateEventScreen from '../screens/CreateEventScreen'
+import ClientsScreen from '../screens/ClientsScreen'
+import ClientScreen from '../screens/ClientScreen'
+import SettingsScreen from '../screens/SettingsScreen'
+import CreateClientScreen from '../screens/CreateClientScreen'
+import DevScreen from '../screens/DevScreen'
+import DevTableScreen from '../screens/DevTableScreen'
+import ServicesScreen from '../screens/ServicesScreen'
+import ServiceScreen from '../screens/ServiceScreen'
+import AboutScreen from '../screens/AboutScreen'
+import CreateServiceScreen from '../screens/CreateServiceScreen'
 
-import DrawerContent from "../components/DrawerContent"
+import DrawerContent from '../components/DrawerContent'
 
-import { useTheme } from "@react-navigation/native"
-import { ThemeContext } from "../ThemeContext"
-import { fontSize } from "../theme"
+import { ThemeContext } from '../ThemeContext'
+import { fontSize } from '../theme'
 
 const Stack = createStackNavigator()
 const EventsStack = createStackNavigator()
@@ -44,436 +40,425 @@ const AboutStack = createStackNavigator()
 const SettingsStack = createStackNavigator()
 
 // const burgerButton = (navigation) => (
-// 	<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-// 		<Item
-// 			title="Toggle Drawer"
-// 			iconName="ios-menu"
-// 			onPress={() => navigation.toggleDrawer()}
-// 		/>
-// 	</HeaderButtons>
+//   <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+//     <Item
+//       title="Toggle Drawer"
+//       iconName="ios-menu"
+//       onPress={() => navigation.toggleDrawer()}
+//     />
+//   </HeaderButtons>
 // )
 
 const StackNavigator = ({ children, navigation, initialRouteName }) => {
-	const { colors } = useTheme()
-	return (
-		<Stack.Navigator
-			initialRouteName="Main"
-			screenOptions={{
-				headerTintColor: colors.text,
-				// Platform.OS === "android" ? colors.text : colors.background,
-				headerStyle: {
-					backgroundColor: colors.background,
-					// Platform.OS === "android" ? colors.background : "white",
-				},
-				headerTitleStyle: {
-					color: colors.text,
-					fontSize: fontSize.giant,
-				},
-			}}
-		>
-			{children}
-		</Stack.Navigator>
-	)
+  const { colors } = useTheme()
+  return (
+    <Stack.Navigator
+      initialRouteName="Main"
+      screenOptions={{
+        headerTintColor: colors.text,
+        // Platform.OS === "android" ? colors.text : colors.background,
+        headerStyle: {
+          backgroundColor: colors.background,
+          // Platform.OS === "android" ? colors.background : "white",
+        },
+        headerTitleStyle: {
+          color: colors.text,
+          fontSize: fontSize.giant,
+        },
+      }}
+    >
+      {children}
+    </Stack.Navigator>
+  )
 }
 
 const EventsStackScreen = ({ navigation }) => (
-	<StackNavigator navigation={navigation} initialRouteName="Main">
-		<EventsStack.Screen
-			name="Events"
-			component={EventsScreen}
-			// initialParams={{ actual: false }}
-			options={{
-				title: "События",
-				headerLeft: () => burgerButton(navigation),
-			}}
-		/>
-		<EventsStack.Screen
-			name="Event"
-			component={EventScreen}
-			options={{
-				title: "Событие",
-			}}
-		/>
-		<EventsStack.Screen
-			name="CreateEvent"
-			component={CreateEventScreen}
-			options={{
-				title: "",
-			}}
-		/>
-		<EventsStack.Screen
-			name="CreateClient"
-			component={CreateClientScreen}
-			options={{
-				title: "",
-			}}
-		/>
-		<EventsStack.Screen
-			name="CreateService"
-			component={CreateServiceScreen}
-			options={{
-				title: "",
-			}}
-		/>
-		<EventsStack.Screen
-			name="Service"
-			component={ServiceScreen}
-			options={{
-				title: "Услуга",
-			}}
-		/>
-		<EventsStack.Screen
-			name="Client"
-			component={ClientScreen}
-			options={{
-				title: "Клиент",
-			}}
-		/>
-	</StackNavigator>
+  <StackNavigator navigation={navigation} initialRouteName="Main">
+    <EventsStack.Screen
+      name="Events"
+      component={EventsScreen}
+      // initialParams={{ actual: false }}
+      options={{
+        title: 'События',
+        headerLeft: () => burgerButton(navigation),
+      }}
+    />
+    <EventsStack.Screen
+      name="Event"
+      component={EventScreen}
+      options={{
+        title: 'Событие',
+      }}
+    />
+    <EventsStack.Screen
+      name="CreateEvent"
+      component={CreateEventScreen}
+      options={{
+        title: '',
+      }}
+    />
+    <EventsStack.Screen
+      name="CreateClient"
+      component={CreateClientScreen}
+      options={{
+        title: '',
+      }}
+    />
+    <EventsStack.Screen
+      name="CreateService"
+      component={CreateServiceScreen}
+      options={{
+        title: '',
+      }}
+    />
+    <EventsStack.Screen
+      name="Service"
+      component={ServiceScreen}
+      options={{
+        title: 'Услуга',
+      }}
+    />
+    <EventsStack.Screen
+      name="Client"
+      component={ClientScreen}
+      options={{
+        title: 'Клиент',
+      }}
+    />
+  </StackNavigator>
 )
 
 const ClientsStackScreen = ({ navigation }) => (
-	<StackNavigator navigation={navigation} initialRouteName="Main">
-		<ClientsStack.Screen
-			name="Clients"
-			component={ClientsScreen}
-			initialParams={{ actual: false }}
-			options={{
-				title: "Клиенты",
-				headerLeft: () => burgerButton(navigation),
-			}}
-		/>
-		<ClientsStack.Screen
-			name="Client"
-			component={ClientScreen}
-			options={{
-				title: "Клиент",
-			}}
-		/>
-		<ClientsStack.Screen
-			name="CreateClient"
-			component={CreateClientScreen}
-			options={{
-				title: "",
-			}}
-		/>
-		<ClientsStack.Screen
-			name="Event"
-			component={EventScreen}
-			options={{
-				title: "Событие",
-			}}
-		/>
-		<ClientsStack.Screen
-			name="CreateEvent"
-			component={CreateEventScreen}
-			options={{
-				title: "",
-			}}
-		/>
-	</StackNavigator>
+  <StackNavigator navigation={navigation} initialRouteName="Main">
+    <ClientsStack.Screen
+      name="Clients"
+      component={ClientsScreen}
+      initialParams={{ actual: false }}
+      options={{
+        title: 'Клиенты',
+        headerLeft: () => burgerButton(navigation),
+      }}
+    />
+    <ClientsStack.Screen
+      name="Client"
+      component={ClientScreen}
+      options={{
+        title: 'Клиент',
+      }}
+    />
+    <ClientsStack.Screen
+      name="CreateClient"
+      component={CreateClientScreen}
+      options={{
+        title: '',
+      }}
+    />
+    <ClientsStack.Screen
+      name="Event"
+      component={EventScreen}
+      options={{
+        title: 'Событие',
+      }}
+    />
+    <ClientsStack.Screen
+      name="CreateEvent"
+      component={CreateEventScreen}
+      options={{
+        title: '',
+      }}
+    />
+  </StackNavigator>
 )
 
 const DevStackScreen = ({ navigation }) => (
-	<StackNavigator navigation={navigation} initialRouteName="Main">
-		<DevStack.Screen
-			name="DevDB"
-			component={DevScreen}
-			options={{
-				title: `Панель разработчика`,
-				headerLeft: () => burgerButton(navigation),
-			}}
-		/>
-		<DevStack.Screen
-			name="DevTable"
-			component={DevTableScreen}
-			options={{
-				title: `Таблица`,
-			}}
-		/>
-		{/* <DevStack.Screen
+  <StackNavigator navigation={navigation} initialRouteName="Main">
+    <DevStack.Screen
+      name="DevDB"
+      component={DevScreen}
+      options={{
+        title: 'Панель разработчика',
+        headerLeft: () => burgerButton(navigation),
+      }}
+    />
+    <DevStack.Screen
+      name="DevTable"
+      component={DevTableScreen}
+      options={{
+        title: 'Таблица',
+      }}
+    />
+    {/* <DevStack.Screen
       name="DevColumn"
       component={DevColumnScreen}
     /> */}
-	</StackNavigator>
+  </StackNavigator>
 )
 
 const AboutStackScreen = ({ navigation }) => (
-	<StackNavigator navigation={navigation} initialRouteName="Main">
-		<AboutStack.Screen
-			name="About"
-			component={AboutScreen}
-			options={{
-				title: `О приложении`,
-				headerLeft: () => burgerButton(navigation),
-			}}
-		/>
-		{/* <DevStack.Screen name="DevTable" component={DevTableScreen} /> */}
-		{/* <DevStack.Screen
+  <StackNavigator navigation={navigation} initialRouteName="Main">
+    <AboutStack.Screen
+      name="About"
+      component={AboutScreen}
+      options={{
+        title: 'О приложении',
+        headerLeft: () => burgerButton(navigation),
+      }}
+    />
+    {/* <DevStack.Screen name="DevTable" component={DevTableScreen} /> */}
+    {/* <DevStack.Screen
       name="DevColumn"
       component={DevColumnScreen}
     /> */}
-	</StackNavigator>
+  </StackNavigator>
 )
 
 const SettingsStackScreen = ({ navigation }) => (
-	<StackNavigator navigation={navigation} initialRouteName="Main">
-		<SettingsStack.Screen
-			name="Settings"
-			component={SettingsScreen}
-			options={{
-				title: "Настройки",
-				headerLeft: () => burgerButton(navigation),
-			}}
-		/>
-	</StackNavigator>
+  <StackNavigator navigation={navigation} initialRouteName="Main">
+    <SettingsStack.Screen
+      name="Settings"
+      component={SettingsScreen}
+      options={{
+        title: 'Настройки',
+        headerLeft: () => burgerButton(navigation),
+      }}
+    />
+  </StackNavigator>
 )
 
 // const Tabs = createMaterialBottomTabNavigator()
 
 const ServicesStackScreen = ({ navigation }) => (
-	<StackNavigator navigation={navigation} initialRouteName="Services">
-		<ServicesStack.Screen
-			name="Services"
-			component={ServicesScreen}
-			options={{
-				title: "Услуги",
-				headerLeft: () => burgerButton(navigation),
-			}}
-		/>
-		<ServicesStack.Screen
-			name="Archive"
-			component={ServicesScreen}
-			options={{
-				title: "Архив услуг",
-			}}
-		/>
-		<ServicesStack.Screen
-			name="Service"
-			component={ServiceScreen}
-			options={{
-				title: "Услуга",
-			}}
-		/>
-		<ServicesStack.Screen
-			name="CreateService"
-			component={CreateServiceScreen}
-			options={{
-				title: "",
-			}}
-		/>
-		<ServicesStack.Screen
-			name="Event"
-			component={EventScreen}
-			options={{
-				title: "Событие",
-			}}
-		/>
-		<ServicesStack.Screen
-			name="CreateEvent"
-			component={CreateEventScreen}
-			options={{
-				title: "",
-			}}
-		/>
-	</StackNavigator>
+  <StackNavigator navigation={navigation} initialRouteName="Services">
+    <ServicesStack.Screen
+      name="Services"
+      component={ServicesScreen}
+      options={{
+        title: 'Услуги',
+        headerLeft: () => burgerButton(navigation),
+      }}
+    />
+    <ServicesStack.Screen
+      name="Archive"
+      component={ServicesScreen}
+      options={{
+        title: 'Архив услуг',
+      }}
+    />
+    <ServicesStack.Screen
+      name="Service"
+      component={ServiceScreen}
+      options={{
+        title: 'Услуга',
+      }}
+    />
+    <ServicesStack.Screen
+      name="CreateService"
+      component={CreateServiceScreen}
+      options={{
+        title: '',
+      }}
+    />
+    <ServicesStack.Screen
+      name="Event"
+      component={EventScreen}
+      options={{
+        title: 'Событие',
+      }}
+    />
+    <ServicesStack.Screen
+      name="CreateEvent"
+      component={CreateEventScreen}
+      options={{
+        title: '',
+      }}
+    />
+  </StackNavigator>
 )
 
 // const ActualStackScreen = ({ navigation }) => (
-// 	<StackNavigator navigation={navigation}>
-// 		<EventsStack.Screen
-// 			name="Events"
-// 			component={EventsScreen}
-// 			initialParams={{ actual: true }}
-// 			options={{
-// 				headerLeft: () => burgerButton(navigation),
-// 			}}
-// 		/>
-// 	</StackNavigator>
+//   <StackNavigator navigation={navigation}>
+//     <EventsStack.Screen
+//       name="Events"
+//       component={EventsScreen}
+//       initialParams={{ actual: true }}
+//       options={{
+//         headerLeft: () => burgerButton(navigation),
+//       }}
+//     />
+//   </StackNavigator>
 // )
 
 // const Tabs = createMaterialBottomTabNavigator()
 // const ServiceTabsScreen = () => {
-// 	return (
-// 		<Tabs.Navigator
-// 			activeColor={"#fff"}
-// 			barStyle={{ backgroundColor: "#333" }}
-// 			tabBarOptions={{
-// 				activeTintColor: "#fff",
-// 			}}
-// 			// barStyle={{ backgroundColor: colors.background }}
-// 		>
-// 			<Tabs.Screen
-// 				name="Services"
-// 				component={ServicesScreen}
-// 				// initialParams={{ archive: false }}
-// 				options={{
-// 					tabBarLabel: "Актуальные",
-// 					tabBarIcon: (info) => (
-// 						<Ionicons name="ios-albums" size={25} color={info.color} />
-// 					),
-// 				}}
-// 			/>
-// 			<Tabs.Screen
-// 				name="Archive"
-// 				component={ServicesScreen}
-// 				// initialParams={{ archive: true }}
-// 				options={{
-// 					tabBarLabel: "Архивные",
-// 					tabBarIcon: (info) => (
-// 						<Ionicons name="ios-archive" size={25} color={info.color} />
-// 					),
-// 				}}
-// 			/>
-// 		</Tabs.Navigator>
-// 	)
+//   return (
+//     <Tabs.Navigator
+//       activeColor={'#fff'}
+//       barStyle={{ backgroundColor: '#333' }}
+//       tabBarOptions={{
+//         activeTintColor: '#fff',
+//       }}
+//       // barStyle={{ backgroundColor: colors.background }}
+//     >
+//       <Tabs.Screen
+//         name="Services"
+//         component={ServicesScreen}
+//         // initialParams={{ archive: false }}
+//         options={{
+//           tabBarLabel: 'Актуальные',
+//           tabBarIcon: (info) => (
+//             <Ionicons name="ios-albums" size={25} color={info.color} />
+//           ),
+//         }}
+//       />
+//       <Tabs.Screen
+//         name="Archive"
+//         component={ServicesScreen}
+//         // initialParams={{ archive: true }}
+//         options={{
+//           tabBarLabel: 'Архивные',
+//           tabBarIcon: (info) => (
+//             <Ionicons name="ios-archive" size={25} color={info.color} />
+//           ),
+//         }}
+//       />
+//     </Tabs.Navigator>
+//   )
 // }
 
 // const EventsTabsScreen = () => {
-// 	const { colors } = useTheme()
-// 	return (
-// 		<Tabs.Navigator
-// 			// activeColor={"#fff"}
-// 			// barStyle={{ backgroundColor: THEME.MAIN_COLOR }}
-// 			// tabBarOptions={{
-// 			//   activeTintColor: "#fff",
-// 			// }}
-// 			barStyle={{ backgroundColor: colors.background }}
-// 		>
-// 			<Tabs.Screen
-// 				name="Events"
-// 				component={EventsScreen}
-// 				options={{
-// 					tabBarLabel: "Все",
-// 					tabBarIcon: (info) => (
-// 						<Ionicons name="ios-albums" size={25} color={info.color} />
-// 					),
-// 				}}
-// 			/>
-// 			{/* <Tabs.Screen
-// 				name="Actual"
-// 				component={ActualStackScreen}
-// 				options={{
-// 					tabBarLabel: "Актуальные",
-// 					tabBarIcon: (info) => (
-// 						<Ionicons name="ios-albums" size={25} color={info.color} />
-// 					),
-// 				}}
-// 			/> */}
-// 		</Tabs.Navigator>
-// 	)
+//   const { colors } = useTheme()
+//   return (
+//     <Tabs.Navigator
+//       // activeColor={"#fff"}
+//       // barStyle={{ backgroundColor: THEME.MAIN_COLOR }}
+//       // tabBarOptions={{
+//       //   activeTintColor: "#fff",
+//       // }}
+//       barStyle={{ backgroundColor: colors.background }}
+//     >
+//       <Tabs.Screen
+//         name="Events"
+//         component={EventsScreen}
+//         options={{
+//           tabBarLabel: 'Все',
+//           tabBarIcon: (info) => (
+//             <Ionicons name="ios-albums" size={25} color={info.color} />
+//           ),
+//         }}
+//       />
+//       {/* <Tabs.Screen
+// name="Actual"
+// component={ActualStackScreen}
+// options={{
+// tabBarLabel: "Актуальные",
+// tabBarIcon: (info) => (
+// <Ionicons name="ios-albums" size={25} color={info.color} />
+// ),
+// }}
+// /> */}
+//     </Tabs.Navigator>
+//   )
 // }
 
 const Drawer = createDrawerNavigator()
 
 const DrawerScreen = () => {
-	const { colors } = useTheme()
-	return (
-		<Drawer.Navigator
-			drawerType="slide"
-			// drawerContentOptions={
-			// 	{
-			// 		// activeTintColor: "#fff",
-			// 		// labelStyle: {
-			// 		//   fontFamily: "open-bold",
-			// 		// },
-			// 	}
-			// }
-			// drawerStyle={{
-			// 	// backgroundColor: '#c6cbef',
-			// 	width: 300,
-			// }}
-			drawerContent={(props) => <DrawerContent {...props} />}
-		>
-			<Drawer.Screen
-				name="Events"
-				component={EventsStackScreen}
-				options={{
-					drawerLabel: "События",
-					drawerIcon: () => (
-						<Ionicons name="md-calendar" size={24} color={colors.text} />
-					),
-				}}
-			/>
-			<Drawer.Screen
-				name="Clients"
-				component={ClientsStackScreen}
-				options={{
-					drawerLabel: "Клиенты",
-					drawerIcon: () => (
-						<Ionicons name="md-people" size={24} color={colors.text} />
-					),
-				}}
-			/>
-			<Drawer.Screen
-				name="Services"
-				component={ServicesStackScreen}
-				options={{
-					drawerLabel: "Услуги",
-					drawerIcon: () => (
-						<Ionicons name="md-briefcase" size={24} color={colors.text} />
-					),
-				}}
-			/>
-			<Drawer.Screen
-				name="Dev"
-				component={DevStackScreen}
-				options={{
-					drawerLabel: "Панель разработчика",
-					drawerIcon: () => (
-						<Ionicons name="md-bug" size={24} color={colors.text} />
-					),
-				}}
-			/>
-			<Drawer.Screen
-				name="About"
-				component={AboutStackScreen}
-				options={{
-					drawerLabel: "О приложении",
-					drawerIcon: () => (
-						<Ionicons
-							name="md-information-circle-outline"
-							size={24}
-							color={colors.text}
-						/>
-					),
-				}}
-			/>
-			<Drawer.Screen
-				name="Settings"
-				component={SettingsStackScreen}
-				options={{
-					drawerLabel: "Настройки",
-					drawerIcon: () => (
-						<Ionicons name="md-settings" size={24} color={colors.text} />
-					),
-				}}
-			/>
-		</Drawer.Navigator>
-	)
+  const { colors } = useTheme()
+  const DrawerIcon = ({ name }) => (
+    <Ionicons name={name} size={24} color={colors.text} />
+  )
+  DrawerIcon.displayName = 'DrawerIcon'
+
+  return (
+    <Drawer.Navigator
+      drawerType="slide"
+      // drawerContentOptions={
+      //   {
+      //     // activeTintColor: "#fff",
+      //     // labelStyle: {
+      //     //   fontFamily: "open-bold",
+      //     // },
+      //   }
+      // }
+      // drawerStyle={{
+      //   // backgroundColor: '#c6cbef',
+      //   width: 300,
+      // }}
+      drawerContent={(props) => <DrawerContent {...props} />}
+    >
+      <Drawer.Screen
+        name="Events"
+        component={EventsStackScreen}
+        options={{
+          drawerLabel: 'События',
+          drawerIcon: <DrawerIcon name="md-calendar" />,
+        }}
+      />
+      <Drawer.Screen
+        name="Clients"
+        component={ClientsStackScreen}
+        options={{
+          drawerLabel: 'Клиенты',
+          drawerIcon: <DrawerIcon name="md-people" />,
+        }}
+      />
+      <Drawer.Screen
+        name="Services"
+        component={ServicesStackScreen}
+        options={{
+          drawerLabel: 'Услуги',
+          drawerIcon: <DrawerIcon name="md-briefcase" />,
+        }}
+      />
+      <Drawer.Screen
+        name="Dev"
+        component={DevStackScreen}
+        options={{
+          drawerLabel: 'Панель разработчика',
+          drawerIcon: <DrawerIcon name="md-bug" />,
+        }}
+      />
+      <Drawer.Screen
+        name="About"
+        component={AboutStackScreen}
+        options={{
+          drawerLabel: 'О приложении',
+          drawerIcon: <DrawerIcon name="md-information-circle-outline" />,
+        }}
+      />
+      <Drawer.Screen
+        name="Settings"
+        component={SettingsStackScreen}
+        options={{
+          drawerLabel: 'Настройки',
+          drawerIcon: <DrawerIcon name="md-settings" />,
+        }}
+      />
+    </Drawer.Navigator>
+  )
 }
 
 export const AppNavigation = () => {
-	const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-	const { theme } = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext)
 
-	// dispatch(loadAll())
-	//После загрузки всех компонентов и state - загружаем данные БД
-	useEffect(() => {
-		dispatch(getAllNotifications())
-		console.log("Загрузка данных")
-		dispatch(loadAll())
-	}, [dispatch])
+  // dispatch(loadAll())
+  // После загрузки всех компонентов и state - загружаем данные БД
+  useEffect(() => {
+    dispatch(getAllNotifications())
+    console.log('Загрузка данных')
+    dispatch(loadAll())
+  }, [dispatch])
 
-	console.log("Render AppNavigation")
+  console.log('Render AppNavigation')
 
-	return (
-		<PaperProvider theme={theme}>
-			<NavigationContainer theme={theme}>
-				<StatusBar style={theme.dark ? "light" : "dark"} />
-				<DrawerScreen />
-			</NavigationContainer>
-		</PaperProvider>
-	)
+  return (
+    <PaperProvider theme={theme}>
+      <NavigationContainer theme={theme}>
+        <StatusBar style={theme.dark ? 'light' : 'dark'} />
+        <DrawerScreen />
+      </NavigationContainer>
+    </PaperProvider>
+  )
 }

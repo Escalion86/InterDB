@@ -9,7 +9,7 @@ import {
   LOADING_SERVICE,
   LOADING_SERVICE_COMPLITE,
   UPDATE_SERVICE_PARTIALLY,
-} from "../types"
+} from '../types'
 
 const initialState = {
   services: [],
@@ -105,7 +105,7 @@ export const serviceReducer = (state = initialState, action) => {
         services,
       }
 
-    case UPDATE_SERVICE_PARTIALLY: //action (id, parts)
+    case UPDATE_SERVICE_PARTIALLY: // action (id, parts)
       services = state.services.map((service) => {
         if (service.id === action.id) {
           service = { ...service, ...action.parts, loading: false }

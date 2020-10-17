@@ -1,101 +1,101 @@
-import wordForm from "../helpers/wordForm"
+import wordForm from '../helpers/wordForm'
 
 const monthsNames = [
-	"января",
-	"февраля",
-	"марта",
-	"апреля",
-	"мая",
-	"июня",
-	"июля",
-	"августа",
-	"сентября",
-	"октября",
-	"ноября",
-	"декабря",
+  'января',
+  'февраля',
+  'марта',
+  'апреля',
+  'мая',
+  'июня',
+  'июля',
+  'августа',
+  'сентября',
+  'октября',
+  'ноября',
+  'декабря',
 ]
 
 export const formatDate = (
-	date = new Date(),
-	fullYear = false,
-	showWeek = false,
-	monthLong = false
+  date = new Date(),
+  fullYear = false,
+  showWeek = false,
+  monthLong = false
 ) => {
-	date = new Date(date)
-	var dd = date.getDate()
-	if (!monthLong && dd < 10) dd = "0" + dd
+  date = new Date(date)
+  var dd = date.getDate()
+  if (!monthLong && dd < 10) dd = '0' + dd
 
-	var mm = ""
-	if (monthLong) {
-		mm = ` ${monthsNames[date.getMonth()]} `
-	} else {
-		mm = date.getMonth() + 1
-		if (mm < 10) mm = "0" + mm
-	}
+  var mm = ''
+  if (monthLong) {
+    mm = ` ${monthsNames[date.getMonth()]} `
+  } else {
+    mm = date.getMonth() + 1
+    if (mm < 10) mm = '0' + mm
+  }
 
-	var yy = date.getFullYear() % 100
-	if (yy < 10) yy = "0" + yy
+  var yy = date.getFullYear() % 100
+  if (yy < 10) yy = '0' + yy
 
-	return (
-		dd +
-		(monthLong ? mm : `.${mm}.`) +
-		(fullYear ? date.getFullYear() : yy) +
-		(showWeek ? " " + getWeekDay(date) : "")
-	)
+  return (
+    dd +
+    (monthLong ? mm : `.${mm}.`) +
+    (fullYear ? date.getFullYear() : yy) +
+    (showWeek ? ' ' + getWeekDay(date) : '')
+  )
 }
 
 export const formatBirthday = (
-	year,
-	month,
-	day,
-	monthLong = true,
-	showAge = true
+  year,
+  month,
+  day,
+  monthLong = true,
+  showAge = true
 ) => {
-	let birthday = ""
-	if (day && month) {
-		if (year) {
-			//Известна полная дата рождения
-			const date = new Date(year, month, day)
-			birthday = `${formatDate(date, true, false, monthLong)}${
-				showAge
-					? ` (${wordForm(calculateAge(date), ["год", "года", "лет"])})`
-					: ""
-			}`
-		} else {
-			//Известны только день и месяц
-			birthday = `${!monthLong && day < 10 ? `0${day}` : day}${
-				monthLong ? ` ${monthsNames[month]}` : month < 10 ? `0${month}` : month
-			}`
-		}
-	}
-	return birthday
+  let birthday = ''
+  if (day && month) {
+    if (year) {
+      // Известна полная дата рождения
+      const date = new Date(year, month, day)
+      birthday = `${formatDate(date, true, false, monthLong)}${
+        showAge
+          ? ` (${wordForm(calculateAge(date), ['год', 'года', 'лет'])})`
+          : ''
+      }`
+    } else {
+      // Известны только день и месяц
+      birthday = `${!monthLong && day < 10 ? `0${day}` : day}${
+        monthLong ? ` ${monthsNames[month]}` : month < 10 ? `0${month}` : month
+      }`
+    }
+  }
+  return birthday
 }
 
 export const formatTime = (date) => {
-	date = new Date(date)
-	var hh = date.getHours()
-	if (hh < 10) hh = "0" + hh
+  date = new Date(date)
+  var hh = date.getHours()
+  if (hh < 10) hh = '0' + hh
 
-	var mm = date.getMinutes()
-	if (mm < 10) mm = "0" + mm
+  var mm = date.getMinutes()
+  if (mm < 10) mm = '0' + mm
 
-	return hh + ":" + mm
+  return hh + ':' + mm
 }
 
 export const formatDateTime = (date, fullYear = false, showWeek = false) => {
-	return `${formatDate(date, fullYear, showWeek)} ${formatTime(date)}`
+  return `${formatDate(date, fullYear, showWeek)} ${formatTime(date)}`
 }
 
 export const getWeekDay = (date) => {
-	date = new Date(date)
-	let days = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"]
-	return days[date.getDay()]
+  date = new Date(date)
+  const days = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб']
+  return days[date.getDay()]
 }
 
 export const calculateAge = (birthday = new Date(), addYears = 0) => {
-	// birthday is a date
-	var ageDifMs =
-		new Date().setHours(0, 0, 0, 0) - new Date(birthday).setHours(0, 0, 0, 0)
-	var ageDate = new Date(ageDifMs) // miliseconds from epoch
-	return Math.abs(ageDate.getUTCFullYear() - 1970 + addYears)
+  // birthday is a date
+  var ageDifMs =
+    new Date().setHours(0, 0, 0, 0) - new Date(birthday).setHours(0, 0, 0, 0)
+  var ageDate = new Date(ageDifMs) // miliseconds from epoch
+  return Math.abs(ageDate.getUTCFullYear() - 1970 + addYears)
 }
