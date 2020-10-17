@@ -29,6 +29,7 @@ import ModalBottomMenu from '../components/ModalBottomMenu'
 import Button from '../components/Button'
 import { fontSize } from '../theme'
 import { TextInputBlock } from '../components/createComponents'
+import { addFinance } from '../store/actions/finance'
 
 const EventsScreen = ({ navigation, route }) => {
   const theme = useTheme()
@@ -43,7 +44,10 @@ const EventsScreen = ({ navigation, route }) => {
   const events = useSelector((state) => state.event.events)
   const services = useSelector((state) => state.service.services)
   const clients = useSelector((state) => state.client.clients)
+  const finances = useSelector((state) => state.finance.finances)
   const loading = useSelector((state) => state.event.loading)
+  console.log('events :>> ', events)
+  console.log('finances :>> ', finances)
 
   const { dev } = useContext(AppContext)
 
@@ -200,14 +204,16 @@ const EventsScreen = ({ navigation, route }) => {
               }}
             />
           ) : null}
-          {/* <Item
-            title="Add event"
-            iconName="ios-add-circle"
+
+          <Item
+            title="Add finance"
+            iconName="ios-bug"
             onPress={() => {
-              navigation.navigate('CreateEvent')
+              const tmp = dbGenerator('finance')
+              dispatch(addFinance(tmp))
             }}
             // onPress={() => navigation.navigate("Create")}
-          /> */}
+          />
         </HeaderButtons>
       ),
     })
@@ -298,6 +304,14 @@ const EventsScreen = ({ navigation, route }) => {
           title="Внести"
           onPress={() => {
             setModalFinanceEventIncome(false)
+            // dispatch(
+            //   addFinance({
+            //     event: modalFinanceEventIncome.id,
+            //     type: 'income',
+            //     sum: income,
+            //     comment: '',
+            //   })
+            // )
           }}
         />
         <Button

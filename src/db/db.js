@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite'
 import dbTemplate, { prepareForDB } from './dbTemplate'
 
-const DBName = 'events19.db'
+const DBName = 'events20.db'
 
 let db = SQLite.openDatabase(DBName)
 
@@ -369,5 +369,23 @@ export class DB {
         )
       })
     )
+  }
+
+  static addFinance (finance) {
+    const newFinance = prepareForDB('finances', finance)
+    return new Promise((resolve, reject) => {
+      const financeKeys = Object.keys(newFinance)
+
+      db.transaction((tx) => {
+        tx.executeSql(
+          `INSERT INTO finances (${financeKeys.join(
+            ', '
+          )}) VALUES (${'?, '.repeat(financeKeys.length).slice(0, -2)})`,
+          Object.values(newFinance),
+          (_, result) => resolve(result.insertId),
+          (_, error) => reject(error)
+        )
+      })
+    })
   }
 }

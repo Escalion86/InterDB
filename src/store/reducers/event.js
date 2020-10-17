@@ -65,6 +65,7 @@ export const eventReducer = (state = initialState, action) => {
         events,
       }
     case ADD_EVENT:
+      console.log('event state :>> ', state)
       return {
         ...state,
         loading: false,

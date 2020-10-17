@@ -226,6 +226,14 @@ export const dbGenerator = (table = 'event', services = [], clients = []) => {
         archive: 0,
       }
     }
+    case 'finance': {
+      return {
+        type: rndArray(['income', 'outcome']),
+        sum: rndArray([5000, 6000, 7000, 8000, 9000, 10000]),
+        comment: '',
+        event: 0,
+      }
+    }
     default:
       return {}
   }

@@ -7,13 +7,16 @@ import {
 
 const initialState = {
   finances: [],
+  loading: true,
 }
 
 export const financeReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_FINANCES:
       return {
+        ...state,
         finances: action.finances,
+        loading: false,
       }
 
     case ADD_FINANCE:
@@ -25,6 +28,7 @@ export const financeReducer = (state = initialState, action) => {
     case DELETE_ALL_FINANCES:
       return {
         finances: [],
+        loading: false,
       }
 
     case DELETE_FINANCE:

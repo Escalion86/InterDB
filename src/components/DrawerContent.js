@@ -122,6 +122,21 @@ const DrawerContent = (props) => {
                 props.navigation.navigate('Services')
               }}
             />
+            <DrawerItem
+              icon={({ color, size }) => (
+                <Ionicons
+                  name="ios-cash"
+                  size={iconSize.small}
+                  color={colors.icon}
+                  // style={{ marginLeft: 5 }}
+                />
+              )}
+              label="Финансы"
+              labelStyle={labelStyle}
+              onPress={() => {
+                props.navigation.navigate('Finances')
+              }}
+            />
           </Drawer.Section>
           {/* <Drawer.Section title="Настройки">
             <TouchableRipple

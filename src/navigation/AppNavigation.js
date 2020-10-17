@@ -24,6 +24,7 @@ import DevTableScreen from '../screens/DevTableScreen'
 import ServicesScreen from '../screens/ServicesScreen'
 import ServiceScreen from '../screens/ServiceScreen'
 import AboutScreen from '../screens/AboutScreen'
+import FinancesScreen from '../screens/FinancesScreen'
 import CreateServiceScreen from '../screens/CreateServiceScreen'
 
 import DrawerContent from '../components/DrawerContent'
@@ -38,6 +39,7 @@ const ServicesStack = createStackNavigator()
 const DevStack = createStackNavigator()
 const AboutStack = createStackNavigator()
 const SettingsStack = createStackNavigator()
+const FinancesStack = createStackNavigator()
 
 // const burgerButton = (navigation) => (
 //   <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
@@ -219,6 +221,19 @@ const SettingsStackScreen = ({ navigation }) => (
       component={SettingsScreen}
       options={{
         title: 'Настройки',
+        headerLeft: () => burgerButton(navigation),
+      }}
+    />
+  </StackNavigator>
+)
+
+const FinancesStackScreen = ({ navigation }) => (
+  <StackNavigator navigation={navigation} initialRouteName="Main">
+    <FinancesStack.Screen
+      name="Finances"
+      component={FinancesScreen}
+      options={{
+        title: 'Финансы',
         headerLeft: () => burgerButton(navigation),
       }}
     />
@@ -432,6 +447,14 @@ const DrawerScreen = () => {
         options={{
           drawerLabel: 'Настройки',
           drawerIcon: <DrawerIcon name="md-settings" />,
+        }}
+      />
+      <Drawer.Screen
+        name="Finances"
+        component={FinancesStackScreen}
+        options={{
+          drawerLabel: 'Финансы',
+          drawerIcon: <DrawerIcon name="ios-cash" />,
         }}
       />
     </Drawer.Navigator>
