@@ -7,21 +7,21 @@ const rndArray = (array) => {
   return array[rndNum]
 }
 
-const addZero = (num) => {
-  return num > 9 ? num : '0' + num
-}
+// const addZero = (num) => {
+//   return num > 9 ? num : '0' + num
+// }
 
-const rndHours = () => {
-  return addZero(Math.floor(Math.random() * 23))
-}
+// const rndHours = () => {
+//   return addZero(Math.floor(Math.random() * 23))
+// }
 
-const rndMinutes = () => {
-  return addZero(Math.floor(Math.random() * 5) * 10)
-}
+// const rndMinutes = () => {
+//   return addZero(Math.floor(Math.random() * 5) * 10)
+// }
 
-const rndTime = () => {
-  return rndHours() + ':' + rndMinutes()
-}
+// const rndTime = () => {
+//   return rndHours() + ':' + rndMinutes()
+// }
 
 export const prepareForDB = (dbTableName, data) => {
   const preperedData = {}
@@ -42,7 +42,7 @@ export const dbGenerator = (table = 'event', services = [], clients = []) => {
     clientsIds.push(client.id)
   })
   switch (table) {
-    case 'event':
+    case 'event': {
       const date = new Date(
         Date.now() + Math.floor(Math.random() * 30 + 1) * 1000 * 60 * 60 * 24
       ).setHours(
@@ -64,7 +64,7 @@ export const dbGenerator = (table = 'event', services = [], clients = []) => {
         timing_road: 30,
         location_town: town,
         location_street:
-          town == 'Красноярск'
+          town === 'Красноярск'
             ? rndArray([
               'Линейная',
               'Высотная',
@@ -118,7 +118,8 @@ export const dbGenerator = (table = 'event', services = [], clients = []) => {
       // event.notification_id = notification_id
 
       return event
-    case 'client':
+    }
+    case 'client': {
       const gender = rndArray([0, 1, 3])
       const phone = '+79' + Math.floor(Math.random() * 899999999 + 100000000)
       return {
@@ -199,7 +200,8 @@ export const dbGenerator = (table = 'event', services = [], clients = []) => {
         facebook: '',
         avatar: '',
       }
-    case 'service':
+    }
+    case 'service': {
       return {
         name: rndArray([
           'Свадьба, стандарт',
@@ -223,6 +225,7 @@ export const dbGenerator = (table = 'event', services = [], clients = []) => {
         image: '',
         archive: 0,
       }
+    }
     default:
       return {}
   }
