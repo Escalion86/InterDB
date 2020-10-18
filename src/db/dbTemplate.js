@@ -98,7 +98,7 @@ export const dbGenerator = (table = 'event', services = [], clients = []) => {
         finance_road: rndArray([0, 0, 1000]),
         finance_organizator: rndArray([0, 1000, 2000]),
         finance_assistants: rndArray([0, 500, 1000, 1500, 2000]),
-        finance_tips: rndArray([0, 500, 1000, 1500, 2000]),
+        // finance_tips: rndArray([0, 500, 1000, 1500, 2000]),
         finance_consumables: rndArray([0, 0, 0, 500, 1000]),
         comment: '',
         status: rndArray([
@@ -430,15 +430,15 @@ export default dbTemplate = {
       default: 0,
       db_default: 0,
     },
-    {
-      db_name: 'finance_tips',
-      desc: 'Финансы - чаевые',
-      type: 'integer',
-      db_type: 'INTEGER',
-      not_null: true,
-      default: 0,
-      db_default: 0,
-    },
+    // {
+    //   db_name: 'finance_tips',
+    //   desc: 'Финансы - чаевые',
+    //   type: 'integer',
+    //   db_type: 'INTEGER',
+    //   not_null: true,
+    //   default: 0,
+    //   db_default: 0,
+    // },
     {
       db_name: 'comment',
       desc: 'Комментарий',

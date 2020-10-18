@@ -551,7 +551,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         postfix="&#8381;"
       />
 
-      <TextInputBlock
+      {/* <TextInputBlock
         title="Чаевые"
         value={newEvent.finance_tips}
         onChangeText={(text) =>
@@ -560,7 +560,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
-      />
+      /> */}
 
       <TitleBlock title="Адрес" />
       <TextInputBlock

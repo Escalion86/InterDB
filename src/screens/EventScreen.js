@@ -35,8 +35,9 @@ const EventScreen = ({ navigation, route }) => {
     event.finance_road -
     event.finance_organizator -
     event.finance_assistants -
-    event.finance_consumables +
-    event.finance_tips
+    event.finance_consumables
+  //  +
+  // event.finance_tips
 
   const timing =
     event.timing_duration +
@@ -147,9 +148,9 @@ const EventScreen = ({ navigation, route }) => {
       {event.finance_organizator ? (
         <TextBlock text={`Организатору: ${event.finance_organizator} руб`} />
       ) : null}
-      {event.finance_tips ? (
+      {/* {event.finance_tips ? (
         <TextBlock text={`Чаевые: ${event.finance_tips} руб`} />
-      ) : null}
+      ) : null} */}
       <TextBlock text={`Итого: ${profit} руб`} />
       <TitleBlock title="Адрес" />
       <TextBlock

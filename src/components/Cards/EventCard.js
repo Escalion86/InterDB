@@ -72,8 +72,9 @@ const EventCard = ({
       event.finance_road -
       event.finance_organizator -
       event.finance_assistants -
-      event.finance_consumables +
-      event.finance_tips
+      event.finance_consumables
+    //  +
+    // event.finance_tips
 
     const timing =
       event.timing_duration +
@@ -378,12 +379,12 @@ const EventCard = ({
                       value={-event.finance_assistants + ' руб'}
                     />
                   ) : null}
-                  {event.finance_tips ? (
+                  {/* {event.finance_tips ? (
                     <MenuRow
                       title="Чаевые"
                       value={event.finance_tips + ' руб'}
                     />
-                  ) : null}
+                  ) : null} */}
                   <MenuRow
                     title="ИТОГО"
                     value={profit + ' руб'}
