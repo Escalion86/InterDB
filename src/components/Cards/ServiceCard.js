@@ -162,7 +162,7 @@ const ServiceCard = ({
             </View>
             <View style={styles.right}>
               <View style={styles.carddate}>
-                <Text style={styles.datetime}>
+                <Text style={styles.time}>
                   {service.preparetime + service.collecttime + service.duration}{' '}
                   мин
                 </Text>
@@ -245,7 +245,7 @@ const stylesFactory = ({ colors }) =>
     right: {
       borderLeftWidth: 1,
       borderLeftColor: colors.border,
-      width: 70,
+      minWidth: 70,
 
       justifyContent: 'space-between',
     },
@@ -284,7 +284,7 @@ const stylesFactory = ({ colors }) =>
       justifyContent: 'center',
       alignItems: 'center',
     },
-    datetime: {
+    time: {
       fontSize: fontSize.small,
       textAlign: 'center',
       color: colors.text,
