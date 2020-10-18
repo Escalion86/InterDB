@@ -4,10 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { addEvent, updateEvent } from '../store/actions/event'
-import {
-  statusIconDependencies,
-  financeIconDependencies,
-} from '../db/dependencies'
+import { statusIconDependencies } from '../db/dependencies'
 import { dbDefault } from '../db/dbTemplate'
 import {
   EventRowDropDownPicker,
@@ -434,6 +431,8 @@ const CreateEventScreen = ({ navigation, route }) => {
         value={newEvent.comment}
         onChangeText={(text) => setEventItem({ comment: text })}
         multiline={true}
+        inputOnNextRow={true}
+        textAlign="left"
       />
       <TitleBlock title="Услуга" />
       {!serviceObj ? (
@@ -544,6 +543,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         success={
           serviceObj && newEvent.finance_price === serviceObj.finance_price
         }
+        inputFlex={2}
       />
       <TextInputBlock
         title="Расходные материалы"
@@ -558,6 +558,7 @@ const CreateEventScreen = ({ navigation, route }) => {
           newEvent.finance_consumables === serviceObj.finance_consumables
         }
         postfix="&#8381;"
+        inputFlex={2}
       />
       <TextInputBlock
         title="Ассистентам"
@@ -572,6 +573,7 @@ const CreateEventScreen = ({ navigation, route }) => {
           serviceObj &&
           newEvent.finance_assistants === serviceObj.finance_assistants
         }
+        inputFlex={2}
       />
       <TextInputBlock
         title="За дорогу"
@@ -582,6 +584,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
+        inputFlex={2}
       />
       <TextInputBlock
         title="Организатору"
@@ -592,6 +595,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
+        inputFlex={2}
       />
 
       {/* <TextInputBlock
@@ -651,6 +655,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         placeholder="0"
         postfix="мин"
         success={serviceObj && newEvent.timing_duration === serviceObj.duration}
+        inputFlex={1}
       />
       <TextInputBlock
         title="На подготовку"
@@ -664,6 +669,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         success={
           serviceObj && newEvent.timing_preparetime === serviceObj.preparetime
         }
+        inputFlex={1}
       />
       <TextInputBlock
         title="На сбор"
@@ -677,6 +683,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         success={
           serviceObj && newEvent.timing_collecttime === serviceObj.collecttime
         }
+        inputFlex={1}
       />
       <TextInputBlock
         title="На транспортировку в одну сторону"
@@ -685,6 +692,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         keyboardType="numeric"
         placeholder="0"
         postfix="мин"
+        inputFlex={1}
       />
       {modal}
     </ScrollView>
