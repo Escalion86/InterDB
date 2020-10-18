@@ -122,6 +122,14 @@ const EventCard = ({
     })
     const resultSum = incomeSum - outcomeSum
 
+    const incomeLeft = event.finance_price - incomeSum
+    const outcomeLeft =
+      event.finance_road +
+      event.finance_organizator +
+      event.finance_assistants +
+      event.finance_consumables -
+      outcomeSum
+
     const financeSumToColor = (sum, profit) => {
       if (sum <= 0) return 'red'
       if (sum < profit) return 'orange'
@@ -203,10 +211,17 @@ const EventCard = ({
               /> */}
               <FinanceMenu
                 iconBackgroundColor={financeColor}
-                addIncome={financeIncome}
-                addOutcome={financeOutcome}
-                incomeValue={incomeSum}
-                outcomeValue={outcomeSum}
+                addIncome={() => financeIncome(incomeLeft)}
+                addOutcome={() => financeOutcome(outcomeLeft)}
+                incomePlanValue={event.finance_price}
+                outcomePlanValue={
+                  event.finance_road +
+                  event.finance_organizator +
+                  event.finance_assistants +
+                  event.finance_consumables
+                }
+                incomeFactValue={incomeSum}
+                outcomeFactValue={outcomeSum}
               />
             </View>
             <View style={styles.middle}>

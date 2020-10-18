@@ -31,6 +31,97 @@ import { fontSize } from '../theme'
 import { TextInputBlock } from '../components/createComponents'
 import { addFinance } from '../store/actions/finance'
 
+const ModalFinanceIncome = ({
+  onAddFinance,
+  onOuterClick,
+  incomeFact,
+  incomePlan,
+}) => {
+  const { colors } = useTheme()
+  const incomeLeft = incomePlan - incomeFact > 0 ? incomePlan - incomeFact : 0
+  const [income, setIncome] = useState(incomeLeft)
+  const [comment, setComment] = useState('comment')
+  return (
+    <ModalBottomMenu
+      title="Поступление средств"
+      subtitle="Сумма полученная с события"
+      visible={true}
+      onOuterClick={onOuterClick}
+    >
+      <Text style={{ color: colors.text }}>
+        Стоимость услуги: {incomePlan} руб
+      </Text>
+      <Text style={{ color: colors.text }}>Получено: {incomeFact} руб</Text>
+      <Text style={{ color: colors.text }}>
+        Остаток: {incomePlan - incomeFact} руб
+      </Text>
+      <TextInputBlock
+        title="Новое поступление"
+        value={income}
+        onChangeText={(text) => setIncome(text)}
+        keyboardType="numeric"
+        placeholder="0"
+        postfix="&#8381;"
+      />
+      <Button
+        title="Внести"
+        onPress={() => {
+          onAddFinance(income, comment)
+          onOuterClick()
+        }}
+      />
+      <Button title="Отмена" btnDecline={true} onPress={onOuterClick} />
+    </ModalBottomMenu>
+  )
+}
+
+const ModalFinanceOutcome = ({
+  onAddFinance,
+  onOuterClick,
+  outcomeFact,
+  outcomePlan,
+}) => {
+  const { colors } = useTheme()
+  const outcomeLeft =
+    outcomePlan - outcomeFact > 0 ? outcomePlan - outcomeFact : 0
+  const [outcome, setOutcome] = useState(outcomeLeft)
+  const [comment, setComment] = useState('comment')
+  return (
+    <ModalBottomMenu
+      title="Расходование средств"
+      subtitle="Сумма израсходованная на событие"
+      visible={true}
+      onOuterClick={onOuterClick}
+    >
+      <Text style={{ color: colors.text }}>
+        Сумма затрат: {outcomePlan} руб
+      </Text>
+      <Text style={{ color: colors.text }}>
+        Израсходовано: {outcomeFact} руб
+      </Text>
+      <Text style={{ color: colors.text }}>
+        Остаток: {outcomePlan - outcomeFact} руб
+      </Text>
+      <TextInputBlock
+        title="Новые расходы"
+        value={outcome}
+        onChangeText={(text) => setOutcome(text)}
+        keyboardType="numeric"
+        placeholder="0"
+        postfix="&#8381;"
+      />
+      <Button
+        title="Внести"
+        onPress={() => {
+          onAddFinance(outcome, comment)
+          onOuterClick()
+        }}
+      />
+      <Button title="Отмена" btnDecline={true} onPress={onOuterClick} />
+    </ModalBottomMenu>
+  )
+}
+
 const EventsScreen = ({ navigation, route }) => {
   const theme = useTheme()
   const { colors } = theme
@@ -38,8 +129,8 @@ const EventsScreen = ({ navigation, route }) => {
   const { Popover } = renderers
   const [sorting, setSorting] = useState('dateDESC')
   const [modal, setModal] = useState(null)
-  const [income, setIncome] = useState(0)
-  const [modalFinanceEventIncome, setModalFinanceEventIncome] = useState(false)
+  // const [income, setIncome] = useState(0)
+  // const [modalFinanceEventIncome, setModalFinanceEventIncome] = useState(false)
 
   const events = useSelector((state) => state.event.events)
   const services = useSelector((state) => state.service.services)
@@ -49,10 +140,13 @@ const EventsScreen = ({ navigation, route }) => {
 
   const { dev } = useContext(AppContext)
 
-  const showModalFinanceEventIncome = (event) => {
-    setIncome(event.finance_price)
-    setModalFinanceEventIncome(event)
-  }
+  // const showModalFinanceEventIncome = (event, incomeLeft) => {
+  //   setIncome(incomeLeft >= 0 ? incomeLeft : 0)
+  //   setModalFinanceEventIncome({
+  //     event,
+  //     incomeRecive: event.finance_price - incomeLeft,
+  //   })
+  // }
 
   let sortMenu = null
   const srtMenu = (r) => {
@@ -203,7 +297,7 @@ const EventsScreen = ({ navigation, route }) => {
             />
           ) : null}
 
-          <Item
+          {/* <Item
             title="Add finance"
             iconName="ios-bug"
             onPress={() => {
@@ -211,7 +305,7 @@ const EventsScreen = ({ navigation, route }) => {
               dispatch(addFinance(tmp))
             }}
             // onPress={() => navigation.navigate("Create")}
-          />
+          /> */}
         </HeaderButtons>
       ),
     })
@@ -269,8 +363,50 @@ const EventsScreen = ({ navigation, route }) => {
             navigation={navigation}
             event={item}
             onDelete={() => modalDelete(item)}
-            financeIncome={() => {
-              showModalFinanceEventIncome(item)
+            financeIncome={(incomeLeft) => {
+              // showModalFinanceEventIncome(item, incomeLeft)
+              setModal(
+                <ModalFinanceIncome
+                  onOuterClick={() => setModal(null)}
+                  incomeFact={item.finance_price - incomeLeft}
+                  incomePlan={item.finance_price}
+                  onAddFinance={(income, comment) =>
+                    dispatch(
+                      addFinance({
+                        event: item.id,
+                        type: 'income',
+                        sum: income,
+                        comment,
+                      })
+                    )
+                  }
+                />
+              )
+            }}
+            financeOutcome={(outcomeLeft) => {
+              const outcomePlan =
+                item.finance_road +
+                item.finance_organizator +
+                item.finance_assistants +
+                item.finance_consumables
+              // showModalFinanceEventIncome(item, incomeLeft)
+              setModal(
+                <ModalFinanceOutcome
+                  onOuterClick={() => setModal(null)}
+                  outcomeFact={outcomePlan - outcomeLeft}
+                  outcomePlan={outcomePlan}
+                  onAddFinance={(outcome, comment) =>
+                    dispatch(
+                      addFinance({
+                        event: item.id,
+                        type: 'outcome',
+                        sum: outcome,
+                        comment,
+                      })
+                    )
+                  }
+                />
+              )
             }}
           />
         )}
@@ -279,47 +415,6 @@ const EventsScreen = ({ navigation, route }) => {
         }}
       />
       {modal}
-      <ModalBottomMenu
-        title="Поступление средств"
-        subtitle="Сумма полученная с события"
-        visible={!!modalFinanceEventIncome}
-        onOuterClick={() => setModalFinanceEventIncome(false)}
-      >
-        <Text style={{ color: colors.text }}>
-          Стоимость услуги: {modalFinanceEventIncome.finance_price} руб
-        </Text>
-        <Text style={{ color: colors.text }}>Получено: ? руб</Text>
-        <Text style={{ color: colors.text }}>Остаток: ? руб</Text>
-        <TextInputBlock
-          title="Новое поступление"
-          value={income}
-          onChangeText={(text) => setIncome(text)}
-          keyboardType="numeric"
-          placeholder="0"
-          postfix="&#8381;"
-        />
-        <Button
-          title="Внести"
-          onPress={() => {
-            setModalFinanceEventIncome(false)
-            dispatch(
-              addFinance({
-                event: modalFinanceEventIncome.id,
-                type: 'income',
-                sum: income,
-                comment: '',
-              })
-            )
-          }}
-        />
-        <Button
-          title="Отмена"
-          btnDecline={true}
-          onPress={() => {
-            setModalFinanceEventIncome(false)
-          }}
-        />
-      </ModalBottomMenu>
     </View>
   )
 }

@@ -15,8 +15,10 @@ const FinanceMenu = ({
   iconBackgroundColor = 'green',
   addIncome = () => {},
   addOutcome = () => {},
-  incomeValue = 0,
-  outcomeValue = 0,
+  incomePlanValue = 0,
+  outcomePlanValue = 0,
+  incomeFactValue = 0,
+  outcomeFactValue = 0,
   style = {},
 }) => {
   const { colors } = useTheme()
@@ -42,22 +44,129 @@ const FinanceMenu = ({
         }}
       >
         <View style={{ padding: 5, backgroundColor: colors.background }}>
-          <Text style={{ color: colors.text, fontSize: fontSize.medium }}>
-            Поступление: {incomeValue}
-          </Text>
-          <Text style={{ color: colors.text, fontSize: fontSize.medium }}>
-            Списание: {outcomeValue}
-          </Text>
-          <Text style={{ color: colors.text, fontSize: fontSize.medium }}>
-            Остаток: {incomeValue - outcomeValue}
-          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ width: 110 }}></View>
+            <Text
+              style={{
+                flex: 1,
+                textAlign: 'center',
+                color: colors.text,
+                fontSize: fontSize.medium,
+              }}
+            >
+              План
+            </Text>
+            <Text
+              style={{
+                flex: 1,
+                textAlign: 'center',
+                color: colors.text,
+                fontSize: fontSize.medium,
+              }}
+            >
+              Факт
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <Text
+              style={{
+                width: 110,
+                color: colors.text,
+                fontSize: fontSize.medium,
+              }}
+            >
+              Поступление:
+            </Text>
+            <Text
+              style={{
+                flex: 1,
+                textAlign: 'center',
+                color: colors.text,
+                fontSize: fontSize.medium,
+              }}
+            >
+              {incomePlanValue}
+            </Text>
+            <Text
+              style={{
+                flex: 1,
+                textAlign: 'center',
+                color: colors.text,
+                fontSize: fontSize.medium,
+              }}
+            >
+              {incomeFactValue}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <Text
+              style={{
+                width: 110,
+                color: colors.text,
+                fontSize: fontSize.medium,
+              }}
+            >
+              Списание:
+            </Text>
+            <Text
+              style={{
+                flex: 1,
+                textAlign: 'center',
+                color: colors.text,
+                fontSize: fontSize.medium,
+              }}
+            >
+              {outcomePlanValue}
+            </Text>
+            <Text
+              style={{
+                flex: 1,
+                textAlign: 'center',
+                color: colors.text,
+                fontSize: fontSize.medium,
+              }}
+            >
+              {outcomeFactValue}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <Text
+              style={{
+                width: 110,
+                color: colors.text,
+                fontSize: fontSize.medium,
+              }}
+            >
+              Остаток:
+            </Text>
+            <Text
+              style={{
+                flex: 1,
+                textAlign: 'center',
+                color: colors.text,
+                fontSize: fontSize.medium,
+              }}
+            >
+              {incomePlanValue - outcomePlanValue}
+            </Text>
+            <Text
+              style={{
+                flex: 1,
+                textAlign: 'center',
+                color: colors.text,
+                fontSize: fontSize.medium,
+              }}
+            >
+              {incomeFactValue - outcomeFactValue}
+            </Text>
+          </View>
         </View>
         <MenuOption key="income" onSelect={addIncome}>
           <MainIcon
             iconName="ios-add"
             size="small"
             iconBackgroundColor="green"
-            text="Поступление средств"
+            text="Новое поступление"
             textColor={colors.text}
           />
         </MenuOption>
@@ -66,7 +175,7 @@ const FinanceMenu = ({
             iconName="ios-remove"
             size="small"
             iconBackgroundColor="red"
-            text="Расходование средств"
+            text="Новые расходы"
             textColor={colors.text}
           />
         </MenuOption>
