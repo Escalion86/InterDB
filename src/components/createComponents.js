@@ -190,7 +190,7 @@ export const ImagePickerBlock = ({
 
 export const TextInputBlock = ({
   title = '',
-  value = null,
+  value = '',
   prefix = '',
   postfix = '',
   onChangeText = () => {},
@@ -202,6 +202,8 @@ export const TextInputBlock = ({
   success = false,
   titleFlex = 2,
   inputFlex = 3,
+  inputOnNextRow = false,
+  textAlign = 'center',
 }) => {
   value = value ? value.toString() : ''
   const { colors } = useTheme()
@@ -212,106 +214,121 @@ export const TextInputBlock = ({
     : {}
 
   return (
-    <View
-      style={{
-        ...styles.row,
-        ...multilineStyle,
-      }}
-    >
-      <Text
-        style={{
-          flex: titleFlex,
-          fontSize: fontSize.medium,
-          color: colors.text,
-        }}
-      >
-        {title}
-      </Text>
+    <View>
+      {inputOnNextRow ? (
+        <Text
+          style={{
+            fontSize: fontSize.medium,
+            color: colors.text,
+            height: 30,
+          }}
+        >
+          {title}
+        </Text>
+      ) : null}
       <View
         style={{
-          flex: inputFlex,
-          flexDirection: 'row',
-          borderColor: colors.border,
-          backgroundColor: colors.card,
-          borderWidth: 1,
-          borderRadius: 5,
-          height: '100%',
-          ...fieldStyle,
-
-          // paddingHorizontal: 10,
+          ...styles.row,
+          ...multilineStyle,
         }}
       >
-        {prefix ? (
-          <View
+        {!inputOnNextRow ? (
+          <Text
             style={{
-              minWidth: 32,
-              height: '100%',
-              // borderColor: colors.border,
-              backgroundColor: colors.active,
-              // borderTopWidth: 1,
-              // borderBottomWidth: 1,
-              // borderRightWidth: 1,
-              borderBottomLeftRadius: 5,
-              borderTopLeftRadius: 5,
-              paddingHorizontal: 10,
-              justifyContent: 'center',
-            }}
-          >
-            <Text
-              style={{
-                color: colors.text,
-                fontSize: fontSize.medium,
-                textAlign: 'center',
-              }}
-            >
-              {prefix}
-            </Text>
-          </View>
-        ) : null}
-        {mask ? null : (
-          <TextInput
-            style={{
-              flex: 1,
-              textAlign: 'center',
+              flex: titleFlex,
               fontSize: fontSize.medium,
-              color: textColor,
-              padding: 5,
-            }}
-            multiline={multiline}
-            keyboardType={keyboardType}
-            onChangeText={onChangeText}
-            placeholder={placeholder}
-            placeholderTextColor={textColor}
-            value={value}
-          />
-        )}
-        {postfix ? (
-          <View
-            style={{
-              minWidth: 32,
-              height: '100%',
-              // borderColor: colors.border,
-              backgroundColor: colors.active,
-              // borderTopWidth: 1,
-              // borderBottomWidth: 1,
-              // borderRightWidth: 1,
-              borderBottomRightRadius: 5,
-              borderTopRightRadius: 5,
-              paddingHorizontal: 10,
-              justifyContent: 'center',
+              color: colors.text,
             }}
           >
-            <Text
+            {title}
+          </Text>
+        ) : null}
+        <View
+          style={{
+            flex: inputFlex,
+            flexDirection: 'row',
+            borderColor: colors.border,
+            backgroundColor: colors.card,
+            borderWidth: 1,
+            borderRadius: 5,
+            height: '100%',
+            ...fieldStyle,
+
+            // paddingHorizontal: 10,
+          }}
+        >
+          {prefix ? (
+            <View
               style={{
-                fontSize: fontSize.medium,
-                color: colors.text,
-                textAlign: 'center',
+                minWidth: 32,
+                height: '100%',
+                // borderColor: colors.border,
+                backgroundColor: colors.active,
+                // borderTopWidth: 1,
+                // borderBottomWidth: 1,
+                // borderRightWidth: 1,
+                borderBottomLeftRadius: 5,
+                borderTopLeftRadius: 5,
+                paddingHorizontal: 10,
+                justifyContent: 'center',
               }}
             >
-              {postfix}
-            </Text>
-          </View>
-        ) : null}
+              <Text
+                style={{
+                  color: colors.text,
+                  fontSize: fontSize.medium,
+                  textAlign: 'center',
+                }}
+              >
+                {prefix}
+              </Text>
+            </View>
+          ) : null}
+          {mask ? null : (
+            <TextInput
+              style={{
+                flex: 1,
+                textAlign: textAlign,
+                fontSize: fontSize.medium,
+                color: textColor,
+                padding: 5,
+              }}
+              multiline={multiline}
+              keyboardType={keyboardType}
+              onChangeText={onChangeText}
+              placeholder={placeholder}
+              placeholderTextColor={textColor}
+              value={value}
+            />
+          )}
+          {postfix ? (
+            <View
+              style={{
+                minWidth: 32,
+                height: '100%',
+                // borderColor: colors.border,
+                backgroundColor: colors.active,
+                // borderTopWidth: 1,
+                // borderBottomWidth: 1,
+                // borderRightWidth: 1,
+                borderBottomRightRadius: 5,
+                borderTopRightRadius: 5,
+                paddingHorizontal: 10,
+                justifyContent: 'center',
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: fontSize.medium,
+                  color: colors.text,
+                  textAlign: 'center',
+                }}
+              >
+                {postfix}
+              </Text>
+            </View>
+          ) : null}
+        </View>
       </View>
     </View>
   )
