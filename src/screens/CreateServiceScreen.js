@@ -13,7 +13,7 @@ import {
 } from '../components/createComponents'
 import trimingArrayValues from '../helpers/trimingArrayValues'
 import { HeaderBackButton } from '@react-navigation/stack'
-import ModalBottomMenu from '../components/ModalBottomMenu'
+import ModalBottomMenu from '../components/Modals/ModalBottomMenu'
 import Button from '../components/Button'
 
 const CreateServiceScreen = ({ navigation, route }) => {

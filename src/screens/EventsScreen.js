@@ -24,103 +24,104 @@ import { useTheme } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import Fab from '../components/Fab'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
-import ModalDeleteEvent from '../components/ModalDeleteEvent'
-import ModalBottomMenu from '../components/ModalBottomMenu'
-import Button from '../components/Button'
+import ModalDeleteEvent from '../components/Modals/ModalDeleteEvent'
 import { fontSize } from '../theme'
-import { TextInputBlock } from '../components/createComponents'
 import { addFinance } from '../store/actions/finance'
+import {
+  ModalFinanceIncome,
+  ModalFinanceOutcome,
+} from '../components/Modals/modalsFinance'
 
-const ModalFinanceIncome = ({
-  onAddFinance,
-  onOuterClick,
-  incomeFact,
-  incomePlan,
-}) => {
-  const { colors } = useTheme()
-  const incomeLeft = incomePlan - incomeFact > 0 ? incomePlan - incomeFact : 0
-  const [income, setIncome] = useState(incomeLeft)
-  const [comment, setComment] = useState('comment')
-  return (
-    <ModalBottomMenu
-      title="Поступление средств"
-      subtitle="Сумма полученная с события"
-      visible={true}
-      onOuterClick={onOuterClick}
-    >
-      <Text style={{ color: colors.text }}>
-        Стоимость услуги: {incomePlan} руб
-      </Text>
-      <Text style={{ color: colors.text }}>Получено: {incomeFact} руб</Text>
-      <Text style={{ color: colors.text }}>
-        Остаток: {incomePlan - incomeFact} руб
-      </Text>
-      <TextInputBlock
-        title="Новое поступление"
-        value={income}
-        onChangeText={(text) => setIncome(text)}
-        keyboardType="numeric"
-        placeholder="0"
-        postfix="&#8381;"
-      />
-      <Button
-        title="Внести"
-        onPress={() => {
-          onAddFinance(income, comment)
-          onOuterClick()
-        }}
-      />
-      <Button title="Отмена" btnDecline={true} onPress={onOuterClick} />
-    </ModalBottomMenu>
-  )
-}
+// const ModalFinanceIncome = ({
+//   onAddFinance,
+//   onOuterClick,
+//   incomeFact,
+//   incomePlan,
+// }) => {
+//   const { colors } = useTheme()
+//   const incomeLeft = incomePlan - incomeFact > 0 ? incomePlan - incomeFact : 0
+//   const [income, setIncome] = useState(incomeLeft)
+//   const [comment, setComment] = useState('comment')
+//   return (
+//     <ModalBottomMenu
+//       title="Поступление средств"
+//       subtitle="Сумма полученная с события"
+//       visible={true}
+//       onOuterClick={onOuterClick}
+//     >
+//       <Text style={{ color: colors.text }}>
+//         Стоимость услуги: {incomePlan} руб
+//       </Text>
+//       <Text style={{ color: colors.text }}>Получено: {incomeFact} руб</Text>
+//       <Text style={{ color: colors.text }}>
+//         Остаток: {incomePlan - incomeFact} руб
+//       </Text>
+//       <TextInputBlock
+//         title="Новое поступление"
+//         value={income}
+//         onChangeText={(text) => setIncome(text)}
+//         keyboardType="numeric"
+//         placeholder="0"
+//         postfix="&#8381;"
+//       />
+//       <Button
+//         title="Внести"
+//         onPress={() => {
+//           onAddFinance(income, comment)
+//           onOuterClick()
+//         }}
+//       />
+//       <Button title="Отмена" btnDecline={true} onPress={onOuterClick} />
+//     </ModalBottomMenu>
+//   )
+// }
 
-const ModalFinanceOutcome = ({
-  onAddFinance,
-  onOuterClick,
-  outcomeFact,
-  outcomePlan,
-}) => {
-  const { colors } = useTheme()
-  const outcomeLeft =
-    outcomePlan - outcomeFact > 0 ? outcomePlan - outcomeFact : 0
-  const [outcome, setOutcome] = useState(outcomeLeft)
-  const [comment, setComment] = useState('comment')
-  return (
-    <ModalBottomMenu
-      title="Расходование средств"
-      subtitle="Сумма израсходованная на событие"
-      visible={true}
-      onOuterClick={onOuterClick}
-    >
-      <Text style={{ color: colors.text }}>
-        Сумма затрат: {outcomePlan} руб
-      </Text>
-      <Text style={{ color: colors.text }}>
-        Израсходовано: {outcomeFact} руб
-      </Text>
-      <Text style={{ color: colors.text }}>
-        Остаток: {outcomePlan - outcomeFact} руб
-      </Text>
-      <TextInputBlock
-        title="Новые расходы"
-        value={outcome}
-        onChangeText={(text) => setOutcome(text)}
-        keyboardType="numeric"
-        placeholder="0"
-        postfix="&#8381;"
-      />
-      <Button
-        title="Внести"
-        onPress={() => {
-          onAddFinance(outcome, comment)
-          onOuterClick()
-        }}
-      />
-      <Button title="Отмена" btnDecline={true} onPress={onOuterClick} />
-    </ModalBottomMenu>
-  )
-}
+// const ModalFinanceOutcome = ({
+//   onAddFinance,
+//   onOuterClick,
+//   outcomeFact,
+//   outcomePlan,
+// }) => {
+//   const { colors } = useTheme()
+//   const outcomeLeft =
+//     outcomePlan - outcomeFact > 0 ? outcomePlan - outcomeFact : 0
+//   const [outcome, setOutcome] = useState(outcomeLeft)
+//   const [comment, setComment] = useState('comment')
+//   return (
+//     <ModalBottomMenu
+//       title="Расходование средств"
+//       subtitle="Сумма израсходованная на событие"
+//       visible={true}
+//       onOuterClick={onOuterClick}
+//     >
+//       <Text style={{ color: colors.text }}>
+//         Сумма затрат: {outcomePlan} руб
+//       </Text>
+//       <Text style={{ color: colors.text }}>
+//         Израсходовано: {outcomeFact} руб
+//       </Text>
+//       <Text style={{ color: colors.text }}>
+//         Остаток: {outcomePlan - outcomeFact} руб
+//       </Text>
+//       <TextInputBlock
+//         title="Новые расходы"
+//         value={outcome}
+//         onChangeText={(text) => setOutcome(text)}
+//         keyboardType="numeric"
+//         placeholder="0"
+//         postfix="&#8381;"
+//       />
+//       <Button
+//         title="Внести"
+//         onPress={() => {
+//           onAddFinance(outcome, comment)
+//           onOuterClick()
+//         }}
+//       />
+//       <Button title="Отмена" btnDecline={true} onPress={onOuterClick} />
+//     </ModalBottomMenu>
+//   )
+// }
 
 const EventsScreen = ({ navigation, route }) => {
   const theme = useTheme()
@@ -135,7 +136,7 @@ const EventsScreen = ({ navigation, route }) => {
   const events = useSelector((state) => state.event.events)
   const services = useSelector((state) => state.service.services)
   const clients = useSelector((state) => state.client.clients)
-  const finances = useSelector((state) => state.finance.finances)
+  // const finances = useSelector((state) => state.finance.finances)
   const loading = useSelector((state) => state.event.loading)
 
   const { dev } = useContext(AppContext)

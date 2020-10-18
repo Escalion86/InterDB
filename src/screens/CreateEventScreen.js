@@ -15,7 +15,7 @@ import {
   DateTimePickerBlock,
   TitleBlock,
 } from '../components/createComponents'
-import ModalBottomMenu from '../components/ModalBottomMenu'
+import ModalBottomMenu from '../components/Modals/ModalBottomMenu'
 import ScrollCardList from '../components/ScrollCardList'
 import ServiceCard from '../components/Cards/ServiceCard'
 import ClientCard from '../components/Cards/ClientCard'
@@ -388,14 +388,14 @@ const CreateEventScreen = ({ navigation, route }) => {
         onChangeItem={(item) => setEventItem({ event: item.value })}
       /> */}
 
-      <EventRowDropDownPicker
+      {/* <EventRowDropDownPicker
         dependencies={financeIconDependencies}
         name="Статус оплаты"
         // IconEventComponent={FinanceIcon}
         defeultValue={newEvent.finance_status}
         placeholder={'Выберите статус оплаты'}
         onChangeItem={(item) => setEventItem({ finance_status: item.value })}
-      />
+      /> */}
       {/* <EventRowDropDownPicker
         dependencies={eventIconDependencies}
         name="Тип события"
@@ -422,7 +422,6 @@ const CreateEventScreen = ({ navigation, route }) => {
         value={newEvent.comment}
         onChangeText={(text) => setEventItem({ comment: text })}
         multiline={true}
-        keyboardType="numeric"
       />
       <TitleBlock title="Услуга" />
       {!serviceObj ? (

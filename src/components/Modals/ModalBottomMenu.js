@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native'
 import { useTheme } from '@react-navigation/native'
-import Button from './Button'
+import Button from '../Button'
 import GestureRecognizer from 'react-native-swipe-gestures'
 import { Ionicons } from '@expo/vector-icons'
-import { fontSize } from '../theme'
+import { fontSize } from '../../theme'
 
 const ModalBottomMenu = ({
   children,

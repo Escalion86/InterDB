@@ -10,7 +10,7 @@ import Fab from '../components/Fab'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
 import { dbGenerator } from '../db/dbTemplate'
 import { addClient, deleteAllClients } from '../store/actions/client'
-import ModalDeleteClient from '../components/ModalDeleteClient'
+import ModalDeleteClient from '../components/Modals/ModalDeleteClient'
 import { fontSize } from '../theme'
 
 const ClientsScreen = ({ navigation, route }) => {

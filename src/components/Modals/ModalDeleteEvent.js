@@ -1,8 +1,8 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { ModalBottomMenuYesNo } from './ModalBottomMenu'
-import { deleteEvent } from '../store/actions/event'
-import { formatDateTime } from '../helpers/date'
+import { deleteEvent } from '../../store/actions/event'
+import { formatDateTime } from '../../helpers/date'
 
 const ModalDeleteEvent = ({
   event,

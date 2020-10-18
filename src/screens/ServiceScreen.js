@@ -11,14 +11,9 @@ import {
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { updateServicePartially } from '../store/actions/service'
-// import ModalBottomMenu, {
-// ModalBottomMenuYesNo,
-// } from "../components/ModalBottomMenu"
 import { useTheme } from '@react-navigation/native'
-// import MainFlatListWithFab from "../components/MainFlatListWithFab"
-// import EventCard from "../components/Cards/EventCard"
-import ModalDeleteService from '../components/ModalDeleteService'
-import ModalDeleteEvent from '../components/ModalDeleteEvent'
+import ModalDeleteService from '../components/Modals/ModalDeleteService'
+import ModalDeleteEvent from '../components/Modals/ModalDeleteEvent'
 import { TextBlock } from '../components/infoComponents'
 import EventCard from '../components/Cards/EventCard'
 import { TitleBlock } from '../components/createComponents'

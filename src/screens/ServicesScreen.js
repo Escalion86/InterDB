@@ -10,7 +10,7 @@ import ServiceCard from '../components/Cards/ServiceCard'
 import { useTheme } from '@react-navigation/native'
 import Fab from '../components/Fab'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
-import ModalDeleteService from '../components/ModalDeleteService'
+import ModalDeleteService from '../components/Modals/ModalDeleteService'
 import { fontSize } from '../theme'
 
 const ServicesScreen = ({ navigation, route }) => {

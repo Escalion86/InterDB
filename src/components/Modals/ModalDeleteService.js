@@ -1,10 +1,10 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ModalBottomMenu, { ModalBottomMenuYesNo } from './ModalBottomMenu'
-import MainFlatListWithFab from './MainFlatListWithFab'
-import EventCard from './Cards/EventCard'
-import { deleteService } from '../store/actions/service'
-import wordForm from '../helpers/wordForm'
+import MainFlatListWithFab from '../MainFlatListWithFab'
+import EventCard from '../Cards/EventCard'
+import { deleteService } from '../../store/actions/service'
+import wordForm from '../../helpers/wordForm'
 
 const ModalDeleteService = ({
   service,
