@@ -8,12 +8,12 @@ export const statusIconDependencies = {
   Выполнено: { name: 'ios-checkmark-circle', color: '#006600' },
 }
 
-export const financeIconDependencies = {
-  Бесплатное: { name: 'ios-disc', color: '#006600' },
-  'Не оплачено': { name: 'ios-cash', color: '#bb0000' },
-  Авансировано: { name: 'ios-cash', color: '#999900' },
-  Оплачено: { name: 'ios-cash', color: '#006600' },
-}
+// export const financeIconDependencies = {
+//   Бесплатное: { name: 'ios-disc', color: '#006600' },
+//   'Не оплачено': { name: 'ios-cash', color: '#bb0000' },
+//   Авансировано: { name: 'ios-cash', color: '#999900' },
+//   Оплачено: { name: 'ios-cash', color: '#006600' },
+// }
 
 // export const auditoryIconDependencies = {
 //   Взрослые: { name: 'ios-disc', color: '#880088' },
@@ -33,7 +33,7 @@ export const financeIconDependencies = {
 
 export const iconDependencies = {
   status: statusIconDependencies,
-  finance_status: financeIconDependencies,
+  // finance_status: financeIconDependencies,
   // auditory: auditoryIconDependencies,
   // event: eventIconDependencies,
 }
