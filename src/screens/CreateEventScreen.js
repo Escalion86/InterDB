@@ -32,94 +32,10 @@ import { HeaderBackButton } from '@react-navigation/stack'
 import { fontSize } from '../theme'
 // import { addEventNotification } from "../helpers/notifications"
 
-const CreateEventScreen = ({ navigation, route }) => {
-  const event =
-    route.params !== undefined && route.params.eventId !== undefined
-      ? useSelector((state) => state.event.events).find(
-        (item) => item.id === route.params.eventId
-      )
-      : { ...dbDefault('events'), date: new Date().setSeconds(0, 0) }
-
-  const { colors } = useTheme()
-
-  const services = useSelector((state) => state.service.services).filter(
-    (item) => !item.archive
-  )
-
-  const clients = useSelector((state) => state.client.clients)
-
-  const [lastAddedService, setLastAddedService] = useState(
-    services.length > 0 ? services[0].id : null
-  )
-  const [lastAddedClient, setLastAddedClient] = useState(
-    clients.length > 0 ? clients[0].id : null
-  )
-
-  const dispatch = useDispatch()
-  const [newEvent, setNewEvent] = useState(event)
-  const [modal, setModal] = useState(null)
-  // const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
-
-  const setEventItem = (item) => {
-    setNewEvent({ ...newEvent, ...item })
-  }
-
-  useEffect(() => {
-    if (services.length > 0 && lastAddedService !== services[0].id) {
-      setEventItem({ service: services[0].id })
-      setLastAddedService(services[0].id)
-    }
-    if (clients.length > 0 && lastAddedClient !== clients[0].id) {
-      setEventItem({ client: clients[0].id })
-      setLastAddedClient(clients[0].id)
-    }
-  }, [services, clients])
-
+const InfoMenu = () => {
   const { Popover } = renderers
-
-  const serviceObj = services.find((item) => item.id === newEvent.service)
-  const clientObj = clients.find((item) => item.id === newEvent.client)
-  const servicePicked = !!serviceObj
-  const clientPicked = !!clientObj
-
-  // TODO Сделать проверку на заполнение необходимых полей
-  const saveHandler = async () => {
-    if (servicePicked && clientPicked) {
-      // newEvent.notification_id = await addEventNotification(newEvent)
-      event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
-
-      navigation.goBack()
-    } else {
-      ToastAndroid.show(
-        'Необходимо выбрать Услугу и Клиента',
-        ToastAndroid.LONG
-      )
-    }
-  }
-
-  const checkChanges = () => {
-    for (const key in newEvent) {
-      if (newEvent[key] !== event[key]) {
-        setModal(modalSaveChanges)
-        return
-      }
-    }
-    navigation.goBack()
-  }
-
-  useEffect(() => {
-    navigation.setOptions({
-      title: event.id ? 'Редактирование события' : 'Создание события',
-      headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-          <Item title="Save Event" iconName="ios-save" onPress={saveHandler} />
-        </HeaderButtons>
-      ),
-    })
-  }, [event, newEvent])
-
-  const InfoMenu = () => (
+  const { colors } = useTheme()
+  return (
     <Menu
       style={{
         position: 'absolute',
@@ -189,110 +105,94 @@ const CreateEventScreen = ({ navigation, route }) => {
       </MenuOptions>
     </Menu>
   )
+}
 
-  const modalSaveChanges = (
-    <ModalBottomMenu
-      title="Отменить изменения"
-      subtitle="Уверены что хотите выйти без сохранения?"
-      visible={true}
-      onOuterClick={() => setModal(null)}
-    >
-      <Button
-        title="Выйти без сохранения"
-        btnDecline={false}
-        onPress={() => {
-          setModal(null)
-          navigation.goBack()
-        }}
-      />
-      <Button
-        title="Сохранить и выйти"
-        btnDecline={false}
-        onPress={() => {
-          setModal(null)
-          saveHandler()
-          navigation.goBack()
-        }}
-      />
-      <Button
-        title="Не уходить"
-        btnDecline={true}
-        onPress={() => {
-          setModal(null)
-        }}
-      />
-    </ModalBottomMenu>
-  )
+const ModalSaveChanges = ({ onOuterClick, onPressNoSave, onPressSave }) => (
+  <ModalBottomMenu
+    title="Отменить изменения"
+    subtitle="Уверены что хотите выйти без сохранения?"
+    visible={true}
+    onOuterClick={onOuterClick}
+  >
+    <Button
+      title="Выйти без сохранения"
+      btnDecline={false}
+      onPress={onPressNoSave}
+    />
+    <Button
+      title="Сохранить и выйти"
+      btnDecline={false}
+      onPress={onPressSave}
+    />
+    <Button title="Не уходить" btnDecline={true} onPress={onOuterClick} />
+  </ModalBottomMenu>
+)
 
-  const modalUpdateFinance = (serviceId) => (
+const ModalUpdateFinance = ({ service, onOuterClick, setEventItem }) => {
+  return (
     <ModalBottomMenu
       title="Обновление данных события"
       subtitle="Внести данные услуги в собитие?"
       visible={true}
-      onOuterClick={() => setModal(null)}
+      onOuterClick={onOuterClick}
     >
       <Button
         title="Обновить все данные"
         btnDecline={false}
         onPress={() => {
-          const serviceObj = services.find((item) => item.id === serviceId)
           setEventItem({
-            service: serviceObj.id,
-            finance_price: serviceObj.finance_price,
-            finance_consumables: serviceObj.finance_consumables,
-            finance_assistants: serviceObj.finance_assistants,
-            timing_duration: serviceObj.duration,
-            timing_preparetime: serviceObj.preparetime,
-            timing_collecttime: serviceObj.collecttime,
+            service: service.id,
+            finance_price: service.finance_price,
+            finance_consumables: service.finance_consumables,
+            finance_assistants: service.finance_assistants,
+            timing_duration: service.duration,
+            timing_preparetime: service.preparetime,
+            timing_collecttime: service.collecttime,
           })
-          setModal(null)
+          onOuterClick()
         }}
       />
       <Button
         title="Обновить только финансовые данные"
         btnDecline={false}
         onPress={() => {
-          const serviceObj = services.find((item) => item.id === serviceId)
           setEventItem({
-            service: serviceObj.id,
-            finance_price: serviceObj.finance_price,
-            finance_consumables: serviceObj.finance_consumables,
-            finance_assistants: serviceObj.finance_assistants,
+            service: service.id,
+            finance_price: service.finance_price,
+            finance_consumables: service.finance_consumables,
+            finance_assistants: service.finance_assistants,
           })
-          setModal(null)
+          onOuterClick()
         }}
       />
       <Button
         title="Обновить только данные тайминга"
         btnDecline={false}
         onPress={() => {
-          const serviceObj = services.find((item) => item.id === serviceId)
           setEventItem({
-            service: serviceObj.id,
-            timing_duration: serviceObj.duration,
-            timing_preparetime: serviceObj.preparetime,
-            timing_collecttime: serviceObj.collecttime,
+            service: service.id,
+            timing_duration: service.duration,
+            timing_preparetime: service.preparetime,
+            timing_collecttime: service.collecttime,
           })
-          setModal(null)
+          onOuterClick()
         }}
       />
-      <Button
-        title="Не обновлять"
-        btnDecline={true}
-        onPress={() => setModal(null)}
-      />
+      <Button title="Не обновлять" btnDecline={true} onPress={onOuterClick} />
     </ModalBottomMenu>
   )
+}
 
-  const modalClients = (
+const ModalClients = ({ clients, navigation, onOuterClick, setEventItem }) => {
+  return (
     <ModalBottomMenu
       title="Выберите клиента"
       visible={true}
-      onOuterClick={() => setModal(null)}
+      onOuterClick={onOuterClick}
     >
       <Button
         onPress={() => {
-          setModal(null)
+          onOuterClick()
           navigation.navigate('CreateClient')
         }}
         title={'Создать клиента'}
@@ -306,7 +206,7 @@ const CreateEventScreen = ({ navigation, route }) => {
             client={item}
             onPress={() => {
               setEventItem({ client: item.id })
-              setModal(null)
+              onOuterClick()
             }}
             listMode={true}
             swipeable={false}
@@ -316,16 +216,25 @@ const CreateEventScreen = ({ navigation, route }) => {
       />
     </ModalBottomMenu>
   )
+}
 
-  const modalServices = (
+const ModalServices = ({
+  services,
+  servicePicked,
+  navigation,
+  onOuterClick,
+  setModal,
+  setEventItem,
+}) => {
+  return (
     <ModalBottomMenu
       title="Выберите услугу"
       visible={true}
-      onOuterClick={() => setModal(null)}
+      onOuterClick={onOuterClick}
     >
       <Button
         onPress={() => {
-          setModal(null)
+          onOuterClick()
           navigation.navigate('CreateService')
         }}
         title={'Создать услугу'}
@@ -339,13 +248,19 @@ const CreateEventScreen = ({ navigation, route }) => {
             service={item}
             onPress={() => {
               // Если сервис был выбран, то нужно спросить об обновлении финансовых данных
-              setModal(null)
+              onOuterClick()
 
               if (servicePicked) {
                 setEventItem({
                   service: item.id,
                 })
-                setModal(modalUpdateFinance(item.id))
+                setModal(
+                  <ModalUpdateFinance
+                    service={item}
+                    onOuterClick={onOuterClick}
+                    setEventItem={setEventItem}
+                  />
+                )
               } else {
                 setEventItem({
                   service: item.id,
@@ -367,6 +282,103 @@ const CreateEventScreen = ({ navigation, route }) => {
       />
     </ModalBottomMenu>
   )
+}
+
+const CreateEventScreen = ({ navigation, route }) => {
+  const event =
+    route.params !== undefined && route.params.eventId !== undefined
+      ? useSelector((state) => state.event.events).find(
+        (item) => item.id === route.params.eventId
+      )
+      : { ...dbDefault('events'), date: new Date().setSeconds(0, 0) }
+
+  const services = useSelector((state) => state.service.services).filter(
+    (item) => !item.archive
+  )
+
+  const clients = useSelector((state) => state.client.clients)
+
+  const [lastAddedService, setLastAddedService] = useState(
+    services.length > 0 ? services[0].id : null
+  )
+  const [lastAddedClient, setLastAddedClient] = useState(
+    clients.length > 0 ? clients[0].id : null
+  )
+
+  const dispatch = useDispatch()
+  const [newEvent, setNewEvent] = useState(event)
+  const [modal, setModal] = useState(null)
+  // const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
+
+  const setEventItem = (item) => {
+    setNewEvent({ ...newEvent, ...item })
+  }
+
+  useEffect(() => {
+    if (services.length > 0 && lastAddedService !== services[0].id) {
+      setEventItem({ service: services[0].id })
+      setLastAddedService(services[0].id)
+    }
+    if (clients.length > 0 && lastAddedClient !== clients[0].id) {
+      setEventItem({ client: clients[0].id })
+      setLastAddedClient(clients[0].id)
+    }
+  }, [services, clients])
+
+  const serviceObj = services.find((item) => item.id === newEvent.service)
+  const clientObj = clients.find((item) => item.id === newEvent.client)
+  const servicePicked = !!serviceObj
+  const clientPicked = !!clientObj
+
+  // TODO Сделать проверку на заполнение необходимых полей
+  const saveHandler = async () => {
+    if (servicePicked && clientPicked) {
+      // newEvent.notification_id = await addEventNotification(newEvent)
+      event.id ? dispatch(updateEvent(newEvent)) : dispatch(addEvent(newEvent))
+
+      navigation.goBack()
+    } else {
+      ToastAndroid.show(
+        'Необходимо выбрать Услугу и Клиента',
+        ToastAndroid.LONG
+      )
+    }
+  }
+
+  const checkChanges = () => {
+    for (const key in newEvent) {
+      if (newEvent[key] !== event[key]) {
+        setModal(
+          <ModalSaveChanges
+            onOuterClick={() => setModal(null)}
+            onPressNoSave={() => {
+              setModal(null)
+              navigation.goBack()
+            }}
+            onPressSave={() => {
+              setModal(null)
+              saveHandler()
+              navigation.goBack()
+            }}
+          />
+        )
+        return
+      }
+    }
+    navigation.goBack()
+  }
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: event.id ? 'Редактирование события' : 'Создание события',
+      headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+          <Item title="Save Event" iconName="ios-save" onPress={saveHandler} />
+        </HeaderButtons>
+      ),
+    })
+  }, [event, newEvent])
 
   return (
     <ScrollView style={styles.container}>
@@ -429,7 +441,16 @@ const CreateEventScreen = ({ navigation, route }) => {
           {services.length > 0 ? (
             <Button
               onPress={() => {
-                setModal(modalServices)
+                setModal(
+                  <ModalServices
+                    services={services}
+                    servicePicked={servicePicked}
+                    navigation={navigation}
+                    onOuterClick={() => setModal(null)}
+                    setModal={setModal}
+                    setEventItem={setEventItem}
+                  />
+                )
               }}
               title={'Выберите услугу'}
             />
@@ -447,7 +468,16 @@ const CreateEventScreen = ({ navigation, route }) => {
           navigation={navigation}
           service={serviceObj}
           onPress={() => {
-            setModal(modalServices)
+            setModal(
+              <ModalServices
+                services={services}
+                servicePicked={servicePicked}
+                navigation={navigation}
+                onOuterClick={() => setModal(null)}
+                setModal={setModal}
+                setEventItem={setEventItem}
+              />
+            )
           }}
           swipeable={false}
         />
@@ -459,7 +489,14 @@ const CreateEventScreen = ({ navigation, route }) => {
           {services.length > 0 ? (
             <Button
               onPress={() => {
-                setModal(modalClients)
+                setModal(
+                  <ModalClients
+                    clients={clients}
+                    navigation={navigation}
+                    onOuterClick={() => setModal(null)}
+                    setEventItem={setEventItem}
+                  />
+                )
               }}
               title={'Выберите клиента'}
             />
@@ -477,7 +514,14 @@ const CreateEventScreen = ({ navigation, route }) => {
           navigation={navigation}
           client={clientObj}
           onPress={() => {
-            setModal(modalClients)
+            setModal(
+              <ModalClients
+                clients={clients}
+                navigation={navigation}
+                onOuterClick={() => setModal(null)}
+                setEventItem={setEventItem}
+              />
+            )
           }}
           swipeable={false}
         />
