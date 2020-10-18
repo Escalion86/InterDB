@@ -371,13 +371,14 @@ const EventsScreen = ({ navigation, route }) => {
                   onOuterClick={() => setModal(null)}
                   incomeFact={item.finance_price - incomeLeft}
                   incomePlan={item.finance_price}
-                  onAddFinance={(income, comment) =>
+                  onAddFinance={(income, comment, date) =>
                     dispatch(
                       addFinance({
                         event: item.id,
                         type: 'income',
                         sum: income,
                         comment,
+                        date: date,
                       })
                     )
                   }
@@ -396,13 +397,14 @@ const EventsScreen = ({ navigation, route }) => {
                   onOuterClick={() => setModal(null)}
                   outcomeFact={outcomePlan - outcomeLeft}
                   outcomePlan={outcomePlan}
-                  onAddFinance={(outcome, comment) =>
+                  onAddFinance={(outcome, comment, date) =>
                     dispatch(
                       addFinance({
                         event: item.id,
                         type: 'outcome',
                         sum: outcome,
                         comment,
+                        date: date,
                       })
                     )
                   }

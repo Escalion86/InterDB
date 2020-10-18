@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useTheme } from '@react-navigation/native'
 import { Text } from 'react-native'
 import ModalBottomMenu from './ModalBottomMenu'
-import { TextInputBlock } from '../createComponents'
+import { TextInputBlock, DateTimePickerBlock } from '../createComponents'
 import Button from '../Button'
 
 export const ModalFinanceIncome = ({
@@ -15,6 +15,7 @@ export const ModalFinanceIncome = ({
   const incomeLeft = incomePlan - incomeFact > 0 ? incomePlan - incomeFact : 0
   const [income, setIncome] = useState(incomeLeft)
   const [comment, setComment] = useState('')
+  const [date, setDate] = useState(Date.now())
   return (
     <ModalBottomMenu
       title="Поступление средств"
@@ -38,6 +39,11 @@ export const ModalFinanceIncome = ({
         postfix="&#8381;"
         inputFlex={2}
       />
+      <DateTimePickerBlock
+        title="Дата и время поступления"
+        dateValue={date}
+        onChange={(value) => setDate(value)}
+      />
       <TextInputBlock
         title="Комментарий"
         value={comment}
@@ -49,7 +55,7 @@ export const ModalFinanceIncome = ({
       <Button
         title="Внести"
         onPress={() => {
-          onAddFinance(income, comment)
+          onAddFinance(income, comment, date)
           onOuterClick()
         }}
       />
@@ -69,6 +75,7 @@ export const ModalFinanceOutcome = ({
     outcomePlan - outcomeFact > 0 ? outcomePlan - outcomeFact : 0
   const [outcome, setOutcome] = useState(outcomeLeft)
   const [comment, setComment] = useState('')
+  const [date, setDate] = useState(Date.now())
   return (
     <ModalBottomMenu
       title="Расходование средств"
@@ -94,6 +101,11 @@ export const ModalFinanceOutcome = ({
         postfix="&#8381;"
         inputFlex={2}
       />
+      <DateTimePickerBlock
+        title="Дата и время расхода"
+        dateValue={date}
+        onChange={(value) => setDate(value)}
+      />
       <TextInputBlock
         title="Комментарий"
         value={comment}
@@ -105,7 +117,7 @@ export const ModalFinanceOutcome = ({
       <Button
         title="Внести"
         onPress={() => {
-          onAddFinance(outcome, comment)
+          onAddFinance(outcome, comment, date)
           onOuterClick()
         }}
       />

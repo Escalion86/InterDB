@@ -232,6 +232,7 @@ export const dbGenerator = (table = 'event', services = [], clients = []) => {
         sum: rndArray([5000, 6000, 7000, 8000, 9000, 10000]),
         comment: '',
         event: 0,
+        date: Date.now(),
       }
     }
     default:
@@ -741,6 +742,15 @@ export default dbTemplate = {
       type: 'integer',
       db_type: 'TEXT',
       not_null: false,
+      default: '',
+      db_default: '',
+    },
+    {
+      db_name: 'date',
+      desc: 'Дата и время транзакции',
+      type: 'date',
+      db_type: 'TEXT',
+      not_null: true,
       default: '',
       db_default: '',
     },

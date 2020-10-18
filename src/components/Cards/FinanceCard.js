@@ -9,7 +9,9 @@ import {
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
 import SwipeableCard from '../SwipeableCard'
+import { MainIcon } from '../icons'
 import { fontSize } from '../../theme'
+import { formatDate, formatTime } from '../../helpers/date'
 
 const FinanceCard = ({
   navigation,
@@ -101,18 +103,36 @@ const FinanceCard = ({
           onPress={onPress}
         >
           <View style={styles.card}>
+            <View style={styles.left}>
+              {finance.type === 'income' ? (
+                <MainIcon
+                  iconName="ios-add"
+                  size="medium"
+                  iconBackgroundColor="green"
+                />
+              ) : (
+                <MainIcon
+                  iconName="ios-remove"
+                  size="medium"
+                  iconBackgroundColor="red"
+                />
+              )}
+            </View>
             <View style={styles.middle}>
               <View style={styles.cardheader}>
-                <Text style={styles.cardtitle}>{finance.event}</Text>
+                <Text style={styles.cardtitle}>
+                  {`${formatDate(
+                    new Date(finance.date),
+                    true,
+                    true,
+                    true
+                  )} ${formatTime(new Date(finance.date))}`}
+                </Text>
               </View>
-              <CardDesc
-                desc={finance.type === 'income' ? 'Поступление' : 'Списание'}
-              />
+              {finance.comment ? <CardDesc desc={finance.comment} /> : null}
             </View>
             <View style={styles.right}>
-              <View style={styles.carddate}>
-                <Text style={styles.datetime}>{finance.sum} руб</Text>
-              </View>
+              <Text style={styles.datetime}>{finance.sum}</Text>
             </View>
           </View>
         </TouchableHighlight>
@@ -134,10 +154,10 @@ const stylesFactory = ({ colors }) =>
       borderRadius: 10,
       flexDirection: 'row',
       backgroundColor: colors.card,
-      minHeight: 80,
+      minHeight: 60,
     },
     left: {
-      flex: 1,
+      // flex: 1,
       padding: 5,
       // borderRightColor: "black",
       flexDirection: 'row',
@@ -158,9 +178,9 @@ const stylesFactory = ({ colors }) =>
     right: {
       borderLeftWidth: 1,
       borderLeftColor: colors.border,
-      width: 70,
-
-      justifyContent: 'space-between',
+      padding: 5,
+      minWidth: 70,
+      justifyContent: 'center',
     },
     cardheader: {
       flex: 1,
