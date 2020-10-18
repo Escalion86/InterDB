@@ -14,7 +14,7 @@ export const ModalFinanceIncome = ({
   const { colors } = useTheme()
   const incomeLeft = incomePlan - incomeFact > 0 ? incomePlan - incomeFact : 0
   const [income, setIncome] = useState(incomeLeft)
-  const [comment, setComment] = useState('comment')
+  const [comment, setComment] = useState('')
   return (
     <ModalBottomMenu
       title="Поступление средств"
@@ -36,6 +36,15 @@ export const ModalFinanceIncome = ({
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
+        inputFlex={2}
+      />
+      <TextInputBlock
+        title="Комментарий"
+        value={comment}
+        onChangeText={(text) => setComment(text)}
+        multiline={true}
+        inputOnNextRow={true}
+        textAlign="left"
       />
       <Button
         title="Внести"
@@ -59,7 +68,7 @@ export const ModalFinanceOutcome = ({
   const outcomeLeft =
     outcomePlan - outcomeFact > 0 ? outcomePlan - outcomeFact : 0
   const [outcome, setOutcome] = useState(outcomeLeft)
-  const [comment, setComment] = useState('comment')
+  const [comment, setComment] = useState('')
   return (
     <ModalBottomMenu
       title="Расходование средств"
@@ -83,6 +92,15 @@ export const ModalFinanceOutcome = ({
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
+        inputFlex={2}
+      />
+      <TextInputBlock
+        title="Комментарий"
+        value={comment}
+        onChangeText={(text) => setComment(text)}
+        multiline={true}
+        inputOnNextRow={true}
+        textAlign="left"
       />
       <Button
         title="Внести"

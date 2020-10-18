@@ -35,7 +35,7 @@ const FinanceMenu = ({
       <MenuOptions
         customStyles={{
           optionsContainer: {
-            width: 250,
+            width: 280,
           },
           optionWrapper: {
             padding: 5,
@@ -45,7 +45,7 @@ const FinanceMenu = ({
       >
         <View style={{ padding: 5, backgroundColor: colors.background }}>
           <View style={{ flexDirection: 'row' }}>
-            <View style={{ width: 110 }}></View>
+            <View style={{ width: 120 }}></View>
             <Text
               style={{
                 flex: 1,
@@ -70,7 +70,7 @@ const FinanceMenu = ({
           <View style={{ flexDirection: 'row' }}>
             <Text
               style={{
-                width: 110,
+                width: 120,
                 color: colors.text,
                 fontSize: fontSize.medium,
               }}
@@ -101,7 +101,7 @@ const FinanceMenu = ({
           <View style={{ flexDirection: 'row' }}>
             <Text
               style={{
-                width: 110,
+                width: 120,
                 color: colors.text,
                 fontSize: fontSize.medium,
               }}
@@ -132,7 +132,7 @@ const FinanceMenu = ({
           <View style={{ flexDirection: 'row' }}>
             <Text
               style={{
-                width: 110,
+                width: 120,
                 color: colors.text,
                 fontSize: fontSize.medium,
               }}
