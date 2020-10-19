@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { Text, TouchableHighlight, StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { fontSize } from '../theme'
 
@@ -14,7 +14,7 @@ const Button = ({
 }) => {
   const { colors } = useTheme()
   return (
-    <TouchableOpacity
+    <TouchableHighlight
       style={{
         ...styles.button,
         backgroundColor: btnDecline ? colors.abort : colors.accent,
@@ -36,7 +36,7 @@ const Button = ({
       >
         {title}
       </Text>
-    </TouchableOpacity>
+    </TouchableHighlight>
   )
 }
 const styles = StyleSheet.create({
