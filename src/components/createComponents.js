@@ -550,6 +550,7 @@ export const DateTimePickerBlock = ({
   pickDate = true,
   showWeek = true,
   neutralButton = false,
+  inputFlex = 3,
 }) => {
   const { colors } = useTheme()
   const [dateTimePickerShow, setDateTimePickerShow] = useState(null)
@@ -565,7 +566,7 @@ export const DateTimePickerBlock = ({
       >
         {title}
       </Text>
-      <View style={styles.datetimecontainer}>
+      <View style={{ ...styles.datetimecontainer, flex: inputFlex }}>
         {pickDate ? (
           <TouchableOpacity
             onPress={() => setDateTimePickerShow('eventDateStart')}
@@ -759,7 +760,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     // paddingLeft: 5,
     height: 44,
-    flex: 3,
   },
   image: {
     // width: "100%",
