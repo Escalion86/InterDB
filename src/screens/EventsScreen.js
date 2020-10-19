@@ -324,16 +324,6 @@ const EventsScreen = ({ navigation, route }) => {
   }
 
   console.log('render EventsScreen loading skipped')
-  // switch (sorting) {
-  //   case 'dateDESC':
-  //     events.sort((a, b) => (a.date > b.date ? 1 : -1))
-  //     break
-  //   case 'dateASC':
-  //     events.sort((a, b) => (a.date < b.date ? 1 : -1))
-  //     break
-  //   default:
-  //     events.sort((a, b) => (a.date > b.date ? 1 : -1))
-  // }
 
   if (events.length === 0) {
     console.log('render EventsScreen events = 0')
@@ -351,6 +341,17 @@ const EventsScreen = ({ navigation, route }) => {
         />
       </View>
     )
+  }
+
+  switch (sorting) {
+    case 'dateDESC':
+      events.sort((a, b) => (a.date > b.date ? 1 : -1))
+      break
+    case 'dateASC':
+      events.sort((a, b) => (a.date < b.date ? 1 : -1))
+      break
+    default:
+      events.sort((a, b) => (a.date > b.date ? 1 : -1))
   }
 
   console.log('render EventsScreen events = 0 skipped')
