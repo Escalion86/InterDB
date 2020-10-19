@@ -373,6 +373,8 @@ export class DB {
 
   static addFinance (finance) {
     const newFinance = prepareForDB('finances', finance)
+    newFinance.date = Math.floor(newFinance.date / 1000)
+
     return new Promise((resolve, reject) => {
       const financeKeys = Object.keys(newFinance)
 

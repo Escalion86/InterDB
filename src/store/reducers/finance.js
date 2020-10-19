@@ -10,12 +10,19 @@ const initialState = {
   loading: true,
 }
 
+let finances
+
 export const financeReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_FINANCES:
+      finances = action.finances.map((finance) => {
+        finance.date = finance.date * 1000
+        return finance
+      })
+
       return {
         ...state,
-        finances: action.finances,
+        finances,
         loading: false,
       }
 
