@@ -19,6 +19,9 @@ import ClientsScreen from '../screens/ClientsScreen'
 import ClientScreen from '../screens/ClientScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import CreateClientScreen from '../screens/CreateClientScreen'
+import SettingsNotificationsScreen from '../screens/SettingsNotificationsScreen'
+import SettingsThemeScreen from '../screens/SettingsThemeScreen'
+
 import DevScreen from '../screens/DevScreen'
 import DevTableScreen from '../screens/DevTableScreen'
 import ServicesScreen from '../screens/ServicesScreen'
@@ -37,7 +40,7 @@ const EventsStack = createStackNavigator()
 const ClientsStack = createStackNavigator()
 const ServicesStack = createStackNavigator()
 const DevStack = createStackNavigator()
-const AboutStack = createStackNavigator()
+// const AboutStack = createStackNavigator()
 const SettingsStack = createStackNavigator()
 const FinancesStack = createStackNavigator()
 
@@ -196,23 +199,23 @@ const DevStackScreen = ({ navigation }) => (
   </StackNavigator>
 )
 
-const AboutStackScreen = ({ navigation }) => (
-  <StackNavigator navigation={navigation} initialRouteName="Main">
-    <AboutStack.Screen
-      name="About"
-      component={AboutScreen}
-      options={{
-        title: 'О приложении',
-        headerLeft: () => burgerButton(navigation),
-      }}
-    />
-    {/* <DevStack.Screen name="DevTable" component={DevTableScreen} /> */}
-    {/* <DevStack.Screen
-      name="DevColumn"
-      component={DevColumnScreen}
-    /> */}
-  </StackNavigator>
-)
+// const AboutStackScreen = ({ navigation }) => (
+//   <StackNavigator navigation={navigation} initialRouteName="Main">
+//     <AboutStack.Screen
+//       name="About"
+//       component={AboutScreen}
+//       options={{
+//         title: 'О приложении',
+//         headerLeft: () => burgerButton(navigation),
+//       }}
+//     />
+//     {/* <DevStack.Screen name="DevTable" component={DevTableScreen} /> */}
+//     {/* <DevStack.Screen
+//       name="DevColumn"
+//       component={DevColumnScreen}
+//     /> */}
+//   </StackNavigator>
+// )
 
 const SettingsStackScreen = ({ navigation }) => (
   <StackNavigator navigation={navigation} initialRouteName="Main">
@@ -222,6 +225,27 @@ const SettingsStackScreen = ({ navigation }) => (
       options={{
         title: 'Настройки',
         headerLeft: () => burgerButton(navigation),
+      }}
+    />
+    <SettingsStack.Screen
+      name="SettingsTheme"
+      component={SettingsThemeScreen}
+      options={{
+        title: 'Цветовая схема',
+      }}
+    />
+    <SettingsStack.Screen
+      name="SettingsNotifications"
+      component={SettingsNotificationsScreen}
+      options={{
+        title: 'Оповещения',
+      }}
+    />
+    <SettingsStack.Screen
+      name="About"
+      component={AboutScreen}
+      options={{
+        title: 'О приложении',
       }}
     />
   </StackNavigator>
@@ -433,14 +457,14 @@ const DrawerScreen = () => {
           drawerIcon: <DrawerIcon name="md-bug" />,
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="About"
         component={AboutStackScreen}
         options={{
           drawerLabel: 'О приложении',
           drawerIcon: <DrawerIcon name="md-information-circle-outline" />,
         }}
-      />
+      /> */}
       <Drawer.Screen
         name="Settings"
         component={SettingsStackScreen}

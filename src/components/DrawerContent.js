@@ -170,7 +170,7 @@ const DrawerContent = (props) => {
             props.navigation.navigate('Settings')
           }}
         />
-        <DrawerItem
+        {/* <DrawerItem
           icon={({ color, size }) => (
             <Ionicons
               name="md-information-circle-outline"
@@ -184,7 +184,7 @@ const DrawerContent = (props) => {
           onPress={() => {
             props.navigation.navigate('About')
           }}
-        />
+        /> */}
         {dev ? (
           <DrawerItem
             icon={({ color, size }) => (
