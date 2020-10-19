@@ -107,13 +107,13 @@ const FinanceCard = ({
               {finance.type === 'income' ? (
                 <MainIcon
                   iconName="ios-add"
-                  size="medium"
+                  size="small"
                   iconBackgroundColor="green"
                 />
               ) : (
                 <MainIcon
                   iconName="ios-remove"
-                  size="medium"
+                  size="small"
                   iconBackgroundColor="red"
                 />
               )}
@@ -154,7 +154,7 @@ const stylesFactory = ({ colors }) =>
       borderRadius: 10,
       flexDirection: 'row',
       backgroundColor: colors.card,
-      minHeight: 60,
+      minHeight: 48,
     },
     left: {
       // flex: 1,
