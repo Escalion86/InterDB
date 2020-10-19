@@ -136,7 +136,7 @@ const AboutScreen = ({ navigation, route }) => {
 
       <View style={{ ...styles.bottom, borderColor: colors.card }}>
         <Text style={{ fontSize: fontSize.tiny, color: colors.text }}>
-          Версия: 0.1.2
+          Версия: 0.2.0
         </Text>
       </View>
     </View>
