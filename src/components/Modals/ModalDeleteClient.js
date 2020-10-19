@@ -57,7 +57,7 @@ const ModalDeleteClient = ({
             event={item}
             onPress={() => {
               callbackToCloseModal()
-              navigation.navigate('Event', { event: item })
+              navigation.navigate('Event', { eventId: item.id })
             }}
             listMode={true}
             swipeable={false}

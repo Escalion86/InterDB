@@ -94,13 +94,13 @@ export const deleteAllServices = () => {
   }
 }
 
-export const deleteService = (id) => {
+export const deleteService = (service) => {
   return async (dispatch) => {
-    await dispatch(deletingService(id))
-    await DB.deleteDataFromTable('services', id)
+    await dispatch(deletingService(service.id))
+    await DB.deleteDataFromTable('services', service.id)
     dispatch({
       type: DELETE_SERVICE,
-      id,
+      id: service.id,
     })
   }
 }

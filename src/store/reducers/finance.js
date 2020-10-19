@@ -3,6 +3,7 @@ import {
   ADD_FINANCE,
   DELETE_FINANCE,
   DELETE_ALL_FINANCES,
+  DELETING_FINANCE,
 } from '../types'
 
 const initialState = {
@@ -42,6 +43,19 @@ export const financeReducer = (state = initialState, action) => {
       return {
         ...state,
         finances: state.finances.filter((finance) => finance.id !== action.id),
+      }
+
+    case DELETING_FINANCE:
+      finances = state.finances.map((finance) => {
+        if (finance.id === action.id) {
+          finance.deleting = true
+        }
+        return finance
+      })
+
+      return {
+        ...state,
+        finances,
       }
 
     default:

@@ -49,7 +49,7 @@ const FinanceCard = ({
       }
     }
 
-    if (finance.loading) {
+    if (finance.loading || finance.deleting) {
       return (
         <View
           style={{

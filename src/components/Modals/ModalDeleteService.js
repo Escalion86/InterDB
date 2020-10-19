@@ -26,7 +26,7 @@ const ModalDeleteService = ({
       subtitle="Вы уверены что хотите удалить услугу?"
       onAccept={() => {
         callbackToCloseModal()
-        dispatch(deleteService(service.id))
+        dispatch(deleteService(service))
         callbackAfterAccept()
       }}
       visible={true}
@@ -53,7 +53,7 @@ const ModalDeleteService = ({
             event={item}
             onPress={() => {
               callbackToCloseModal()
-              navigation.navigate('Event', { event: item })
+              navigation.navigate('Event', { eventId: item.id })
             }}
             listMode={true}
             swipeable={false}

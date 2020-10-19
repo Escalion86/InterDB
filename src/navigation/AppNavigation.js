@@ -28,6 +28,7 @@ import ServicesScreen from '../screens/ServicesScreen'
 import ServiceScreen from '../screens/ServiceScreen'
 import AboutScreen from '../screens/AboutScreen'
 import FinancesScreen from '../screens/FinancesScreen'
+import FinanceScreen from '../screens/FinanceScreen'
 import CreateServiceScreen from '../screens/CreateServiceScreen'
 
 import DrawerContent from '../components/DrawerContent'
@@ -259,6 +260,13 @@ const FinancesStackScreen = ({ navigation }) => (
       options={{
         title: 'Финансы',
         headerLeft: () => burgerButton(navigation),
+      }}
+    />
+    <FinancesStack.Screen
+      name="Finance"
+      component={FinanceScreen}
+      options={{
+        title: 'Транзакция',
       }}
     />
   </StackNavigator>

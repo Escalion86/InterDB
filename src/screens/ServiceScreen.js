@@ -89,39 +89,41 @@ const ServiceScreen = ({ navigation, route }) => {
   ))
 
   useEffect(() => {
-    navigation.setOptions({
-      title: 'Услуга',
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-          <Item
-            title="Archiving Service"
-            iconName="md-archive"
-            buttonStyle={archive ? { color: 'red' } : null}
-            onPress={() => {
-              toggleArchive()
-            }}
-          />
-          <Item
-            title="Delete Service"
-            iconName="ios-trash"
-            onPress={() => {
-              modalDeleteService(service)
-            }}
-          />
-          <Item
-            title="Edit Service"
-            iconName="md-create"
-            onPress={() => {
-              navigation.navigate('CreateService', { serviceId: service.id })
-            }}
-          />
-          {modal}
-        </HeaderButtons>
-      ),
-    })
+    if (service) {
+      navigation.setOptions({
+        title: 'Услуга',
+        headerRight: () => (
+          <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+            <Item
+              title="Archiving Service"
+              iconName="md-archive"
+              buttonStyle={archive ? { color: 'red' } : null}
+              onPress={() => {
+                toggleArchive()
+              }}
+            />
+            <Item
+              title="Delete Service"
+              iconName="ios-trash"
+              onPress={() => {
+                modalDeleteService(service)
+              }}
+            />
+            <Item
+              title="Edit Service"
+              iconName="md-create"
+              onPress={() => {
+                navigation.navigate('CreateService', { serviceId: service.id })
+              }}
+            />
+            {modal}
+          </HeaderButtons>
+        ),
+      })
+    }
   }, [service, archive])
 
-  if (service.loading || service.deleting) {
+  if (!service || service.loading || service.deleting) {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color={colors.text} />

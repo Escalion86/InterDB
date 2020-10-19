@@ -27,6 +27,59 @@ const EventScreen = ({ navigation, route }) => {
   const services = useSelector((state) => state.service.services)
   const clients = useSelector((state) => state.client.clients)
 
+  const modalDelete = (event) => {
+    setModal(
+      <ModalDeleteEvent
+        event={event}
+        navigation={navigation}
+        callbackToCloseModal={() => setModal(null)}
+        callbackAfterAccept={() => navigation.goBack()}
+      />
+    )
+  }
+
+  useEffect(() => {
+    if (event) {
+      navigation.setOptions({
+        title: `Событие ${formatDateTime(new Date(event.date))}`,
+
+        headerRight: () => (
+          <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+            <Item
+              title="Delete Event"
+              iconName="ios-trash"
+              onPress={() => {
+                // setModalDeleteVisible(true)
+                // dispatch(deleteEvent(event.id))
+                // navigation.navigate("Events")
+                modalDelete(event)
+              }}
+            />
+
+            <Item
+              title="Edit Event"
+              iconName="md-create"
+              onPress={() => {
+                navigation.navigate('CreateEvent', { eventId: event.id })
+              }}
+            />
+            {/* <ModalDeleteConfirm /> */}
+          </HeaderButtons>
+        ),
+      })
+    }
+  }, [event])
+
+  if (!event || event.loading || event.deleting) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" color={colors.text} />
+      </View>
+    )
+  }
+
+  console.log('render EventScreen')
+
   const serviceObj = services.find((item) => item.id === event.service)
   const clientObj = clients.find((item) => item.id === event.client)
 
@@ -45,54 +98,7 @@ const EventScreen = ({ navigation, route }) => {
     event.timing_collecttime +
     event.timing_road * 2
 
-  const modalDelete = (event) => {
-    setModal(
-      <ModalDeleteEvent
-        event={event}
-        navigation={navigation}
-        callbackToCloseModal={() => setModal(null)}
-        callbackAfterAccept={() => navigation.goBack()}
-      />
-    )
-  }
-
-  useEffect(() => {
-    navigation.setOptions({
-      title: `Событие ${formatDateTime(new Date(event.date))}`,
-
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-          <Item
-            title="Delete Event"
-            iconName="ios-trash"
-            onPress={() => {
-              // setModalDeleteVisible(true)
-              // dispatch(deleteEvent(event.id))
-              // navigation.navigate("Events")
-              modalDelete(event)
-            }}
-          />
-
-          <Item
-            title="Edit Event"
-            iconName="md-create"
-            onPress={() => {
-              navigation.navigate('CreateEvent', { eventId: event.id })
-            }}
-          />
-          {/* <ModalDeleteConfirm /> */}
-        </HeaderButtons>
-      ),
-    })
-  }, [event])
-
-  if (event.loading || event.deleting) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color={colors.text} />
-      </View>
-    )
-  }
+  console.log('render EventScreen return start')
 
   return (
     <ScrollView style={styles.container}>

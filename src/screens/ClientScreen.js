@@ -53,6 +53,40 @@ const ClientScreen = ({ navigation, route }) => {
     )
   }
 
+  const events = useSelector((state) => state.event.events)
+
+  useEffect(() => {
+    if (client) {
+      navigation.setOptions({
+        title: 'Клиент',
+        headerRight: () => (
+          <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+            <Item
+              title="Delete Client"
+              iconName="ios-trash"
+              onPress={() => modalDeleteClient(client)}
+            />
+            <Item
+              title="Edit Client"
+              iconName="md-create"
+              onPress={() => {
+                navigation.navigate('CreateClient', { clientId: client.id })
+              }}
+            />
+          </HeaderButtons>
+        ),
+      })
+    }
+  }, [client])
+
+  if (!client || client.loading || client.deleting) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" color={colors.text} />
+      </View>
+    )
+  }
+
   const noImageUrl =
     client.gender === 0
       ? dark
@@ -61,8 +95,6 @@ const ClientScreen = ({ navigation, route }) => {
       : dark
         ? require('../../assets/avatar/male_dark.jpg')
         : require('../../assets/avatar/male.jpg')
-
-  const events = useSelector((state) => state.event.events)
 
   const eventsDependency = events.filter((event) => {
     return event.client === client.id
@@ -87,36 +119,6 @@ const ClientScreen = ({ navigation, route }) => {
     client.birthday_month,
     client.birthday_day
   )
-
-  useEffect(() => {
-    navigation.setOptions({
-      title: 'Клиент',
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-          <Item
-            title="Delete Client"
-            iconName="ios-trash"
-            onPress={() => modalDeleteClient(client)}
-          />
-          <Item
-            title="Edit Client"
-            iconName="md-create"
-            onPress={() => {
-              navigation.navigate('CreateClient', { clientId: client.id })
-            }}
-          />
-        </HeaderButtons>
-      ),
-    })
-  }, [client])
-
-  if (client.loading || client.deleting) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color={colors.text} />
-      </View>
-    )
-  }
 
   return (
     <ScrollView style={styles.container}>

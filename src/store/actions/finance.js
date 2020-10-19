@@ -3,6 +3,7 @@ import {
   ADD_FINANCE,
   DELETE_FINANCE,
   DELETE_ALL_FINANCES,
+  DELETING_FINANCE,
 } from '../types'
 import { DB } from '../../db/db'
 
@@ -27,6 +28,13 @@ export const addFinance = (finance) => {
   }
 }
 
+export const deletingFinance = (id) => {
+  return {
+    type: DELETING_FINANCE,
+    id,
+  }
+}
+
 // TODO Удалять все оповещения для событий
 export const deleteAllFinances = () => {
   return async (dispatch) => {
@@ -39,6 +47,7 @@ export const deleteAllFinances = () => {
 
 export const deleteFinance = (finance) => {
   return async (dispatch) => {
+    await dispatch(deletingFinance(finance.id))
     await DB.deleteDataFromTable('finances', finance.id)
     dispatch({
       type: DELETE_FINANCE,

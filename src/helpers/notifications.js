@@ -41,46 +41,51 @@ export const addEventNotification = async (
   notificationBeforeEventStart = null,
   removeOld = true
 ) => {
-  if (removeOld && event.notification_id) {
-    deleteNotification(event.notification_id)
-  }
+  if (event) {
+    if (removeOld && event.notification_id) {
+      deleteNotification(event.notification_id)
+    }
 
-  if (!notificationBeforeEventStart) {
-    notificationBeforeEventStart = store.getState().app.notificationBeforeEvent
-  }
+    if (!notificationBeforeEventStart) {
+      notificationBeforeEventStart = store.getState().app
+        .notificationBeforeEvent
+    }
 
-  const date =
-    event.date -
-    notificationBeforeEventStart * 1000 * 60 -
-    event.timing_road * 1000 * 60 -
-    event.timing_preparetime * 1000 * 60
+    const date =
+      event.date -
+      notificationBeforeEventStart * 1000 * 60 -
+      event.timing_road * 1000 * 60 -
+      event.timing_preparetime * 1000 * 60
 
-  if (date > new Date()) {
-    const adress = event.location_town
-      ? `${event.location_town}${
-          event.location_street ? `, ${event.location_street}` : ''
-        }${event.location_house ? `, ${event.location_house}` : ''}${
-          event.location_room ? ` - ${event.location_room}` : ''
-        }${event.location_name ? ` (${event.location_name})` : ''}`
-      : ''
+    if (date > new Date()) {
+      const adress = event.location_town
+        ? `${event.location_town}${
+            event.location_street ? `, ${event.location_street}` : ''
+          }${event.location_house ? `, ${event.location_house}` : ''}${
+            event.location_room ? ` - ${event.location_room}` : ''
+          }${event.location_name ? ` (${event.location_name})` : ''}`
+        : ''
 
-    const service = store
-      .getState()
-      .service.services.find((item) => item.id === event.service)
+      const service = store
+        .getState()
+        .service.services.find((item) => item.id === event.service)
 
-    return await addNotification({
-      title: `Событие${
-        service ? ` "${service.name}"` : ''
-      } через ${notificationBeforeEventStart} мин`,
-      body: `Начало: ${formatTime(new Date(event.date))} ${formatDate(
-        new Date(event.date),
-        true,
-        false,
-        true
-      )}\nАдрес: ${adress}`,
-      subtitle: 'Напоминание о событии',
-      date: date,
-    })
+      return await addNotification({
+        title: `Событие${
+          service ? ` "${service.name}"` : ''
+        } через ${notificationBeforeEventStart} мин`,
+        body: `Начало: ${formatTime(new Date(event.date))} ${formatDate(
+          new Date(event.date),
+          true,
+          false,
+          true
+        )}\nАдрес: ${adress}`,
+        subtitle: 'Напоминание о событии',
+        date: date,
+      })
+    } else {
+      return ''
+    }
   } else {
     return ''
   }
