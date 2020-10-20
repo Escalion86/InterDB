@@ -140,8 +140,6 @@ const EventCard = ({
 
     const financeColor = financeSumToColor(resultSum, profit)
 
-    console.log('finances :>> ', finances)
-
     const service = services.filter((data) => {
       if (data.id === event.service) return data
     })[0]
