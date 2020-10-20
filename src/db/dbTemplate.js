@@ -31,7 +31,7 @@ export const prepareForDB = (dbTableName, data) => {
   return preperedData
 }
 
-export const dbGenerator = (table = 'event', services = [], clients = []) => {
+export const dbGenerator = (table = 'event', services = [], clients = [], events = []) => {
   const town = rndArray(['Красноярск', 'Сосновоборск'])
   const servicesIds = []
   services.forEach((service) => {
@@ -40,6 +40,10 @@ export const dbGenerator = (table = 'event', services = [], clients = []) => {
   const clientsIds = []
   clients.forEach((client) => {
     clientsIds.push(client.id)
+  })
+  const eventsIds = []
+  events.forEach((event) => {
+    eventsIds.push(event.id)
   })
   switch (table) {
     case 'event': {
@@ -231,7 +235,7 @@ export const dbGenerator = (table = 'event', services = [], clients = []) => {
         type: rndArray(['income', 'outcome']),
         sum: rndArray([5000, 6000, 7000, 8000, 9000, 10000]),
         comment: '',
-        event: 0,
+        event: rndArray(eventsIds),
         date: Date.now(),
       }
     }
