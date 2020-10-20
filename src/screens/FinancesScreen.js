@@ -23,7 +23,7 @@ import {
 } from 'react-native-popup-menu'
 import Fab from '../components/Fab'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
-// import ModalDeleteService from '../components/ModalDeleteService'
+import ModalDeleteFinance from '../components/Modals/ModalDeleteFinance'
 import { fontSize } from '../theme'
 
 const FinancesScreen = ({ navigation, route }) => {
@@ -45,17 +45,16 @@ const FinancesScreen = ({ navigation, route }) => {
     sortMenu = r
   }
 
-  // const [modal, setModal] = useState(null)
+  const [modal, setModal] = useState(null)
 
-  // const modalDelete = (service) => {
-  //   setModal(
-  //     <ModalDeleteService
-  //       service={service}
-  //       navigation={navigation}
-  //       callbackToCloseModal={() => setModal(null)}
-  //     />
-  //   )
-  // }
+  const modalDelete = (finance) => {
+    setModal(
+      <ModalDeleteFinance
+        finance={finance}
+        callbackToCloseModal={() => setModal(null)}
+      />
+    )
+  }
 
   useEffect(() => {
     navigation.setOptions({
@@ -235,7 +234,7 @@ const FinancesScreen = ({ navigation, route }) => {
             navigation={navigation}
             finance={item}
             onDelete={() => {
-              // modalDelete(item)
+              modalDelete(item)
             }}
           />
         )}
@@ -243,7 +242,7 @@ const FinancesScreen = ({ navigation, route }) => {
           navigation.navigate('CreateService')
         }}
       />
-      {/* {modal} */}
+      {modal}
     </View>
   )
 }
