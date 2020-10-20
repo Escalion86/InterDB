@@ -7,6 +7,7 @@ import {
   View,
   ActivityIndicator,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
@@ -36,6 +37,7 @@ const FinancesScreen = ({ navigation, route }) => {
   const { Popover } = renderers
 
   const finances = useSelector((state) => state.finance.finances)
+  const events = useSelector((state) => state.event.events)
   const loading = useSelector((state) => state.finance.loading)
 
   const [sorting, setSorting] = useState('dateDESC')
@@ -177,8 +179,15 @@ const FinancesScreen = ({ navigation, route }) => {
               title="Add random finance"
               iconName="ios-add-circle-outline"
               onPress={() => {
-                const tmp = dbGenerator('finance')
-                dispatch(addFinance(tmp))
+                if (events.length === 0) {
+                  ToastAndroid.show(
+                    'Чтобы сгенерировать транзакцию, нужно создать хотябы одно событие',
+                    ToastAndroid.LONG
+                  )
+                } else {
+                  const tmp = dbGenerator('finance')
+                  dispatch(addFinance(tmp))
+                }
               }}
             />
           ) : null}
@@ -199,7 +208,7 @@ const FinancesScreen = ({ navigation, route }) => {
     return (
       <View style={styles.center}>
         <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
-          Финансовых записей нет
+          Транзакций нет
         </Text>
 
         <Fab
@@ -207,7 +216,7 @@ const FinancesScreen = ({ navigation, route }) => {
           onPress={() => {
             navigation.navigate('CreateFinance')
           }}
-          label="Добавить списание/поступление"
+          label="Добавить транзакцию"
         />
       </View>
     )
