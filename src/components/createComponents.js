@@ -16,12 +16,34 @@ import { formatDate, formatTime } from '../helpers/date'
 import { EventIcon } from './icons'
 import * as ImagePicker from 'expo-image-picker'
 import Switch from './Switch'
+import { Switch as SwitchPaper } from 'react-native-paper'
 import ModalBottomMenu from './Modals/ModalBottomMenu'
 import Button from './Button'
 import { Picker } from '@react-native-community/picker'
 import { fontSize } from '../theme'
 // import TextInputMask from "./TextInputMask"
 // import TextInputMask from "react-native-text-input-mask"
+
+export const SwitchBlock = ({
+  title = '',
+  onValueChange = () => {},
+  value = null,
+}) => {
+  const { colors } = useTheme()
+  return (
+    <View
+      style={{
+        ...styles.row,
+        justifyContent: 'space-between',
+      }}
+    >
+      <Text style={{ fontSize: fontSize.medium, color: colors.text }}>
+        {title}
+      </Text>
+      <SwitchPaper value={value} onValueChange={onValueChange} />
+    </View>
+  )
+}
 
 export const TitleBlock = ({ title = '' }) => {
   const { colors } = useTheme()

@@ -5,8 +5,9 @@ import {
   SliderHuePicker,
   SliderSaturationPicker,
 } from 'react-native-slider-color-picker'
-import { Switch } from 'react-native-paper'
+
 import tinycolor from 'tinycolor2'
+import { SwitchBlock } from '../components/createComponents'
 
 // import SliderColorPicker from "../components/SliderColorPicker"
 import { ThemeContext } from '../ThemeContext'
@@ -19,7 +20,7 @@ const { width } = Dimensions.get('window')
 
 const SettingsThemeScreen = ({ navigation, route }) => {
   const theme = useTheme()
-  const { colors } = theme
+  const { colors, dark } = theme
   const { setDark, setAccent } = useContext(ThemeContext)
   const {
     dev,
@@ -35,10 +36,15 @@ const SettingsThemeScreen = ({ navigation, route }) => {
       setAccent(hex)
     }
   }
-
+  console.log('dark', dark)
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
+      <SwitchBlock
+        title="Тёмная тема"
+        value={dark}
+        onValueChange={(value) => setDark(value)}
+      />
+      {/* <View style={styles.row}>
         <View style={styles.switchcontainer}>
           <Text style={{ fontSize: fontSize.medium, color: colors.text }}>
             Тёмная тема
@@ -48,7 +54,7 @@ const SettingsThemeScreen = ({ navigation, route }) => {
             onValueChange={(value) => setDark(value)}
           />
         </View>
-      </View>
+      </View> */}
       <View style={styles.row}>
         <Text style={{ fontSize: fontSize.medium, color: colors.text }}>
           Цвет активных элементов{dev ? ` (${colors.accent})` : ''}
@@ -113,10 +119,6 @@ const styles = StyleSheet.create({
   },
   row: {
     marginBottom: 10,
-  },
-  switchcontainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   thumb: {
     width: 20,
