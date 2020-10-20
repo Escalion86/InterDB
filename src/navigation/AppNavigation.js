@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { loadAll } from '../store/actions/db'
 import { Provider as PaperProvider } from 'react-native-paper'
-import { getAllNotifications } from '../store/actions/app'
+import { getAllSettings } from '../store/actions/app'
 
 import { StatusBar } from 'expo-status-bar'
 import burgerButton from '../components/burgerButton'
@@ -30,8 +30,11 @@ import AboutScreen from '../screens/AboutScreen'
 import FinancesScreen from '../screens/FinancesScreen'
 import FinanceScreen from '../screens/FinanceScreen'
 import CreateServiceScreen from '../screens/CreateServiceScreen'
+import SettingsCalendarScreen from '../screens/SettingsCalendarScreen'
 
 import DrawerContent from '../components/DrawerContent'
+
+import * as Calendar from 'expo-calendar'
 
 import { ThemeContext } from '../ThemeContext'
 import { fontSize } from '../theme'
@@ -247,6 +250,13 @@ const SettingsStackScreen = ({ navigation }) => (
       component={AboutScreen}
       options={{
         title: 'О приложении',
+      }}
+    />
+    <SettingsStack.Screen
+      name="SettingsCalendar"
+      component={SettingsCalendarScreen}
+      options={{
+        title: 'Синхронизация с календарем',
       }}
     />
   </StackNavigator>
@@ -501,10 +511,22 @@ export const AppNavigation = () => {
   // dispatch(loadAll())
   // После загрузки всех компонентов и state - загружаем данные БД
   useEffect(() => {
-    dispatch(getAllNotifications())
+    dispatch(getAllSettings())
     console.log('Загрузка данных')
     dispatch(loadAll())
   }, [dispatch])
+
+  useEffect(() => {
+    ;(async () => {
+      await Calendar.requestCalendarPermissionsAsync()
+      // const { status } = await Calendar.requestCalendarPermissionsAsync()
+      // if (status === 'granted') {
+      //   const calendars = await Calendar.getCalendarsAsync()
+      //   console.log('Here are all your calendars:')
+      //   console.log({ calendars })
+      // }
+    })()
+  }, [])
 
   console.log('Render AppNavigation')
 

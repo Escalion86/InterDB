@@ -21,12 +21,13 @@ const MenuItem = ({ title = '', onPress = () => {}, iconName = 'ios-bug' }) => {
       onPress={onPress}
     >
       <View style={{ flexDirection: 'row' }}>
-        <Ionicons
-          name={iconName}
-          size={iconSize.medium}
-          color={colors.icon}
-          style={{ marginRight: 20 }}
-        />
+        <View style={{ alignItems: 'center', width: 24, marginRight: 20 }}>
+          <Ionicons
+            name={iconName}
+            size={iconSize.medium}
+            color={colors.icon}
+          />
+        </View>
         <Text
           style={{
             color: colors.text,
@@ -54,6 +55,11 @@ const SettingsScreen = ({ navigation, route }) => {
           title="Оповещения"
           onPress={() => navigation.navigate('SettingsNotifications')}
           iconName="ios-notifications"
+        />
+        <MenuItem
+          title="Синхронизация с календарем"
+          onPress={() => navigation.navigate('SettingsCalendar')}
+          iconName="md-calendar"
         />
       </View>
 
