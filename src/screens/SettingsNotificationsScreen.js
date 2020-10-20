@@ -4,17 +4,23 @@ import { StyleSheet, View } from 'react-native'
 import {
   TextInputBlock,
   DateTimePickerBlock,
+  SwitchBlock,
 } from '../components/createComponents'
-import { setAllNotifications } from '../store/actions/app'
+import { setAllNotificationsSettings } from '../store/actions/app'
 
 import Button from '../components/Button'
 
 const SettingsNotificationsScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
 
-  const { notificationBeforeEvent, notificationBirthday } = useSelector(
-    (state) => state.app
-  )
+  const app = useSelector((state) => state.app)
+  console.log('app', app)
+
+  const {
+    notificationBeforeEvent,
+    notificationBirthday,
+    notificationTurnOn,
+  } = useSelector((state) => state.app)
 
   const [
     notificationBeforeEventState,
@@ -22,6 +28,10 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
   ] = useState(notificationBeforeEvent)
   const [notificationBirthdayState, setNotificationBirthdayState] = useState(
     notificationBirthday
+  )
+
+  const [notificationTurnOnState, setNotificationTurnOnState] = useState(
+    notificationTurnOn
   )
 
   const convertMinToTime = (min) => {
@@ -34,7 +44,8 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
 
   const saveNotificationSettings = () => {
     dispatch(
-      setAllNotifications(
+      setAllNotificationsSettings(
+        notificationTurnOnState,
         notificationBeforeEventState,
         notificationBirthdayState
       )
@@ -43,6 +54,11 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <SwitchBlock
+        title="Включить оповещения"
+        value={notificationTurnOnState}
+        onValueChange={(value) => setNotificationTurnOnState(value)}
+      />
       <TextInputBlock
         title="Оповещать о событиях заранее за"
         value={notificationBeforeEventState}
@@ -64,6 +80,7 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
         title="Применить"
         onPress={() => saveNotificationSettings()}
         disabled={
+          notificationTurnOn === notificationTurnOnState &&
           notificationBeforeEvent === notificationBeforeEventState &&
           notificationBirthday === notificationBirthdayState
         }
