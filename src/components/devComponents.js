@@ -14,6 +14,7 @@ export const DevDropDownPicker = ({
   buttonTitle = '',
   onPress = () => {},
   disabled = false,
+  tableValue = 'id',
 }) => {
   if (tables.length === 0) return null
   const { colors } = useTheme()
@@ -21,7 +22,7 @@ export const DevDropDownPicker = ({
   tables.forEach((table) => {
     tablesItems.push({
       label: table.name,
-      value: table.name,
+      value: table[tableValue],
     })
   })
 
@@ -54,13 +55,15 @@ export const DevDropDownPicker = ({
         arrowColor={colors.text}
         onChangeItem={onChangeItem}
       />
-      <Button
-        title={buttonTitle}
-        onPress={onPress}
-        style={{ width: '40%' }}
-        textFontSize="small"
-        disabled={disabled}
-      />
+      {buttonTitle ? (
+        <Button
+          title={buttonTitle}
+          onPress={onPress}
+          style={{ width: '40%' }}
+          textFontSize="small"
+          disabled={disabled}
+        />
+      ) : null}
     </View>
   )
 }

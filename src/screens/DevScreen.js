@@ -52,6 +52,7 @@ const DevScreen = ({ navigation, route }) => {
       <View style={{ flexDirection: 'row' }}>
         <DevDropDownPicker
           tables={tables}
+          tableValue="name"
           placeholder="Выберите таблицу"
           defaultValue={selectedTable}
           onChangeItem={(value) => {
