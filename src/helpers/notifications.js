@@ -101,7 +101,7 @@ export const addEventNotification = async (
 export const addClientNotification = async (
   client,
   notificationTime = null,
-  turnOn = bull
+  turnOn = null
 ) => {
   if (client) {
     if (client.notification_id) {
