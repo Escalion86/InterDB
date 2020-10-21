@@ -62,9 +62,9 @@ export const setAllNotificationsSettings = (turnOn, event, birthday) => {
     await storeData('notificationBirthday', birthday + '')
     if (turnOn) {
       const events = store.getState().event.events
-      await dispatch(refreshEventsNotifications(events, event))
+      await dispatch(refreshEventsNotifications(events, event, turnOn))
       const clients = store.getState().client.clients
-      await dispatch(refreshBirthdayNotifications(clients, birthday))
+      await dispatch(refreshBirthdayNotifications(clients, birthday, turnOn))
     } else {
       await Notifications.cancelAllScheduledNotificationsAsync()
     }

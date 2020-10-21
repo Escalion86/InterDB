@@ -16,10 +16,14 @@ import {
   deleteNotification,
 } from '../../helpers/notifications'
 
-export const refreshBirthdayNotifications = (clients, min = 0) => {
+export const refreshBirthdayNotifications = (
+  clients,
+  min = 0,
+  turnOn = null
+) => {
   return async (dispatch) => {
     clients.forEach(async (client) => {
-      const notificationId = await addClientNotification(client, min)
+      const notificationId = await addClientNotification(client, min, turnOn)
       await dispatch(
         updateClientPartially(client.id, { notification_id: notificationId })
       )
