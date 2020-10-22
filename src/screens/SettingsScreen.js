@@ -52,15 +52,15 @@ const SettingsScreen = ({ navigation, route }) => {
           iconName="ios-color-palette"
         />
         <MenuItem
-          title="Оповещения"
+          title="Оповещения и календарь"
           onPress={() => navigation.navigate('SettingsNotifications')}
           iconName="ios-notifications"
         />
-        <MenuItem
+        {/* <MenuItem
           title="Синхронизация с календарем"
           onPress={() => navigation.navigate('SettingsCalendar')}
           iconName="md-calendar"
-        />
+        /> */}
       </View>
 
       <MenuItem

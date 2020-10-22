@@ -6,7 +6,7 @@ import * as Calendar from 'expo-calendar'
 import { DevDropDownPicker } from '../components/devComponents'
 
 import Button from '../components/Button'
-import { SwitchBlock } from '../components/createComponents'
+import { SwitchBlock, TextInputBlock } from '../components/createComponents'
 import { setAllCalendarSettings } from '../store/actions/app'
 
 // const getCalendars = () => {
@@ -28,11 +28,24 @@ const SettingsCalendarScreen = ({ navigation, route }) => {
   const app = useSelector((state) => state.app)
   console.log('app', app)
 
-  const { calendarSincTurnOn, calendarId } = useSelector((state) => state.app)
+  const {
+    calendarSincTurnOn,
+    calendarId,
+    calendarAlarmBeforeEvent,
+    calendarAddPrepareRoadTime,
+  } = useSelector((state) => state.app)
 
   const [calendarSincTurnOnState, setCalendarSincTurnOnState] = useState(
     calendarSincTurnOn
   )
+  const [
+    calendarAlarmBeforeEventState,
+    setCalendarAlarmBeforeEventState,
+  ] = useState(calendarAlarmBeforeEvent)
+  const [
+    calendarAddPrepareRoadTimeState,
+    setCalendarAddPrepareRoadTimeState,
+  ] = useState(calendarAddPrepareRoadTime)
   const [calendarIdState, setCalendarIdState] = useState(calendarId)
 
   const [calendars, setCalendars] = useState([])
@@ -77,6 +90,20 @@ const SettingsCalendarScreen = ({ navigation, route }) => {
           style={{ flex: 1 }}
         />
       </View>
+
+      <TextInputBlock
+        title="Добавлять напоминание до начала события"
+        value={calendarAlarmBeforeEventState}
+        onChangeText={(text) => setCalendarAlarmBeforeEventState(text)}
+        keyboardType="numeric"
+        postfix="мин"
+        inputFlex={1}
+      />
+      <SwitchBlock
+        title="Учитывать время на подготовку и дорогу"
+        value={calendarAddPrepareRoadTimeState}
+        onValueChange={(value) => setCalendarAddPrepareRoadTimeState(value)}
+      />
       <Button
         title="Применить"
         onPress={() => saveCalendarSettings()}

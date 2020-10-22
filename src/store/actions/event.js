@@ -17,6 +17,8 @@ import {
   addEventNotification,
   deleteNotification,
 } from '../../helpers/notifications'
+import store from '../../store'
+import * as Calendar from 'expo-calendar'
 
 export const loadEvents = () => {
   return async (dispatch) => {
@@ -58,8 +60,39 @@ export const loadingEventComplite = (id) => {
 export const addEvent = (event) => {
   return async (dispatch) => {
     await dispatch(loadingEvents())
+    // Добавляем напоминание
     const notificationId = await addEventNotification(event)
     event.notification_id = notificationId
+    // Добавляем запись в календарь
+    const calendarSync = store.getState().app.calendarSyncTurnOn
+    if (calendarSync) {
+      const calendarId = store.getState().app.calendarId
+      const service = store.getState().service.services.find((service) => {
+        return service.id === event.service
+      })
+      const calendarEventId = await Calendar.createEventAsync(calendarId, {
+        title: service ? service.name : 'Заказ неизвестной услуги',
+        startDate: event.date,
+        endDate: event.date + event.timing_duration * 60000, // 60 * 1000
+        location: `${event.location_town}, ${event.location_street} ${event.location_house}`,
+        notes: event.comment,
+        allDay: false,
+        alarms: [
+          {
+            relativeOffset: -(event.timing_road + event.timing_preparetime),
+            method: Calendar.AlarmMethod.DEFAULT,
+          },
+          {
+            relativeOffset: -event.timing_preparetime,
+            method: Calendar.AlarmMethod.DEFAULT,
+          },
+        ],
+      })
+      event.calendar_id = calendarEventId
+    } else {
+      event.calendar_id = ''
+    }
+
     const eventId = await DB.addEvent(event)
     event.id = eventId
     dispatch({

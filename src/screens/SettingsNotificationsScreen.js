@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet, View } from 'react-native'
 import {
   TextInputBlock,
   DateTimePickerBlock,
   SwitchBlock,
+  TitleBlock,
 } from '../components/createComponents'
-import { setAllNotificationsSettings } from '../store/actions/app'
+import { setAllNotificationSettings } from '../store/actions/app'
+import * as Calendar from 'expo-calendar'
+import { DevDropDownPicker } from '../components/devComponents'
 
 import Button from '../components/Button'
 
@@ -20,12 +23,19 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
     notificationBeforeEvent,
     notificationBirthday,
     notificationTurnOn,
+    notificationAddPrepareRoadTime,
+    calendarId,
+    calendarSyncTurnOn,
   } = useSelector((state) => state.app)
 
   const [
     notificationBeforeEventState,
     setNotificationBeforeEventState,
   ] = useState(notificationBeforeEvent)
+  const [
+    notificationAddPrepareRoadTimeState,
+    setNotificationAddPrepareRoadTimeState,
+  ] = useState(notificationAddPrepareRoadTime)
   const [notificationBirthdayState, setNotificationBirthdayState] = useState(
     notificationBirthday
   )
@@ -33,9 +43,42 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
   const [notificationTurnOnState, setNotificationTurnOnState] = useState(
     notificationTurnOn
   )
+  const [calendarSyncTurnOnState, setCalendarSyncTurnOnState] = useState(
+    calendarSyncTurnOn
+  )
+  const [calendarIdState, setCalendarIdState] = useState(calendarId)
+
+  const [calendars, setCalendars] = useState([])
+
+  useEffect(() => {
+    ;(async () => {
+      const { status } = await Calendar.requestCalendarPermissionsAsync()
+      if (status === 'granted') {
+        const calendars = await Calendar.getCalendarsAsync()
+
+        setCalendars(
+          calendars.filter((cal) => {
+            return cal.accessLevel !== 'read'
+          })
+        )
+      }
+    })()
+  }, [])
+
+  console.log(
+    'object',
+    notificationTurnOnState,
+    notificationBeforeEventState,
+    notificationBirthdayState,
+    notificationAddPrepareRoadTimeState,
+    calendarSyncTurnOnState,
+    calendarIdState
+  )
 
   const convertMinToTime = (min) => {
-    return new Date().setTime(min * 60 * 1000)
+    const time = new Date().setTime(min * 60000)
+    const timeZoneOffset = new Date().getTimezoneOffset()
+    return time + timeZoneOffset * 60000
   }
 
   const convertTimeToMin = (time) => {
@@ -44,10 +87,13 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
 
   const saveNotificationSettings = () => {
     dispatch(
-      setAllNotificationsSettings(
+      setAllNotificationSettings(
         notificationTurnOnState,
         notificationBeforeEventState,
-        notificationBirthdayState
+        notificationBirthdayState,
+        notificationAddPrepareRoadTimeState,
+        calendarSyncTurnOnState,
+        calendarIdState
       )
     )
   }
@@ -55,10 +101,32 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <SwitchBlock
-        title="Включить оповещения"
+        title="Включить Push оповещения"
         value={notificationTurnOnState}
         onValueChange={(value) => setNotificationTurnOnState(value)}
       />
+      <SwitchBlock
+        title="Синхронизация с календарем"
+        value={calendarSyncTurnOnState}
+        onValueChange={(value) => setCalendarSyncTurnOnState(value)}
+      />
+      {calendarSyncTurnOnState ? (
+        <View style={{ height: 60 }}>
+          <DevDropDownPicker
+            tables={calendars}
+            tableValue="id"
+            placeholder="Выберите календарь"
+            defaultValue={calendarIdState}
+            onChangeItem={(value) => {
+              setCalendarIdState(value.value)
+            }}
+            onPress={() => {}}
+            // disabled={!selectedTable}
+            style={{ flex: 1 }}
+          />
+        </View>
+      ) : null}
+      <TitleBlock title="Найстройка оповещений" />
       <TextInputBlock
         title="Оповещать о событиях заранее за"
         value={notificationBeforeEventState}
@@ -67,12 +135,17 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
         postfix="мин"
         inputFlex={1}
       />
+      <SwitchBlock
+        title="Учитывать время на подготовку и дорогу"
+        value={notificationAddPrepareRoadTimeState}
+        onValueChange={(value) => setNotificationAddPrepareRoadTimeState(value)}
+      />
       <DateTimePickerBlock
         title="Оповещать о днях рождениях клиентов в"
         dateValue={convertMinToTime(notificationBirthdayState)}
-        onChange={(value) =>
+        onChange={(value) => {
           setNotificationBirthdayState(convertTimeToMin(value))
-        }
+        }}
         pickDate={false}
         inputFlex={1}
       />
@@ -82,7 +155,11 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
         disabled={
           notificationTurnOn === notificationTurnOnState &&
           notificationBeforeEvent === notificationBeforeEventState &&
-          notificationBirthday === notificationBirthdayState
+          notificationBirthday === notificationBirthdayState &&
+          notificationAddPrepareRoadTimeState ===
+            notificationAddPrepareRoadTime &&
+          calendarSyncTurnOnState === calendarSyncTurnOn &&
+          calendarIdState === calendarId
         }
       />
     </View>

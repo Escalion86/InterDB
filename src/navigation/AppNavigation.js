@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { loadAll } from '../store/actions/db'
 import { Provider as PaperProvider } from 'react-native-paper'
-import { getAllSettings } from '../store/actions/app'
+import { getAllNotificationSettings } from '../store/actions/app'
 
 import { StatusBar } from 'expo-status-bar'
 import burgerButton from '../components/burgerButton'
@@ -30,7 +30,7 @@ import AboutScreen from '../screens/AboutScreen'
 import FinancesScreen from '../screens/FinancesScreen'
 import FinanceScreen from '../screens/FinanceScreen'
 import CreateServiceScreen from '../screens/CreateServiceScreen'
-import SettingsCalendarScreen from '../screens/SettingsCalendarScreen'
+// import SettingsCalendarScreen from '../screens/SettingsCalendarScreen'
 
 import DrawerContent from '../components/DrawerContent'
 
@@ -242,7 +242,7 @@ const SettingsStackScreen = ({ navigation }) => (
       name="SettingsNotifications"
       component={SettingsNotificationsScreen}
       options={{
-        title: 'Оповещения',
+        title: 'Оповещения и календарь',
       }}
     />
     <SettingsStack.Screen
@@ -252,13 +252,13 @@ const SettingsStackScreen = ({ navigation }) => (
         title: 'О приложении',
       }}
     />
-    <SettingsStack.Screen
+    {/* <SettingsStack.Screen
       name="SettingsCalendar"
       component={SettingsCalendarScreen}
       options={{
         title: 'Синхронизация с календарем',
       }}
-    />
+    /> */}
   </StackNavigator>
 )
 
@@ -511,7 +511,7 @@ export const AppNavigation = () => {
   // dispatch(loadAll())
   // После загрузки всех компонентов и state - загружаем данные БД
   useEffect(() => {
-    dispatch(getAllSettings())
+    dispatch(getAllNotificationSettings())
     console.log('Загрузка данных')
     dispatch(loadAll())
   }, [dispatch])

@@ -31,7 +31,12 @@ export const prepareForDB = (dbTableName, data) => {
   return preperedData
 }
 
-export const dbGenerator = (table = 'event', services = [], clients = [], events = []) => {
+export const dbGenerator = (
+  table = 'event',
+  services = [],
+  clients = [],
+  events = []
+) => {
   const town = rndArray(['Красноярск', 'Сосновоборск'])
   const servicesIds = []
   services.forEach((service) => {
@@ -62,6 +67,7 @@ export const dbGenerator = (table = 'event', services = [], clients = [], events
         client: rndArray(clientsIds),
         date: date,
         notification_id: '',
+        calendar_id: '',
         timing_duration: rndArray([20, 30, 40, 60]),
         timing_preparetime: 20,
         timing_collecttime: 15,
@@ -194,6 +200,7 @@ export const dbGenerator = (table = 'event', services = [], clients = [], events
           Math.floor(Math.random() * 40 + 1960) + '',
         ]),
         notification_id: '',
+        calendar_id: '',
         phone: phone,
         email: rndArray(['test@test.ru', '']),
         whatsapp: rndArray([phone, '']),
@@ -276,6 +283,15 @@ export default dbTemplate = {
     {
       db_name: 'notification_id',
       desc: 'ID идентификатора оповещения',
+      type: 'string',
+      db_type: 'TEXT',
+      not_null: false,
+      default: '',
+      db_default: '',
+    },
+    {
+      db_name: 'calendar_id',
+      desc: 'ID идентификатора календаря',
       type: 'string',
       db_type: 'TEXT',
       not_null: false,
@@ -504,6 +520,15 @@ export default dbTemplate = {
     {
       db_name: 'notification_id',
       desc: 'ID идентификатора оповещения о дне рождения',
+      type: 'string',
+      db_type: 'TEXT',
+      not_null: false,
+      default: '',
+      db_default: '',
+    },
+    {
+      db_name: 'calendar_id',
+      desc: 'ID идентификатора календаря',
       type: 'string',
       db_type: 'TEXT',
       not_null: false,

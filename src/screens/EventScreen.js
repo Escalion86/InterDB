@@ -9,6 +9,7 @@ import { TextBlock } from '../components/infoComponents'
 import { TitleBlock } from '../components/createComponents'
 import ServiceCard from '../components/Cards/ServiceCard'
 import ClientCard from '../components/Cards/ClientCard'
+import * as Calendar from 'expo-calendar'
 
 import { useTheme } from '@react-navigation/native'
 
@@ -55,7 +56,15 @@ const EventScreen = ({ navigation, route }) => {
                 modalDelete(event)
               }}
             />
-
+            {event.calendar_id ? (
+              <Item
+                title="Open in calendar"
+                iconName="md-calendar"
+                onPress={() => {
+                  Calendar.openEventInCalendar(event.calendar_id)
+                }}
+              />
+            ) : null}
             <Item
               title="Edit Event"
               iconName="md-create"
