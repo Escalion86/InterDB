@@ -58,6 +58,7 @@ export const ModalFinanceIncome = ({
           onAddFinance(income, comment, date)
           onOuterClick()
         }}
+        disabled={income <= 0}
       />
       <Button title="Отмена" btnDecline={true} onPress={onOuterClick} />
     </ModalBottomMenu>
