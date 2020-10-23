@@ -10,6 +10,7 @@ import { useTheme } from '@react-navigation/native'
 import { TextBlock } from '../components/infoComponents'
 import ModalDeleteFinance from '../components/Modals/ModalDeleteFinance'
 import EventCard from '../components/Cards/EventCard'
+import { formatDate, formatTime } from '../helpers/date'
 
 const FinanceScreen = ({ navigation, route }) => {
   const [modal, setModal] = useState(null)
@@ -73,6 +74,22 @@ const FinanceScreen = ({ navigation, route }) => {
 
   return (
     <ScrollView style={styles.container}>
+      <TitleBlock title="Основные" />
+      <TextBlock
+        text={`Тип: ${finance.type === 'income' ? 'Поступление' : 'Списание'}`}
+      />
+      <TextBlock text={`Сумма: ${finance.sum} руб`} />
+      <TextBlock
+        text={`Дата и время: ${formatDate(
+          new Date(finance.date),
+          true,
+          true,
+          true
+        )} ${formatTime(new Date(event.date))}`}
+      />
+      {finance.comment ? (
+        <TextBlock text={`Комментарий: ${finance.comment}`} />
+      ) : null}
       <TitleBlock title="Событие" />
       <EventCard
         navigation={navigation}
