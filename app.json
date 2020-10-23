@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "SEDB",
-    "slug": "Self-Employed_DataBase",
-    "version": "0.2.0",
+    "name": "iDB",
+    "slug": "Individual_DataBase",
+    "version": "0.3.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "platforms": ["android"],
@@ -24,7 +24,7 @@
     "android": {
       "icon": "./assets/gear96.png",
       "useNextNotificationsApi": true,
-      "package": "com.escalion.SEDB"
+      "package": "com.escalion.iDB"
     }
   }
 }
