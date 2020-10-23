@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   notificationTurnOn: false,
-  notificationBeforeEvent: 60,
+  notificationBeforeEvent: 30,
   notificationBirthday: 540, // 540 min = 9:00
   notificationAddPrepareRoadTime: true,
   calendarSyncTurnOn: false,
