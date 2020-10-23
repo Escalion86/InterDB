@@ -20,8 +20,8 @@ const Button = ({
         backgroundColor: btnDecline ? colors.abort : colors.accent,
         ...style,
       }}
-      onPress={onPress}
-      onLongPress={onLongPress}
+      onPress={!disabled ? onPress : null}
+      onLongPress={!disabled ? onLongPress : null}
     >
       <Text
         style={{
