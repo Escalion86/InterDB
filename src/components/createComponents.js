@@ -16,7 +16,7 @@ import { formatDate, formatTime } from '../helpers/date'
 import { EventIcon } from './icons'
 import * as ImagePicker from 'expo-image-picker'
 import Switch from './Switch'
-import { Switch as SwitchPaper } from 'react-native-paper'
+import { Switch as SwitchPaper, RadioButton } from 'react-native-paper'
 import ModalBottomMenu from './Modals/ModalBottomMenu'
 import Button from './Button'
 import { Picker } from '@react-native-community/picker'
@@ -53,6 +53,66 @@ export const TitleBlock = ({ title = '' }) => {
     >
       {title}
     </Text>
+  )
+}
+
+export const RadioBlock = ({
+  title = '',
+  radios,
+  value,
+  onValueChange = () => {},
+  titleFlex = 2,
+  buttonsFlex = 3,
+}) => {
+  const { colors } = useTheme()
+  const radioButtons = radios.map((radio) => {
+    return (
+      <View
+        key={radio.value}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+        <RadioButton
+          value={radio.value}
+          // label={radio.label}
+          // labelStyle={{
+          //   // ...styles.text,
+          //   fontSize: fontSize.medium,
+          //   color: colors.text,
+          // }}
+        />
+        <Text
+          style={{
+            // ...styles.text,
+            fontSize: fontSize.medium,
+            color: colors.text,
+          }}
+        >
+          {radio.label}
+        </Text>
+      </View>
+    )
+  })
+  return (
+    <View style={{ ...styles.row, height: null }}>
+      <Text
+        style={{
+          ...styles.text,
+          fontSize: fontSize.medium,
+          color: colors.text,
+          flex: titleFlex,
+        }}
+      >
+        {title}
+      </Text>
+      <View style={{ ...styles.block, flex: buttonsFlex }}>
+        <RadioButton.Group onValueChange={onValueChange} value={value}>
+          <View style={{ flexDirection: 'column' }}>{radioButtons}</View>
+        </RadioButton.Group>
+      </View>
+    </View>
   )
 }
 
