@@ -63,8 +63,8 @@ export const dbGenerator = (
 
       const event = {
         // auditory: rndArray(["Взрослые", "Дети", "Подростки", "Смешанная"]),
-        service: rndArray(servicesIds),
-        client: rndArray(clientsIds),
+        service: servicesIds.length > 0 ? rndArray(servicesIds) : '0',
+        client: clientsIds.length > 0 ? rndArray(clientsIds) : '0',
         date: date,
         notification_id: '',
         calendar_id: '',
@@ -242,7 +242,7 @@ export const dbGenerator = (
         type: rndArray(['income', 'outcome']),
         sum: rndArray([5000, 6000, 7000, 8000, 9000, 10000]),
         comment: '',
-        event: rndArray(eventsIds),
+        event: eventsIds.length > 0 ? rndArray(eventsIds) : '0',
         date: Date.now(),
       }
     }

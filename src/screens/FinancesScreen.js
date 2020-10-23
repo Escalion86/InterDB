@@ -185,7 +185,7 @@ const FinancesScreen = ({ navigation, route }) => {
                     ToastAndroid.LONG
                   )
                 } else {
-                  const tmp = dbGenerator('finance')
+                  const tmp = dbGenerator('finance', [], [], events)
                   dispatch(addFinance(tmp))
                 }
               }}
