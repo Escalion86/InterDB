@@ -134,6 +134,13 @@ const EventsStackScreen = ({ navigation }) => (
         title: 'Клиент',
       }}
     />
+    <EventsStack.Screen
+      name="Finance"
+      component={FinanceScreen}
+      options={{
+        title: 'Транзакция',
+      }}
+    />
   </StackNavigator>
 )
 
