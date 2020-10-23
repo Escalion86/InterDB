@@ -22,7 +22,7 @@ import {
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu'
-import Fab from '../components/Fab'
+// import Fab from '../components/Fab'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
 import ModalDeleteFinance from '../components/Modals/ModalDeleteFinance'
 import { fontSize } from '../theme'

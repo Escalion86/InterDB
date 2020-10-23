@@ -4,48 +4,42 @@ import { StyleSheet, ScrollView, ToastAndroid } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { dbDefault } from '../db/dbTemplate'
-import { useTheme } from '@react-navigation/native'
-import { addService, updateService } from '../store/actions/service'
+import { addFinance, updateFinance } from '../store/actions/finance'
 import {
   TextInputBlock,
-  ImagePickerBlock,
   TitleBlock,
+  RadioBlock,
+  DateTimePickerBlock,
 } from '../components/createComponents'
 import trimingArrayValues from '../helpers/trimingArrayValues'
 import { HeaderBackButton } from '@react-navigation/stack'
 import ModalBottomMenu from '../components/Modals/ModalBottomMenu'
 import Button from '../components/Button'
 
-const CreateServiceScreen = ({ navigation, route }) => {
-  const service =
-    route.params !== undefined && route.params.serviceId !== undefined
-      ? useSelector((state) => state.service.services).find(
-        (item) => item.id === route.params.serviceId
+const CreateFinanceScreen = ({ navigation, route }) => {
+  const finance =
+    route.params !== undefined && route.params.financeId !== undefined
+      ? useSelector((state) => state.finance.finances).find(
+        (item) => item.id === route.params.financeId
       )
-      : dbDefault('services')
+      : dbDefault('finances')
 
   const dispatch = useDispatch()
-  const [newService, setNewService] = useState(service)
+  const [newFinance, setNewFinance] = useState(finance)
   const [modal, setModal] = useState(null)
-  const nameFieldFilled = !!newService.name.trim()
 
-  const { colors } = useTheme()
-
-  const setServiceItem = (item) => {
-    setNewService({ ...newService, ...item })
+  const setFinanceItem = (item) => {
+    setNewFinance({ ...newFinance, ...item })
   }
   // TODO Сделать проверку на заполнение необходимых полей
   const saveHandler = () => {
-    if (nameFieldFilled) {
-      service.id
-        ? dispatch(updateService(trimingArrayValues(newService)))
-        : dispatch(addService(trimingArrayValues(newService)))
+    if (newFinance.sum >= 0) {
+      finance.id
+        ? dispatch(updateFinance(trimingArrayValues(newFinance)))
+        : dispatch(addFinance(trimingArrayValues(newFinance)))
       navigation.goBack()
     } else {
-      ToastAndroid.show(
-        'Необходимо заполнить Название услуги',
-        ToastAndroid.LONG
-      )
+      ToastAndroid.show('Сумма должна быть больше нуля', ToastAndroid.LONG)
     }
   }
 
@@ -85,8 +79,8 @@ const CreateServiceScreen = ({ navigation, route }) => {
   )
 
   const checkChanges = () => {
-    for (const key in newService) {
-      if (newService[key] !== service[key]) {
+    for (const key in newFinance) {
+      if (newFinance[key] !== finance[key]) {
         setModal(modalSaveChanges)
         return
       }
@@ -96,38 +90,60 @@ const CreateServiceScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: service.id ? 'Редактирование услуги' : 'Создание услуги',
+      title: finance.id ? 'Редактирование транзакции' : 'Создание транзакции',
       headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
           <Item
-            title="Save Service"
+            title="Save ServiFinancece"
             iconName="ios-save"
             onPress={saveHandler}
           />
         </HeaderButtons>
       ),
     })
-  }, [service, newService])
+  }, [finance, newFinance])
 
   return (
     <ScrollView style={styles.container}>
       {/* <TitleBlock title="Финансы" /> */}
       <TitleBlock title="Основные" />
-      <TextInputBlock
-        title="Название"
-        value={newService.name}
-        onChangeText={(text) => setServiceItem({ name: text })}
-        fieldStyle={!nameFieldFilled ? { borderColor: colors.abort } : null}
-        multiline={true}
+      <RadioBlock
+        title="Тип"
+        radios={[
+          { label: 'Поступление', value: 'income' },
+          { label: 'Списание', value: 'outcome' },
+        ]}
+        value={newFinance.type}
+        onValueChange={(value) => setFinanceItem({ type: value })}
+        buttonsFlex={5}
+      />
+      <DateTimePickerBlock
+        title="Дата и время"
+        dateValue={newFinance.date}
+        onChange={(value) => setFinanceItem({ date: value })}
       />
       <TextInputBlock
+        title="Сумма"
+        value={newFinance.sum}
+        onChangeText={(text) => setFinanceItem({ sum: text })}
+        keyboardType="numeric"
+        postfix="&#8381;"
+        placeholder="0"
+      />
+      <TextInputBlock
+        title="Комментарий"
+        value={newFinance.comment}
+        onChangeText={(text) => setFinanceItem({ comment: text })}
+        multiline={true}
+        inputOnNextRow={true}
+        textAlign="left"
+      />
+      {/* <TextInputBlock
         title="Описание"
         value={newService.description}
         onChangeText={(text) => setServiceItem({ description: text })}
         multiline={true}
-        inputOnNextRow={true}
-        textAlign="left"
       />
       <ImagePickerBlock
         title={'Картинка'}
@@ -185,13 +201,13 @@ const CreateServiceScreen = ({ navigation, route }) => {
         prefix="-"
         postfix="&#8381;"
         placeholder="0"
-      />
+      /> */}
       {modal}
     </ScrollView>
   )
 }
 
-export default CreateServiceScreen
+export default CreateFinanceScreen
 
 const styles = StyleSheet.create({
   container: {

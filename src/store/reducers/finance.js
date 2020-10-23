@@ -1,6 +1,7 @@
 import {
   LOAD_FINANCES,
   ADD_FINANCE,
+  UPDATE_FINANCE,
   DELETE_FINANCE,
   DELETE_ALL_FINANCES,
   DELETING_FINANCE,
@@ -31,6 +32,19 @@ export const financeReducer = (state = initialState, action) => {
       return {
         ...state,
         finances: [action.finance, ...state.finances],
+      }
+
+    case UPDATE_FINANCE:
+      finances = state.finances.map((finance) => {
+        if (finance.id === action.finance.id) {
+          finance = { ...finance, ...action.finance, loading: false }
+        }
+        return finance
+      })
+
+      return {
+        ...state,
+        finances,
       }
 
     case DELETE_ALL_FINANCES:

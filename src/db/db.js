@@ -390,4 +390,22 @@ export class DB {
       })
     })
   }
+
+  static updateFinance (finance) {
+    const financeToSend = prepareForDB('finances', finance)
+    financeToSend.date = Math.floor(financeToSend.date / 1000)
+
+    const financeKeys = Object.keys(financeToSend)
+
+    return new Promise((resolve, reject) =>
+      db.transaction((tx) => {
+        tx.executeSql(
+          `UPDATE finances SET ${financeKeys.join(' = ?, ')} = ? WHERE id = ?`,
+          [...Object.values(financeToSend), finance.id],
+          resolve,
+          (_, error) => reject(error)
+        )
+      })
+    )
+  }
 }

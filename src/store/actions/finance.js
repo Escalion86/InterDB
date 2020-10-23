@@ -1,6 +1,7 @@
 import {
   LOAD_FINANCES,
   ADD_FINANCE,
+  UPDATE_FINANCE,
   DELETE_FINANCE,
   DELETE_ALL_FINANCES,
   DELETING_FINANCE,
@@ -23,6 +24,17 @@ export const addFinance = (finance) => {
     finance.id = financeId
     dispatch({
       type: ADD_FINANCE,
+      finance,
+    })
+  }
+}
+
+export const updateFinance = (finance) => {
+  return async (dispatch) => {
+    // await dispatch(loadingFinance(finance.id))
+    await DB.updateFinance(finance)
+    dispatch({
+      type: UPDATE_FINANCE,
       finance,
     })
   }

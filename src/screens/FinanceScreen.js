@@ -47,13 +47,13 @@ const FinanceScreen = ({ navigation, route }) => {
               iconName="ios-trash"
               onPress={() => modalDeleteFinance(finance)}
             />
-            {/* <Item
-            title="Edit Client"
-            iconName="md-create"
-            onPress={() => {
-              navigation.navigate('CreateClient', { clientId: client.id })
-            }}
-          /> */}
+            <Item
+              title="Edit Finance"
+              iconName="md-create"
+              onPress={() => {
+                navigation.navigate('CreateFinance', { financeId: finance.id })
+              }}
+            />
           </HeaderButtons>
         ),
       })
