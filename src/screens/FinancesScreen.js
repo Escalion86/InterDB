@@ -211,13 +211,13 @@ const FinancesScreen = ({ navigation, route }) => {
           Транзакций нет
         </Text>
 
-        <Fab
+        {/* <Fab
           visible={true}
           onPress={() => {
             navigation.navigate('CreateFinance')
           }}
           label="Добавить транзакцию"
-        />
+        /> */}
       </View>
     )
   }
@@ -237,7 +237,7 @@ const FinancesScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <MainFlatListWithFab
         data={finances}
-        fabVisible={true}
+        fabVisible={false}
         renderItem={({ item }) => (
           <FinanceCard
             navigation={navigation}
@@ -247,9 +247,9 @@ const FinancesScreen = ({ navigation, route }) => {
             }}
           />
         )}
-        onPressFab={() => {
-          navigation.navigate('CreateService')
-        }}
+        // onPressFab={() => {
+        //   navigation.navigate('CreateService')
+        // }}
       />
       {modal}
     </View>

@@ -24,7 +24,7 @@ const AboutScreen = ({ navigation, route }) => {
   const endToOpenDev = () => {
     if (Math.floor((new Date() - startToOpenDev) / 1000) >= 5) {
       ToastAndroid.show(
-        `Панель разработчика ${dev ? 'закрыта' : 'открыта'}`,
+        `Режим разработчика ${dev ? 'деактивирован' : 'активирован'}`,
         ToastAndroid.SHORT
       )
       toggleDev()
@@ -136,7 +136,7 @@ const AboutScreen = ({ navigation, route }) => {
 
       <View style={{ ...styles.bottom, borderColor: colors.card }}>
         <Text style={{ fontSize: fontSize.tiny, color: colors.text }}>
-          Версия: 0.2.0
+          Версия: 0.3.0
         </Text>
       </View>
     </View>
