@@ -1,6 +1,7 @@
 import * as Notifications from 'expo-notifications'
 import { formatDate, formatTime, calculateAge } from './date'
 import store from '../store'
+import * as Calendar from 'expo-calendar'
 
 import wordForm from '../helpers/wordForm'
 
@@ -156,6 +157,85 @@ export const addClientNotification = async (
     } else {
       return ''
     }
+  } else {
+    return ''
+  }
+}
+
+export const deleteCalendarEvent = async (id = '') => {
+  if (id) await Calendar.deleteEventAsync(id)
+}
+
+export const addCalendarEvent = async (event) => {
+  const storeState = store.getState()
+  if (storeState.app.calendarSyncTurnOn) {
+    const service = storeState.service.services.find((service) => {
+      return service.id === event.service
+    })
+    const CalendarFunc = event.calendar_id
+      ? (body) => Calendar.updateEventAsync(event.calendar_id, body)
+      : (body) => Calendar.createEventAsync(storeState.app.calendarId, body)
+
+    const calendarEventId = await CalendarFunc({
+      title: service ? service.name : 'Заказ неизвестной услуги',
+      startDate: event.date,
+      endDate: event.date + event.timing_duration * 60000, // 60 * 1000
+      location: `${event.location_town}, ${event.location_street} ${event.location_house}`,
+      notes:
+        (storeState.app.notificationAddPrepareRoadTime ||
+        event.timing_road + event.timing_preparetime > 0
+          ? `Ожидаемое время на дорогу и сбор: ${
+              event.timing_road + event.timing_preparetime
+            } мин\n`
+          : '') + (event.comment ? `Комментарий: ${event.comment}` : ''),
+      allDay: false,
+      alarms: [
+        {
+          relativeOffset:
+            -storeState.app.notificationBeforeEvent -
+            (storeState.app.notificationAddPrepareRoadTime
+              ? event.timing_road + event.timing_preparetime
+              : 0),
+          method: Calendar.AlarmMethod.DEFAULT,
+        },
+        // {
+        //   relativeOffset: -event.timing_preparetime,
+        //   method: Calendar.AlarmMethod.DEFAULT,
+        // },
+      ],
+    })
+    // const calendarEventId = await Calendar.createEventAsync(
+    //   storeState.app.calendarId,
+    //   {
+    //     title: service ? service.name : 'Заказ неизвестной услуги',
+    //     startDate: event.date,
+    //     endDate: event.date + event.timing_duration * 60000, // 60 * 1000
+    //     location: `${event.location_town}, ${event.location_street} ${event.location_house}`,
+    //     notes:
+    //       (storeState.app.notificationAddPrepareRoadTime ||
+    //       event.timing_road + event.timing_preparetime > 0
+    //         ? `Ожидаемое время на дорогу и сбор: ${
+    //             event.timing_road + event.timing_preparetime
+    //           } мин\n`
+    //         : '') + (event.comment ? `Комментарий: ${event.comment}` : ''),
+    //     allDay: false,
+    //     alarms: [
+    //       {
+    //         relativeOffset:
+    //           -storeState.app.notificationBeforeEvent -
+    //           (storeState.app.notificationAddPrepareRoadTime
+    //             ? event.timing_road + event.timing_preparetime
+    //             : 0),
+    //         method: Calendar.AlarmMethod.DEFAULT,
+    //       },
+    //       // {
+    //       //   relativeOffset: -event.timing_preparetime,
+    //       //   method: Calendar.AlarmMethod.DEFAULT,
+    //       // },
+    //     ],
+    //   }
+    // )
+    return calendarEventId
   } else {
     return ''
   }
