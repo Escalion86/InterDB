@@ -21,6 +21,7 @@ import ModalBottomMenu from './Modals/ModalBottomMenu'
 import Button from './Button'
 import { Picker } from '@react-native-community/picker'
 import { fontSize } from '../theme'
+import { MaskedTextInput, CustomMask } from 'rn-masked-text-input'
 // import TextInputMask from "./TextInputMask"
 // import TextInputMask from "react-native-text-input-mask"
 
@@ -278,7 +279,7 @@ export const TextInputBlock = ({
   onChangeText = () => {},
   keyboardType = 'default',
   placeholder = '',
-  mask = null,
+  phoneMask = false,
   multiline = false,
   fieldStyle = {},
   success = false,
@@ -290,6 +291,12 @@ export const TextInputBlock = ({
   value = value ? value.toString() : ''
   const { colors } = useTheme()
   const textColor = success ? colors.success : colors.text
+
+  const phoneMaskSet = new CustomMask({
+    name: 'phoneMask',
+    mask: '(000) 000-0000',
+    validator: (value) => value === '123456789',
+  })
 
   const multilineStyle = multiline
     ? { height: null, maxHeight: 200, minHeight: 45 }
@@ -366,7 +373,23 @@ export const TextInputBlock = ({
               </Text>
             </View>
           ) : null}
-          {mask ? null : (
+          {phoneMask ? (
+            <MaskedTextInput
+              customMask={phoneMaskSet}
+              keyboardType="numeric"
+              onChangeText={onChangeText}
+              placeholder={placeholder}
+              placeholderTextColor={textColor}
+              style={{
+                flex: 1,
+                textAlign: textAlign,
+                fontSize: fontSize.medium,
+                color: textColor,
+                padding: 5,
+              }}
+              value={value}
+            />
+          ) : (
             <TextInput
               style={{
                 flex: 1,

@@ -192,13 +192,14 @@ const CreateClientScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Телефон"
         value={newClient.phone}
-        // mask="+1 ([000]) [000] [00] [00]"
         onChangeText={(text) =>
           setClientItem({ phone: text.replace(/ +/g, '') })
         }
-        // prefix="+7"
         fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
+        prefix="+7"
+        phoneMask={true}
       />
+
       <TextInputBlock
         title="WhatsApp"
         value={newClient.whatsapp}
@@ -206,6 +207,8 @@ const CreateClientScreen = ({ navigation, route }) => {
           setClientItem({ whatsapp: text.replace(/ +/g, '') })
         }
         fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
+        prefix="+7"
+        phoneMask={true}
       />
       <TextInputBlock
         title="Viber"
@@ -214,6 +217,8 @@ const CreateClientScreen = ({ navigation, route }) => {
           setClientItem({ viber: text.replace(/ +/g, '') })
         }
         fieldStyle={!contactsFieldFilled ? { borderColor: colors.abort } : null}
+        prefix="+7"
+        phoneMask={true}
       />
       <TextInputBlock
         title="Telegram"

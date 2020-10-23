@@ -131,7 +131,7 @@ export const dbGenerator = (
     }
     case 'client': {
       const gender = rndArray([0, 1, 3])
-      const phone = '+79' + Math.floor(Math.random() * 899999999 + 100000000)
+      const phone = '9' + Math.floor(Math.random() * 899999999 + 100000000)
       return {
         name:
           gender === 0

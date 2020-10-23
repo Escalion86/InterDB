@@ -44,7 +44,7 @@ export const contactsIcons = (client) => [
     name: 'Позвонить',
     icon: 'phone',
     color: 'green',
-    url: `tel:/${client.phone}`,
+    url: `tel:+7${client.phone}`,
     exist: !!client.phone,
   },
   {
@@ -52,7 +52,7 @@ export const contactsIcons = (client) => [
     name: 'SMS',
     icon: 'sms',
     color: 'orange',
-    url: `sms:${client.phone}`,
+    url: `sms:+7${client.phone}`,
     exist: !!client.phone,
   },
   {
@@ -60,7 +60,7 @@ export const contactsIcons = (client) => [
     name: 'WhatsApp',
     icon: 'whatsapp',
     color: '#43d854',
-    url: `whatsapp://send?phone=${client.whatsapp}`,
+    url: `whatsapp://send?phone=7${client.whatsapp}`,
     exist: !!client.whatsapp,
   },
   {
@@ -68,7 +68,7 @@ export const contactsIcons = (client) => [
     name: 'Viber',
     icon: 'viber',
     color: '#59267c',
-    url: `viber://chat?number=${client.viber}`,
+    url: `viber://add?number=7${client.viber}`,
     exist: !!client.viber,
   },
   {
@@ -108,7 +108,7 @@ export const contactsIcons = (client) => [
     name: 'E-Mail',
     icon: 'envelope',
     color: 'red',
-    url: `sms:${client.email}`,
+    url: `mailto:${client.email}`,
     exist: !!client.email,
   },
 ]
