@@ -9,6 +9,8 @@ import { TextBlock } from '../components/infoComponents'
 import { TitleBlock } from '../components/createComponents'
 import ServiceCard from '../components/Cards/ServiceCard'
 import ClientCard from '../components/Cards/ClientCard'
+import FinanceCard from '../components/Cards/FinanceCard'
+
 import * as Calendar from 'expo-calendar'
 
 import { useTheme } from '@react-navigation/native'
@@ -27,6 +29,9 @@ const EventScreen = ({ navigation, route }) => {
 
   const services = useSelector((state) => state.service.services)
   const clients = useSelector((state) => state.client.clients)
+  const finances = useSelector((state) => state.finance.finances).filter(
+    (finance) => finance.event === event.id
+  )
 
   const modalDelete = (event) => {
     setModal(
@@ -107,13 +112,26 @@ const EventScreen = ({ navigation, route }) => {
     event.timing_collecttime +
     event.timing_road * 2
 
+  const financesCards =
+    finances && finances.length > 0 ? (
+      finances.map((finance) => (
+        <FinanceCard
+          key={finance.id}
+          navigation={navigation}
+          finance={finance}
+          swipeable={false}
+        />
+      ))
+    ) : (
+      <TextBlock text="Транзакций нет" />
+    )
+
   console.log('render EventScreen return start')
 
   return (
     <ScrollView style={styles.container}>
       <TitleBlock title="Описание" />
       <TextBlock text={`Статус события: ${event.status}`} />
-      <TextBlock text={`Статус оплаты: ${event.finance_status}`} />
       <TextBlock
         text={`Дата и время начала: ${formatDate(
           new Date(event.date),
@@ -167,6 +185,8 @@ const EventScreen = ({ navigation, route }) => {
         <TextBlock text={`Чаевые: ${event.finance_tips} руб`} />
       ) : null} */}
       <TextBlock text={`Итого: ${profit} руб`} />
+      <TitleBlock title="Транзакции" />
+      {financesCards}
       <TitleBlock title="Адрес" />
       <TextBlock
         text={`${event.location_town}, ${event.location_street}, ${
