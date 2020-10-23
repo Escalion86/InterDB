@@ -623,7 +623,7 @@ export const BirthdayPicker = ({
       >
         {title}
       </Text>
-      <View style={styles.datetimecontainer}>
+      <View style={{ ...styles.datetimecontainer, flex: 3 }}>
         <ObjPicker
           items={daysPickerItems}
           style={{ flex: 2 }}
