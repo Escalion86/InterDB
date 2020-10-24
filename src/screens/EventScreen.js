@@ -29,9 +29,7 @@ const EventScreen = ({ navigation, route }) => {
 
   const services = useSelector((state) => state.service.services)
   const clients = useSelector((state) => state.client.clients)
-  const finances = useSelector((state) => state.finance.finances).filter(
-    (finance) => finance.event === event.id
-  )
+  let finances = useSelector((state) => state.finance.finances)
 
   const modalDelete = (event) => {
     setModal(
@@ -96,6 +94,7 @@ const EventScreen = ({ navigation, route }) => {
 
   const serviceObj = services.find((item) => item.id === event.service)
   const clientObj = clients.find((item) => item.id === event.client)
+  finances = finances.filter((finance) => finance.event === event.id)
 
   const profit =
     event.finance_price -
