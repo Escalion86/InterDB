@@ -95,7 +95,7 @@ const CreateFinanceScreen = ({ navigation, route }) => {
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
           <Item
-            title="Save ServiFinancece"
+            title="Save ServiFinance"
             iconName="ios-save"
             onPress={saveHandler}
           />
