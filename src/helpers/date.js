@@ -52,7 +52,7 @@ export const formatBirthday = (
   showAge = true
 ) => {
   let birthday = ''
-  if (day && month) {
+  if (day && month >= 0) {
     if (year) {
       // Известна полная дата рождения
       const date = new Date(year, month, day)
