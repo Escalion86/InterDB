@@ -16,37 +16,11 @@ import Button from '../components/Button'
 const SettingsNotificationsScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
 
-  const app = useSelector((state) => state.app)
-  console.log('app', app)
-
-  const {
-    notificationBeforeEvent,
-    notificationBirthday,
-    notificationTurnOn,
-    notificationAddPrepareRoadTime,
-    calendarId,
-    calendarSyncTurnOn,
-  } = useSelector((state) => state.app)
-
-  const [
-    notificationBeforeEventState,
-    setNotificationBeforeEventState,
-  ] = useState(notificationBeforeEvent)
-  const [
-    notificationAddPrepareRoadTimeState,
-    setNotificationAddPrepareRoadTimeState,
-  ] = useState(notificationAddPrepareRoadTime)
-  const [notificationBirthdayState, setNotificationBirthdayState] = useState(
-    notificationBirthday
-  )
-
-  const [notificationTurnOnState, setNotificationTurnOnState] = useState(
-    notificationTurnOn
-  )
-  const [calendarSyncTurnOnState, setCalendarSyncTurnOnState] = useState(
-    calendarSyncTurnOn
-  )
-  const [calendarIdState, setCalendarIdState] = useState(calendarId)
+  const stateApp = useSelector((state) => state.app)
+  const [newStateApp, setNewStateApp] = useState(stateApp)
+  const setNewStateItem = (item) => {
+    setNewStateApp({ ...newStateApp, ...item })
+  }
 
   const [calendars, setCalendars] = useState([])
 
@@ -65,16 +39,6 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
     })()
   }, [])
 
-  console.log(
-    'object',
-    notificationTurnOnState,
-    notificationBeforeEventState,
-    notificationBirthdayState,
-    notificationAddPrepareRoadTimeState,
-    calendarSyncTurnOnState,
-    calendarIdState
-  )
-
   const convertMinToTime = (min) => {
     const time = new Date().setTime(min * 60000)
     const timeZoneOffset = new Date().getTimezoneOffset()
@@ -86,39 +50,34 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
   }
 
   const saveNotificationSettings = () => {
-    dispatch(
-      setAllNotificationSettings(
-        notificationTurnOnState,
-        notificationBeforeEventState,
-        notificationBirthdayState,
-        notificationAddPrepareRoadTimeState,
-        calendarSyncTurnOnState,
-        calendarIdState
-      )
-    )
+    dispatch(setAllNotificationSettings(newStateApp))
   }
 
   return (
     <View style={styles.container}>
       <SwitchBlock
         title="Включить Push оповещения"
-        value={notificationTurnOnState}
-        onValueChange={(value) => setNotificationTurnOnState(value)}
+        value={newStateApp.notificationTurnOn}
+        onValueChange={(value) =>
+          setNewStateItem({ notificationTurnOn: value })
+        }
       />
       <SwitchBlock
         title="Синхронизация с календарем"
-        value={calendarSyncTurnOnState}
-        onValueChange={(value) => setCalendarSyncTurnOnState(value)}
+        value={newStateApp.calendarSyncTurnOn}
+        onValueChange={(value) =>
+          setNewStateItem({ calendarSyncTurnOn: value })
+        }
       />
-      {calendarSyncTurnOnState ? (
+      {newStateApp.calendarSyncTurnOn ? (
         <View style={{ height: 60 }}>
           <DevDropDownPicker
             tables={calendars}
             tableValue="id"
             placeholder="Выберите календарь"
-            defaultValue={calendarIdState}
+            defaultValue={newStateApp.calendarId}
             onChangeItem={(value) => {
-              setCalendarIdState(value.value)
+              setNewStateItem({ calendarId: value.value })
             }}
             onPress={() => {}}
             // disabled={!selectedTable}
@@ -129,22 +88,28 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
       <TitleBlock title="Найстройка оповещений" />
       <TextInputBlock
         title="Оповещать о событиях заранее за"
-        value={notificationBeforeEventState}
-        onChangeText={(text) => setNotificationBeforeEventState(text)}
+        value={newStateApp.notificationBeforeEvent}
+        onChangeText={(text) =>
+          setNewStateItem({ notificationBeforeEvent: text })
+        }
         keyboardType="numeric"
         postfix="мин"
         inputFlex={1}
       />
       <SwitchBlock
         title="Учитывать время на подготовку и дорогу"
-        value={notificationAddPrepareRoadTimeState}
-        onValueChange={(value) => setNotificationAddPrepareRoadTimeState(value)}
+        value={newStateApp.notificationAddPrepareRoadTime}
+        onValueChange={(value) =>
+          setNewStateItem({ notificationAddPrepareRoadTime: value })
+        }
       />
       <DateTimePickerBlock
         title="Оповещать о днях рождениях клиентов в"
-        dateValue={convertMinToTime(notificationBirthdayState)}
+        dateValue={convertMinToTime(newStateApp.notificationBirthday)}
         onChange={(value) => {
-          setNotificationBirthdayState(convertTimeToMin(value))
+          setNewStateItem({
+            notificationBirthday: convertTimeToMin(value),
+          })
         }}
         pickDate={false}
         inputFlex={1}
@@ -153,13 +118,14 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
         title="Применить"
         onPress={() => saveNotificationSettings()}
         disabled={
-          notificationTurnOn === notificationTurnOnState &&
-          notificationBeforeEvent === notificationBeforeEventState &&
-          notificationBirthday === notificationBirthdayState &&
-          notificationAddPrepareRoadTimeState ===
-            notificationAddPrepareRoadTime &&
-          calendarSyncTurnOnState === calendarSyncTurnOn &&
-          calendarIdState === calendarId
+          stateApp.notificationTurnOn === newStateApp.notificationTurnOn &&
+          stateApp.notificationBeforeEvent ===
+            newStateApp.notificationBeforeEvent &&
+          stateApp.notificationBirthday === newStateApp.notificationBirthday &&
+          stateApp.notificationAddPrepareRoadTime ===
+            newStateApp.notificationAddPrepareRoadTime &&
+          stateApp.calendarSyncTurnOn === newStateApp.calendarSyncTurnOn &&
+          stateApp.calendarId === newStateApp.calendarId
         }
       />
     </View>

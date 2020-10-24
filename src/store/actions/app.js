@@ -101,14 +101,14 @@ import * as Notifications from 'expo-notifications'
 //   }
 // }
 
-export const setAllNotificationSettings = (
+export const setAllNotificationSettings = ({
   notificationTurnOn,
   notificationBeforeEvent,
   notificationBirthday,
   notificationAddPrepareRoadTime,
   calendarSyncTurnOn,
-  calendarId
-) => {
+  calendarId,
+}) => {
   return async (dispatch) => {
     if (notificationTurnOn) {
       const events = store.getState().event.events

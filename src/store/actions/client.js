@@ -95,8 +95,6 @@ export const updateClient = (client) => {
     await dispatch(loadingClient(client.id))
     const notificationId = await addClientNotification(client)
     client.notification_id = notificationId
-    await deleteCalendarEvent(client.calendar_id)
-    client.calendar_id = ''
     const calendarId = await addCalendarClientBirthday(client)
     client.calendar_id = calendarId
     await DB.updateClient(client)
@@ -106,6 +104,7 @@ export const updateClient = (client) => {
     })
   }
 }
+
 // TODO Заменить этой функцией функции такие как setClientStatus, setFinanceStatus
 export const updateClientPartially = (id, parts) => {
   return async (dispatch) => {

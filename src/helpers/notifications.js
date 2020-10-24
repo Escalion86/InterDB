@@ -168,7 +168,7 @@ export const deleteCalendarEvent = async (id = '') => {
 
 export const addCalendarEvent = async (event) => {
   const storeState = store.getState()
-  if (storeState.app.calendarSyncTurnOn) {
+  if (storeState.app.calendarSyncTurnOn && event.date > new Date()) {
     const service = storeState.service.services.find((service) => {
       return service.id === event.service
     })
@@ -212,13 +212,17 @@ export const addCalendarEvent = async (event) => {
 export const addCalendarClientBirthday = async (client) => {
   const storeState = store.getState()
   if (storeState.app.calendarSyncTurnOn) {
-    console.log('client', client)
-    const CalendarFunc = client.calendar_id
-      ? (body) =>
-        Calendar.updateEventAsync(client.calendar_id, body, {
-          futureEvents: true,
-        })
-      : (body) => Calendar.createEventAsync(storeState.app.calendarId, body)
+    if (client.calendar_id) {
+      deleteCalendarEvent(client.calendar_id)
+    }
+    const CalendarFunc = (body) =>
+      Calendar.createEventAsync(storeState.app.calendarId, body)
+    // const CalendarFunc = client.calendar_id
+    //   ? (body) =>
+    //     Calendar.updateEventAsync(client.calendar_id, body, {
+    //       futureEvents: true,
+    //     })
+    //   : (body) => Calendar.createEventAsync(storeState.app.calendarId, body)
 
     const today = new Date().setHours(0, 0, 0, 0)
     let birthday = new Date().setFullYear(
