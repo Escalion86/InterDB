@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, ToastAndroid } from 'react-native'
 import {
   TextInputBlock,
   DateTimePickerBlock,
@@ -10,12 +10,18 @@ import {
 import { setAllNotificationSettings } from '../store/actions/app'
 import * as Calendar from 'expo-calendar'
 import { DevDropDownPicker } from '../components/devComponents'
+import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { HeaderBackButton } from '@react-navigation/stack'
+import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
 import Button from '../components/Button'
+
+import ModalBottomMenu from '../components/Modals/ModalBottomMenu'
 
 const SettingsNotificationsScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
 
+  const [modal, setModal] = useState(null)
   const stateApp = useSelector((state) => state.app)
   const [newStateApp, setNewStateApp] = useState(stateApp)
   const setNewStateItem = (item) => {
@@ -39,6 +45,21 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
     })()
   }, [])
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+          <Item
+            title="Save Settings"
+            iconName="ios-save"
+            onPress={saveNotificationSettings}
+          />
+        </HeaderButtons>
+      ),
+    })
+  }, [newStateApp, stateApp])
+
   const convertMinToTime = (min) => {
     const time = new Date().setTime(min * 60000)
     const timeZoneOffset = new Date().getTimezoneOffset()
@@ -50,7 +71,80 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
   }
 
   const saveNotificationSettings = () => {
-    dispatch(setAllNotificationSettings(newStateApp))
+    if (
+      stateApp.notificationTurnOn === newStateApp.notificationTurnOn &&
+      stateApp.notificationBeforeEvent ===
+        newStateApp.notificationBeforeEvent &&
+      stateApp.notificationBirthday === newStateApp.notificationBirthday &&
+      stateApp.notificationAddPrepareRoadTime ===
+        newStateApp.notificationAddPrepareRoadTime &&
+      stateApp.calendarSyncTurnOn === newStateApp.calendarSyncTurnOn &&
+      stateApp.calendarId === newStateApp.calendarId
+    ) {
+      ToastAndroid.show('Настройки сохранены', ToastAndroid.SHORT)
+    } else {
+      if (!newStateApp.calendarSyncTurnOn || newStateApp.calendarId) {
+        dispatch(setAllNotificationSettings(newStateApp))
+        ToastAndroid.show('Настройки сохранены', ToastAndroid.SHORT)
+      } else {
+        ToastAndroid.show(
+          'Настройки не сохранены. Выберите календарь!',
+          ToastAndroid.LONG
+        )
+      }
+    }
+  }
+
+  const modalSaveChanges = (
+    <ModalBottomMenu
+      title="Отменить изменения"
+      subtitle="Уверены что хотите выйти без сохранения?"
+      onAccept={() => navigation.goBack()}
+      visible={true}
+      onOuterClick={() => setModal(null)}
+    >
+      <Button
+        title="Выйти без сохранения"
+        btnDecline={false}
+        onPress={() => {
+          setModal(null)
+          navigation.goBack()
+        }}
+      />
+      <Button
+        title="Сохранить и выйти"
+        btnDecline={false}
+        onPress={() => {
+          setModal(null)
+          if (!newStateApp.calendarSyncTurnOn || newStateApp.calendarId) {
+            saveNotificationSettings()
+            navigation.goBack()
+          } else {
+            ToastAndroid.show(
+              'Настройки не сохранены. Выберите календарь!',
+              ToastAndroid.LONG
+            )
+          }
+        }}
+      />
+      <Button
+        title="Не уходить"
+        btnDecline={true}
+        onPress={() => {
+          setModal(null)
+        }}
+      />
+    </ModalBottomMenu>
+  )
+
+  const checkChanges = () => {
+    for (const key in newStateApp) {
+      if (newStateApp[key] !== stateApp[key]) {
+        setModal(modalSaveChanges)
+        return
+      }
+    }
+    navigation.goBack()
   }
 
   return (
@@ -114,7 +208,7 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
         pickDate={false}
         inputFlex={1}
       />
-      <Button
+      {/* <Button
         title="Применить"
         onPress={() => saveNotificationSettings()}
         disabled={
@@ -127,7 +221,8 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
           stateApp.calendarSyncTurnOn === newStateApp.calendarSyncTurnOn &&
           stateApp.calendarId === newStateApp.calendarId
         }
-      />
+      /> */}
+      {modal}
     </View>
   )
 }
