@@ -163,7 +163,7 @@ export const addClientNotification = async (
 }
 
 export const deleteCalendarEvent = async (id = '') => {
-  if (id) await Calendar.deleteEventAsync(id)
+  if (id) await Calendar.deleteEventAsync(id, { futureEvents: true })
 }
 
 export const addCalendarEvent = async (event) => {
@@ -204,38 +204,57 @@ export const addCalendarEvent = async (event) => {
         // },
       ],
     })
-    // const calendarEventId = await Calendar.createEventAsync(
-    //   storeState.app.calendarId,
-    //   {
-    //     title: service ? service.name : 'Заказ неизвестной услуги',
-    //     startDate: event.date,
-    //     endDate: event.date + event.timing_duration * 60000, // 60 * 1000
-    //     location: `${event.location_town}, ${event.location_street} ${event.location_house}`,
-    //     notes:
-    //       (storeState.app.notificationAddPrepareRoadTime ||
-    //       event.timing_road + event.timing_preparetime > 0
-    //         ? `Ожидаемое время на дорогу и сбор: ${
-    //             event.timing_road + event.timing_preparetime
-    //           } мин\n`
-    //         : '') + (event.comment ? `Комментарий: ${event.comment}` : ''),
-    //     allDay: false,
-    //     alarms: [
-    //       {
-    //         relativeOffset:
-    //           -storeState.app.notificationBeforeEvent -
-    //           (storeState.app.notificationAddPrepareRoadTime
-    //             ? event.timing_road + event.timing_preparetime
-    //             : 0),
-    //         method: Calendar.AlarmMethod.DEFAULT,
-    //       },
-    //       // {
-    //       //   relativeOffset: -event.timing_preparetime,
-    //       //   method: Calendar.AlarmMethod.DEFAULT,
-    //       // },
-    //     ],
-    //   }
-    // )
     return calendarEventId
+  } else {
+    return ''
+  }
+}
+export const addCalendarClientBirthday = async (client) => {
+  const storeState = store.getState()
+  if (storeState.app.calendarSyncTurnOn) {
+    console.log('client', client)
+    const CalendarFunc = client.calendar_id
+      ? (body) =>
+        Calendar.updateEventAsync(client.calendar_id, body, {
+          futureEvents: true,
+        })
+      : (body) => Calendar.createEventAsync(storeState.app.calendarId, body)
+
+    const today = new Date().setHours(0, 0, 0, 0)
+    let birthday = new Date().setFullYear(
+      new Date().getFullYear(),
+      client.birthday_month,
+      client.birthday_day
+    )
+    birthday = new Date(birthday).setHours(0, 0, 0, 0)
+    if (today > birthday) {
+      birthday = new Date(birthday).setFullYear(
+        new Date(birthday).getFullYear() + 1
+      )
+    }
+
+    const calendarClientId = await CalendarFunc({
+      title: `День рождения клиента ${client.surname} ${client.name} ${client.thirdname}`.trim(),
+      startDate: birthday,
+      endDate: birthday,
+      allDay: true,
+      alarms: [
+        {
+          relativeOffset: +storeState.app.notificationBirthday,
+          method: Calendar.AlarmMethod.DEFAULT,
+        },
+        // {
+        //   relativeOffset: -event.timing_preparetime,
+        //   method: Calendar.AlarmMethod.DEFAULT,
+        // },
+      ],
+      recurrenceRule: {
+        frequency: Calendar.Frequency.YEARLY,
+        interval: 1,
+        occurrence: 30,
+      },
+    })
+    return calendarClientId
   } else {
     return ''
   }

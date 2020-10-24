@@ -14,6 +14,8 @@ import { DB } from '../../db/db'
 import {
   addClientNotification,
   deleteNotification,
+  addCalendarClientBirthday,
+  deleteCalendarEvent,
 } from '../../helpers/notifications'
 
 export const refreshBirthdayNotifications = (
@@ -24,8 +26,12 @@ export const refreshBirthdayNotifications = (
   return async (dispatch) => {
     clients.forEach(async (client) => {
       const notificationId = await addClientNotification(client, min, turnOn)
+      const calendarId = await addCalendarClientBirthday(client)
       await dispatch(
-        updateClientPartially(client.id, { notification_id: notificationId })
+        updateClientPartially(client.id, {
+          notification_id: notificationId,
+          calendar_id: calendarId,
+        })
       )
     })
   }
@@ -73,6 +79,8 @@ export const addClient = (client) => {
     await dispatch(loadingClients())
     const notificationId = await addClientNotification(client)
     client.notification_id = notificationId
+    const calendarId = await addCalendarClientBirthday(client)
+    client.calendar_id = calendarId
     const clientId = await DB.addClient(client)
     client.id = clientId
     dispatch({
@@ -87,6 +95,10 @@ export const updateClient = (client) => {
     await dispatch(loadingClient(client.id))
     const notificationId = await addClientNotification(client)
     client.notification_id = notificationId
+    await deleteCalendarEvent(client.calendar_id)
+    client.calendar_id = ''
+    const calendarId = await addCalendarClientBirthday(client)
+    client.calendar_id = calendarId
     await DB.updateClient(client)
     dispatch({
       type: UPDATE_CLIENT,
@@ -121,6 +133,7 @@ export const deleteClient = (client) => {
   return async (dispatch) => {
     await dispatch(deletingClient(client.id))
     await deleteNotification(client.notification_id)
+    await deleteCalendarEvent(client.calendar_id)
     await DB.deleteDataFromTable('clients', client.id)
     dispatch({
       type: DELETE_CLIENT,
