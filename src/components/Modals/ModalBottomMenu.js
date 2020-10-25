@@ -44,8 +44,8 @@ const ModalBottomMenu = ({
           <View
             style={{
               ...styles.panel,
-              backgroundColor: colors.border,
-              borderColor: colors.card,
+              backgroundColor: colors.card,
+              borderColor: colors.border,
             }}
             // onSwipePerformed={(action) => {
             //   if (action === "down") onOuterClick()
