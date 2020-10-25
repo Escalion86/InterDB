@@ -110,13 +110,15 @@ export const setAllNotificationSettings = ({
   calendarId,
 }) => {
   return async (dispatch) => {
-    if (notificationTurnOn) {
+    if (notificationTurnOn || calendarSyncTurnOn) {
       const events = store.getState().event.events
       await dispatch(
         refreshEventsNotifications(
           events,
           notificationBeforeEvent,
-          notificationTurnOn
+          notificationAddPrepareRoadTime,
+          notificationTurnOn,
+          calendarSyncTurnOn
         )
       )
       const clients = store.getState().client.clients
@@ -124,7 +126,9 @@ export const setAllNotificationSettings = ({
         refreshBirthdayNotifications(
           clients,
           notificationBirthday,
-          notificationTurnOn
+          notificationTurnOn,
+          calendarId,
+          calendarSyncTurnOn
         )
       )
     } else {

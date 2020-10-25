@@ -40,11 +40,13 @@ export const deleteNotification = async (id = '') => {
 export const addEventNotification = async (
   event,
   notificationBeforeEventStart = null,
+  notificationAddPrepareRoadTime = null,
   turnOn = null
 ) => {
   if (event) {
+    const appStore = store.getState().app
     if (turnOn === null) {
-      turnOn = store.getState().app.notificationTurnOn
+      turnOn = appStore.notificationTurnOn
     }
 
     if (!turnOn) {
@@ -56,15 +58,19 @@ export const addEventNotification = async (
     }
 
     if (!notificationBeforeEventStart) {
-      notificationBeforeEventStart = store.getState().app
-        .notificationBeforeEvent
+      notificationBeforeEventStart = appStore.notificationBeforeEvent
+    }
+
+    if (!notificationAddPrepareRoadTime) {
+      notificationAddPrepareRoadTime = appStore.notificationAddPrepareRoadTime
     }
 
     const date =
       event.date -
       notificationBeforeEventStart * 1000 * 60 -
-      event.timing_road * 1000 * 60 -
-      event.timing_preparetime * 1000 * 60
+      (notificationAddPrepareRoadTime
+        ? event.timing_road * 1000 * 60 + event.timing_preparetime * 1000 * 60
+        : 0)
 
     if (date > new Date()) {
       const adress = event.location_town
@@ -105,12 +111,13 @@ export const addClientNotification = async (
   turnOn = null
 ) => {
   if (client) {
+    const appStore = store.getState().app
     if (client.notification_id) {
       deleteNotification(client.notification_id)
     }
 
     if (turnOn === null) {
-      turnOn = store.getState().app.notificationTurnOn
+      turnOn = appStore.notificationTurnOn
     }
 
     if (!turnOn) {
@@ -118,7 +125,7 @@ export const addClientNotification = async (
     }
 
     if (!notificationTime) {
-      notificationTime = store.getState().app.notificationBirthday
+      notificationTime = appStore.notificationBirthday
     }
 
     const today = new Date().setHours(0, 0, 0, 0)
@@ -166,12 +173,30 @@ export const deleteCalendarEvent = async (id = '') => {
   if (id) await Calendar.deleteEventAsync(id, { futureEvents: true })
 }
 
-export const addCalendarEvent = async (event) => {
+export const addCalendarEvent = async (
+  event,
+  notificationBeforeEventStart = null,
+  notificationAddPrepareRoadTime = null,
+  turnOn = null
+) => {
   const storeState = store.getState()
-  if (storeState.app.calendarSyncTurnOn && event.date > new Date()) {
+  if (!turnOn) {
+    turnOn = storeState.app.calendarSyncTurnOn
+  }
+  if (turnOn && event.date > new Date()) {
     const service = storeState.service.services.find((service) => {
       return service.id === event.service
     })
+
+    if (!notificationBeforeEventStart) {
+      notificationBeforeEventStart = storeState.app.notificationBeforeEvent
+    }
+
+    if (!notificationAddPrepareRoadTime) {
+      notificationAddPrepareRoadTime =
+        storeState.app.notificationAddPrepareRoadTime
+    }
+
     const CalendarFunc = event.calendar_id
       ? (body) => Calendar.updateEventAsync(event.calendar_id, body)
       : (body) => Calendar.createEventAsync(storeState.app.calendarId, body)
@@ -192,7 +217,7 @@ export const addCalendarEvent = async (event) => {
       alarms: [
         {
           relativeOffset:
-            -storeState.app.notificationBeforeEvent -
+            -notificationBeforeEventStart -
             (storeState.app.notificationAddPrepareRoadTime
               ? event.timing_road + event.timing_preparetime
               : 0),
@@ -209,20 +234,39 @@ export const addCalendarEvent = async (event) => {
     return ''
   }
 }
-export const addCalendarClientBirthday = async (client) => {
-  const storeState = store.getState()
-  if (storeState.app.calendarSyncTurnOn) {
+export const addCalendarClientBirthday = async (
+  client,
+  notificationTime = null,
+  calendarId = null,
+  turnOn = null
+) => {
+  const appStore = store.getState().app
+  if (turnOn === null) {
+    turnOn = appStore.calendarSyncTurnOn
+  }
+
+  console.log('appStore', appStore)
+
+  if (turnOn) {
     if (client.calendar_id) {
       deleteCalendarEvent(client.calendar_id)
     }
-    const CalendarFunc = (body) =>
-      Calendar.createEventAsync(storeState.app.calendarId, body)
+
+    if (calendarId === null) {
+      calendarId = appStore.calendarId
+    }
+
+    const CalendarFunc = (body) => Calendar.createEventAsync(calendarId, body)
     // const CalendarFunc = client.calendar_id
     //   ? (body) =>
     //     Calendar.updateEventAsync(client.calendar_id, body, {
     //       futureEvents: true,
     //     })
-    //   : (body) => Calendar.createEventAsync(storeState.app.calendarId, body)
+    //   : (body) => Calendar.createEventAsync(calendarId, body)
+
+    if (!notificationTime) {
+      notificationTime = appStore.notificationBirthday
+    }
 
     const today = new Date().setHours(0, 0, 0, 0)
     let birthday = new Date().setFullYear(
@@ -244,7 +288,7 @@ export const addCalendarClientBirthday = async (client) => {
       allDay: true,
       alarms: [
         {
-          relativeOffset: +storeState.app.notificationBirthday,
+          relativeOffset: +notificationTime,
           method: Calendar.AlarmMethod.DEFAULT,
         },
         // {

@@ -21,16 +21,27 @@ import {
 export const refreshBirthdayNotifications = (
   clients,
   min = 0,
-  turnOn = null
+  notificationTurnOn = null,
+  calendarId = null,
+  calendarSyncTurnOn = null
 ) => {
   return async (dispatch) => {
     clients.forEach(async (client) => {
-      const notificationId = await addClientNotification(client, min, turnOn)
-      const calendarId = await addCalendarClientBirthday(client)
+      const newNotificationId = await addClientNotification(
+        client,
+        min,
+        notificationTurnOn
+      )
+      const newCalendarId = await addCalendarClientBirthday(
+        client,
+        min,
+        calendarId,
+        calendarSyncTurnOn
+      )
       await dispatch(
         updateClientPartially(client.id, {
-          notification_id: notificationId,
-          calendar_id: calendarId,
+          notification_id: newNotificationId,
+          calendar_id: newCalendarId,
         })
       )
     })
