@@ -235,7 +235,7 @@ export class DB {
     return new Promise((resolve, reject) =>
       db.transaction((tx) => {
         tx.executeSql(
-          `UPDATE ${table} SET ${partKeys.join(' = ? ')} = ? WHERE id = ?`,
+          `UPDATE ${table} SET ${partKeys.join(' = ?, ')} = ? WHERE id = ?`,
           [...partValues, id],
           resolve,
           (_, error) => reject(error)
