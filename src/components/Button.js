@@ -18,6 +18,7 @@ const Button = ({
       style={{
         ...styles.button,
         backgroundColor: btnDecline ? colors.abort : colors.accent,
+        borderColor: colors.border,
         ...style,
       }}
       onPress={!disabled ? onPress : null}
@@ -44,10 +45,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 12,
     borderRadius: 10,
+    borderWidth: 1,
     alignItems: 'center',
     marginVertical: 7,
     width: '100%',
     minHeight: 44,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
   buttonTitle: {
     fontWeight: 'bold',
