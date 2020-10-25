@@ -132,7 +132,10 @@ export const setAllNotificationSettings = ({
         )
       )
     } else {
-      await Notifications.cancelAllScheduledNotificationsAsync()
+      if (!notificationTurnOn) {
+        await Notifications.cancelAllScheduledNotificationsAsync()
+      }
+      // TODO Возможно стоит добавить удаление календарных событий при отключении синхронизации
     }
     await storeData('notificationTurnOn', notificationTurnOn ? '1' : '0')
     await storeData('notificationBeforeEvent', notificationBeforeEvent + '')

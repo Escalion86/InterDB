@@ -77,6 +77,6 @@ export default SettingsScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 5,
+    // paddingHorizontal: 5,
   },
 })
