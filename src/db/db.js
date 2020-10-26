@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite'
 import dbTemplate, { prepareForDB } from './dbTemplate'
 
-const DBName = 'events24.db'
+const DBName = 'events25.db'
 
 let db = SQLite.openDatabase(DBName)
 

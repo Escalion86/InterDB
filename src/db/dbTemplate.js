@@ -478,6 +478,15 @@ export default dbTemplate = {
       default: 'Заметка',
       db_default: 'Заметка',
     },
+    {
+      db_name: 'create_date',
+      desc: 'Дата и время создания',
+      type: 'date',
+      db_type: 'TEXT',
+      not_null: true,
+      default: '',
+      db_default: '',
+    },
   ],
 
   clients: [
@@ -643,6 +652,15 @@ export default dbTemplate = {
       default: '',
       db_default: '',
     },
+    {
+      db_name: 'create_date',
+      desc: 'Дата и время создания',
+      type: 'date',
+      db_type: 'TEXT',
+      not_null: true,
+      default: '',
+      db_default: '',
+    },
   ],
 
   services: [
@@ -736,6 +754,15 @@ export default dbTemplate = {
       default: 0,
       db_default: 0,
     },
+    {
+      db_name: 'create_date',
+      desc: 'Дата и время создания',
+      type: 'date',
+      db_type: 'TEXT',
+      not_null: true,
+      default: '',
+      db_default: '',
+    },
   ],
   finances: [
     {
@@ -777,6 +804,15 @@ export default dbTemplate = {
     {
       db_name: 'date',
       desc: 'Дата и время транзакции',
+      type: 'date',
+      db_type: 'TEXT',
+      not_null: true,
+      default: '',
+      db_default: '',
+    },
+    {
+      db_name: 'create_date',
+      desc: 'Дата и время создания',
       type: 'date',
       db_type: 'TEXT',
       not_null: true,
