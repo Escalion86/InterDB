@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { loadAll } from '../store/actions/db'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { getAllNotificationSettings } from '../store/actions/app'
+import * as Notifications from 'expo-notifications'
 
 import { StatusBar } from 'expo-status-bar'
 import burgerButton from '../components/burgerButton'
@@ -435,12 +436,21 @@ const ServicesStackScreen = ({ navigation }) => (
 
 const Drawer = createDrawerNavigator()
 
-const DrawerScreen = () => {
+const DrawerScreen = ({ navigation }) => {
   const { colors } = useTheme()
   const DrawerIcon = ({ name }) => (
     <Ionicons name={name} size={24} color={colors.text} />
   )
   DrawerIcon.displayName = 'DrawerIcon'
+
+  useEffect(() => {
+    Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log('Notification response:', response)
+      // const data = response.notification.request.content.data
+      // navigation.navigate(data.toScreen, data.props)
+      // Linking.openUrl(url);
+    })
+  }, [])
 
   return (
     <Drawer.Navigator

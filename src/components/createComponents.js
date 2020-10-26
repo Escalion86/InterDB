@@ -38,7 +38,7 @@ export const SwitchBlock = ({
         justifyContent: 'space-between',
       }}
     >
-      <Text style={{ fontSize: fontSize.medium, color: colors.text }}>
+      <Text style={{ flex: 1, fontSize: fontSize.medium, color: colors.text }}>
         {title}
       </Text>
       <SwitchPaper value={value} onValueChange={onValueChange} />

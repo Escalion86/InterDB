@@ -37,19 +37,21 @@ export const deleteNotification = async (id = '') => {
   if (id) await Notifications.cancelScheduledNotificationAsync(id)
 }
 
-export const addEventNotification = async (
-  event,
-  notificationBeforeEventStart = null,
-  notificationAddPrepareRoadTime = null,
-  turnOn = null
-) => {
+export const addEventNotification = async (event, appStore = null) => {
   if (event) {
-    const appStore = store.getState().app
-    if (turnOn === null) {
-      turnOn = appStore.notificationTurnOn
+    if (!appStore) {
+      appStore = store.getState().app
     }
+    const {
+      notificationBeforeEvent,
+      notificationAddPrepareRoadTime,
+      pushEventTurnOn,
+    } = appStore
+    // if (pushEventTurnOn === null) {
+    //   pushEventTurnOn = appStore.notificationTurnOn
+    // }
 
-    if (!turnOn) {
+    if (!pushEventTurnOn) {
       return ''
     }
 
@@ -57,17 +59,17 @@ export const addEventNotification = async (
       deleteNotification(event.notification_id)
     }
 
-    if (!notificationBeforeEventStart) {
-      notificationBeforeEventStart = appStore.notificationBeforeEvent
-    }
+    // if (!notificationBeforeEvent) {
+    //   notificationBeforeEvent = appStore.notificationBeforeEvent
+    // }
 
-    if (!notificationAddPrepareRoadTime) {
-      notificationAddPrepareRoadTime = appStore.notificationAddPrepareRoadTime
-    }
+    // if (!notificationAddPrepareRoadTime) {
+    //   notificationAddPrepareRoadTime = appStore.notificationAddPrepareRoadTime
+    // }
 
     const date =
       event.date -
-      notificationBeforeEventStart * 1000 * 60 -
+      notificationBeforeEvent * 1000 * 60 -
       (notificationAddPrepareRoadTime
         ? event.timing_road * 1000 * 60 + event.timing_preparetime * 1000 * 60
         : 0)
@@ -87,7 +89,7 @@ export const addEventNotification = async (
       return await addNotification({
         title: `Событие${
           service ? ` "${service.name}"` : ''
-        } через ${notificationBeforeEventStart} мин`,
+        } через ${notificationBeforeEvent} мин`,
         body: `Начало: ${formatTime(new Date(event.date))} ${formatDate(
           new Date(event.date),
           true,
@@ -96,6 +98,10 @@ export const addEventNotification = async (
         )}\nАдрес: ${adress}`,
         subtitle: 'Напоминание о событии',
         date: date,
+        data: {
+          toScreen: 'Event',
+          props: { eventId: event.id },
+        },
       })
     } else {
       return ''
@@ -105,28 +111,27 @@ export const addEventNotification = async (
   }
 }
 
-export const addClientNotification = async (
-  client,
-  notificationTime = null,
-  turnOn = null
-) => {
+export const addClientNotification = async (client, appStore = null) => {
   if (client) {
-    const appStore = store.getState().app
+    if (!appStore) {
+      appStore = store.getState().app
+    }
+    const { notificationBirthday, pushBirthdayTurnOn } = appStore
     if (client.notification_id) {
       deleteNotification(client.notification_id)
     }
 
-    if (turnOn === null) {
-      turnOn = appStore.notificationTurnOn
-    }
+    // if (pushBirthdayTurnOn === null) {
+    //   pushBirthdayTurnOn = appStore.pushBirthdayTurnOn
+    // }
 
-    if (!turnOn) {
+    if (!pushBirthdayTurnOn) {
       return ''
     }
 
-    if (!notificationTime) {
-      notificationTime = appStore.notificationBirthday
-    }
+    // if (!notificationBirthday) {
+    //   notificationBirthday = appStore.notificationBirthday
+    // }
 
     const today = new Date().setHours(0, 0, 0, 0)
     let date = new Date().setFullYear(
@@ -139,7 +144,7 @@ export const addClientNotification = async (
       date = new Date(date).setFullYear(new Date(date).getFullYear() + 1)
     }
 
-    date += notificationTime * 1000 * 60
+    date += notificationBirthday * 1000 * 60
 
     if (date > new Date()) {
       return await addNotification({
@@ -173,41 +178,50 @@ export const deleteCalendarEvent = async (id = '') => {
   if (id) await Calendar.deleteEventAsync(id, { futureEvents: true })
 }
 
-export const addCalendarEvent = async (
-  event,
-  notificationBeforeEventStart = null,
-  notificationAddPrepareRoadTime = null,
-  turnOn = null
-) => {
-  const storeState = store.getState()
-  if (!turnOn) {
-    turnOn = storeState.app.calendarSyncTurnOn
+export const addCalendarEvent = async (event, appStore = null) => {
+  if (!appStore) {
+    appStore = store.getState().app
   }
-  if (turnOn && event.date > new Date()) {
-    const service = storeState.service.services.find((service) => {
+  const {
+    notificationBeforeEvent,
+    notificationAddPrepareRoadTime,
+    calendarEventId,
+    calendarEventTurnOn,
+  } = appStore
+
+  // const storeState = store.getState()
+  // if (!calendarEventTurnOn) {
+  //   calendarEventTurnOn = storeState.app.calendarEventTurnOn
+  // }
+  if (calendarEventTurnOn && event.date > new Date()) {
+    const service = store.getState().service.services.find((service) => {
       return service.id === event.service
     })
 
-    if (!notificationBeforeEventStart) {
-      notificationBeforeEventStart = storeState.app.notificationBeforeEvent
-    }
+    // if (!notificationBeforeEvent) {
+    //   notificationBeforeEvent = storeState.app.notificationBeforeEvent
+    // }
 
-    if (!notificationAddPrepareRoadTime) {
-      notificationAddPrepareRoadTime =
-        storeState.app.notificationAddPrepareRoadTime
-    }
+    // if (!calendarEventId) {
+    //   calendarEventId = storeState.app.calendarEventId
+    // }
+
+    // if (!notificationAddPrepareRoadTime) {
+    //   notificationAddPrepareRoadTime =
+    //     storeState.app.notificationAddPrepareRoadTime
+    // }
 
     const CalendarFunc = event.calendar_id
       ? (body) => Calendar.updateEventAsync(event.calendar_id, body)
-      : (body) => Calendar.createEventAsync(storeState.app.calendarId, body)
+      : (body) => Calendar.createEventAsync(calendarEventId, body)
 
-    const calendarEventId = await CalendarFunc({
+    const newCalendarEventId = await CalendarFunc({
       title: service ? service.name : 'Заказ неизвестной услуги',
       startDate: event.date,
       endDate: event.date + event.timing_duration * 60000, // 60 * 1000
       location: `${event.location_town}, ${event.location_street} ${event.location_house}`,
       notes:
-        (storeState.app.notificationAddPrepareRoadTime ||
+        (notificationAddPrepareRoadTime ||
         event.timing_road + event.timing_preparetime > 0
           ? `Ожидаемое время на дорогу и сбор: ${
               event.timing_road + event.timing_preparetime
@@ -217,8 +231,8 @@ export const addCalendarEvent = async (
       alarms: [
         {
           relativeOffset:
-            -notificationBeforeEventStart -
-            (storeState.app.notificationAddPrepareRoadTime
+            -notificationBeforeEvent -
+            (notificationAddPrepareRoadTime
               ? event.timing_road + event.timing_preparetime
               : 0),
           method: Calendar.AlarmMethod.DEFAULT,
@@ -229,34 +243,36 @@ export const addCalendarEvent = async (
         // },
       ],
     })
-    return calendarEventId
+    return newCalendarEventId
   } else {
     return ''
   }
 }
-export const addCalendarClientBirthday = async (
-  client,
-  notificationTime = null,
-  calendarId = null,
-  turnOn = null
-) => {
-  const appStore = store.getState().app
-  if (turnOn === null) {
-    turnOn = appStore.calendarSyncTurnOn
+export const addCalendarClientBirthday = async (client, appStore = null) => {
+  if (!appStore) {
+    appStore = store.getState().app
   }
+  const {
+    notificationBirthday,
+    calendarBirthdayId,
+    calendarBirthdayTurnOn,
+  } = appStore
 
-  console.log('appStore', appStore)
+  // if (calendarBirthdayTurnOn === null) {
+  //   calendarBirthdayTurnOn = appStore.calendarBirthdayTurnOn
+  // }
 
-  if (turnOn) {
+  if (calendarBirthdayTurnOn) {
     if (client.calendar_id) {
       deleteCalendarEvent(client.calendar_id)
     }
 
-    if (calendarId === null) {
-      calendarId = appStore.calendarId
-    }
+    // if (calendarBirthdayId === null) {
+    //   calendarBirthdayId = appStore.calendarBirthdayId
+    // }
 
-    const CalendarFunc = (body) => Calendar.createEventAsync(calendarId, body)
+    const CalendarFunc = (body) =>
+      Calendar.createEventAsync(calendarBirthdayId, body)
     // const CalendarFunc = client.calendar_id
     //   ? (body) =>
     //     Calendar.updateEventAsync(client.calendar_id, body, {
@@ -264,9 +280,9 @@ export const addCalendarClientBirthday = async (
     //     })
     //   : (body) => Calendar.createEventAsync(calendarId, body)
 
-    if (!notificationTime) {
-      notificationTime = appStore.notificationBirthday
-    }
+    // if (!notificationBirthday) {
+    //   notificationBirthday = appStore.notificationBirthday
+    // }
 
     const today = new Date().setHours(0, 0, 0, 0)
     let birthday = new Date().setFullYear(
@@ -288,7 +304,7 @@ export const addCalendarClientBirthday = async (
       allDay: true,
       alarms: [
         {
-          relativeOffset: +notificationTime,
+          relativeOffset: +notificationBirthday,
           method: Calendar.AlarmMethod.DEFAULT,
         },
         // {

@@ -16,6 +16,7 @@ export const DevDropDownPicker = ({
   disabled = false,
   tableValue = 'id',
 }) => {
+  if (defaultValue === 'null') defaultValue = null
   if (tables.length === 0) return null
   const { colors } = useTheme()
   const tablesItems = []

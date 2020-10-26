@@ -108,26 +108,11 @@ export const addEvent = (event) => {
   }
 }
 
-export const refreshEventsNotifications = (
-  events,
-  min = null,
-  notificationAddPrepareRoadTime = null,
-  notificationTurnOn = null,
-  calendarSyncTurnOn = null
-) => {
+export const refreshEventsNotifications = (events, appStore) => {
   return async (dispatch) => {
     events.forEach(async (event) => {
-      const notificationId = await addEventNotification(
-        event,
-        min,
-        notificationTurnOn
-      )
-      const calendarId = await addCalendarEvent(
-        event,
-        min,
-        notificationAddPrepareRoadTime,
-        calendarSyncTurnOn
-      )
+      const notificationId = await addEventNotification(event, appStore)
+      const calendarId = await addCalendarEvent(event, appStore)
       await dispatch(
         updateEventPartially(event.id, {
           notification_id: notificationId,
