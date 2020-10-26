@@ -163,7 +163,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Стоимость"
         value={newService.finance_price}
-        onChangeText={(text) => setServiceItem({ price: text })}
+        onChangeText={(text) => setServiceItem({ finance_price: text })}
         keyboardType="numeric"
         postfix="&#8381;"
         placeholder="0"
@@ -171,7 +171,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Затраты на расходники"
         value={newService.finance_consumables}
-        onChangeText={(text) => setServiceItem({ price: text })}
+        onChangeText={(text) => setServiceItem({ finance_consumables: text })}
         keyboardType="numeric"
         prefix="-"
         postfix="&#8381;"
@@ -180,7 +180,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Затраты на ассистентов"
         value={newService.finance_assistants}
-        onChangeText={(text) => setServiceItem({ price: text })}
+        onChangeText={(text) => setServiceItem({ finance_assistants: text })}
         keyboardType="numeric"
         prefix="-"
         postfix="&#8381;"
