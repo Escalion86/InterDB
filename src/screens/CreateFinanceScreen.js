@@ -126,7 +126,7 @@ const CreateFinanceScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Сумма"
         value={newFinance.sum}
-        onChangeText={(text) => setFinanceItem({ sum: text })}
+        onChangeText={(text) => setFinanceItem({ sum: text.trim() })}
         keyboardType="numeric"
         postfix="&#8381;"
         placeholder="0"

@@ -534,9 +534,7 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Цена для клиента"
         value={newEvent.finance_price}
-        onChangeText={(text) =>
-          setEventItem({ finance_price: Math.floor(text) })
-        }
+        onChangeText={(text) => setEventItem({ finance_price: text.trim() })}
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
@@ -549,7 +547,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         title="Расходные материалы"
         value={newEvent.finance_consumables}
         onChangeText={(text) =>
-          setEventItem({ finance_consumables: Math.floor(text) })
+          setEventItem({ finance_consumables: text.trim() })
         }
         keyboardType="numeric"
         placeholder="0"
@@ -564,7 +562,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         title="Ассистентам"
         value={newEvent.finance_assistants}
         onChangeText={(text) =>
-          setEventItem({ finance_assistants: Math.floor(text) })
+          setEventItem({ finance_assistants: text.trim() })
         }
         keyboardType="numeric"
         placeholder="0"
@@ -578,9 +576,7 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="За дорогу"
         value={newEvent.finance_road}
-        onChangeText={(text) =>
-          setEventItem({ finance_road: Math.floor(text) })
-        }
+        onChangeText={(text) => setEventItem({ finance_road: text.trim() })}
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
@@ -590,7 +586,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         title="Организатору"
         value={newEvent.finance_organizator}
         onChangeText={(text) =>
-          setEventItem({ finance_organizator: Math.floor(text) })
+          setEventItem({ finance_organizator: text.trim() })
         }
         keyboardType="numeric"
         placeholder="0"
@@ -638,7 +634,6 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Этаж"
         value={newEvent.location_floor}
-        keyboardType="numeric"
         onChangeText={(text) => setEventItem({ location_floor: text })}
       />
       <View style={{ flexDirection: 'row' }}>

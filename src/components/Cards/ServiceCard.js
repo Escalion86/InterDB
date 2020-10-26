@@ -163,8 +163,11 @@ const ServiceCard = ({
             <View style={styles.right}>
               <View style={styles.carddate}>
                 <Text style={styles.time}>
-                  {service.preparetime + service.collecttime + service.duration}{' '}
-                  мин
+                  {`${
+                    +service.preparetime +
+                    service.collecttime +
+                    service.duration
+                  } мин`}
                 </Text>
               </View>
               {/* <Text style={styles.price}>{service.price}</Text> */}

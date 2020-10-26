@@ -446,8 +446,8 @@ const DrawerScreen = ({ navigation }) => {
   useEffect(() => {
     Notifications.addNotificationResponseReceivedListener((response) => {
       console.log('Notification response:', response)
-      // const data = response.notification.request.content.data
-      // navigation.navigate(data.toScreen, data.props)
+      const data = response.notification.request.content.data
+      navigation.navigate(data.toScreen, data.props)
       // Linking.openUrl(url);
     })
   }, [])

@@ -68,16 +68,16 @@ const EventCard = ({
     // const dispatch = useDispatch()
 
     const profit =
-      event.finance_price -
-      event.finance_road -
-      event.finance_organizator -
-      event.finance_assistants -
-      event.finance_consumables
+      +event.finance_price -
+      +event.finance_road -
+      +event.finance_organizator -
+      +event.finance_assistants -
+      +event.finance_consumables
     //  +
     // event.finance_tips
 
     const timing =
-      event.timing_duration +
+      +event.timing_duration +
       event.timing_preparetime +
       event.timing_collecttime +
       event.timing_road * 2
