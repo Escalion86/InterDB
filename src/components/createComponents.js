@@ -530,13 +530,14 @@ export const BirthdayPicker = ({
   onMonthChange = () => {},
   onYearChange = () => {},
 }) => {
-  if (!day) day = 1
-  if (!month) month = 0
-  if (!year) year = ''
-  day += ''
-  year += ''
+  // if (!day) day = 1
+  // if (!month) month = 0
+  // if (!year) year = ''
+  // day += ''
+  // year += ''
   const { colors } = useTheme()
   const monthsNames = [
+    '----',
     'Января',
     'Февраля',
     'Марта',
@@ -550,29 +551,33 @@ export const BirthdayPicker = ({
     'Ноября',
     'Декабря',
   ]
-  const daysNames = []
+  const daysNames = ['--']
   for (let i = 1; i <= 31; i++) {
-    daysNames.push(i + '')
+    daysNames.push(i)
   }
 
   const yearsNames = ['----']
   for (let i = 2020; i >= 1900; i--) {
-    yearsNames.push(i + '')
+    yearsNames.push(i)
   }
 
   const daysPickerItems = daysNames.map((day, index) => (
-    <Picker.Item key={index} label={day} value={day} />
+    <Picker.Item key={index} label={day + ''} value={index} />
   ))
 
   const monthsPickerItems = monthsNames.map((month, index) => (
-    <Picker.Item key={index} label={month} value={index + ''} />
+    <Picker.Item
+      key={index}
+      label={month + ''}
+      value={index === 0 ? null : index - 1}
+    />
   ))
 
   const yearsPickerItems = yearsNames.map((year, index) => {
     if (index === 0) {
-      return <Picker.Item key={index} label={year} value={''} />
+      return <Picker.Item key={index} label={year} value={null} />
     } else {
-      return <Picker.Item key={index} label={year} value={year} />
+      return <Picker.Item key={index} label={year + ''} value={year} />
     }
   })
 

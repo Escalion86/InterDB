@@ -505,8 +505,8 @@ export default dbTemplate = {
       type: 'integer',
       db_type: 'INT',
       not_null: false,
-      default: 1,
-      db_default: 1,
+      default: null,
+      db_default: null,
     },
     {
       db_name: 'birthday_month',
@@ -514,8 +514,8 @@ export default dbTemplate = {
       type: 'integer',
       db_type: 'INT',
       not_null: false,
-      default: 0,
-      db_default: 0,
+      default: null,
+      db_default: null,
     },
     {
       db_name: 'birthday_year',
@@ -523,8 +523,8 @@ export default dbTemplate = {
       type: 'integer',
       db_type: 'INT',
       not_null: false,
-      default: 2000,
-      db_default: 2000,
+      default: null,
+      db_default: null,
     },
     {
       db_name: 'notification_id',
