@@ -147,7 +147,7 @@ const EventScreen = ({ navigation, route }) => {
         navigation={navigation}
         service={serviceObj}
         onPress={() => {
-          navigation.navigate('Service', { service: serviceObj })
+          navigation.navigate('Service', { serviceId: serviceObj.id })
         }}
         swipeable={false}
       />
@@ -156,7 +156,7 @@ const EventScreen = ({ navigation, route }) => {
         navigation={navigation}
         client={clientObj}
         onPress={() => {
-          navigation.navigate('Client', { client: clientObj })
+          navigation.navigate('Client', { clientId: clientObj.id })
         }}
         swipeable={false}
       />
