@@ -20,8 +20,10 @@ export const loadFinances = () => {
 
 export const addFinance = (finance) => {
   return async (dispatch) => {
+    finance.create_date = Math.floor(new Date() / 1000)
     const financeId = await DB.addFinance(finance)
     finance.id = financeId
+
     dispatch({
       type: ADD_FINANCE,
       finance,

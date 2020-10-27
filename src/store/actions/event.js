@@ -63,9 +63,11 @@ export const addEvent = (event) => {
     // Добавляем напоминание
     const notificationId = await addEventNotification(event)
     event.notification_id = notificationId
+    event.create_date = Math.floor(new Date() / 1000)
     // Добавляем запись в календарь
     const calendarId = await addCalendarEvent(event)
     event.calendar_id = calendarId
+
     // const storeState = store.getState()
     // if (storeState.app.calendarSyncTurnOn) {
     //   const calendarId = storeState.app.calendarId

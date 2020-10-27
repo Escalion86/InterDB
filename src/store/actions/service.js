@@ -52,8 +52,10 @@ export const loadingServiceComplite = (id) => {
 export const addService = (service) => {
   return async (dispatch) => {
     await dispatch(loadingServices())
+    service.create_date = Math.floor(new Date() / 1000)
     const serviceId = await DB.addService(service)
     service.id = serviceId
+
     dispatch({
       type: ADD_SERVICE,
       service,

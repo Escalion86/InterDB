@@ -92,6 +92,7 @@ export const addClient = (client) => {
     client.notification_id = notificationId
     const calendarId = await addCalendarClientBirthday(client)
     client.calendar_id = calendarId
+    client.create_date = Math.floor(new Date() / 1000)
     const clientId = await DB.addClient(client)
     client.id = clientId
     dispatch({

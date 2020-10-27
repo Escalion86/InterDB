@@ -120,6 +120,7 @@ export const dbGenerator = (
           'Отменено',
           'Выполнено',
         ]),
+        create_date: '',
       }
 
       // event.notification_id = addEventNotification(event)
@@ -210,6 +211,7 @@ export const dbGenerator = (
         vk: '',
         facebook: '',
         avatar: '',
+        create_date: '',
       }
     }
     case 'service': {
@@ -235,6 +237,7 @@ export const dbGenerator = (
         collecttime: 20,
         image: '',
         archive: 0,
+        create_date: '',
       }
     }
     case 'finance': {
@@ -244,6 +247,7 @@ export const dbGenerator = (
         comment: '',
         event: eventsIds.length > 0 ? rndArray(eventsIds) : '0',
         date: Date.now(),
+        create_date: '',
       }
     }
     default:
