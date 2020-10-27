@@ -485,7 +485,7 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TitleBlock title="Клиент" />
       {!clientObj ? (
         <View style={{ zIndex: 0 }}>
-          {services.length > 0 ? (
+          {clients.length > 0 ? (
             <Button
               onPress={() => {
                 setModal(
