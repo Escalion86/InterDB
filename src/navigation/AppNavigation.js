@@ -1,9 +1,12 @@
 import React, { useContext, useEffect } from 'react'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { loadAll } from '../store/actions/db'
 import { Provider as PaperProvider } from 'react-native-paper'
-import { getAllNotificationSettings } from '../store/actions/app'
+import {
+  getAllNotificationSettings,
+  setLastUsedVersion,
+} from '../store/actions/app'
 import * as Notifications from 'expo-notifications'
 
 import { StatusBar } from 'expo-status-bar'
@@ -32,6 +35,7 @@ import FinancesScreen from '../screens/FinancesScreen'
 import FinanceScreen from '../screens/FinanceScreen'
 import CreateServiceScreen from '../screens/CreateServiceScreen'
 import CreateFinanceScreen from '../screens/CreateFinanceScreen'
+import ModalChangeLog from '../components/Modals/ModalChangeLog'
 
 // import SettingsCalendarScreen from '../screens/SettingsCalendarScreen'
 
@@ -534,6 +538,40 @@ export const AppNavigation = () => {
 
   const { theme } = useContext(ThemeContext)
 
+  const appStore = useSelector((state) => state.app)
+  const modal =
+    appStore.lastUsedVersion !== '' &&
+    appStore.lastUsedVersion !== appStore.version ? (
+        <ModalChangeLog
+          visible={true}
+          onOuterClick={() => {
+            dispatch(setLastUsedVersion(appStore.version))
+          // setModal(null)
+          }}
+        />
+      ) : null
+
+  // const [modal, setModal] = useState(
+  //   useSelector((state) => state.app.firstStart) ? (
+  //     <ModalChangeLog
+  //       visible={true}
+  //       onOuterClick={() => {
+  //         dispatch(setFirstStart(false))
+  //         setModal(null)
+  //       }}
+  //     />
+  //   ) : null
+  // )
+
+  // const stateApp = useSelector((state) => state.app)
+
+  // setModal(
+  //   <ModalChangeLog
+  //     visible={true}
+  //     onOuterClick={() => setModal(null)}
+  //   />
+  // )
+
   // dispatch(loadAll())
   // После загрузки всех компонентов и state - загружаем данные БД
   useEffect(() => {
@@ -561,6 +599,7 @@ export const AppNavigation = () => {
       <NavigationContainer theme={theme}>
         <StatusBar style={theme.dark ? 'light' : 'dark'} />
         <DrawerScreen />
+        {modal}
       </NavigationContainer>
     </PaperProvider>
   )

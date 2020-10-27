@@ -2,6 +2,8 @@ import {
   // SET_NOTIFICATION_BEFORE_EVENT,
   // SET_NOTIFICATION_BIRTHDAY_TIME,
   SET_ALL_NOTIFICATION_SETTINGS,
+  SET_FIRST_START,
+  SET_LAST_USED_VERSION,
   // SET_ALL_CALENDAR_SETTINGS,
   // SET_ALL_SETTINGS,
 } from '../types'
@@ -19,6 +21,9 @@ export const initialAppState = {
   calendarEventId: '',
   calendarBirthdayTurnOn: false,
   calendarBirthdayId: '',
+  firstStart: false,
+  lastUsedVersion: '',
+  version: '0.3.1',
 }
 
 export const appReducer = (state = initialAppState, action) => {
@@ -27,6 +32,18 @@ export const appReducer = (state = initialAppState, action) => {
       return {
         ...state,
         ...action.appStore,
+      }
+
+    case SET_FIRST_START:
+      return {
+        ...state,
+        firstStart: action.firstStart,
+      }
+
+    case SET_LAST_USED_VERSION:
+      return {
+        ...state,
+        lastUsedVersion: action.lastUsedVersion,
       }
 
     default:

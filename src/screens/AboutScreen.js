@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+import { useSelector } from 'react-redux'
 import {
   StyleSheet,
   Text,
@@ -18,6 +19,7 @@ import { fontSize } from '../theme'
 const AboutScreen = ({ navigation, route }) => {
   const { colors } = useTheme()
   const { toggleDev, dev } = useContext(AppContext)
+  const version = useSelector((state) => state.app.version)
 
   const [startToOpenDev, setStartToOpenDev] = useState(null)
 
@@ -136,7 +138,7 @@ const AboutScreen = ({ navigation, route }) => {
 
       <View style={{ ...styles.bottom, borderColor: colors.card }}>
         <Text style={{ fontSize: fontSize.tiny, color: colors.text }}>
-          Версия: 0.3.0
+          Версия: {version}
         </Text>
       </View>
     </View>
