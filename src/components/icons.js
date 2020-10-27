@@ -53,8 +53,8 @@ export const EventIcon = ({
   dependencies = statusIconDependencies,
   status = null,
   size = 'medium',
-  showtext = false,
-  textcolor = 'white',
+  showText = false,
+  textColor = 'white',
   style = {},
 }) => {
   if (!status) {
@@ -67,8 +67,8 @@ export const EventIcon = ({
         iconName={
           dependencies[status].name ? dependencies[status].name : 'ios-bug'
         }
-        text={showtext ? status : null}
-        textcolor={textcolor}
+        text={showText ? status : null}
+        textColor={textColor}
         iconBackgroundColor={dependencies[status].color}
       />
     )

@@ -36,8 +36,8 @@ const IconMenu = ({ event, eventPartName = null, style = {} }) => {
           dependencies={dependencies}
           status={key}
           size="small"
-          showtext={true}
-          textcolor={colors.text}
+          showText={true}
+          textColor={colors.text}
         />
       </MenuOption>
     )

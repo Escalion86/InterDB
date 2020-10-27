@@ -458,16 +458,10 @@ export const EventRowDropDownPicker = ({
           dependencies={dependencies}
           status={item}
           size="tiny"
-          showtext={true}
-          textcolor={colors.text}
+          showText={true}
+          textColor={colors.text}
           style={{ paddingHorizontal: 10 }}
         />
-        // <IconEventComponent
-        //   status={item}
-        //   size={20}
-        //   showtext={true}
-        //   textcolor={colors.text}
-        // />
       ),
     })
   }
@@ -778,8 +772,8 @@ export const DropDownPickerBlock = ({
         //     dependencies={dependencies}
         //     status={item}
         //     size={20}
-        //     showtext={true}
-        //     textcolor={colors.text}
+        //     showText={true}
+        //     textColor={colors.text}
         //   />
         // ),
       })
