@@ -111,8 +111,8 @@ export const addEventNotification = async (event, appStore = null) => {
   }
 }
 
-export const addClientNotification = async (client, appStore = null) => {
-  if (client) {
+export const addClientNotification = async (client = null, appStore = null) => {
+  if (client && client.birthday_day && client.birthday_month) {
     if (!appStore) {
       appStore = store.getState().app
     }
@@ -248,77 +248,84 @@ export const addCalendarEvent = async (event, appStore = null) => {
     return ''
   }
 }
-export const addCalendarClientBirthday = async (client, appStore = null) => {
-  if (!appStore) {
-    appStore = store.getState().app
-  }
-  const {
-    notificationBirthday,
-    calendarBirthdayId,
-    calendarBirthdayTurnOn,
-  } = appStore
-
-  // if (calendarBirthdayTurnOn === null) {
-  //   calendarBirthdayTurnOn = appStore.calendarBirthdayTurnOn
-  // }
-
-  if (calendarBirthdayTurnOn) {
-    if (client.calendar_id) {
-      deleteCalendarEvent(client.calendar_id)
+export const addCalendarClientBirthday = async (
+  client = null,
+  appStore = null
+) => {
+  if (client && client.birthday_day && client.birthday_month) {
+    if (!appStore) {
+      appStore = store.getState().app
     }
+    const {
+      notificationBirthday,
+      calendarBirthdayId,
+      calendarBirthdayTurnOn,
+    } = appStore
 
-    // if (calendarBirthdayId === null) {
-    //   calendarBirthdayId = appStore.calendarBirthdayId
+    // if (calendarBirthdayTurnOn === null) {
+    //   calendarBirthdayTurnOn = appStore.calendarBirthdayTurnOn
     // }
 
-    const CalendarFunc = (body) =>
-      Calendar.createEventAsync(calendarBirthdayId, body)
-    // const CalendarFunc = client.calendar_id
-    //   ? (body) =>
-    //     Calendar.updateEventAsync(client.calendar_id, body, {
-    //       futureEvents: true,
-    //     })
-    //   : (body) => Calendar.createEventAsync(calendarId, body)
+    if (calendarBirthdayTurnOn) {
+      if (client.calendar_id) {
+        deleteCalendarEvent(client.calendar_id)
+      }
 
-    // if (!notificationBirthday) {
-    //   notificationBirthday = appStore.notificationBirthday
-    // }
+      // if (calendarBirthdayId === null) {
+      //   calendarBirthdayId = appStore.calendarBirthdayId
+      // }
 
-    const today = new Date().setHours(0, 0, 0, 0)
-    let birthday = new Date().setFullYear(
-      new Date().getFullYear(),
-      client.birthday_month,
-      client.birthday_day
-    )
-    birthday = new Date(birthday).setHours(0, 0, 0, 0)
-    if (today > birthday) {
-      birthday = new Date(birthday).setFullYear(
-        new Date(birthday).getFullYear() + 1
+      const CalendarFunc = (body) =>
+        Calendar.createEventAsync(calendarBirthdayId, body)
+      // const CalendarFunc = client.calendar_id
+      //   ? (body) =>
+      //     Calendar.updateEventAsync(client.calendar_id, body, {
+      //       futureEvents: true,
+      //     })
+      //   : (body) => Calendar.createEventAsync(calendarId, body)
+
+      // if (!notificationBirthday) {
+      //   notificationBirthday = appStore.notificationBirthday
+      // }
+
+      const today = new Date().setHours(0, 0, 0, 0)
+      let birthday = new Date().setFullYear(
+        new Date().getFullYear(),
+        client.birthday_month,
+        client.birthday_day
       )
-    }
+      birthday = new Date(birthday).setHours(0, 0, 0, 0)
+      if (today > birthday) {
+        birthday = new Date(birthday).setFullYear(
+          new Date(birthday).getFullYear() + 1
+        )
+      }
 
-    const calendarClientId = await CalendarFunc({
-      title: `День рождения клиента ${client.surname} ${client.name} ${client.thirdname}`.trim(),
-      startDate: birthday,
-      endDate: birthday,
-      allDay: true,
-      alarms: [
-        {
-          relativeOffset: +notificationBirthday,
-          method: Calendar.AlarmMethod.DEFAULT,
+      const calendarClientId = await CalendarFunc({
+        title: `День рождения клиента ${client.surname} ${client.name} ${client.thirdname}`.trim(),
+        startDate: birthday,
+        endDate: birthday,
+        allDay: true,
+        alarms: [
+          {
+            relativeOffset: +notificationBirthday,
+            method: Calendar.AlarmMethod.DEFAULT,
+          },
+          // {
+          //   relativeOffset: -event.timing_preparetime,
+          //   method: Calendar.AlarmMethod.DEFAULT,
+          // },
+        ],
+        recurrenceRule: {
+          frequency: Calendar.Frequency.YEARLY,
+          interval: 1,
+          occurrence: 30,
         },
-        // {
-        //   relativeOffset: -event.timing_preparetime,
-        //   method: Calendar.AlarmMethod.DEFAULT,
-        // },
-      ],
-      recurrenceRule: {
-        frequency: Calendar.Frequency.YEARLY,
-        interval: 1,
-        occurrence: 30,
-      },
-    })
-    return calendarClientId
+      })
+      return calendarClientId
+    } else {
+      return ''
+    }
   } else {
     return ''
   }
