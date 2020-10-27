@@ -16,94 +16,108 @@ const ModalBottomMenu = ({
   const { colors } = useTheme()
 
   return (
-    <GestureRecognizer
-      onSwipeDown={() => {
-        onOuterClick()
-      }}
-      config={{
-        velocityThreshold: 0.1,
-        directionalOffsetThreshold: 80,
-      }}
-    >
+    <>
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={visible}
         hardwareAccelerated={true}
-        // onRequestClose={() => {
-        //   Alert.alert("Modal has been closed.")
-        // }}
       >
-        <View
-          style={styles.modal}
-          // onPressOut={() => {
-          //   onOuterClick()
+        <View style={{ flex: 1, opacity: 0.8, backgroundColor: '#000' }}></View>
+      </Modal>
+      <GestureRecognizer
+        onSwipeDown={() => {
+          onOuterClick()
+        }}
+        config={{
+          velocityThreshold: 0.1,
+          directionalOffsetThreshold: 80,
+        }}
+      >
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={visible}
+          hardwareAccelerated={true}
+          // onRequestClose={() => {
+          //   Alert.alert("Modal has been closed.")
           // }}
         >
-          {/* <TouchableWithoutFeedback> */}
           <View
-            style={{
-              ...styles.panel,
-              backgroundColor: colors.card,
-              borderColor: colors.border,
-            }}
-            // onSwipePerformed={(action) => {
-            //   if (action === "down") onOuterClick()
+            style={styles.modal}
+            // onPressOut={() => {
+            //   onOuterClick()
             // }}
           >
-            <TouchableOpacity
-              style={{ position: 'absolute', right: 18, top: 5 }}
-              onPress={() => {
-                onOuterClick()
-              }}
-            >
-              <Ionicons name="ios-close" size={36} color={colors.text} />
-            </TouchableOpacity>
+            {/* <TouchableWithoutFeedback> */}
             <View
               style={{
-                width: '20%',
-                height: 7,
+                ...styles.panel,
+                backgroundColor: colors.modal,
                 borderColor: colors.border,
-                borderWidth: 1,
-                backgroundColor: colors.active,
-                borderRadius: 5,
-                alignSelf: 'center',
-                marginBottom: 6,
               }}
-            ></View>
-            <View
-              style={{ alignItems: 'center', marginBottom: 10, minHeight: 12 }}
+              // onSwipePerformed={(action) => {
+              //   if (action === "down") onOuterClick()
+              // }}
             >
-              {title ? (
-                <Text
-                  style={{
-                    ...styles.panelTitle,
-                    fontSize: fontSize.giant,
-                    fontWeight: 'bold',
-                    color: colors.text,
-                  }}
-                >
-                  {title}
-                </Text>
-              ) : null}
-              {subtitle ? (
-                <Text
-                  style={{
-                    ...styles.panelSubtitle,
-                    fontSize: fontSize.small,
-                    color: colors.text,
-                  }}
-                >
-                  {subtitle}
-                </Text>
-              ) : null}
+              <TouchableOpacity
+                style={{ position: 'absolute', right: 18, top: 5 }}
+                onPress={() => {
+                  onOuterClick()
+                }}
+              >
+                <Ionicons name="ios-close" size={36} color={colors.text} />
+              </TouchableOpacity>
+              <View
+                style={{
+                  width: '20%',
+                  height: 7,
+                  borderColor: colors.border,
+                  borderWidth: 1,
+                  backgroundColor: colors.active,
+                  borderRadius: 5,
+                  alignSelf: 'center',
+                  marginBottom: 6,
+                }}
+              ></View>
+              <View
+                style={{
+                  alignItems: 'center',
+                  marginBottom: 10,
+                  minHeight: 12,
+                }}
+              >
+                {title ? (
+                  <Text
+                    style={{
+                      ...styles.panelTitle,
+                      fontSize: fontSize.giant,
+                      fontWeight: 'bold',
+                      color: colors.text,
+                    }}
+                  >
+                    {title}
+                  </Text>
+                ) : null}
+                {subtitle ? (
+                  <Text
+                    style={{
+                      ...styles.panelSubtitle,
+                      fontSize: fontSize.small,
+                      color: colors.text,
+                    }}
+                  >
+                    {subtitle}
+                  </Text>
+                ) : null}
+              </View>
+              <View style={{ maxHeight: 417 }}>{children}</View>
             </View>
-            <View style={{ maxHeight: 417 }}>{children}</View>
+            {/* </TouchableWithoutFeedback> */}
           </View>
-          {/* </TouchableWithoutFeedback> */}
-        </View>
-      </Modal>
-    </GestureRecognizer>
+        </Modal>
+      </GestureRecognizer>
+    </>
   )
 }
 
@@ -173,6 +187,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 3,
     borderRightWidth: 3,
     maxHeight: 500,
+    opacity: 0.9,
     // shadowColor: '#000000',
     // shadowOffset: {width: 0, height: 0},
     // shadowRadius: 5,
