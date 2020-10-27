@@ -15,6 +15,7 @@ import Button from '../components/Button'
 import { AppContext } from '../AppContext'
 import { ContactIcon } from '../components/infoComponents'
 import { fontSize } from '../theme'
+import ModalChangeLog from '../components/Modals/ModalChangeLog'
 
 const AboutScreen = ({ navigation, route }) => {
   const { colors } = useTheme()
@@ -22,6 +23,7 @@ const AboutScreen = ({ navigation, route }) => {
   const version = useSelector((state) => state.app.version)
 
   const [startToOpenDev, setStartToOpenDev] = useState(null)
+  const [modal, setModal] = useState(null)
 
   const endToOpenDev = () => {
     if (Math.floor((new Date() - startToOpenDev) / 1000) >= 5) {
@@ -136,11 +138,24 @@ const AboutScreen = ({ navigation, route }) => {
         />
       </ScrollView>
 
-      <View style={{ ...styles.bottom, borderColor: colors.card }}>
-        <Text style={{ fontSize: fontSize.tiny, color: colors.text }}>
+      <TouchableOpacity
+        style={{ ...styles.bottom, borderColor: colors.card }}
+        onPressIn={() =>
+          setModal(
+            <ModalChangeLog
+              visible={true}
+              onOuterClick={() => {
+                setModal(null)
+              }}
+            />
+          )
+        }
+      >
+        <Text style={{ fontSize: fontSize.small, color: colors.text }}>
           Версия: {version}
         </Text>
-      </View>
+      </TouchableOpacity>
+      {modal}
     </View>
   )
 }
@@ -172,7 +187,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottom: {
-    height: 30,
+    height: 36,
     alignItems: 'center',
     paddingTop: 5,
     borderTopWidth: 1,
