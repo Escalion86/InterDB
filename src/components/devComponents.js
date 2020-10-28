@@ -38,7 +38,7 @@ export const DevDropDownPicker = ({
           textAlign: 'left',
           color: colors.text,
         }}
-        containerStyle={{ ...style, marginVertical: 5 }}
+        containerStyle={{ marginVertical: 5, ...style }}
         style={{
           backgroundColor: colors.card,
           borderColor: colors.border,
