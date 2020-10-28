@@ -214,7 +214,7 @@ const EventCard = ({
                 addOutcome={() => financeOutcome(outcomeLeft)}
                 incomePlanValue={event.finance_price}
                 outcomePlanValue={
-                  event.finance_road +
+                  +event.finance_road +
                   event.finance_organizator +
                   event.finance_assistants +
                   event.finance_consumables
