@@ -210,7 +210,11 @@ const EventsScreen = ({ navigation, route }) => {
   const { Popover } = renderers
   const [sorting, setSorting] = useState('dateDESC')
   const [modal, setModal] = useState(null)
-  const [filter, setFilter] = useState({ month: 0, year: 2020, pos: 0 })
+  const [filter, setFilter] = useState({
+    month: new Date().getMonth(),
+    year: new Date().getFullYear(),
+    pos: 0,
+  })
   // const [filterScrollPos, setFilterScrollPos] = useState(0)
 
   const scrollViewRef = useRef()
@@ -430,6 +434,11 @@ const EventsScreen = ({ navigation, route }) => {
 
   console.log('render EventsScreen Header finished')
 
+  const monthItems = useMemo(
+    () => setMonthItems(filter, setFilter, eventsInMonths),
+    [filter.month, filter.year, eventsInMonths]
+  )
+
   if (loading) {
     console.log('render EventsScreen loading')
     return (
@@ -440,11 +449,6 @@ const EventsScreen = ({ navigation, route }) => {
   }
 
   console.log('render EventsScreen loading skipped')
-
-  const monthItems = useMemo(
-    () => setMonthItems(filter, setFilter, eventsInMonths),
-    [filter.month, filter.year, eventsInMonths]
-  )
 
   const Filter = () => {
     return (
