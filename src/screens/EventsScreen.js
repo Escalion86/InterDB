@@ -213,7 +213,6 @@ const EventsScreen = ({ navigation, route }) => {
   const [filter, setFilter] = useState({
     month: new Date().getMonth(),
     year: new Date().getFullYear(),
-    pos: 0,
   })
   // const [filterScrollPos, setFilterScrollPos] = useState(0)
 
