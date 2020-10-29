@@ -11,104 +11,15 @@ import { useTheme } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import { fontSize } from '../../theme'
 
-const TextDefault = ({ children = null, style = {}, paragraph = 0 }) => {
-  const { colors } = useTheme()
-  return (
-    <Text
-      style={{
-        textAlign: 'left',
-        fontSize: fontSize.small,
-        color: colors.text,
-        marginLeft: paragraph * 12,
-        ...style,
-      }}
-    >
-      {children}
-    </Text>
-  )
-}
-
-const TextTitle = ({ children = null, style = {} }) => {
-  return (
-    <TextDefault
-      style={{
-        fontSize: fontSize.medium,
-        ...style,
-      }}
-    >
-      {children}
-    </TextDefault>
-  )
-}
-
 const ModalSplash = ({
   title = '',
   text = '',
   visible = false,
   onOuterClick = () => {},
   textSize = 'medium',
-  data = null,
+  children = null,
 }) => {
   const { colors } = useTheme()
-  let dataItems = null
-  if (data) {
-    dataItems = data.map((item, index) => {
-      console.log('item.version', item.version)
-      return (
-        <View key={index} style={{ width: '100%' }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              marginTop: index > 0 ? 16 : 0,
-            }}
-          >
-            <TextTitle style={{ fontWeight: 'bold' }}>{item.version}</TextTitle>
-            <TextTitle style={{ marginLeft: 6 }}>({item.date})</TextTitle>
-          </View>
-          {item.added ? <TextDefault>Добавлено:</TextDefault> : null}
-          {item.added
-            ? item.added.map((addedItem, index) => (
-              <TextDefault key={index} paragraph={1}>
-                  - {addedItem}
-              </TextDefault>
-            ))
-            : null}
-          {item.updated ? <TextDefault>Обновлено:</TextDefault> : null}
-          {item.updated
-            ? item.updated.map((updatedItem, index) => (
-              <TextDefault key={index} paragraph={1}>
-                  - {updatedItem}
-              </TextDefault>
-            ))
-            : null}
-          {item.fixed ? <TextDefault>Исправлено:</TextDefault> : null}
-          {item.fixed
-            ? item.fixed.map((fixedItem, index) => (
-              <TextDefault key={index} paragraph={1}>
-                  - {fixedItem}
-              </TextDefault>
-            ))
-            : null}
-          {item.deleted ? <TextDefault>Удалено:</TextDefault> : null}
-          {item.deleted
-            ? item.deleted.map((deletedItem, index) => (
-              <TextDefault key={index} paragraph={1}>
-                  - {deletedItem}
-              </TextDefault>
-            ))
-            : null}
-          {item.other
-            ? item.other.map((otherItem, index) => (
-              <TextDefault key={index} paragraph={1}>
-                {otherItem}
-              </TextDefault>
-            ))
-            : null}
-        </View>
-      )
-    })
-  }
 
   return (
     <Modal
@@ -161,21 +72,21 @@ const ModalSplash = ({
               </Text>
             ) : null}
 
-            {text ? (
-              <ScrollView style={{ width: '100%' }}>
-                <Text
-                  style={{
-                    ...styles.panelSubtitle,
-                    fontSize: fontSize[textSize],
-                    color: colors.text,
-                  }}
-                >
-                  {text}
-                </Text>
+            {text || children ? (
+              <ScrollView style={{ width: '100%', maxHeight: 425 }}>
+                {text ? (
+                  <Text
+                    style={{
+                      ...styles.panelSubtitle,
+                      fontSize: fontSize[textSize],
+                      color: colors.text,
+                    }}
+                  >
+                    {text}
+                  </Text>
+                ) : null}
+                {children}
               </ScrollView>
-            ) : null}
-            {dataItems ? (
-              <ScrollView style={{ width: '100%' }}>{dataItems}</ScrollView>
             ) : null}
           </View>
         </View>
@@ -195,8 +106,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   panel: {
-    paddingHorizontal: 10,
-    paddingVertical: 16,
+    paddingHorizontal: 12,
+    paddingTop: 16,
+    paddingBottom: 8,
     borderRadius: 20,
     borderWidth: 3,
     maxHeight: 500,
