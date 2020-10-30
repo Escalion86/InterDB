@@ -5,6 +5,7 @@ import { eventReducer } from './reducers/event'
 import { serviceReducer } from './reducers/service'
 import { clientReducer } from './reducers/client'
 import { financeReducer } from './reducers/finance'
+import { userReducer } from './reducers/user'
 
 const rootReducer = combineReducers({
   app: appReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   service: serviceReducer,
   client: clientReducer,
   finance: financeReducer,
+  user: userReducer,
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk))

@@ -1,16 +1,138 @@
 import React, { useContext } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
+import { StyleSheet, View, ActivityIndicator, Text } from 'react-native'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
-import { useTheme, Drawer } from 'react-native-paper'
+import {
+  useTheme,
+  Drawer,
+  Title,
+  Caption,
+  // Paragraph,
+  Avatar,
+} from 'react-native-paper'
 import { Ionicons } from '@expo/vector-icons'
 import { AppContext } from '../AppContext'
 import { iconSize, fontSize } from '../theme'
+import Button from './Button'
+// import * as Google from 'expo-google-app-auth'
+// import firebase from 'firebase'
+import { userSignIn, userSignOut } from '../store/actions/user'
+import {
+  TouchableHighlight,
+  TouchableOpacity,
+} from 'react-native-gesture-handler'
+
+// const signInWithGoogleAsync = async () => {
+//   try {
+//     const result = await Google.logInAsync({
+//       // behavior: 'web',
+//       androidClientId:
+//         '962914417594-s61hn7ho6t8496gcg77dkvgf2bt16tth.apps.googleusercontent.com',
+//       // iosClientId: YOUR_CLIENT_ID_HERE,
+//       scopes: ['profile', 'email'],
+//     })
+
+//     if (result.type === 'success') {
+//       onSignIn(result)
+//       return result.accessToken
+//     } else {
+//       return { cancelled: true }
+//     }
+//   } catch (e) {
+//     return { error: true }
+//   }
+// }
+
+// const isUserEqual = (googleUser, firebaseUser) => {
+//   if (firebaseUser) {
+//     var providerData = firebaseUser.providerData
+//     for (var i = 0; i < providerData.length; i++) {
+//       if (
+//         providerData[i].providerId ===
+//           firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+//         providerData[i].uid === googleUser.getBasicProfile().getId()
+//       ) {
+//         // We don't need to reauth the Firebase connection.
+//         return true
+//       }
+//     }
+//   }
+//   return false
+// }
+
+// const signOut = () => {
+//   firebase.auth().signOut()
+// }
+
+// const onSignIn = (googleUser) => {
+//   console.log('Google Auth Response', googleUser)
+//   // We need to register an Observer on Firebase Auth to make sure auth is initialized.
+//   var unsubscribe = firebase.auth().onAuthStateChanged(function (firebaseUser) {
+//     unsubscribe()
+//     // Check if we are already signed-in Firebase with the correct user.
+//     if (!isUserEqual(googleUser, firebaseUser)) {
+//       // Build Firebase credential with the Google ID token.
+//       var credential = firebase.auth.GoogleAuthProvider.credential(
+//         googleUser.idToken,
+//         googleUser.accessToken
+//       )
+//       // Sign in with credential from the Google user.
+//       console.log('Подключаемся к FireBase')
+//       firebase
+//         .auth()
+//         .signInWithCredential(credential)
+//         .then((result) => {
+//           console.log('Пользователь подключен')
+//           if (result.additionalUserInfo.isNewUser) {
+//             firebase
+//               .database()
+//               .ref('/users/' + result.user.uid)
+//               .set({
+//                 gmail: result.user.email,
+//                 profile_picture: result.additionalUserInfo.profile.picture,
+//                 locale: result.additionalUserInfo.profile.locale,
+//                 first_name: result.additionalUserInfo.profile.given_name,
+//                 last_name: result.additionalUserInfo.profile.family_name,
+//                 created_at: Date.now(),
+//               })
+//             // .then((snapshot) => {
+//             //   console.log('snapshot :>> ', snapshot)
+//             // })
+//           } else {
+//             firebase
+//               .database()
+//               .ref('/users/' + result.user.uid)
+//               .update({
+//                 last_logged_in: Date.now(),
+//               })
+//           }
+//         })
+//         .catch(function (error) {
+//           // Handle Errors here.
+//           // var errorCode = error.code
+//           // var errorMessage = error.message
+//           // The email of the user's account used.
+//           // var email = error.email
+//           // The firebase.auth.AuthCredential type that was used.
+//           // var credential = error.credential
+//           console.log('error :>> ', error)
+//           // ...
+//         })
+//     } else {
+//       console.log('User already signed-in Firebase.')
+//     }
+//   })
+// }
 
 const DrawerContent = (props) => {
   const theme = useTheme()
   const { colors } = theme
 
+  const dispatch = useDispatch()
+
   const { dev } = useContext(AppContext)
+  const user = useSelector((state) => state.user)
+  // console.log('user :>> ', user)
 
   const labelStyle = {
     fontSize: fontSize.medium,
@@ -21,32 +143,117 @@ const DrawerContent = (props) => {
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
-          {/* <Drawer.Section style={styles.drawerSection}>
+          <Drawer.Section style={styles.drawerSection}>
             <View style={styles.userInfoSection}>
               <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                <Avatar.Image
-                  source={require('../../assets/avatar/male.jpg')}
-                  size={50}
-                />
+                {user.loading ? (
+                  <View
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 50,
+                      backgroundColor: colors.active,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <ActivityIndicator size="large" color={colors.text} />
+                  </View>
+                ) : user.last_logged_in ? (
+                  <Avatar.Image
+                    source={{
+                      uri: user.avatar,
+                    }}
+                    size={50}
+                    style={styles.avatar}
+                  />
+                ) : (
+                  <Avatar.Image
+                    source={require('../../assets/avatar/male.jpg')}
+                    size={50}
+                    style={styles.avatar}
+                  />
+                )}
                 <View
                   style={{
-                    marginLeft: 15,
+                    marginLeft: 10,
                     flexDirection: 'column',
+                    justifyContent: 'center',
                     // borderWidth: 1,
                     // borderColor: "red",
                   }}
                 >
-                  <Title style={{ ...styles.title, fontSize: fontSize.medium }}>
-                    Алексей Белинский
-                  </Title>
-                  <Caption
-                    style={{ ...styles.caption, fontSize: fontSize.small }}
-                  >
-                    @escalion
-                  </Caption>
+                  {user.last_logged_in ? (
+                    <View
+                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                    >
+                      <View>
+                        <Title
+                          style={{ ...styles.title, fontSize: fontSize.medium }}
+                        >
+                          {user.name}
+                        </Title>
+                        <Caption
+                          style={{
+                            ...styles.caption,
+                            fontSize: fontSize.small,
+                          }}
+                        >
+                          {user.email}
+                        </Caption>
+                      </View>
+                      <TouchableOpacity
+                        style={{ marginLeft: 16 }}
+                        onPress={() => dispatch(userSignOut())}
+                      >
+                        <Ionicons
+                          name="ios-log-out"
+                          size={24}
+                          color={colors.icon}
+                        />
+                      </TouchableOpacity>
+                      {/* <Button
+                        title="Выйти"
+                        size="small"
+                        onPress={() => dispatch(userSignOut())}
+                      /> */}
+                    </View>
+                  ) : (
+                    <TouchableOpacity
+                      style={{
+                        marginLeft: 16,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
+                      onPress={() => dispatch(userSignIn())}
+                    >
+                      <Text
+                        style={{
+                          color: colors.accent,
+                          fontSize: fontSize.medium,
+                          marginBottom: 2,
+                        }}
+                      >
+                        Авторизироваться
+                      </Text>
+                      <Ionicons
+                        name="ios-log-in"
+                        size={24}
+                        color={colors.icon}
+                        style={{
+                          marginLeft: 16,
+                        }}
+                      />
+                    </TouchableOpacity>
+                    // <Button
+                    //   title="Авторизация"
+                    //   size="small"
+                    //   onPress={() => dispatch(userSignIn())}
+                    // />
+                  )}
                 </View>
               </View>
-              <View style={styles.row}>
+              {/* <View style={styles.row}>
                 <View style={styles.section}>
                   <Paragraph
                     style={{
@@ -73,9 +280,9 @@ const DrawerContent = (props) => {
                     Followers
                   </Caption>
                 </View>
-              </View>
+              </View> */}
             </View>
-          </Drawer.Section> */}
+          </Drawer.Section>
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
               icon={({ color, size }) => (
@@ -221,22 +428,33 @@ const DrawerContent = (props) => {
 export default DrawerContent
 
 const styles = StyleSheet.create({
+  avatar: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
+  },
   drawerContent: {
     flex: 1,
   },
   userInfoSection: {
-    paddingLeft: 20,
+    paddingLeft: 10,
     height: 75,
   },
-  // title: {
-  //   // marginTop: 3,
-  //   fontWeight: 'bold',
-  //   marginTop: 0,
-  // },
-  // caption: {
-  //   lineHeight: 14,
-  //   marginTop: 0,
-  // },
+  title: {
+    // marginTop: 3,
+    fontWeight: 'bold',
+    marginTop: 0,
+  },
+  caption: {
+    lineHeight: 14,
+    marginTop: 0,
+    marginBottom: 6,
+  },
   row: {
     marginTop: 20,
     flexDirection: 'row',

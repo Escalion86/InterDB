@@ -46,6 +46,10 @@ import * as Calendar from 'expo-calendar'
 import { ThemeContext } from '../ThemeContext'
 import { fontSize } from '../theme'
 
+import firebase from 'firebase'
+import firebaseConfig from '../firebaseConfig'
+import { userSignedIn, userSignOut } from '../store/actions/user'
+
 const Stack = createStackNavigator()
 const EventsStack = createStackNavigator()
 const ClientsStack = createStackNavigator()
@@ -535,6 +539,25 @@ const DrawerScreen = ({ navigation }) => {
 
 export const AppNavigation = () => {
   const dispatch = useDispatch()
+
+  const checkIfLoggedIn = () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log('Авторизован', user)
+        dispatch(userSignedIn(user))
+      } else {
+        dispatch(userSignOut())
+        console.log('Не авторизован')
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig)
+    }
+    checkIfLoggedIn()
+  }, [])
 
   const { theme } = useContext(ThemeContext)
 

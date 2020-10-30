@@ -11,6 +11,7 @@ const Button = ({
   style = {},
   disabled = false,
   textFontSize = 'medium',
+  size = 'medium',
 }) => {
   const { colors } = useTheme()
   return (
@@ -19,6 +20,8 @@ const Button = ({
         ...styles.button,
         backgroundColor: btnDecline ? colors.abort : colors.accent,
         borderColor: colors.border,
+        minHeight: size === 'small' ? 32 : size === 'big' ? 56 : 44,
+        paddingHorizontal: size === 'small' ? 10 : size === 'big' ? 14 : 12,
         ...style,
       }}
       onPress={!disabled ? onPress : null}
@@ -40,16 +43,15 @@ const Button = ({
     </TouchableHighlight>
   )
 }
+
 const styles = StyleSheet.create({
   button: {
     justifyContent: 'center',
-    paddingHorizontal: 12,
     borderRadius: 10,
     borderWidth: 1,
     alignItems: 'center',
     marginVertical: 7,
-    width: '100%',
-    minHeight: 44,
+    // width: '100%',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
