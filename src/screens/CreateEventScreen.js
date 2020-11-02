@@ -27,6 +27,8 @@ import {
 } from 'react-native-popup-menu'
 import { HeaderBackButton } from '@react-navigation/stack'
 import { fontSize } from '../theme'
+import SearchPanel from '../components/SearchPanel'
+import { servicesFilter, clientsFilter } from '../helpers/filters'
 // import { addEventNotification } from "../helpers/notifications"
 
 const InfoMenu = () => {
@@ -181,6 +183,10 @@ const ModalUpdateFinance = ({ service, onOuterClick, setEventItem }) => {
 }
 
 const ModalClients = ({ clients, navigation, onOuterClick, setEventItem }) => {
+  const [filter, setFilter] = useState('')
+
+  clients = clientsFilter(clients, filter)
+
   return (
     <ModalBottomMenu
       title="Выберите клиента"
@@ -194,6 +200,7 @@ const ModalClients = ({ clients, navigation, onOuterClick, setEventItem }) => {
         }}
         title={'Создать клиента'}
       />
+      <SearchPanel filter={filter} setFilter={setFilter} />
       <ScrollCardList
         data={clients}
         renderItem={(item, index) => (
@@ -209,7 +216,7 @@ const ModalClients = ({ clients, navigation, onOuterClick, setEventItem }) => {
             swipeable={false}
           />
         )}
-        containerStyle={{ height: 358 }}
+        containerStyle={{ height: 328 }}
       />
     </ModalBottomMenu>
   )
@@ -223,6 +230,16 @@ const ModalServices = ({
   setModal,
   setEventItem,
 }) => {
+  const [filter, setFilter] = useState('')
+
+  services = servicesFilter(services, filter, true, false)
+  // services = services.filter((item) => {
+  //   return (
+  //     !filter ||
+  //     item.name.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >= 0
+  //   )
+  // })
+
   return (
     <ModalBottomMenu
       title="Выберите услугу"
@@ -236,6 +253,7 @@ const ModalServices = ({
         }}
         title={'Создать услугу'}
       />
+      <SearchPanel filter={filter} setFilter={setFilter} />
       <ScrollCardList
         data={services}
         renderItem={(item, index) => (
@@ -274,7 +292,7 @@ const ModalServices = ({
             swipeable={false}
           />
         )}
-        containerStyle={{ height: 358 }}
+        containerStyle={{ height: 328 }}
         // fabVisible={false}
       />
     </ModalBottomMenu>
