@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, TextInput } from 'react-native'
+import { View, TextInput, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { fontSize } from '../theme'
 
@@ -31,6 +31,14 @@ const SearchPanel = ({ theme, setFilter, filter }) => {
         // placeholderTextColor={textColor}
         value={filter}
       />
+      {filter ? (
+        <TouchableOpacity
+          onPress={() => setFilter('')}
+          // style={{ flex: 4, marginRight: 8 }}
+        >
+          <Ionicons name="md-close" size={28} color={colors.icon} />
+        </TouchableOpacity>
+      ) : null}
     </View>
   )
 }
