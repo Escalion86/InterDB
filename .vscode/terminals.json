@@ -15,6 +15,11 @@
       "name": "Build APK",
       "focus": true,
       "command": "expo build:android -t apk"
+    },
+    {
+      "name": "Build AAB",
+      "focus": true,
+      "command": "expo build:android -t app-bundle"
     }
   ]
 }

@@ -23,6 +23,12 @@
       "command": "terminals.runTerminalByName",
       "arguments": ["Build APK"],
       "tooltip": "Android Start"
+    },
+    {
+      "text": "$(terminal) Build AAB",
+      "command": "terminals.runTerminalByName",
+      "arguments": ["Build AAB"],
+      "tooltip": "Android Start"
     }
   ]
 }
