@@ -24,6 +24,7 @@ import linkTo from '../../helpers/linkTo'
 import ContactsMenu from '../ContactsMenu'
 import SwipeableCard from '../SwipeableCard'
 import { fontSize } from '../../theme'
+import NavigatorMenu from '../NavigatorMenu'
 
 const EventCard = ({
   navigation,
@@ -243,7 +244,8 @@ const EventCard = ({
                       event.location_name ? ` (${event.location_name})` : ''
                     }`}
                   </Text>
-                  <Ionicons
+                  <NavigatorMenu event={event} />
+                  {/* <Ionicons
                     name="md-navigate"
                     size={28}
                     color={colors.icon}
@@ -277,7 +279,7 @@ const EventCard = ({
                       //     )
                       //   })
                     }
-                  />
+                  /> */}
                 </View>
               ) : null}
 
