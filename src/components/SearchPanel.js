@@ -2,8 +2,9 @@ import React from 'react'
 import { View, TextInput, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { fontSize } from '../theme'
+import { useTheme } from '@react-navigation/native'
 
-const SearchPanel = ({ theme, setFilter, filter }) => {
+const SearchPanel = ({ theme = useTheme(), setFilter, filter }) => {
   const { colors } = theme
   return (
     <View

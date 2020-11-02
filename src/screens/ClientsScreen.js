@@ -13,6 +13,7 @@ import { addClient, deleteAllClients } from '../store/actions/client'
 import ModalDeleteClient from '../components/Modals/ModalDeleteClient'
 import { fontSize } from '../theme'
 import SearchPanel from '../components/SearchPanel'
+import { clientsFilter } from '../helpers/filters'
 
 const ClientsScreen = ({ navigation, route }) => {
   const theme = useTheme()
@@ -36,6 +37,8 @@ const ClientsScreen = ({ navigation, route }) => {
       />
     )
   }
+
+  clients = clientsFilter(clients, filter)
 
   clients = clients.filter((item) => {
     const itemName = `${item.surname} ${item.name} ${item.thirdname}`.trim()

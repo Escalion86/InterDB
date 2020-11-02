@@ -13,6 +13,7 @@ import MainFlatListWithFab from '../components/MainFlatListWithFab'
 import ModalDeleteService from '../components/Modals/ModalDeleteService'
 import { fontSize } from '../theme'
 import SearchPanel from '../components/SearchPanel'
+import { servicesFilter } from '../helpers/filters'
 
 const ServicesScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
@@ -42,15 +43,7 @@ const ServicesScreen = ({ navigation, route }) => {
       />
     )
   }
-
-  services = services.filter((item) => {
-    return (
-      ((showArchvedOnly && item.archive) ||
-        (!showArchvedOnly && !item.archive)) &&
-      (!filter ||
-        item.name.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >= 0)
-    )
-  })
+  services = servicesFilter(services, filter, !showArchvedOnly, showArchvedOnly)
 
   useEffect(() => {
     if (showArchvedOnly) {
