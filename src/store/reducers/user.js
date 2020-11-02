@@ -6,11 +6,14 @@ import {
 } from '../types'
 
 const initialState = {
+  uid: '',
   email: '',
   avatar: '',
   name: '',
   created_at: '',
   last_logged_in: '',
+  locale: 'ru',
+  tariff: 0,
   error: false,
   canceled: false,
   loading: false,
@@ -34,15 +37,7 @@ export const userReducer = (state = initialState, action) => {
       return { ...state, loading: true }
 
     case USER_SIGNED_IN: {
-      const loginedUser = {
-        email: action.user.email,
-        avatar: action.user.photoURL,
-        name: action.user.displayName,
-        created_at: '' + action.user.createdAt,
-        last_logged_in: '' + action.user.lastLoginAt,
-      }
-
-      return { ...initialState, ...loginedUser }
+      return { ...initialState, ...action.user }
     }
 
     default:

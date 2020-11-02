@@ -13,14 +13,16 @@ import {
 import { Ionicons } from '@expo/vector-icons'
 import { AppContext } from '../AppContext'
 import { iconSize, fontSize } from '../theme'
-import Button from './Button'
+// import Button from './Button'
 // import * as Google from 'expo-google-app-auth'
 // import firebase from 'firebase'
 import { userSignIn, userSignOut } from '../store/actions/user'
 import {
-  TouchableHighlight,
+  // TouchableHighlight,
   TouchableOpacity,
 } from 'react-native-gesture-handler'
+
+import tariffs from '../tariffs'
 
 // const signInWithGoogleAsync = async () => {
 //   try {
@@ -159,21 +161,26 @@ const DrawerContent = (props) => {
                   >
                     <ActivityIndicator size="large" color={colors.text} />
                   </View>
-                ) : user.last_logged_in ? (
-                  <Avatar.Image
-                    source={{
-                      uri: user.avatar,
-                    }}
-                    size={50}
-                    style={styles.avatar}
-                  />
                 ) : (
-                  <Avatar.Image
-                    source={require('../../assets/avatar/male.jpg')}
-                    size={50}
-                    style={styles.avatar}
-                  />
+                  <View
+                    style={{
+                      ...styles.avatar,
+                      borderColor: tariffs[user.tariff].color,
+                      borderWidth: 1,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Avatar.Image
+                      source={
+                        user.last_logged_in
+                          ? { uri: user.avatar }
+                          : require('../../assets/avatar/male.jpg')
+                      }
+                      size={50}
+                    />
+                  </View>
                 )}
+
                 <View
                   style={{
                     marginLeft: 10,
@@ -185,26 +192,40 @@ const DrawerContent = (props) => {
                 >
                   {user.last_logged_in ? (
                     <View
-                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}
                     >
                       <View>
                         <Title
-                          style={{ ...styles.title, fontSize: fontSize.medium }}
+                          style={{ ...styles.title, fontSize: fontSize.small }}
                         >
                           {user.name}
                         </Title>
-                        <Caption
+                        {/* <Caption
                           style={{
                             ...styles.caption,
-                            fontSize: fontSize.small,
+                            fontSize: fontSize.tiny,
                           }}
                         >
                           {user.email}
+                        </Caption> */}
+                        <Caption
+                          style={{
+                            ...styles.caption,
+                            fontSize: fontSize.tiny,
+                            // color: tariffs[user.tariff].color,
+                          }}
+                        >
+                          {/* {user.email} */}
+                          {tariffs[user.tariff].name}
                         </Caption>
                       </View>
                       <TouchableOpacity
                         style={{ marginLeft: 16 }}
-                        onPress={() => dispatch(userSignOut())}
+                        onPress={() => dispatch(userSignOut(user.uid))}
                       >
                         <Ionicons
                           name="ios-log-out"
@@ -449,10 +470,11 @@ const styles = StyleSheet.create({
     // marginTop: 3,
     fontWeight: 'bold',
     marginTop: 0,
+    // marginBottom: 0,
   },
   caption: {
-    lineHeight: 14,
-    marginTop: 0,
+    // lineHeight: 10,
+    marginTop: -8,
     marginBottom: 6,
   },
   row: {

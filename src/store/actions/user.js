@@ -45,10 +45,6 @@ const isUserEqual = (googleUser, firebaseUser) => {
   return false
 }
 
-const signOut = () => {
-  firebase.auth().signOut()
-}
-
 const onSignIn = (googleUser) => {
   let user = {}
   // console.log('Google Auth Response', googleUser)
@@ -69,16 +65,18 @@ const onSignIn = (googleUser) => {
         .auth()
         .signInWithCredential(credential)
         .then((result) => {
-          // console.log('Пользователь подключен')
-          // console.log('result :>> ', result)
+          console.log('Пользователь подключен')
+          console.log('result :>> ', result)
           if (result.additionalUserInfo.isNewUser) {
             user = {
+              uid: result.user.uid,
               email: result.user.email,
-              profile_picture: result.additionalUserInfo.profile.picture,
+              avatar: result.user.photoURL,
               locale: result.additionalUserInfo.profile.locale,
-              first_name: result.additionalUserInfo.profile.given_name,
-              last_name: result.additionalUserInfo.profile.family_name,
+              name: result.user.displayName,
               created_at: Date.now(),
+              last_logged_in: Date.now(),
+              tariff: 0,
             }
             firebase
               .database()
@@ -91,9 +89,7 @@ const onSignIn = (googleUser) => {
             firebase
               .database()
               .ref('/users/' + result.user.uid)
-              .update({
-                user,
-              })
+              .update(user)
           }
         })
         .catch(function (error) {
@@ -133,9 +129,13 @@ export const userSignedIn = (user) => {
   }
 }
 
-export const userSignOut = () => {
+export const userSignOut = (uid) => {
   return async (dispatch) => {
-    signOut()
+    firebase
+      .database()
+      .ref('/users/' + uid)
+      .off('value')
+    firebase.auth().signOut()
     dispatch({
       type: USER_SIGN_OUT,
     })

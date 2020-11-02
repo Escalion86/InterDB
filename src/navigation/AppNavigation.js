@@ -48,7 +48,7 @@ import { fontSize } from '../theme'
 
 import firebase from 'firebase'
 import firebaseConfig from '../firebaseConfig'
-import { userSignedIn, userSignOut } from '../store/actions/user'
+import { userSignedIn } from '../store/actions/user'
 
 const Stack = createStackNavigator()
 const EventsStack = createStackNavigator()
@@ -544,9 +544,29 @@ export const AppNavigation = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         console.log('Авторизован', user)
-        dispatch(userSignedIn(user))
+        firebase
+          .database()
+          .ref('/users/' + user.uid)
+          .on('value', function (snapshot) {
+            console.log('snapshot.val() :>> ', snapshot.val())
+            dispatch(userSignedIn(snapshot.val()))
+          })
+        // const currentUser = firebase.auth().currentUser
+        // if (currentUser) {
+        //   const userId = currentUser.uid
+        //   firebase
+        //     .database()
+        //     .ref('/users/' + userId)
+        //     .once('value')
+        //     .then(function (snapshot) {
+        //       var userData = snapshot.val() || 'Anonymous'
+        //       console.log('userData :>> ', userData)
+        //       dispatch(userSignedIn(userData))
+        //     })
+        // }
+        // dispatch(userSignedIn(user))
       } else {
-        dispatch(userSignOut())
+        // dispatch(userSignOut())
         console.log('Не авторизован')
       }
     })
