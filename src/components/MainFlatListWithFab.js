@@ -14,7 +14,7 @@ const MainFlatListWithFab = ({
   const [scrollPosition, setScrollPosition] = useState(0)
 
   return (
-    <View style={{ height: '100%', ...containerStyle }}>
+    <View style={{ flex: 1, ...containerStyle }}>
       <FlatList
         style={styles.list}
         data={data}

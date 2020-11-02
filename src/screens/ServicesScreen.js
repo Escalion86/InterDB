@@ -12,6 +12,7 @@ import Fab from '../components/Fab'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
 import ModalDeleteService from '../components/Modals/ModalDeleteService'
 import { fontSize } from '../theme'
+import SearchPanel from '../components/SearchPanel'
 
 const ServicesScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
@@ -23,13 +24,14 @@ const ServicesScreen = ({ navigation, route }) => {
   // useEffect(() => {
   //   dispatch(loadServices())
   // }, [dispatch])
-
-  const { colors } = useTheme()
+  const theme = useTheme()
+  const { colors } = theme
 
   let services = useSelector((state) => state.service.services)
   const loading = useSelector((state) => state.service.loading)
 
   const [modal, setModal] = useState(null)
+  const [filter, setFilter] = useState('')
 
   const modalDelete = (service) => {
     setModal(
@@ -43,7 +45,10 @@ const ServicesScreen = ({ navigation, route }) => {
 
   services = services.filter((item) => {
     return (
-      (showArchvedOnly && item.archive) || (!showArchvedOnly && !item.archive)
+      ((showArchvedOnly && item.archive) ||
+        (!showArchvedOnly && !item.archive)) &&
+      (!filter ||
+        item.name.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >= 0)
     )
   })
 
@@ -95,42 +100,62 @@ const ServicesScreen = ({ navigation, route }) => {
     )
   }
 
-  if (services.length === 0) {
-    return (
-      <View style={styles.center}>
-        <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
-          {showArchvedOnly ? 'Архив пуст' : 'Услуг нет'}
-        </Text>
+  // if (services.length === 0) {
+  //   return (
+  //     <View style={styles.container}>
+  //       <SearchPanel />
+  //       <View style={styles.center}>
+  //         <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
+  //           {showArchvedOnly ? 'Архив пуст' : 'Услуг нет'}
+  //         </Text>
 
-        <Fab
-          visible={!showArchvedOnly}
-          onPress={() => {
-            navigation.navigate('CreateService')
-          }}
-          label="Добавить услугу"
-        />
-      </View>
-    )
-  }
+  //         <Fab
+  //           visible={!showArchvedOnly}
+  //           onPress={() => {
+  //             navigation.navigate('CreateService')
+  //           }}
+  //           label="Добавить услугу"
+  //         />
+  //       </View>
+  //     </View>
+  //   )
+  // }
 
   return (
     <View style={styles.container}>
-      <MainFlatListWithFab
-        data={services}
-        fabVisible={!showArchvedOnly}
-        renderItem={({ item }) => (
-          <ServiceCard
-            navigation={navigation}
-            service={item}
-            onDelete={() => {
-              modalDelete(item)
+      <SearchPanel theme={theme} filter={filter} setFilter={setFilter} />
+      {services.length === 0 ? (
+        <View style={styles.center}>
+          <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
+            {showArchvedOnly ? 'Архив пуст' : 'Услуг нет'}
+          </Text>
+
+          <Fab
+            visible={!showArchvedOnly}
+            onPress={() => {
+              navigation.navigate('CreateService')
             }}
+            label="Добавить услугу"
           />
-        )}
-        onPressFab={() => {
-          navigation.navigate('CreateService')
-        }}
-      />
+        </View>
+      ) : (
+        <MainFlatListWithFab
+          data={services}
+          fabVisible={!showArchvedOnly}
+          renderItem={({ item }) => (
+            <ServiceCard
+              navigation={navigation}
+              service={item}
+              onDelete={() => {
+                modalDelete(item)
+              }}
+            />
+          )}
+          onPressFab={() => {
+            navigation.navigate('CreateService')
+          }}
+        />
+      )}
       {modal}
     </View>
   )
