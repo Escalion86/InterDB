@@ -6,7 +6,6 @@ import {
   View,
   ActivityIndicator,
   TouchableHighlight,
-  ToastAndroid,
 } from 'react-native'
 import {
   Menu,
@@ -20,7 +19,6 @@ import { useTheme } from '@react-navigation/native'
 
 import IconMenu from '../IconMenu'
 import FinanceMenu from '../FinanceMenu'
-import linkTo from '../../helpers/linkTo'
 import ContactsMenu from '../ContactsMenu'
 import SwipeableCard from '../SwipeableCard'
 import { fontSize } from '../../theme'
