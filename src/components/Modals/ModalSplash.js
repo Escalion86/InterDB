@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   modal: {
     justifyContent: 'center',
     height: '100%',
-    opacity: 0.8,
+    opacity: 0.9,
     backgroundColor: '#000',
   },
   panel: {

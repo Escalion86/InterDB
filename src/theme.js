@@ -90,7 +90,7 @@ export const lightTheme = {
     background: '#f6f6f6',
     border: 'rgb(60, 60, 60)',
     card: 'rgb(230, 230, 230)',
-    modal: 'rgb(190, 190, 190)',
+    modal: 'rgb(240, 240, 240)',
     active: 'rgb(170, 170, 170)',
     disabled: 'rgba(0, 0, 0, 0.26)',
     error: '#B00020',
