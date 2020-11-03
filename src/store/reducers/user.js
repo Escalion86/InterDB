@@ -3,6 +3,7 @@ import {
   USER_SIGN_OUT,
   USER_SIGNING_IN,
   USER_SIGNED_IN,
+  USER_SIGNING_IN_CANCEL,
 } from '../types'
 
 const initialState = {
@@ -35,6 +36,9 @@ export const userReducer = (state = initialState, action) => {
 
     case USER_SIGNING_IN:
       return { ...state, loading: true }
+
+    case USER_SIGNING_IN_CANCEL:
+      return { ...state, loading: false }
 
     case USER_SIGNED_IN: {
       return { ...initialState, ...action.user }

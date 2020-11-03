@@ -1,14 +1,16 @@
+import { useDispatch } from 'react-redux'
 import {
   // USER_SIGN_IN,
   USER_SIGN_OUT,
   USER_SIGNED_IN,
   USER_SIGNING_IN,
+  USER_SIGNING_IN_CANCEL,
 } from '../types'
 
 import * as Google from 'expo-google-app-auth'
 import firebase from 'firebase'
 
-export const signInWithGoogleAsync = async () => {
+export const signInWithGoogleAsync = async (dispatch) => {
   try {
     const result = await Google.logInAsync({
       // behavior: 'web',
@@ -21,9 +23,17 @@ export const signInWithGoogleAsync = async () => {
     if (result.type === 'success') {
       onSignIn(result)
     } else {
+      dispatch({
+        type: USER_SIGNING_IN_CANCEL,
+      })
+      console.log('Отмена авторизации')
       // return { canceled: true }
     }
   } catch (e) {
+    dispatch({
+      type: USER_SIGNING_IN_CANCEL,
+    })
+    console.log('Ошибка авторизации')
     // return { error: true }
   }
 }
@@ -113,7 +123,7 @@ const onSignIn = (googleUser) => {
 
 export const userSignIn = () => {
   return async (dispatch) => {
-    signInWithGoogleAsync()
+    signInWithGoogleAsync(dispatch)
     dispatch({
       type: USER_SIGNING_IN,
     })
