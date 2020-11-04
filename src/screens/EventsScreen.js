@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from 'react'
+import React, { useState, useContext, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
@@ -14,8 +7,6 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   ToastAndroid,
-  ScrollView,
-  Dimensions,
 } from 'react-native'
 import {
   Menu,
@@ -41,9 +32,6 @@ import {
   ModalFinanceOutcome,
 } from '../components/Modals/modalsFinance'
 
-import { DevDropDownPicker } from '../components/devComponents'
-import { Badge } from 'react-native-paper'
-import DropDownPicker from 'react-native-dropdown-picker'
 import RNPickerSelect from 'react-native-picker-select'
 
 // import SafeAreaView from 'react-native-safe-area-view'
@@ -149,143 +137,6 @@ const EventsPage = ({
   )
 }
 
-// const ModalFinanceIncome = ({
-//   onAddFinance,
-//   onOuterClick,
-//   incomeFact,
-//   incomePlan,
-// }) => {
-//   const { colors } = useTheme()
-//   const incomeLeft = incomePlan - incomeFact > 0 ? incomePlan - incomeFact : 0
-//   const [income, setIncome] = useState(incomeLeft)
-//   const [comment, setComment] = useState('comment')
-//   return (
-//     <ModalBottomMenu
-//       title="Поступление средств"
-//       subtitle="Сумма полученная с события"
-//       visible={true}
-//       onOuterClick={onOuterClick}
-//     >
-//       <Text style={{ color: colors.text }}>
-//         Стоимость услуги: {incomePlan} руб
-//       </Text>
-//       <Text style={{ color: colors.text }}>Получено: {incomeFact} руб</Text>
-//       <Text style={{ color: colors.text }}>
-//         Остаток: {incomePlan - incomeFact} руб
-//       </Text>
-//       <TextInputBlock
-//         title="Новое поступление"
-//         value={income}
-//         onChangeText={(text) => setIncome(text)}
-//         keyboardType="numeric"
-//         placeholder="0"
-//         postfix="&#8381;"
-//       />
-//       <Button
-//         title="Внести"
-//         onPress={() => {
-//           onAddFinance(income, comment)
-//           onOuterClick()
-//         }}
-//       />
-//       <Button title="Отмена" btnDecline={true} onPress={onOuterClick} />
-//     </ModalBottomMenu>
-//   )
-// }
-
-// const ModalFinanceOutcome = ({
-//   onAddFinance,
-//   onOuterClick,
-//   outcomeFact,
-//   outcomePlan,
-// }) => {
-//   const { colors } = useTheme()
-//   const outcomeLeft =
-//     outcomePlan - outcomeFact > 0 ? outcomePlan - outcomeFact : 0
-//   const [outcome, setOutcome] = useState(outcomeLeft)
-//   const [comment, setComment] = useState('comment')
-//   return (
-//     <ModalBottomMenu
-//       title="Расходование средств"
-//       subtitle="Сумма израсходованная на событие"
-//       visible={true}
-//       onOuterClick={onOuterClick}
-//     >
-//       <Text style={{ color: colors.text }}>
-//         Сумма затрат: {outcomePlan} руб
-//       </Text>
-//       <Text style={{ color: colors.text }}>
-//         Израсходовано: {outcomeFact} руб
-//       </Text>
-//       <Text style={{ color: colors.text }}>
-//         Остаток: {outcomePlan - outcomeFact} руб
-//       </Text>
-//       <TextInputBlock
-//         title="Новые расходы"
-//         value={outcome}
-//         onChangeText={(text) => setOutcome(text)}
-//         keyboardType="numeric"
-//         placeholder="0"
-//         postfix="&#8381;"
-//       />
-//       <Button
-//         title="Внести"
-//         onPress={() => {
-//           onAddFinance(outcome, comment)
-//           onOuterClick()
-//         }}
-//       />
-//       <Button title="Отмена" btnDecline={true} onPress={onOuterClick} />
-//     </ModalBottomMenu>
-//   )
-// }
-
-// const windowWidth = Dimensions.get('screen').width
-// const monthItemWidth = 64
-
-// const MonthItem = ({
-//   text = '',
-//   active = false,
-//   onPress = () => {},
-//   badge = 0,
-// }) => {
-//   const { colors } = useTheme()
-//   return (
-//     <TouchableOpacity
-//       style={{
-//         width: monthItemWidth,
-//         height: 40,
-//         borderColor: colors.border,
-//         borderBottomColor: active ? colors.accent : null,
-//         borderWidth: 1,
-//         backgroundColor: colors.card,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         flexDirection: 'row',
-//         // marginHorizontal: 1,
-//       }}
-//       activeOpacity={0.5}
-//       underlayColor="#DDDDDD"
-//       onPress={onPress}
-//     >
-//       <Text
-//         style={{
-//           color: colors.text,
-//           fontSize: fontSize.medium,
-//           marginRight: badge > 0 ? 10 : 0,
-//         }}
-//       >
-//         {text}
-//       </Text>
-//       {badge > 0 ? (
-//         <Badge size={18} style={{ position: 'absolute', top: 3, right: 3 }}>
-//           {badge}
-//         </Badge>
-//       ) : null}
-//     </TouchableOpacity>
-//   )
-// }
-
 const months = [
   'янв',
   'фев',
@@ -301,21 +152,6 @@ const months = [
   'дек',
 ]
 
-// const setMonthItems = (filter, setFilter = () => {}, eventsInMonths) =>
-//   months.map((month, index) => (
-//     <MonthItem
-//       key={index}
-//       text={month}
-//       active={filter.month === index}
-//       onPress={() => {
-//         if (filter.month !== index) {
-//           setFilter({ month: index, year: filter.year })
-//         }
-//       }}
-//       badge={eventsInMonths[index].length}
-//     />
-//   ))
-
 const EventsScreen = ({ navigation, route }) => {
   const theme = useTheme()
   const { colors } = theme
@@ -325,12 +161,6 @@ const EventsScreen = ({ navigation, route }) => {
   const [modal, setModal] = useState(null)
   const [monthFilter, setMonthFilter] = useState(new Date().getMonth())
   const [yearFilter, setYearFilter] = useState(new Date().getFullYear())
-  // const [filterScrollPos, setFilterScrollPos] = useState(0)
-
-  // const scrollViewRef = useRef()
-
-  // const [income, setIncome] = useState(0)
-  // const [modalFinanceEventIncome, setModalFinanceEventIncome] = useState(false)
 
   let events = useSelector((state) => state.event.events)
   const services = useSelector((state) => state.service.services)
@@ -339,14 +169,6 @@ const EventsScreen = ({ navigation, route }) => {
   const loading = useSelector((state) => state.event.loading)
 
   const { dev } = useContext(AppContext)
-
-  // const showModalFinanceEventIncome = (event, incomeLeft) => {
-  //   setIncome(incomeLeft >= 0 ? incomeLeft : 0)
-  //   setModalFinanceEventIncome({
-  //     event,
-  //     incomeRecive: event.finance_price - incomeLeft,
-  //   })
-  // }
 
   let sortMenu = null
   const srtMenu = (r) => {
@@ -511,114 +333,7 @@ const EventsScreen = ({ navigation, route }) => {
     })
   }, [events, theme, services, clients, sorting, dev])
 
-  // useEffect(() => {
-  //   if (scrollViewRef.current) {
-  //     scrollViewRef.current.scrollTo({
-  //       x:
-  //         filter.month * monthItemWidth -
-  //         (windowWidth - 92) / 2 +
-  //         monthItemWidth / 2,
-  //       animated: true,
-  //     })
-  //   }
-  // })
-
   console.log('render EventsScreen Header finished')
-
-  // const monthItems = useMemo(
-  //   () => setMonthItems(filter, setFilter, eventsInMonths),
-  //   [filter.month, filter.year, eventsInMonths]
-  // )
-
-  // const Filter = () => {
-  //   return (
-  //     <View
-  //       style={{
-  //         width: '100%',
-  //         height: 40,
-  //         marginBottom: 2,
-  //         flexDirection: 'row',
-  //       }}
-  //     >
-  //       {/* <ScrollableTabView
-  //         style={{ marginTop: 20 }}
-  //         initialPage={2}
-  //         renderTabBar={() => <ScrollableTabBar />}
-  //       >
-  //         <Text tabLabel="Tab #1">My</Text>
-  //         <Text tabLabel="Tab #2 word word">favorite</Text>
-  //         <Text tabLabel="Tab #3 word word word">project</Text>
-  //         <Text tabLabel="Tab #4 word word word word">favorite</Text>
-  //         <Text tabLabel="Tab #5">project</Text>
-  //       </ScrollableTabView> */}
-
-  //       <ScrollView
-  //         style={{ flex: 1, maxHeight: 40 }}
-  //         horizontal={true}
-  //         ref={scrollViewRef}
-  //         showsHorizontalScrollIndicator={false}
-  //         // onContentSizeChange={() =>
-  //         //   scrollViewRef.current.scrollToEnd({ animated: true })
-  //         // }
-  //         // onScrollEndDrag={(event) => {
-  //         //   setFilterScrollPos(event.nativeEvent.contentOffset.x)
-  //         // }}
-  //         // contentOffset={{ x: filterScrollPos, y: 0 }}
-  //         // ref={
-  //         //   (ref) => {
-  //         //     scrollViewRef =
-  //         //   } // !!
-  //         // }
-  //         scrollEventThrottle={16}
-  //         decelerationRate="fast"
-  //         // pagingEnabled
-  //         // snapToEnd={true}
-  //       >
-  //         {monthItems}
-  //       </ScrollView>
-  //       <DevDropDownPicker
-  //         tables={years}
-  //         tableValue="value"
-  //         placeholder="Выберите календарь"
-  //         defaultValue={filter.year + ''}
-  //         onChangeItem={(value) => {
-  //           setFilter({ month: filter.month, year: value.value })
-  //         }}
-  //         onPress={() => {}}
-  //         // disabled={!selectedTable}
-  //         style={{
-  //           width: 90,
-  //           height: '100%',
-  //           padding: 0,
-  //           marginLeft: 2,
-  //           marginTop: 0,
-  //           borderRadius: 0,
-  //         }}
-  //       />
-  //     </View>
-  //   )
-  // }
-
-  // if (events.length === 0) {
-  //   console.log('render EventsScreen events = 0')
-  //   return (
-  //     <>
-  //       <Filter />
-  //       <View style={styles.center}>
-  //         <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
-  //           Событей нет
-  //         </Text>
-  //         <Fab
-  //           visible={true}
-  //           onPress={() => {
-  //             navigation.navigate('CreateEvent')
-  //           }}
-  //           label="Добавить событие"
-  //         />
-  //       </View>
-  //     </>
-  //   )
-  // }
 
   switch (sorting) {
     case 'dateDESC':
@@ -757,32 +472,6 @@ const EventsScreen = ({ navigation, route }) => {
         />
       )
     }
-    // const tabs = eventsInMonths.forEach((count, index) => (
-    //   <View
-    //     key={index}
-    //     tabLabel={{
-    //       label: months[index],
-    //       badge: count,
-    //       badgeColor: colors.accent,
-    //     }}
-    //   />
-    // ))
-    // const eventsPages = eventsInMonths.map((events, index) => (
-    //   <EventsPage
-    //     key={index}
-    //     tabLabel={{
-    //       label: months[index],
-    //       badge: events.length,
-    //       badgeColor: colors.accent,
-    //     }}
-    //     events={events}
-    //     navigation={navigation}
-    //     onDelete={modalDelete}
-    //     setModal={setModal}
-    //     dispatch={dispatch}
-    //     theme={theme}
-    //   />
-    // ))
 
     return (
       <View
