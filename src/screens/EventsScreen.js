@@ -1,4 +1,11 @@
-import React, { useState, useContext, useEffect, useRef, useMemo } from 'react'
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
@@ -33,8 +40,114 @@ import {
   ModalFinanceIncome,
   ModalFinanceOutcome,
 } from '../components/Modals/modalsFinance'
+
 import { DevDropDownPicker } from '../components/devComponents'
 import { Badge } from 'react-native-paper'
+import DropDownPicker from 'react-native-dropdown-picker'
+import RNPickerSelect from 'react-native-picker-select'
+
+// import SafeAreaView from 'react-native-safe-area-view'
+
+import ScrollableTabView from 'react-native-scrollable-tab-view'
+import TabBar from 'react-native-underline-tabbar'
+
+const EventsPage = ({
+  events,
+  navigation,
+  onDelete,
+  setModal,
+  dispatch,
+  theme,
+}) => {
+  const { colors } = theme
+  return (
+    <View
+      style={{
+        flex: 1,
+        // height: '500',
+        // zIndex: 0,
+        // borderColor: 'purple',
+        // borderWidth: 1,
+      }}
+    >
+      {events.length === 0 ? (
+        <View style={styles.center}>
+          <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
+            Событей нет
+          </Text>
+          <Fab
+            visible={true}
+            onPress={() => {
+              navigation.navigate('CreateEvent')
+            }}
+            label="Добавить событие"
+          />
+        </View>
+      ) : (
+        <MainFlatListWithFab
+          data={events}
+          renderItem={({ item }) => (
+            <EventCard
+              navigation={navigation}
+              event={item}
+              onDelete={() => onDelete(item)}
+              financeIncome={(incomeLeft) => {
+                // showModalFinanceEventIncome(item, incomeLeft)
+                setModal(
+                  <ModalFinanceIncome
+                    onOuterClick={() => setModal(null)}
+                    incomeFact={item.finance_price - incomeLeft}
+                    incomePlan={item.finance_price}
+                    onAddFinance={(income, comment, date) =>
+                      dispatch(
+                        addFinance({
+                          event: item.id,
+                          type: 'income',
+                          sum: income,
+                          comment,
+                          date: date,
+                        })
+                      )
+                    }
+                  />
+                )
+              }}
+              financeOutcome={(outcomeLeft) => {
+                const outcomePlan =
+                  item.finance_road +
+                  item.finance_organizator +
+                  item.finance_assistants +
+                  item.finance_consumables
+                // showModalFinanceEventIncome(item, incomeLeft)
+                setModal(
+                  <ModalFinanceOutcome
+                    onOuterClick={() => setModal(null)}
+                    outcomeFact={outcomePlan - outcomeLeft}
+                    outcomePlan={outcomePlan}
+                    onAddFinance={(outcome, comment, date) =>
+                      dispatch(
+                        addFinance({
+                          event: item.id,
+                          type: 'outcome',
+                          sum: outcome,
+                          comment,
+                          date: date,
+                        })
+                      )
+                    }
+                  />
+                )
+              }}
+            />
+          )}
+          onPressFab={() => {
+            navigation.navigate('CreateEvent')
+          }}
+        />
+      )}
+    </View>
+  )
+}
 
 // const ModalFinanceIncome = ({
 //   onAddFinance,
@@ -127,51 +240,51 @@ import { Badge } from 'react-native-paper'
 //   )
 // }
 
-const windowWidth = Dimensions.get('screen').width
-const monthItemWidth = 64
+// const windowWidth = Dimensions.get('screen').width
+// const monthItemWidth = 64
 
-const MonthItem = ({
-  text = '',
-  active = false,
-  onPress = () => {},
-  badge = 0,
-}) => {
-  const { colors } = useTheme()
-  return (
-    <TouchableOpacity
-      style={{
-        width: monthItemWidth,
-        height: 40,
-        borderColor: colors.border,
-        borderBottomColor: active ? colors.accent : null,
-        borderWidth: 1,
-        backgroundColor: colors.card,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        // marginHorizontal: 1,
-      }}
-      activeOpacity={0.5}
-      underlayColor="#DDDDDD"
-      onPress={onPress}
-    >
-      <Text
-        style={{
-          color: colors.text,
-          fontSize: fontSize.medium,
-          marginRight: badge > 0 ? 10 : 0,
-        }}
-      >
-        {text}
-      </Text>
-      {badge > 0 ? (
-        <Badge size={18} style={{ position: 'absolute', top: 3, right: 3 }}>
-          {badge}
-        </Badge>
-      ) : null}
-    </TouchableOpacity>
-  )
-}
+// const MonthItem = ({
+//   text = '',
+//   active = false,
+//   onPress = () => {},
+//   badge = 0,
+// }) => {
+//   const { colors } = useTheme()
+//   return (
+//     <TouchableOpacity
+//       style={{
+//         width: monthItemWidth,
+//         height: 40,
+//         borderColor: colors.border,
+//         borderBottomColor: active ? colors.accent : null,
+//         borderWidth: 1,
+//         backgroundColor: colors.card,
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         flexDirection: 'row',
+//         // marginHorizontal: 1,
+//       }}
+//       activeOpacity={0.5}
+//       underlayColor="#DDDDDD"
+//       onPress={onPress}
+//     >
+//       <Text
+//         style={{
+//           color: colors.text,
+//           fontSize: fontSize.medium,
+//           marginRight: badge > 0 ? 10 : 0,
+//         }}
+//       >
+//         {text}
+//       </Text>
+//       {badge > 0 ? (
+//         <Badge size={18} style={{ position: 'absolute', top: 3, right: 3 }}>
+//           {badge}
+//         </Badge>
+//       ) : null}
+//     </TouchableOpacity>
+//   )
+// }
 
 const months = [
   'янв',
@@ -188,20 +301,20 @@ const months = [
   'дек',
 ]
 
-const setMonthItems = (filter, setFilter = () => {}, eventsInMonths) =>
-  months.map((month, index) => (
-    <MonthItem
-      key={index}
-      text={month}
-      active={filter.month === index}
-      onPress={() => {
-        if (filter.month !== index) {
-          setFilter({ month: index, year: filter.year })
-        }
-      }}
-      badge={eventsInMonths[index]}
-    />
-  ))
+// const setMonthItems = (filter, setFilter = () => {}, eventsInMonths) =>
+//   months.map((month, index) => (
+//     <MonthItem
+//       key={index}
+//       text={month}
+//       active={filter.month === index}
+//       onPress={() => {
+//         if (filter.month !== index) {
+//           setFilter({ month: index, year: filter.year })
+//         }
+//       }}
+//       badge={eventsInMonths[index].length}
+//     />
+//   ))
 
 const EventsScreen = ({ navigation, route }) => {
   const theme = useTheme()
@@ -210,13 +323,11 @@ const EventsScreen = ({ navigation, route }) => {
   const { Popover } = renderers
   const [sorting, setSorting] = useState('dateDESC')
   const [modal, setModal] = useState(null)
-  const [filter, setFilter] = useState({
-    month: new Date().getMonth(),
-    year: new Date().getFullYear(),
-  })
+  const [monthFilter, setMonthFilter] = useState(new Date().getMonth())
+  const [yearFilter, setYearFilter] = useState(new Date().getFullYear())
   // const [filterScrollPos, setFilterScrollPos] = useState(0)
 
-  const scrollViewRef = useRef()
+  // const scrollViewRef = useRef()
 
   // const [income, setIncome] = useState(0)
   // const [modalFinanceEventIncome, setModalFinanceEventIncome] = useState(false)
@@ -228,25 +339,6 @@ const EventsScreen = ({ navigation, route }) => {
   const loading = useSelector((state) => state.event.loading)
 
   const { dev } = useContext(AppContext)
-
-  let years = [new Date().getFullYear()]
-  const eventsInMonths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-  events = events.filter((event) => {
-    const year = new Date(event.date).getFullYear()
-    const month = new Date(event.date).getMonth()
-    if (!years.includes(year)) {
-      years.push(year)
-    }
-    eventsInMonths[month] += 1
-    return month === filter.month
-  })
-
-  years = years
-    .sort((a, b) => (a.date > b.date ? 1 : -1))
-    .map((year) => {
-      return { name: year + '', value: year + '' }
-    })
 
   // const showModalFinanceEventIncome = (event, incomeLeft) => {
   //   setIncome(incomeLeft >= 0 ? incomeLeft : 0)
@@ -419,125 +511,114 @@ const EventsScreen = ({ navigation, route }) => {
     })
   }, [events, theme, services, clients, sorting, dev])
 
-  useEffect(() => {
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({
-        x:
-          filter.month * monthItemWidth -
-          (windowWidth - 92) / 2 +
-          monthItemWidth / 2,
-        animated: true,
-      })
-    }
-  })
+  // useEffect(() => {
+  //   if (scrollViewRef.current) {
+  //     scrollViewRef.current.scrollTo({
+  //       x:
+  //         filter.month * monthItemWidth -
+  //         (windowWidth - 92) / 2 +
+  //         monthItemWidth / 2,
+  //       animated: true,
+  //     })
+  //   }
+  // })
 
   console.log('render EventsScreen Header finished')
 
-  const monthItems = useMemo(
-    () => setMonthItems(filter, setFilter, eventsInMonths),
-    [filter.month, filter.year, eventsInMonths]
-  )
+  // const monthItems = useMemo(
+  //   () => setMonthItems(filter, setFilter, eventsInMonths),
+  //   [filter.month, filter.year, eventsInMonths]
+  // )
 
-  if (loading) {
-    console.log('render EventsScreen loading')
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color={colors.text} />
-      </View>
-    )
-  }
+  // const Filter = () => {
+  //   return (
+  //     <View
+  //       style={{
+  //         width: '100%',
+  //         height: 40,
+  //         marginBottom: 2,
+  //         flexDirection: 'row',
+  //       }}
+  //     >
+  //       {/* <ScrollableTabView
+  //         style={{ marginTop: 20 }}
+  //         initialPage={2}
+  //         renderTabBar={() => <ScrollableTabBar />}
+  //       >
+  //         <Text tabLabel="Tab #1">My</Text>
+  //         <Text tabLabel="Tab #2 word word">favorite</Text>
+  //         <Text tabLabel="Tab #3 word word word">project</Text>
+  //         <Text tabLabel="Tab #4 word word word word">favorite</Text>
+  //         <Text tabLabel="Tab #5">project</Text>
+  //       </ScrollableTabView> */}
 
-  console.log('render EventsScreen loading skipped')
+  //       <ScrollView
+  //         style={{ flex: 1, maxHeight: 40 }}
+  //         horizontal={true}
+  //         ref={scrollViewRef}
+  //         showsHorizontalScrollIndicator={false}
+  //         // onContentSizeChange={() =>
+  //         //   scrollViewRef.current.scrollToEnd({ animated: true })
+  //         // }
+  //         // onScrollEndDrag={(event) => {
+  //         //   setFilterScrollPos(event.nativeEvent.contentOffset.x)
+  //         // }}
+  //         // contentOffset={{ x: filterScrollPos, y: 0 }}
+  //         // ref={
+  //         //   (ref) => {
+  //         //     scrollViewRef =
+  //         //   } // !!
+  //         // }
+  //         scrollEventThrottle={16}
+  //         decelerationRate="fast"
+  //         // pagingEnabled
+  //         // snapToEnd={true}
+  //       >
+  //         {monthItems}
+  //       </ScrollView>
+  //       <DevDropDownPicker
+  //         tables={years}
+  //         tableValue="value"
+  //         placeholder="Выберите календарь"
+  //         defaultValue={filter.year + ''}
+  //         onChangeItem={(value) => {
+  //           setFilter({ month: filter.month, year: value.value })
+  //         }}
+  //         onPress={() => {}}
+  //         // disabled={!selectedTable}
+  //         style={{
+  //           width: 90,
+  //           height: '100%',
+  //           padding: 0,
+  //           marginLeft: 2,
+  //           marginTop: 0,
+  //           borderRadius: 0,
+  //         }}
+  //       />
+  //     </View>
+  //   )
+  // }
 
-  const Filter = () => {
-    return (
-      <View
-        style={{
-          width: '100%',
-          height: 40,
-          marginBottom: 2,
-          flexDirection: 'row',
-        }}
-      >
-        {/* <ScrollableTabView
-          style={{ marginTop: 20 }}
-          initialPage={2}
-          renderTabBar={() => <ScrollableTabBar />}
-        >
-          <Text tabLabel="Tab #1">My</Text>
-          <Text tabLabel="Tab #2 word word">favorite</Text>
-          <Text tabLabel="Tab #3 word word word">project</Text>
-          <Text tabLabel="Tab #4 word word word word">favorite</Text>
-          <Text tabLabel="Tab #5">project</Text>
-        </ScrollableTabView> */}
-
-        <ScrollView
-          style={{ flex: 1, maxHeight: 40 }}
-          horizontal={true}
-          ref={scrollViewRef}
-          showsHorizontalScrollIndicator={false}
-          // onContentSizeChange={() =>
-          //   scrollViewRef.current.scrollToEnd({ animated: true })
-          // }
-          // onScrollEndDrag={(event) => {
-          //   setFilterScrollPos(event.nativeEvent.contentOffset.x)
-          // }}
-          // contentOffset={{ x: filterScrollPos, y: 0 }}
-          // ref={
-          //   (ref) => {
-          //     scrollViewRef =
-          //   } // !!
-          // }
-          scrollEventThrottle={16}
-          decelerationRate="fast"
-          // pagingEnabled
-          // snapToEnd={true}
-        >
-          {monthItems}
-        </ScrollView>
-        <DevDropDownPicker
-          tables={years}
-          tableValue="value"
-          placeholder="Выберите календарь"
-          defaultValue={filter.year + ''}
-          onChangeItem={(value) => {
-            setFilter({ month: filter.month, year: value.value })
-          }}
-          onPress={() => {}}
-          // disabled={!selectedTable}
-          style={{
-            width: 90,
-            height: '100%',
-            padding: 0,
-            marginLeft: 2,
-            marginTop: 0,
-            borderRadius: 0,
-          }}
-        />
-      </View>
-    )
-  }
-
-  if (events.length === 0) {
-    console.log('render EventsScreen events = 0')
-    return (
-      <>
-        <Filter />
-        <View style={styles.center}>
-          <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
-            Событей нет
-          </Text>
-          <Fab
-            visible={true}
-            onPress={() => {
-              navigation.navigate('CreateEvent')
-            }}
-            label="Добавить событие"
-          />
-        </View>
-      </>
-    )
-  }
+  // if (events.length === 0) {
+  //   console.log('render EventsScreen events = 0')
+  //   return (
+  //     <>
+  //       <Filter />
+  //       <View style={styles.center}>
+  //         <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
+  //           Событей нет
+  //         </Text>
+  //         <Fab
+  //           visible={true}
+  //           onPress={() => {
+  //             navigation.navigate('CreateEvent')
+  //           }}
+  //           label="Добавить событие"
+  //         />
+  //       </View>
+  //     </>
+  //   )
+  // }
 
   switch (sorting) {
     case 'dateDESC':
@@ -550,75 +631,264 @@ const EventsScreen = ({ navigation, route }) => {
       events.sort((a, b) => (a.date > b.date ? 1 : -1))
   }
 
+  let years = [new Date().getFullYear()]
+  const eventsInMonths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+  events = events.filter((event) => {
+    const year = new Date(event.date).getFullYear()
+    const month = new Date(event.date).getMonth()
+    if (!years.includes(year)) {
+      years.push(year)
+    }
+    if (year === yearFilter) {
+      eventsInMonths[month] += 1
+    }
+    return month === monthFilter && year === yearFilter
+  })
+
+  years = years
+    .sort((a, b) => (a.date > b.date ? 1 : -1))
+    .map((year) => {
+      return { label: year + '', value: year }
+    })
+
+  const YearsDropDownList = useCallback(() => {
+    return (
+      <View
+        style={{
+          width: 80,
+          borderBottomColor: colors.border,
+          borderBottomWidth: 1,
+          borderLeftColor: colors.border,
+          borderLeftWidth: 1,
+          zIndex: 10,
+          // elevation: 10,
+        }}
+      >
+        {/* <DropDownPicker
+          items={years}
+          defaultValue={filter.year}
+          labelStyle={{
+            fontSize: fontSize.medium,
+            textAlign: 'left',
+            color: colors.text,
+          }}
+          containerStyle={{ marginVertical: 2 }}
+          style={{
+            flex: 1,
+            backgroundColor: 'transparent',
+            borderColor: 'transparent',
+            borderWidth: 0,
+            minHeight: 38,
+            // marginRight: 5,
+            zIndex: 10,
+          }}
+          dropDownMaxHeight={350}
+          itemStyle={{
+            justifyContent: 'flex-start',
+          }}
+          dropDownStyle={{
+            backgroundColor: colors.card,
+            borderColor: colors.border,
+            zIndex: 10,
+          }}
+          activeItemStyle={{ backgroundColor: colors.border }}
+          arrowColor={colors.text}
+          onChangeItem={(item) =>
+            setFilter({ month: filter.month, year: item })
+          }
+        /> */}
+        <RNPickerSelect
+          items={years}
+          // style={{ width: 100, height: 30 }}
+          useNativeAndroidPickerStyle={false}
+          placeholder={{}}
+          // InputAccessoryView={() => null}
+          onValueChange={(value) => setYearFilter(value)}
+          Icon={() => {
+            return (
+              <Ionicons name="ios-arrow-down" size={18} color={colors.text} />
+            )
+          }}
+          style={{
+            inputAndroid: {
+              fontSize: 16,
+              // paddingHorizontal: 10,
+              height: 36,
+              // paddingVertical: 8,
+              // borderWidth: 0.5,
+              // borderColor: 'purple',
+              // borderRadius: 8,
+              color: colors.text,
+              paddingLeft: 8,
+              paddingRight: 30, // to ensure the text is never behind the icon
+              // maxWidth: 100,
+              // borderColor: 'red',
+              // borderWidth: 3,
+            },
+            iconContainer: {
+              top: 11,
+              right: 10,
+            },
+            // placeholder: {
+            //   // color: 'purple',
+            //   fontSize: 12,
+            //   fontWeight: 'bold',
+            // },
+          }}
+          value={yearFilter}
+          // textInputProps={{ underlineColorAndroid: 'cyan' }}
+        />
+      </View>
+    )
+  }, [years, yearFilter, colors])
+
+  const MonthTabs = useCallback(() => {
+    const tabs = []
+    for (let i = 0; i < eventsInMonths.length; i++) {
+      tabs.push(
+        <View
+          key={i}
+          tabLabel={{
+            label: months[i],
+            badge: eventsInMonths[i],
+            badgeColor: colors.accent,
+          }}
+        />
+      )
+    }
+    // const tabs = eventsInMonths.forEach((count, index) => (
+    //   <View
+    //     key={index}
+    //     tabLabel={{
+    //       label: months[index],
+    //       badge: count,
+    //       badgeColor: colors.accent,
+    //     }}
+    //   />
+    // ))
+    // const eventsPages = eventsInMonths.map((events, index) => (
+    //   <EventsPage
+    //     key={index}
+    //     tabLabel={{
+    //       label: months[index],
+    //       badge: events.length,
+    //       badgeColor: colors.accent,
+    //     }}
+    //     events={events}
+    //     navigation={navigation}
+    //     onDelete={modalDelete}
+    //     setModal={setModal}
+    //     dispatch={dispatch}
+    //     theme={theme}
+    //   />
+    // ))
+
+    return (
+      <View
+        style={{
+          height: 38,
+          flex: 1,
+          borderBottomColor: colors.border,
+          borderBottomWidth: 1,
+        }}
+      >
+        <ScrollableTabView
+          onChangeTab={({ i }) => {
+            if (i !== monthFilter) setMonthFilter(i)
+          }}
+          initialPage={monthFilter}
+          // style={{ borderColor: 'red', borderWidth: 2, paddingTop: 0, flex: 1 }}
+          renderTabBar={() => (
+            <TabBar
+              underlineColor={colors.accent}
+              tabBarTextStyle={{
+                color: colors.text,
+                fontSize: fontSize.medium,
+              }}
+              tabBarStyle={{
+                marginTop: 0,
+                borderBottomColor: 'transparent',
+                borderBottomWidth: 0,
+                // zIndex: 0,
+                // height: 200,
+              }}
+              // scrollContainerStyle={{ flex: 1 }}
+              activeTabTextStyle={{
+                // color: colors.accent,
+                fontSize: fontSize.medium,
+                fontWeight: 'bold',
+              }}
+              tabStyles={{
+                tab: { paddingTop: 6, paddingBottom: 6 },
+                badgeText: {
+                  color: colors.accentText,
+                  fontSize: fontSize.tiny - 2,
+                },
+              }}
+              style={{ paddingTop: 0 }}
+            />
+          )}
+        >
+          {tabs}
+        </ScrollableTabView>
+      </View>
+    )
+  }, [
+    eventsInMonths[0],
+    eventsInMonths[1],
+    eventsInMonths[2],
+    eventsInMonths[3],
+    eventsInMonths[4],
+    eventsInMonths[5],
+    eventsInMonths[6],
+    eventsInMonths[7],
+    eventsInMonths[8],
+    eventsInMonths[9],
+    eventsInMonths[10],
+    eventsInMonths[11],
+    colors,
+    monthFilter,
+  ])
+
+  if (loading) {
+    console.log('render EventsScreen loading')
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" color={colors.text} />
+      </View>
+    )
+  }
+
+  console.log('render EventsScreen loading skipped')
+
   console.log('render EventsScreen events = 0 skipped')
 
   return (
-    <>
-      <Filter />
-      <View style={styles.container}>
-        <MainFlatListWithFab
-          data={events}
-          renderItem={({ item }) => (
-            <EventCard
-              navigation={navigation}
-              event={item}
-              onDelete={() => modalDelete(item)}
-              financeIncome={(incomeLeft) => {
-                // showModalFinanceEventIncome(item, incomeLeft)
-                setModal(
-                  <ModalFinanceIncome
-                    onOuterClick={() => setModal(null)}
-                    incomeFact={item.finance_price - incomeLeft}
-                    incomePlan={item.finance_price}
-                    onAddFinance={(income, comment, date) =>
-                      dispatch(
-                        addFinance({
-                          event: item.id,
-                          type: 'income',
-                          sum: income,
-                          comment,
-                          date: date,
-                        })
-                      )
-                    }
-                  />
-                )
-              }}
-              financeOutcome={(outcomeLeft) => {
-                const outcomePlan =
-                  item.finance_road +
-                  item.finance_organizator +
-                  item.finance_assistants +
-                  item.finance_consumables
-                // showModalFinanceEventIncome(item, incomeLeft)
-                setModal(
-                  <ModalFinanceOutcome
-                    onOuterClick={() => setModal(null)}
-                    outcomeFact={outcomePlan - outcomeLeft}
-                    outcomePlan={outcomePlan}
-                    onAddFinance={(outcome, comment, date) =>
-                      dispatch(
-                        addFinance({
-                          event: item.id,
-                          type: 'outcome',
-                          sum: outcome,
-                          comment,
-                          date: date,
-                        })
-                      )
-                    }
-                  />
-                )
-              }}
-            />
-          )}
-          onPressFab={() => {
-            navigation.navigate('CreateEvent')
-          }}
-        />
-        {modal}
+  // <SafeAreaView style={{ flex: 1 }}>
+
+    <View style={styles.container}>
+      <View style={{ flexDirection: 'row' }}>
+        <MonthTabs />
+        <YearsDropDownList />
       </View>
-    </>
+
+      <EventsPage
+        // tabLabel={{
+        //   label: months[0],
+        //   badge: eventsInMonths[0].length,
+        //   badgeColor: colors.accent,
+        // }}
+        events={events}
+        navigation={navigation}
+        onDelete={modalDelete}
+        setModal={setModal}
+        dispatch={dispatch}
+        theme={theme}
+      />
+      {modal}
+    </View>
+    // </SafeAreaView>
   )
 }
 
