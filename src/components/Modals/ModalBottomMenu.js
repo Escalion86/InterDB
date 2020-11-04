@@ -23,7 +23,7 @@ const ModalBottomMenu = ({
         visible={visible}
         hardwareAccelerated={true}
       >
-        <View style={{ flex: 1, opacity: 0.8, backgroundColor: '#000' }}></View>
+        <View style={{ flex: 1, opacity: 0.9, backgroundColor: '#000' }}></View>
       </Modal>
       <GestureRecognizer
         onSwipeDown={() => {
