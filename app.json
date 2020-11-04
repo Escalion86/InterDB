@@ -2,7 +2,7 @@
   "expo": {
     "name": "iDB",
     "slug": "Individual_DataBase",
-    "version": "0.3.2",
+    "version": "0.3.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "platforms": ["android"],
@@ -24,7 +24,9 @@
     "android": {
       "icon": "./assets/gear96.png",
       "useNextNotificationsApi": true,
-      "package": "com.escalion.iDB"
+      "package": "com.escalion.iDB",
+      "versionCode": 35,
+      "permissions": []
     }
   }
 }

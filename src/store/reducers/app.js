@@ -23,7 +23,7 @@ export const initialAppState = {
   calendarBirthdayId: '',
   firstStart: false,
   lastUsedVersion: '',
-  version: '0.3.2',
+  version: '0.3.5',
 }
 
 export const appReducer = (state = initialAppState, action) => {
