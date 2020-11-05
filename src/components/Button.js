@@ -12,14 +12,24 @@ const Button = ({
   disabled = false,
   textFontSize = 'medium',
   size = 'medium',
+  outline = false,
 }) => {
   const { colors } = useTheme()
+
   return (
     <TouchableHighlight
       style={{
         ...styles.button,
-        backgroundColor: btnDecline ? colors.abort : colors.accent,
-        borderColor: colors.border,
+        backgroundColor: outline
+          ? 'transparent'
+          : btnDecline
+            ? colors.abort
+            : colors.accent,
+        borderColor: outline
+          ? btnDecline
+            ? colors.abort
+            : colors.accent
+          : colors.border,
         minHeight: size === 'small' ? 32 : size === 'big' ? 56 : 44,
         paddingHorizontal: size === 'small' ? 10 : size === 'big' ? 14 : 12,
         ...style,
@@ -31,11 +41,15 @@ const Button = ({
         style={{
           ...styles.buttonTitle,
           fontSize: fontSize[textFontSize],
-          color: disabled
-            ? colors.disabled
-            : btnDecline
-              ? colors.abortText
-              : colors.accentText,
+          color: outline
+            ? btnDecline
+              ? colors.abort
+              : colors.accent
+            : disabled
+              ? colors.disabled
+              : btnDecline
+                ? colors.abortText
+                : colors.accentText,
         }}
       >
         {title}
