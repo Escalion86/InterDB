@@ -10,8 +10,9 @@ import {
   TextInputBlock,
   TitleBlock,
   ImagePickerBlock,
-  GenderSwitch,
+  // GenderSwitch,
   BirthdayPicker,
+  RadioBlock,
 } from '../components/createComponents'
 import trimingArrayValues from '../helpers/trimingArrayValues'
 import { HeaderBackButton } from '@react-navigation/stack'
@@ -173,12 +174,24 @@ const CreateClientScreen = ({ navigation, route }) => {
         onPick={(img) => setClientItem({ avatar: img })}
       />
 
-      <GenderSwitch
+      {/* <GenderSwitch
         title="Пол"
         value={newClient.gender === 1}
         onSwitch={(text) => {
           setClientItem({ gender: text ? 1 : 0 })
         }}
+      /> */}
+      <RadioBlock
+        title="Пол"
+        radios={[
+          { label: 'Мужской', value: '1' },
+          { label: 'Женский', value: '0' },
+        ]}
+        value={newClient.gender === 0 ? '0' : '1'}
+        onValueChange={(value) =>
+          setClientItem({ gender: value === '0' ? 0 : 1 })
+        }
+        // buttonsFlex={5}
       />
       <BirthdayPicker
         day={newClient.birthday_day}
