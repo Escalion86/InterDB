@@ -46,6 +46,7 @@ export const contactsIcons = (client) => [
     color: 'green',
     url: `tel:+7${client.phone}`,
     exist: !!client.phone,
+    data: `+7${client.phone}`,
   },
   {
     db_column: 'phone',
@@ -54,6 +55,7 @@ export const contactsIcons = (client) => [
     color: 'orange',
     url: `sms:+7${client.phone}`,
     exist: !!client.phone,
+    data: `+7${client.phone}`,
   },
   {
     db_column: 'whatsapp',
@@ -62,6 +64,7 @@ export const contactsIcons = (client) => [
     color: '#43d854',
     url: `whatsapp://send?phone=7${client.whatsapp}`,
     exist: !!client.whatsapp,
+    data: `7${client.whatsapp}`,
   },
   {
     db_column: 'viber',
@@ -70,6 +73,7 @@ export const contactsIcons = (client) => [
     color: '#59267c',
     url: `viber://add?number=7${client.viber}`,
     exist: !!client.viber,
+    data: `7${client.viber}`,
   },
   {
     db_column: 'telegram',
@@ -78,6 +82,7 @@ export const contactsIcons = (client) => [
     color: '#0088cc',
     url: `http://t.me/${client.telegram}`,
     exist: !!client.telegram,
+    data: `@${client.telegram}`,
   },
   {
     db_column: 'vk',
@@ -86,6 +91,7 @@ export const contactsIcons = (client) => [
     color: '#597da3',
     url: `http://vk.com/${client.vk}`,
     exist: !!client.vk,
+    data: `@${client.vk}`,
   },
   {
     db_column: 'instagram',
@@ -94,14 +100,16 @@ export const contactsIcons = (client) => [
     color: '#C13584',
     url: `http://instagram.com/${client.instagram}`,
     exist: !!client.instagram,
+    data: `@${client.instagram}`,
   },
   {
     db_column: 'facebook',
     name: 'FaceBook',
     icon: 'facebook',
     color: '#3b5998',
-    url: `http://vk.com/${client.facebook}`,
+    url: `http://facebook.com/${client.facebook}`,
     exist: !!client.facebook,
+    data: `@${client.facebook}`,
   },
   {
     db_column: 'email',
@@ -110,5 +118,6 @@ export const contactsIcons = (client) => [
     color: 'red',
     url: `mailto:${client.email}`,
     exist: !!client.email,
+    data: client.email,
   },
 ]

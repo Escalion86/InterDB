@@ -171,6 +171,8 @@ const ClientScreen = ({ navigation, route }) => {
               backgroundColor={contact.color}
               url={contact.url}
               style={{ marginHorizontal: 10, marginBottom: 10 }}
+              showPopowerOnLongPress={true}
+              data={contact.data}
             />
           ) : null
         })}
