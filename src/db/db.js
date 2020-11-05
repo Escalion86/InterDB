@@ -13,7 +13,11 @@ export const dbTemplateToSql = (table = 'events') => {
   dbTemplate[table].forEach((col) => {
     sql += `, ${col.db_name.toLowerCase()} ${col.db_type}${
       col.not_null ? ' NOT NULL' : ''
-    }${col.default !== '' ? ` DEFAULT '${col.default}'` : ''}`
+    }${
+      col.db_default !== '' || col.not_null
+        ? ` DEFAULT '${col.db_default}'`
+        : ''
+    }`
     // uniq.push(col.db_name)
   })
 
@@ -35,6 +39,41 @@ export const dbTemplateToSqlFull = () => {
 }
 
 export class DB {
+  static async tableToTemplate (table) {
+    // Получаем список существующих колонок
+    const columnsExist = await DB.getTableColumns(table).then((columns) => {
+      return columns.map((column) => {
+        return column.name
+      })
+    })
+    // Убираем колонку id, так как она не присутствует в шаблоне по умолчанию
+    columnsExist.splice(columnsExist.indexOf('id'), 1)
+
+    // Получаем список необходимых колонок
+    const columnsToBe = dbTemplate[table]
+
+    // Сравниваем
+    for (let i = 0; i < columnsToBe.length; i++) {
+      const colName = columnsToBe[i].db_name
+      if (columnsExist.includes(colName)) {
+        // Если колонка есть, то ничего не делаем
+        columnsExist.splice(columnsExist.indexOf(colName), 1)
+      } else {
+        // Если колонка должна быть, но ее нет, то создаем
+        console.log(`Создана колонка '${colName}' в таблице ${table}`)
+        await DB.addColumn(
+          'events',
+          colName,
+          columnsToBe[i].db_type,
+          columnsToBe[i].not_null,
+          columnsToBe[i].db_default
+        )
+      }
+    }
+
+    return true
+  }
+
   static init () {
     const tables = Object.keys(dbTemplate)
     tables.forEach(async (table) => {
@@ -45,12 +84,19 @@ export class DB {
           )
         })
       )
+      await this.tableToTemplate(table)
     })
 
     return true
   }
 
-  static addColumn (table, colName, type = 'TEXT', notNull = false) {
+  static addColumn (
+    table,
+    colName,
+    type = 'TEXT',
+    notNull = false,
+    defaultValue = ''
+  ) {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
@@ -59,6 +105,8 @@ export class DB {
           // } END`,
           `ALTER TABLE ${table} ADD COLUMN ${colName} ${type}${
             notNull ? ' NOT NULL' : ''
+          }${
+            defaultValue !== '' || notNull ? ` DEFAULT '${defaultValue}'` : ''
           }`,
           [],
           (_, result) => resolve(result.rows._array),
