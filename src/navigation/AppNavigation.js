@@ -28,6 +28,7 @@ import SettingsThemeScreen from '../screens/SettingsThemeScreen'
 
 import DevScreen from '../screens/DevScreen'
 import DevTableScreen from '../screens/DevTableScreen'
+import TestScreen from '../screens/TestScreen'
 import ServicesScreen from '../screens/ServicesScreen'
 import ServiceScreen from '../screens/ServiceScreen'
 import AboutScreen from '../screens/AboutScreen'
@@ -212,6 +213,13 @@ const DevStackScreen = ({ navigation }) => (
       component={DevTableScreen}
       options={{
         title: 'Таблица',
+      }}
+    />
+    <DevStack.Screen
+      name="Test"
+      component={TestScreen}
+      options={{
+        title: 'Тест',
       }}
     />
     {/* <DevStack.Screen

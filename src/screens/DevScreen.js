@@ -16,11 +16,6 @@ const DevScreen = ({ navigation, route }) => {
     setTables(data)
   }
 
-  async function loadColumns (table) {
-    // const data = await DB.getTableColumns(table)
-    navigation.navigate('DevTable', { table })
-  }
-
   useEffect(() => {
     loadTables()
   }, [])
@@ -38,6 +33,10 @@ const DevScreen = ({ navigation, route }) => {
         onPress={async () => {
           await showAllNotifications()
         }}
+      />
+      <Button
+        title="Тестовая страница"
+        onPress={() => navigation.navigate('Test')}
       />
       {/* <Button
         title="Очистить и перезапустить БД"
@@ -58,7 +57,7 @@ const DevScreen = ({ navigation, route }) => {
           onChangeItem={(value) => {
             setSelectedTable(value.value)
           }}
-          onPress={() => loadColumns(selectedTable)}
+          onPress={() => navigation.navigate('DevTable', { selectedTable })}
           disabled={!selectedTable}
           style={{ flex: 1 }}
           buttonTitle="Открыть таблицу"

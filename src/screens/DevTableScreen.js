@@ -21,7 +21,7 @@ import { fontSize } from '../theme'
 const DevTableScreen = ({ navigation, route }) => {
   const { colors } = useTheme()
   const [columns, setColumns] = useState([])
-  const selectedTable = route.params.table
+  const { selectedTable } = route.params
   const { Popover } = renderers
 
   // if (selectedTable) {
