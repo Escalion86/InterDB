@@ -116,7 +116,7 @@ const CreateFinanceScreen = ({ navigation, route }) => {
         ]}
         value={newFinance.type}
         onValueChange={(value) => setFinanceItem({ type: value })}
-        buttonsFlex={5}
+        // buttonsFlex={5}
       />
       <DateTimePickerBlock
         title="Дата и время"
