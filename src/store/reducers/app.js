@@ -7,6 +7,7 @@ import {
   // SET_ALL_CALENDAR_SETTINGS,
   // SET_ALL_SETTINGS,
 } from '../types'
+import * as appJson from '../../../app.json'
 
 export const initialAppState = {
   // Общие настройки оповещений
@@ -23,7 +24,7 @@ export const initialAppState = {
   calendarBirthdayId: '',
   firstStart: false,
   lastUsedVersion: '',
-  version: '0.3.5',
+  version: appJson.expo.version,
 }
 
 export const appReducer = (state = initialAppState, action) => {
