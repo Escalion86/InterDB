@@ -48,12 +48,24 @@ export const ContactIcon = ({
   style = {},
   showPopowerOnLongPress = false,
   data = '',
+  textColor = null,
+  size = 'giant',
 }) => {
-  const size = 30
   const { Popover } = renderers
   const { colors } = useTheme()
+  if (!textColor) textColor = colors.text
+  const IconSizeNum =
+    ((iconSize ? iconSize[size] : null) ||
+      (iconSize ? iconSize.medium : null) ||
+      28) - 6
+  const fontSizeNum =
+    (fontSize ? fontSize[size] : null) ||
+    (fontSize ? fontSize.medium : null) ||
+    16
+  const iconDemention = IconSizeNum + Math.floor(IconSizeNum / 2)
+  const IconPadding = Math.floor(IconSizeNum / 16)
 
-  return showPopowerOnLongPress ? (
+  return showPopowerOnLongPress && data ? (
     <Menu renderer={Popover} rendererProps={{ preferredPlacement: 'Top' }}>
       <MenuTrigger
         triggerOnLongPress
@@ -68,14 +80,14 @@ export const ContactIcon = ({
         <View
           style={{
             ...styles.contact,
-            width: size + Math.floor(size / 2),
-            height: size + Math.floor(size / 2),
-            padding: Math.floor(size / 16),
+            width: iconDemention,
+            height: iconDemention,
+            padding: IconPadding,
             backgroundColor: backgroundColor,
             ...style,
           }}
         >
-          <FontAwesome5 name={iconName} size={size} color="white" />
+          <FontAwesome5 name={iconName} size={IconSizeNum} color="white" />
         </View>
       </MenuTrigger>
       <MenuOptions
@@ -128,16 +140,27 @@ export const ContactIcon = ({
       onPress={() => {
         if (url) Linking.openURL(url)
       }}
-      style={{
-        ...styles.contact,
-        width: size + Math.floor(size / 2),
-        height: size + Math.floor(size / 2),
-        padding: Math.floor(size / 16),
-        backgroundColor: backgroundColor,
-        ...style,
-      }}
+      style={{ flexDirection: 'row', alignItems: 'center' }}
     >
-      <FontAwesome5 name={iconName} size={size} color={'white'} />
+      <View
+        style={{
+          ...styles.contact,
+          width: iconDemention,
+          height: iconDemention,
+          padding: IconPadding,
+          backgroundColor: backgroundColor,
+          ...style,
+        }}
+      >
+        <FontAwesome5 name={iconName} size={IconSizeNum} color={'white'} />
+      </View>
+      {data ? (
+        <Text
+          style={{ color: textColor, fontSize: fontSizeNum, marginLeft: 10 }}
+        >
+          {data}
+        </Text>
+      ) : null}
     </TouchableOpacity>
   )
 }

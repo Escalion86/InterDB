@@ -59,7 +59,7 @@ const AboutScreen = ({ navigation, route }) => {
           приложению, то сообщите об этом разработчику напрямую:
         </Text>
         <View style={styles.contacts}>
-          <ContactIcon
+          {/* <ContactIcon
             iconName="vk"
             backgroundColor="#597da3"
             url="https://vk.com/escalion"
@@ -68,11 +68,12 @@ const AboutScreen = ({ navigation, route }) => {
             iconName="whatsapp"
             backgroundColor="#43d854"
             url="whatsapp://send?phone=79138370020"
-          />
+          /> */}
           <ContactIcon
             iconName="telegram"
             backgroundColor="#0088cc"
             url="http://t.me/escalion"
+            data="@Escalion"
           />
         </View>
         <View style={{ ...styles.developer, borderColor: colors.card }}>
