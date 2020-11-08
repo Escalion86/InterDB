@@ -22,7 +22,9 @@ const CreateServiceScreen = ({ navigation, route }) => {
       ? useSelector((state) => state.service.services).find(
         (item) => item.id === route.params.serviceId
       )
-      : dbDefault('services')
+      : route.params !== undefined && route.params.service !== undefined
+        ? { ...route.params.service, id: null }
+        : { ...dbDefault('services'), date: new Date().setSeconds(0, 0) }
 
   const dispatch = useDispatch()
   const [newService, setNewService] = useState(service)

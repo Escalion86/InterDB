@@ -142,6 +142,7 @@ const ServicesScreen = ({ navigation, route }) => {
               onDelete={() => {
                 modalDelete(item)
               }}
+              havePopupMenu
             />
           )}
           onPressFab={() => {

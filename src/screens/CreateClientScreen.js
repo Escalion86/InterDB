@@ -25,7 +25,9 @@ const CreateClientScreen = ({ navigation, route }) => {
       ? useSelector((state) => state.client.clients).find(
         (item) => item.id === route.params.clientId
       )
-      : { ...dbDefault('clients'), birthday: null }
+      : route.params !== undefined && route.params.client !== undefined
+        ? { ...route.params.client, id: null }
+        : { ...dbDefault('clients'), birthday: null }
 
   const dispatch = useDispatch()
   const [newClient, setNewClient] = useState(client)
