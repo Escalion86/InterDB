@@ -309,7 +309,7 @@ const EventsScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: `События (${events.length})`,
+      title: 'События',
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
           <Menu
