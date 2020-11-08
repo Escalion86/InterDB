@@ -13,8 +13,10 @@ const Button = ({
   textFontSize = 'medium',
   size = 'medium',
   outline = false,
+  theme = null,
 }) => {
-  const { colors } = useTheme()
+  if (!theme) theme = useTheme()
+  const { colors } = theme
 
   return (
     <TouchableHighlight
@@ -29,7 +31,7 @@ const Button = ({
           ? btnDecline
             ? colors.abort
             : colors.accent
-          : colors.border,
+          : 'transparent',
         minHeight: size === 'small' ? 32 : size === 'big' ? 56 : 44,
         paddingHorizontal: size === 'small' ? 10 : size === 'big' ? 14 : 12,
         ...style,

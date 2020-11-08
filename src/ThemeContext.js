@@ -4,6 +4,8 @@ import { darkTheme, lightTheme } from './theme'
 
 import contrastColor from './helpers/contrastColor'
 
+export let resultTheme = darkTheme
+
 const _storeData = async (key, value) => {
   try {
     await AsyncStorage.setItem(key, value)
@@ -35,7 +37,7 @@ export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(lightTheme)
   const [accent, setAccent] = useState(lightTheme.colors.accent)
   const { colors } = theme
-  const resultTheme = {
+  resultTheme = {
     ...theme,
     colors: { ...colors, accent, accentText: contrastColor(accent) },
   }

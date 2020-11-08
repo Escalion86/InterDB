@@ -383,6 +383,23 @@ const DrawerContent = (props) => {
         </View>
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
+        {dev ? (
+          <DrawerItem
+            icon={({ color, size }) => (
+              <Ionicons
+                name="md-bug"
+                size={iconSize.small}
+                color={colors.icon}
+                // style={{ marginLeft: 5 }}
+              />
+            )}
+            label="Панель разработчика"
+            labelStyle={labelStyle}
+            onPress={() => {
+              props.navigation.navigate('Dev')
+            }}
+          />
+        ) : null}
         <DrawerItem
           icon={({ color, size }) => (
             <Ionicons
@@ -413,23 +430,7 @@ const DrawerContent = (props) => {
             props.navigation.navigate('About')
           }}
         /> */}
-        {dev ? (
-          <DrawerItem
-            icon={({ color, size }) => (
-              <Ionicons
-                name="md-bug"
-                size={iconSize.small}
-                color={colors.icon}
-                // style={{ marginLeft: 5 }}
-              />
-            )}
-            label="Панель разработчика"
-            labelStyle={labelStyle}
-            onPress={() => {
-              props.navigation.navigate('Dev')
-            }}
-          />
-        ) : null}
+
         {/* <DrawerItem
           icon={() => (
             <Ionicons

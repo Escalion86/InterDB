@@ -7,7 +7,9 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   ToastAndroid,
+  Dimensions,
 } from 'react-native'
+// import Button from '../components/Button'
 import {
   Menu,
   MenuOptions,
@@ -39,6 +41,21 @@ import RNPickerSelect from 'react-native-picker-select'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import TabBar from 'react-native-underline-tabbar'
 
+import {
+  // TourGuideZone, // Main wrapper of highlight component
+  TourGuideZoneByPosition, // Component to use mask on overlay (ie, position absolute)
+  useTourGuideController, // hook to start, etc.
+} from 'rn-tourguide'
+
+// import {
+//   copilot,
+//   walkthroughable,
+//   CopilotStep,
+//   FloatComponent,
+// } from '../components/copilot'
+
+const windowHeight = Dimensions.get('window').height
+
 const EventsPage = ({
   events,
   navigation,
@@ -46,31 +63,37 @@ const EventsPage = ({
   setModal,
   dispatch,
   theme,
+  noServices = false,
 }) => {
   const { colors } = theme
+
   return (
     <View
       style={{
         flex: 1,
-        // height: '500',
-        // zIndex: 0,
-        // borderColor: 'purple',
-        // borderWidth: 1,
       }}
     >
       {events.length === 0 ? (
-        <View style={styles.center}>
-          <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
-            Событей нет
-          </Text>
-          <Fab
-            visible={true}
-            onPress={() => {
-              navigation.navigate('CreateEvent')
-            }}
-            label="Добавить событие"
-          />
-        </View>
+        <>
+          {/* {noServices ? (
+            <>
+
+            </>
+          ) : null} */}
+          <View style={styles.center}>
+            <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
+              Событий нет
+            </Text>
+
+            <Fab
+              visible={true}
+              onPress={() => {
+                navigation.navigate('CreateEvent')
+              }}
+              label="Добавить событие"
+            />
+          </View>
+        </>
       ) : (
         <MainFlatListWithFab
           data={events}
@@ -126,6 +149,7 @@ const EventsPage = ({
                   />
                 )
               }}
+              havePopupMenu
             />
           )}
           onPressFab={() => {
@@ -152,6 +176,104 @@ const months = [
   'дек',
 ]
 
+const Tutorial = ({ navigation }) => {
+  return (
+    <>
+      <TourGuideZoneByPosition
+        zone={1}
+        text={
+          'Добро пожаловать в программу Individual CRM.\nВ этом поле будут Ваши карточки событий'
+        }
+        shape={'rectangle'}
+        onShow={() => navigation.closeDrawer()}
+        isTourGuide
+        top={40}
+        left={0}
+        width="100%"
+        height="30%"
+      />
+      <TourGuideZoneByPosition
+        zone={2}
+        text={
+          'Прежде чем создать новое событие, рекомендуется сначала создать карточки предоставляемых Вами услуг. Для этого нажмите на значок "гамбургер" в левом верхнем углу и выберите пункт "Услуги"'
+        }
+        onShow={() => navigation.closeDrawer()}
+        shape={'rectangle'}
+        isTourGuide
+        top={-46}
+        left={5}
+        width={32}
+        height={32}
+      />
+      <TourGuideZoneByPosition
+        zone={3}
+        text={
+          'Сейчас у нас открыт этот список - в нем будут отображаться карточки событий'
+        }
+        shape={'rectangle'}
+        onShow={() => navigation.openDrawer()}
+        isTourGuide
+        top={37}
+        left={10}
+        width={250}
+        height={42}
+      />
+      <TourGuideZoneByPosition
+        zone={4}
+        text={
+          'В этом списке будут карточки Ваших клиентов. Их можно создавать напрямую, а также при создании события'
+        }
+        shape={'rectangle'}
+        onShow={() => navigation.openDrawer()}
+        isTourGuide
+        top={92}
+        left={10}
+        width={250}
+        height={42}
+      />
+      <TourGuideZoneByPosition
+        zone={5}
+        text={
+          'В этом списке будут карточки Ваших Услуг. Рекомендуется, начать работу в приложении именно с заполнения этого списка, однако вы можете создать услугу и во время создания события'
+        }
+        shape={'rectangle'}
+        onShow={() => navigation.openDrawer()}
+        isTourGuide
+        top={151}
+        left={10}
+        width={250}
+        height={42}
+      />
+      <TourGuideZoneByPosition
+        zone={6}
+        text={
+          'В этом списке будут карточки Ваших Транзакций. Создавать транзакции напрямую нельзя, чтобы внести новое движение средств - нужно кликнуть по значку "Деньги" в карточке события'
+        }
+        shape={'rectangle'}
+        onShow={() => navigation.openDrawer()}
+        isTourGuide
+        top={208}
+        left={10}
+        width={250}
+        height={42}
+      />
+      <TourGuideZoneByPosition
+        zone={7}
+        text={
+          'Крайне рекомендуем ознакомиться с опциями настроек перед использованием приложения. Здесь вы сможете настроить визуальную часть, синхронизацию, оповещения и пр.'
+        }
+        shape={'rectangle'}
+        onShow={() => navigation.openDrawer()}
+        isTourGuide
+        top={windowHeight - 140}
+        left={10}
+        width={250}
+        height={42}
+      />
+    </>
+  )
+}
+
 const EventsScreen = ({ navigation, route }) => {
   const theme = useTheme()
   const { colors } = theme
@@ -168,7 +290,7 @@ const EventsScreen = ({ navigation, route }) => {
   // const finances = useSelector((state) => state.finance.finances)
   const loading = useSelector((state) => state.event.loading)
 
-  const { dev } = useContext(AppContext)
+  const { dev, tutorial, toggleTutorial } = useContext(AppContext)
 
   let sortMenu = null
   const srtMenu = (r) => {
@@ -318,6 +440,15 @@ const EventsScreen = ({ navigation, route }) => {
               }}
             />
           ) : null}
+          {/* {dev ? (
+            <Item
+              title="Toggle tutorial"
+              iconName="md-school"
+              onPress={() => {
+                toggleTutorial(true)
+              }}
+            />
+          ) : null} */}
 
           {/* <Item
             title="Add finance"
@@ -332,6 +463,33 @@ const EventsScreen = ({ navigation, route }) => {
       ),
     })
   }, [events, theme, services, clients, sorting, dev])
+
+  // const makeTooltipContent = (text) => (
+  //   <View style={styles.tooltipView}>
+  //     <Text style={styles.tooltipText}>{text}</Text>
+  //   </View>
+  // )
+
+  const {
+    canStart, // a boolean indicate if you can start tour guide
+    start, // a function to start the tourguide
+    stop, // a function  to stopping it
+    eventEmitter, // an object for listening some events
+  } = useTourGuideController()
+
+  useEffect(() => {
+    if (canStart && tutorial) {
+      start()
+    }
+  }, [canStart, tutorial])
+
+  React.useEffect(() => {
+    // eventEmitter.on('start', null)
+    eventEmitter.on('stop', () => toggleTutorial(false))
+    // eventEmitter.on('stepChange', null)
+
+    return () => eventEmitter.off('*', null)
+  }, [])
 
   console.log('render EventsScreen Header finished')
 
@@ -551,11 +709,9 @@ const EventsScreen = ({ navigation, route }) => {
 
   console.log('render EventsScreen loading skipped')
 
-  console.log('render EventsScreen events = 0 skipped')
+  // console.log('render EventsScreen events = 0 skipped')
 
   return (
-  // <SafeAreaView style={{ flex: 1 }}>
-
     <View style={styles.container}>
       <View style={{ flexDirection: 'row' }}>
         <MonthTabs />
@@ -574,10 +730,11 @@ const EventsScreen = ({ navigation, route }) => {
         setModal={setModal}
         dispatch={dispatch}
         theme={theme}
+        noServices={services.length === 0}
       />
+      {tutorial ? <Tutorial navigation={navigation} /> : null}
       {modal}
     </View>
-    // </SafeAreaView>
   )
 }
 
@@ -592,5 +749,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  tooltipView: {
+    paddingHorizontal: 24,
+    paddingVertical: 8,
+  },
+  tooltipText: {
+    color: 'black',
+    fontSize: 18,
   },
 })

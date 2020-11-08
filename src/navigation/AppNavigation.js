@@ -51,6 +51,12 @@ import firebase from 'firebase'
 import firebaseConfig from '../firebaseConfig'
 import { userSignedIn } from '../store/actions/user'
 
+import {
+  TourGuideProvider, // Main provider
+} from 'rn-tourguide'
+
+import Tooltip from '../components/Tooltip'
+
 const Stack = createStackNavigator()
 const EventsStack = createStackNavigator()
 const ClientsStack = createStackNavigator()
@@ -470,7 +476,7 @@ const DrawerScreen = ({ navigation }) => {
 
   return (
     <Drawer.Navigator
-      drawerType="slide"
+      drawerType="front"
       // drawerContentOptions={
       //   {
       //     // activeTintColor: "#fff",
@@ -646,12 +652,27 @@ export const AppNavigation = () => {
   console.log('Render AppNavigation')
 
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer theme={theme}>
-        <StatusBar style={theme.dark ? 'light' : 'dark'} />
-        <DrawerScreen />
-        {modal}
-      </NavigationContainer>
-    </PaperProvider>
+    <TourGuideProvider
+      {...{
+        tooltipComponent: Tooltip,
+        backdropColor: 'rgba(0, 0, 0, 0.5)',
+        labels: {
+          previous: 'Пред',
+          next: 'След',
+          skip: 'Завершить',
+          finish: 'Завершить',
+        },
+        androidStatusBarVisible: true,
+        canPressOutside: false,
+      }}
+    >
+      <PaperProvider theme={theme}>
+        <NavigationContainer theme={theme}>
+          <StatusBar style={theme.dark ? 'light' : 'dark'} />
+          <DrawerScreen />
+          {modal}
+        </NavigationContainer>
+      </PaperProvider>
+    </TourGuideProvider>
   )
 }

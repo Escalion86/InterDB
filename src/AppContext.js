@@ -5,6 +5,7 @@ export const AppContext = createContext({})
 
 export const AppProvider = ({ children }) => {
   const [dev, setDev] = useState(false)
+  const [tutorial, setTutorial] = useState(true)
   // const [
   //   notificationBeforeEventStart,
   //   setNotificationBeforeEventStart,
@@ -14,6 +15,15 @@ export const AppProvider = ({ children }) => {
   const toggleDev = async () => {
     await storeData('dev', !dev ? '1' : '0')
     setDev(!dev)
+  }
+
+  const toggleTutorial = async (value = null) => {
+    let newValue = !tutorial
+    if (value === true || value === false) {
+      newValue = value
+    }
+    await storeData('tutorial', newValue ? '1' : '0')
+    setTutorial(newValue)
   }
 
   // const storeNotificationBeforeEventStart = async (min = 90) => {
@@ -30,6 +40,9 @@ export const AppProvider = ({ children }) => {
     retrieveData('dev').then((data) => {
       setDev(data === '1')
     })
+    retrieveData('tutorial').then((data) => {
+      setTutorial(data === '1' || data === null)
+    })
     // retrieveData("notificationBeforeEventStart").then((data) => {
     //   if (data) setNotificationBeforeEventStart(data)
     // })
@@ -43,6 +56,8 @@ export const AppProvider = ({ children }) => {
       value={{
         dev,
         toggleDev,
+        tutorial,
+        toggleTutorial,
         // notificationBeforeEventStart,
         // storeNotificationBeforeEventStart,
         // notificationBirthday,

@@ -305,7 +305,9 @@ const CreateEventScreen = ({ navigation, route }) => {
       ? useSelector((state) => state.event.events).find(
         (item) => item.id === route.params.eventId
       )
-      : { ...dbDefault('events'), date: new Date().setSeconds(0, 0) }
+      : route.params.event
+        ? { ...route.params.event, id: null }
+        : { ...dbDefault('events'), date: new Date().setSeconds(0, 0) }
 
   const services = useSelector((state) => state.service.services).filter(
     (item) => !item.archive
@@ -319,6 +321,7 @@ const CreateEventScreen = ({ navigation, route }) => {
   const [lastAddedClient, setLastAddedClient] = useState(
     clients.length > 0 ? clients[0].id : null
   )
+  const { colors } = useTheme()
 
   const dispatch = useDispatch()
   const [newEvent, setNewEvent] = useState(event)
@@ -470,6 +473,7 @@ const CreateEventScreen = ({ navigation, route }) => {
                 )
               }}
               title={'Выберите услугу'}
+              // style={{ borderColor: colors.abort }}
             />
           ) : (
             <Button
@@ -516,6 +520,9 @@ const CreateEventScreen = ({ navigation, route }) => {
                 )
               }}
               title={'Выберите клиента'}
+              // style={{
+              //   borderColor: colors.abort,
+              // }}
             />
           ) : (
             <Button

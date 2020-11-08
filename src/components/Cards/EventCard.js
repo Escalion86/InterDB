@@ -6,9 +6,11 @@ import {
   View,
   ActivityIndicator,
   TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native'
 import {
   Menu,
+  MenuOption,
   MenuOptions,
   MenuTrigger,
   renderers,
@@ -33,6 +35,7 @@ const EventCard = ({
   showAdress = true,
   showService = true,
   swipeable = true,
+  havePopupMenu = false,
   financeIncome = () => {},
   financeOutcome = () => {},
 }) => {
@@ -164,7 +167,7 @@ const EventCard = ({
       </View>
     )
 
-    const Container = ({ children }) => {
+    const SwipeContainer = ({ children }) => {
       if (swipeable) {
         return (
           <SwipeableCard
@@ -183,15 +186,71 @@ const EventCard = ({
       }
     }
 
+    const PopupMenuContainer = ({ children }) => {
+      if (havePopupMenu) {
+        return (
+          <Menu
+            renderer={Popover}
+            rendererProps={{ preferredPlacement: 'top' }}
+          >
+            <MenuTrigger
+              triggerOnLongPress
+              onAlternativeAction={onPress}
+              customStyles={{
+                TriggerTouchableComponent: TouchableHighlight,
+                // triggerTouchable: { title: 'Select (Custom Touchables)' },
+              }}
+            >
+              {children}
+            </MenuTrigger>
+            <MenuOptions
+              style={{
+                padding: 10,
+                borderColor: colors.border,
+                borderWidth: 3,
+                // borderRadius: 20,
+                backgroundColor: colors.card,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <MenuOption
+                onSelect={() =>
+                  navigation.navigate('CreateEvent', { event: event })
+                }
+                customStyles={{
+                  optionText: {
+                    color: colors.text,
+                    fontSize: fontSize.big,
+                  },
+                  optionsContainer: {
+                    backgroundColor: 'green',
+                    padding: 5,
+                  },
+                }}
+                text="Создать событие на основе этого"
+              />
+            </MenuOptions>
+          </Menu>
+        )
+      } else {
+        return (
+          <TouchableHighlight
+            // activeOpacity={1}
+            delayPressIn={50}
+            onPress={onPress}
+          >
+            {children}
+          </TouchableHighlight>
+        )
+      }
+    }
+
     console.log('render EventCard id: ' + event.id)
 
     return (
-      <Container>
-        <TouchableHighlight
-          // activeOpacity={1}
-          delayPressIn={50}
-          onPress={onPress}
-        >
+      <SwipeContainer>
+        <PopupMenuContainer>
           <View style={styles.card}>
             <View style={styles.left}>
               <IconMenu
@@ -397,8 +456,8 @@ const EventCard = ({
               </Menu>
             </View>
           </View>
-        </TouchableHighlight>
-      </Container>
+        </PopupMenuContainer>
+      </SwipeContainer>
     )
   }
 }
