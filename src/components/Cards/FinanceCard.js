@@ -8,10 +8,10 @@ import {
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
-import SwipeableCard from '../SwipeableCard'
 import { MainIcon } from '../icons'
 import { fontSize } from '../../theme'
 import { formatDate, formatTime } from '../../helpers/date'
+import CardContainer from '../CardContainer'
 
 const FinanceCard = ({
   navigation,
@@ -76,67 +76,51 @@ const FinanceCard = ({
       </View>
     )
 
-    const Container = ({ children }) => {
-      if (swipeable) {
-        return (
-          <SwipeableCard
-            onLeftOpen={() => {
-              navigation.navigate('CreateFinance', {
-                financeId: finance.id,
-              })
-            }}
-            onRightOpen={onDelete}
-          >
-            {children}
-          </SwipeableCard>
-        )
-      } else {
-        return <>{children}</>
-      }
-    }
-
     return (
-      <Container>
-        <TouchableHighlight
-          // activeOpacity={1}
-          delayPressIn={50}
-          onPress={onPress}
-        >
-          <View style={styles.card}>
-            <View style={styles.left}>
-              {finance.type === 'income' ? (
-                <MainIcon
-                  iconName="ios-add"
-                  size="small"
-                  iconBackgroundColor="green"
-                />
-              ) : (
-                <MainIcon
-                  iconName="ios-remove"
-                  size="small"
-                  iconBackgroundColor="red"
-                />
-              )}
-            </View>
-            <View style={styles.middle}>
-              <View style={styles.cardheader}>
-                <Text style={styles.cardtitle}>
-                  {`${formatDate(
-                    new Date(finance.date),
-                    true,
-                    true,
-                    true
-                  )} ${formatTime(new Date(finance.date))}`}
-                </Text>
-              </View>
-              {finance.comment ? <CardDesc desc={finance.comment} /> : null}
-            </View>
-            <View style={styles.right}>
-              <Text style={styles.datetime}>{finance.sum}</Text>
-            </View>
+      <CardContainer
+        swipeable={swipeable}
+        onPress={onPress}
+        onLeftOpen={() =>
+          navigation.navigate('CreateFinance', {
+            financeId: finance.id,
+          })
+        }
+        onRightOpen={onDelete}
+      >
+        <View style={styles.card}>
+          <View style={styles.left}>
+            {finance.type === 'income' ? (
+              <MainIcon
+                iconName="ios-add"
+                size="small"
+                iconBackgroundColor="green"
+              />
+            ) : (
+              <MainIcon
+                iconName="ios-remove"
+                size="small"
+                iconBackgroundColor="red"
+              />
+            )}
           </View>
-        </TouchableHighlight>
-      </Container>
+          <View style={styles.middle}>
+            <View style={styles.cardheader}>
+              <Text style={styles.cardtitle}>
+                {`${formatDate(
+                  new Date(finance.date),
+                  true,
+                  true,
+                  true
+                )} ${formatTime(new Date(finance.date))}`}
+              </Text>
+            </View>
+            {finance.comment ? <CardDesc desc={finance.comment} /> : null}
+          </View>
+          <View style={styles.right}>
+            <Text style={styles.datetime}>{finance.sum}</Text>
+          </View>
+        </View>
+      </CardContainer>
     )
   }
 }

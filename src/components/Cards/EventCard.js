@@ -6,11 +6,9 @@ import {
   View,
   ActivityIndicator,
   TouchableHighlight,
-  TouchableOpacity,
 } from 'react-native'
 import {
   Menu,
-  MenuOption,
   MenuOptions,
   MenuTrigger,
   renderers,
@@ -22,9 +20,9 @@ import { useTheme } from '@react-navigation/native'
 import IconMenu from '../IconMenu'
 import FinanceMenu from '../FinanceMenu'
 import ContactsMenu from '../ContactsMenu'
-import SwipeableCard from '../SwipeableCard'
 import { fontSize } from '../../theme'
 import NavigatorMenu from '../NavigatorMenu'
+import CardContainer from '../CardContainer'
 
 const EventCard = ({
   navigation,
@@ -167,142 +165,159 @@ const EventCard = ({
       </View>
     )
 
-    const SwipeContainer = ({ children }) => {
-      if (swipeable) {
-        return (
-          <SwipeableCard
-            onLeftOpen={() =>
-              navigation.navigate('CreateEvent', {
-                eventId: event.id,
-              })
-            }
-            onRightOpen={onDelete}
-          >
-            {children}
-          </SwipeableCard>
-        )
-      } else {
-        return <>{children}</>
-      }
-    }
+    // const SwipeContainer = ({ children }) => {
+    //   if (swipeable) {
+    //     return (
+    //       <SwipeableCard
+    //         onLeftOpen={() =>
+    //           navigation.navigate('CreateEvent', {
+    //             eventId: event.id,
+    //           })
+    //         }
+    //         onRightOpen={onDelete}
+    //       >
+    //         {children}
+    //       </SwipeableCard>
+    //     )
+    //   } else {
+    //     return <>{children}</>
+    //   }
+    // }
 
-    const PopupMenuContainer = ({ children }) => {
-      if (havePopupMenu) {
-        return (
-          <Menu
-            renderer={Popover}
-            rendererProps={{ preferredPlacement: 'top' }}
-          >
-            <MenuTrigger
-              triggerOnLongPress
-              onAlternativeAction={onPress}
-              customStyles={{
-                TriggerTouchableComponent: TouchableHighlight,
-                // triggerTouchable: { title: 'Select (Custom Touchables)' },
-              }}
-            >
-              {children}
-            </MenuTrigger>
-            <MenuOptions
-              style={{
-                padding: 10,
-                borderColor: colors.border,
-                borderWidth: 3,
-                // borderRadius: 20,
-                backgroundColor: colors.card,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <MenuOption
-                onSelect={() =>
-                  navigation.navigate('CreateEvent', { event: event })
-                }
-                customStyles={{
-                  optionText: {
-                    color: colors.text,
-                    fontSize: fontSize.big,
-                  },
-                  optionsContainer: {
-                    backgroundColor: 'green',
-                    padding: 5,
-                  },
-                }}
-                text="Создать событие на основе этого"
-              />
-            </MenuOptions>
-          </Menu>
-        )
-      } else {
-        return (
-          <TouchableHighlight
-            // activeOpacity={1}
-            delayPressIn={50}
-            onPress={onPress}
-          >
-            {children}
-          </TouchableHighlight>
-        )
-      }
-    }
+    // const PopupMenuCardContainer = ({ children }) => {
+    //   if (havePopupMenu) {
+    //     return (
+    //       <Menu
+    //         renderer={Popover}
+    //         rendererProps={{ preferredPlacement: 'top' }}
+    //       >
+    //         <MenuTrigger
+    //           triggerOnLongPress
+    //           onAlternativeAction={onPress}
+    //           customStyles={{
+    //             TriggerTouchableComponent: TouchableHighlight,
+    //             // triggerTouchable: { title: 'Select (Custom Touchables)' },
+    //           }}
+    //         >
+    //           {children}
+    //         </MenuTrigger>
+    //         <MenuOptions
+    //           style={{
+    //             padding: 10,
+    //             borderColor: colors.border,
+    //             borderWidth: 3,
+    //             // borderRadius: 20,
+    //             backgroundColor: colors.card,
+    //             flexDirection: 'row',
+    //             alignItems: 'center',
+    //           }}
+    //         >
+    //           <MenuOption
+    //             onSelect={() =>
+    //               navigation.navigate('CreateEvent', { event: event })
+    //             }
+    //             customStyles={{
+    //               optionText: {
+    //                 color: colors.text,
+    //                 fontSize: fontSize.big,
+    //               },
+    //               optionsContainer: {
+    //                 backgroundColor: 'green',
+    //                 padding: 5,
+    //               },
+    //             }}
+    //             text="Создать событие на основе этого"
+    //           />
+    //         </MenuOptions>
+    //       </Menu>
+    //     )
+    //   } else {
+    //     return (
+    //       <TouchableHighlight
+    //         // activeOpacity={1}
+    //         delayPressIn={50}
+    //         onPress={onPress}
+    //       >
+    //         {children}
+    //       </TouchableHighlight>
+    //     )
+    //   }
+    // }
 
     console.log('render EventCard id: ' + event.id)
 
     return (
-      <SwipeContainer>
-        <PopupMenuContainer>
-          <View style={styles.card}>
-            <View style={styles.left}>
-              <IconMenu
-                event={event}
-                // theme={theme}
-                eventPartName="status"
-                // actionOnSelect={setEventStatus}
-              />
-              {/* <IconMenu
+      <CardContainer
+        swipeable={swipeable}
+        onPress={onPress}
+        popupMenuOptions={
+          havePopupMenu
+            ? [
+              {
+                text: 'Создать событие на основе этого',
+                onSelect: () =>
+                  navigation.navigate('CreateEvent', { event: event }),
+              },
+            ]
+            : []
+        }
+        onLeftOpen={() =>
+          navigation.navigate('CreateEvent', {
+            eventId: event.id,
+          })
+        }
+        onRightOpen={onDelete}
+      >
+        <View style={styles.card}>
+          <View style={styles.left}>
+            <IconMenu
+              event={event}
+              // theme={theme}
+              eventPartName="status"
+              // actionOnSelect={setEventStatus}
+            />
+            {/* <IconMenu
                 event={event}
                 // theme={theme}
                 style={{ marginTop: 6 }}
                 eventPartName="finance_status"
                 // actionOnSelect={setFinanceStatus}
               /> */}
-              <FinanceMenu
-                iconBackgroundColor={financeColor}
-                addIncome={() => financeIncome(incomeLeft)}
-                addOutcome={() => financeOutcome(outcomeLeft)}
-                incomePlanValue={event.finance_price}
-                outcomePlanValue={
-                  +event.finance_road +
-                  event.finance_organizator +
-                  event.finance_assistants +
-                  event.finance_consumables
-                }
-                incomeFactValue={incomeSum}
-                outcomeFactValue={outcomeSum}
-              />
-            </View>
-            <View style={styles.middle}>
-              {showService ? (
-                <View style={styles.cardheader}>
-                  <Text style={styles.cardtitle}>
-                    {/* {event.auditory},  */}
-                    {service ? service.name : '[услуга не найдена]'}
-                  </Text>
-                </View>
-              ) : null}
-              {showAdress && event.location_town ? (
-                <View style={styles.carddesc}>
-                  <Text style={styles.carddesctext}>
-                    {`${event.location_town}${
-                      event.location_street ? `, ${event.location_street}` : ''
-                    }${
-                      event.location_house ? `, ${event.location_house}` : ''
-                    }${event.location_room ? ` - ${event.location_room}` : ''}${
-                      event.location_name ? ` (${event.location_name})` : ''
-                    }`}
-                  </Text>
-                  <NavigatorMenu event={event} />
-                  {/* <Ionicons
+            <FinanceMenu
+              iconBackgroundColor={financeColor}
+              addIncome={() => financeIncome(incomeLeft)}
+              addOutcome={() => financeOutcome(outcomeLeft)}
+              incomePlanValue={event.finance_price}
+              outcomePlanValue={
+                +event.finance_road +
+                event.finance_organizator +
+                event.finance_assistants +
+                event.finance_consumables
+              }
+              incomeFactValue={incomeSum}
+              outcomeFactValue={outcomeSum}
+            />
+          </View>
+          <View style={styles.middle}>
+            {showService ? (
+              <View style={styles.cardheader}>
+                <Text style={styles.cardtitle}>
+                  {/* {event.auditory},  */}
+                  {service ? service.name : '[услуга не найдена]'}
+                </Text>
+              </View>
+            ) : null}
+            {showAdress && event.location_town ? (
+              <View style={styles.carddesc}>
+                <Text style={styles.carddesctext}>
+                  {`${event.location_town}${
+                    event.location_street ? `, ${event.location_street}` : ''
+                  }${event.location_house ? `, ${event.location_house}` : ''}${
+                    event.location_room ? ` - ${event.location_room}` : ''
+                  }${event.location_name ? ` (${event.location_name})` : ''}`}
+                </Text>
+                <NavigatorMenu event={event} />
+                {/* <Ionicons
                     name="md-navigate"
                     size={28}
                     color={colors.icon}
@@ -337,127 +352,126 @@ const EventCard = ({
                       //   })
                     }
                   /> */}
-                </View>
-              ) : null}
-
-              {showClient ? (
-                <View style={styles.carddesc}>
-                  <Text style={styles.carddesctext}>
-                    {client
-                      ? `${client.surname} ${client.name} ${client.thirdname}`.trim()
-                      : '[клиент не найден]'}
-                  </Text>
-                  {client ? <ContactsMenu client={client} /> : null}
-                </View>
-              ) : null}
-            </View>
-            <View style={styles.right}>
-              <View style={styles.carddate}>
-                <Text style={styles.datetime}>
-                  {formatDate(new Date(event.date))}
-                </Text>
-                <Text style={styles.datetime}>
-                  {`${getWeekDay(new Date(event.date))} ${formatTime(
-                    new Date(event.date)
-                  )}`}
-                </Text>
               </View>
-              <Menu
-                // style={styles.cardtiming}
-                renderer={Popover}
-                rendererProps={{ preferredPlacement: 'left' }}
-              >
-                <MenuTrigger>
-                  <Text style={styles.timing}>{`${timing} мин`}</Text>
-                </MenuTrigger>
-                <MenuOptions style={styles.menuOptions}>
+            ) : null}
+
+            {showClient ? (
+              <View style={styles.carddesc}>
+                <Text style={styles.carddesctext}>
+                  {client
+                    ? `${client.surname} ${client.name} ${client.thirdname}`.trim()
+                    : '[клиент не найден]'}
+                </Text>
+                {client ? <ContactsMenu client={client} /> : null}
+              </View>
+            ) : null}
+          </View>
+          <View style={styles.right}>
+            <View style={styles.carddate}>
+              <Text style={styles.datetime}>
+                {formatDate(new Date(event.date))}
+              </Text>
+              <Text style={styles.datetime}>
+                {`${getWeekDay(new Date(event.date))} ${formatTime(
+                  new Date(event.date)
+                )}`}
+              </Text>
+            </View>
+            <Menu
+              // style={styles.cardtiming}
+              renderer={Popover}
+              rendererProps={{ preferredPlacement: 'left' }}
+            >
+              <MenuTrigger>
+                <Text style={styles.timing}>{`${timing} мин`}</Text>
+              </MenuTrigger>
+              <MenuOptions style={styles.menuOptions}>
+                <MenuRow
+                  title="Продолжительность"
+                  value={event.timing_duration + ' мин'}
+                />
+                <MenuRow
+                  title="На подготовку"
+                  value={event.timing_preparetime + ' мин'}
+                />
+                <MenuRow
+                  title="На сбор"
+                  value={event.timing_collecttime + ' мин'}
+                />
+                <MenuRow
+                  title={'На транспортировку\nтуда и обратно'}
+                  value={event.timing_road * 2 + ' мин'}
+                  style={{
+                    borderBottomColor: colors.text,
+                    borderBottomWidth: 1,
+                    paddingBottom: 5,
+                  }}
+                />
+                <MenuRow
+                  title="ИТОГО"
+                  value={timing + ' мин'}
+                  style={{ paddingTop: 5 }}
+                />
+              </MenuOptions>
+            </Menu>
+            <Menu
+              style={styles.finance}
+              renderer={Popover}
+              rendererProps={{ preferredPlacement: 'left' }}
+            >
+              <MenuTrigger>
+                <Text style={styles.profit}>{profit}</Text>
+              </MenuTrigger>
+              <MenuOptions style={styles.menuOptions}>
+                <MenuRow
+                  title="Цена для клиента"
+                  value={event.finance_price + ' руб'}
+                />
+                {event.finance_road ? (
                   <MenuRow
-                    title="Продолжительность"
-                    value={event.timing_duration + ' мин'}
+                    title="За дорогу"
+                    value={-event.finance_road + ' руб'}
                   />
+                ) : null}
+                {event.finance_organizator ? (
                   <MenuRow
-                    title="На подготовку"
-                    value={event.timing_preparetime + ' мин'}
+                    title="Организатору"
+                    value={-event.finance_organizator + ' руб'}
                   />
+                ) : null}
+                {event.finance_consumables ? (
                   <MenuRow
-                    title="На сбор"
-                    value={event.timing_collecttime + ' мин'}
+                    title="Расходники"
+                    value={-event.finance_consumables + ' руб'}
                   />
+                ) : null}
+                {event.finance_assistants ? (
                   <MenuRow
-                    title={'На транспортировку\nтуда и обратно'}
-                    value={event.timing_road * 2 + ' мин'}
-                    style={{
-                      borderBottomColor: colors.text,
-                      borderBottomWidth: 1,
-                      paddingBottom: 5,
-                    }}
+                    title="Ассистентам"
+                    value={-event.finance_assistants + ' руб'}
                   />
-                  <MenuRow
-                    title="ИТОГО"
-                    value={timing + ' мин'}
-                    style={{ paddingTop: 5 }}
-                  />
-                </MenuOptions>
-              </Menu>
-              <Menu
-                style={styles.finance}
-                renderer={Popover}
-                rendererProps={{ preferredPlacement: 'left' }}
-              >
-                <MenuTrigger>
-                  <Text style={styles.profit}>{profit}</Text>
-                </MenuTrigger>
-                <MenuOptions style={styles.menuOptions}>
-                  <MenuRow
-                    title="Цена для клиента"
-                    value={event.finance_price + ' руб'}
-                  />
-                  {event.finance_road ? (
-                    <MenuRow
-                      title="За дорогу"
-                      value={-event.finance_road + ' руб'}
-                    />
-                  ) : null}
-                  {event.finance_organizator ? (
-                    <MenuRow
-                      title="Организатору"
-                      value={-event.finance_organizator + ' руб'}
-                    />
-                  ) : null}
-                  {event.finance_consumables ? (
-                    <MenuRow
-                      title="Расходники"
-                      value={-event.finance_consumables + ' руб'}
-                    />
-                  ) : null}
-                  {event.finance_assistants ? (
-                    <MenuRow
-                      title="Ассистентам"
-                      value={-event.finance_assistants + ' руб'}
-                    />
-                  ) : null}
-                  {/* {event.finance_tips ? (
+                ) : null}
+                {/* {event.finance_tips ? (
                     <MenuRow
                       title="Чаевые"
                       value={event.finance_tips + ' руб'}
                     />
                   ) : null} */}
-                  <MenuRow
-                    title="ИТОГО"
-                    value={profit + ' руб'}
-                    style={{
-                      borderTopColor: colors.text,
-                      borderTopWidth: 1,
-                      paddingTop: 5,
-                      marginTop: 5,
-                    }}
-                  />
-                </MenuOptions>
-              </Menu>
-            </View>
+                <MenuRow
+                  title="ИТОГО"
+                  value={profit + ' руб'}
+                  style={{
+                    borderTopColor: colors.text,
+                    borderTopWidth: 1,
+                    paddingTop: 5,
+                    marginTop: 5,
+                  }}
+                />
+              </MenuOptions>
+            </Menu>
           </View>
-        </PopupMenuContainer>
-      </SwipeContainer>
+        </View>
+      </CardContainer>
     )
   }
 }

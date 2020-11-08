@@ -15,10 +15,8 @@ import {
 } from 'react-native-popup-menu'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
-import SwipeableCard from '../SwipeableCard'
-// import { deleteService } from "../store/actions/service"
-// import ModalDeleteService from "./ModalDeleteService"
 import { fontSize } from '../../theme'
+import CardContainer from '../CardContainer'
 
 const ServiceCard = ({
   navigation,
@@ -27,6 +25,7 @@ const ServiceCard = ({
   listMode = false,
   onDelete = null,
   swipeable = true,
+  havePopupMenu = false,
 }) => {
   const { Popover } = renderers
   const theme = useTheme()
@@ -108,105 +107,90 @@ const ServiceCard = ({
       </View>
     )
 
-    const Container = ({ children }) => {
-      if (swipeable) {
-        return (
-          <SwipeableCard
-            onLeftOpen={() => {
-              navigation.navigate('CreateService', {
-                serviceId: service.id,
-              })
-            }}
-            onRightOpen={onDelete}
-          >
-            {children}
-          </SwipeableCard>
-        )
-      } else {
-        return <>{children}</>
-      }
-    }
-
     return (
-      <Container>
-        <TouchableHighlight
-          // activeOpacity={1}
-          delayPressIn={50}
-          onPress={onPress}
-        >
-          <View style={styles.card}>
-            {service.image ? (
-              <View style={styles.left}>
-                <Image
-                  style={{
-                    // flex: 1,
-                    borderRadius: 5,
-                    borderWidth: 1,
-                    borderColor: colors.border,
-                    width: '100%',
-                    height: '100%',
-                  }}
-                  source={!service.image ? noImageUrl : { uri: service.image }}
-                  // resizeMethod="scale"
-                  resizeMode="cover"
-                />
-              </View>
+      <CardContainer
+        swipeable={swipeable}
+        onPress={onPress}
+        popupMenuOptions={[
+          {
+            text: 'Создать услугу на основе этой',
+            onSelect: () =>
+              navigation.navigate('CreateService', { service: service }),
+          },
+        ]}
+        onLeftOpen={() =>
+          navigation.navigate('CreateService', {
+            serviceId: service.id,
+          })
+        }
+        onRightOpen={onDelete}
+      >
+        <View style={styles.card}>
+          {service.image ? (
+            <View style={styles.left}>
+              <Image
+                style={{
+                  // flex: 1,
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderColor: colors.border,
+                  width: '100%',
+                  height: '100%',
+                }}
+                source={!service.image ? noImageUrl : { uri: service.image }}
+                // resizeMethod="scale"
+                resizeMode="cover"
+              />
+            </View>
+          ) : null}
+          <View style={styles.middle}>
+            <View style={styles.cardheader}>
+              <Text style={styles.cardtitle}>{service.name}</Text>
+            </View>
+            {service.description ? (
+              <CardDesc desc={service.description} />
             ) : null}
-            <View style={styles.middle}>
-              <View style={styles.cardheader}>
-                <Text style={styles.cardtitle}>{service.name}</Text>
-              </View>
-              {service.description ? (
-                <CardDesc desc={service.description} />
-              ) : null}
-            </View>
-            <View style={styles.right}>
-              <View style={styles.carddate}>
-                <Text style={styles.time}>
-                  {`${
-                    +service.preparetime +
-                    service.collecttime +
-                    service.duration
-                  } мин`}
-                </Text>
-              </View>
-              {/* <Text style={styles.price}>{service.price}</Text> */}
-              <Menu
-                style={styles.finance}
-                renderer={Popover}
-                rendererProps={{ preferredPlacement: 'left' }}
-              >
-                <MenuTrigger>
-                  {/* <TouchableOpacity style={styles.finance}> */}
-                  <Text style={styles.profit}>{profit}</Text>
-                  {/* </TouchableOpacity> */}
-                </MenuTrigger>
-                <MenuOptions style={styles.menuOptions}>
-                  <MenuRow title="Цена клиента" num={service.finance_price} />
-                  <MenuRow
-                    title="Расходники"
-                    num={-service.finance_consumables}
-                  />
-                  <MenuRow
-                    title="Ассистентам"
-                    num={-service.finance_assistants}
-                    style={{
-                      borderBottomColor: colors.text,
-                      borderBottomWidth: 1,
-                      paddingBottom: 5,
-                    }}
-                  />
-                  <MenuRow
-                    title="ИТОГО"
-                    num={profit}
-                    style={{ paddingTop: 5 }}
-                  />
-                </MenuOptions>
-              </Menu>
-            </View>
           </View>
-        </TouchableHighlight>
-      </Container>
+          <View style={styles.right}>
+            <View style={styles.carddate}>
+              <Text style={styles.time}>
+                {`${
+                  +service.preparetime + service.collecttime + service.duration
+                } мин`}
+              </Text>
+            </View>
+            {/* <Text style={styles.price}>{service.price}</Text> */}
+            <Menu
+              style={styles.finance}
+              renderer={Popover}
+              rendererProps={{ preferredPlacement: 'left' }}
+            >
+              <MenuTrigger>
+                {/* <TouchableOpacity style={styles.finance}> */}
+                <Text style={styles.profit}>{profit}</Text>
+                {/* </TouchableOpacity> */}
+              </MenuTrigger>
+              <MenuOptions style={styles.menuOptions}>
+                <MenuRow title="Цена клиента" num={service.finance_price} />
+                <MenuRow
+                  title="Расходники"
+                  num={-service.finance_consumables}
+                />
+                <MenuRow
+                  title="Ассистентам"
+                  num={-service.finance_assistants}
+                  style={{
+                    borderBottomColor: colors.text,
+                    borderBottomWidth: 1,
+                    paddingBottom: 5,
+                  }}
+                />
+                <MenuRow title="ИТОГО" num={profit} style={{ paddingTop: 5 }} />
+              </MenuOptions>
+            </Menu>
+          </View>
+        </View>
+      </CardContainer>
     )
   }
 }

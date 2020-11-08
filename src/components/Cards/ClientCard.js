@@ -11,8 +11,8 @@ import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
 import ContactsMenu from '../ContactsMenu'
 import { formatBirthday } from '../../helpers/date'
-import SwipeableCard from '../SwipeableCard'
 import { fontSize } from '../../theme'
+import CardContainer from '../CardContainer'
 
 const ClientCard = ({
   navigation,
@@ -21,6 +21,7 @@ const ClientCard = ({
   listMode = false,
   onDelete = null,
   swipeable = true,
+  havePopupMenu = false,
 }) => {
   const theme = useTheme()
   const { colors, dark } = theme
@@ -83,70 +84,61 @@ const ClientCard = ({
       )
     }
 
-    const Container = ({ children }) => {
-      if (swipeable) {
-        return (
-          <SwipeableCard
-            onLeftOpen={() => {
-              navigation.navigate('CreateClient', {
-                clientId: client.id,
-              })
-            }}
-            onRightOpen={onDelete}
-          >
-            {children}
-          </SwipeableCard>
-        )
-      } else {
-        return <>{children}</>
-      }
-    }
-
     return (
-      <Container>
-        <TouchableHighlight
-          // activeOpacity={1}
-          delayPressIn={50}
-          onPress={onPress}
-        >
-          <View style={styles.card}>
-            <View style={styles.left}>
-              <Image
-                style={{
-                  // flex: 1,
-                  borderRadius: 5,
-                  borderWidth: 1,
-                  borderColor: colors.border,
-                  width: 80,
-                  height: 80,
-                }}
-                source={!client.avatar ? noImageUrl : { uri: client.avatar }}
-                // resizeMethod="scale"
-                resizeMode="cover"
-              />
+      <CardContainer
+        swipeable={swipeable}
+        onPress={onPress}
+        // popupMenuOptions={[
+        //   {
+        //     text: 'Создать клиента на основе этого',
+        //     onSelect: () =>
+        //       navigation.navigate('CreateClient', { client: client }),
+        //   },
+        // ]}
+        onLeftOpen={() =>
+          navigation.navigate('CreateClient', {
+            clientId: client.id,
+          })
+        }
+        onRightOpen={onDelete}
+      >
+        <View style={styles.card}>
+          <View style={styles.left}>
+            <Image
+              style={{
+                // flex: 1,
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: colors.border,
+                width: 80,
+                height: 80,
+              }}
+              source={!client.avatar ? noImageUrl : { uri: client.avatar }}
+              // resizeMethod="scale"
+              resizeMode="cover"
+            />
+          </View>
+          <View style={styles.middle}>
+            <View style={styles.cardheader}>
+              <Text style={styles.cardtitle}>
+                {`${client.surname} ${client.name} ${client.thirdname}`.trim()}
+              </Text>
             </View>
-            <View style={styles.middle}>
-              <View style={styles.cardheader}>
-                <Text style={styles.cardtitle}>
-                  {`${client.surname} ${client.name} ${client.thirdname}`.trim()}
+            {birthday ? (
+              <View style={styles.carddesc}>
+                <Text style={{ ...styles.carddesctext, textAlign: 'center' }}>
+                  {birthday}
                 </Text>
               </View>
-              {birthday ? (
-                <View style={styles.carddesc}>
-                  <Text style={{ ...styles.carddesctext, textAlign: 'center' }}>
-                    {birthday}
-                  </Text>
-                </View>
-              ) : null}
-            </View>
-            {listMode ? null : (
-              <View style={styles.right}>
-                <ContactsMenu client={client} />
-              </View>
-            )}
+            ) : null}
           </View>
-        </TouchableHighlight>
-      </Container>
+          {listMode ? null : (
+            <View style={styles.right}>
+              <ContactsMenu client={client} />
+            </View>
+          )}
+        </View>
+      </CardContainer>
     )
   }
 }
