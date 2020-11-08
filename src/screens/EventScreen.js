@@ -45,7 +45,7 @@ const EventScreen = ({ navigation, route }) => {
   useEffect(() => {
     if (event) {
       navigation.setOptions({
-        title: `Событие ${formatDateTime(new Date(event.date))}`,
+        title: 'Событие',
 
         headerRight: () => (
           <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
@@ -68,6 +68,13 @@ const EventScreen = ({ navigation, route }) => {
                 }}
               />
             ) : null}
+            <Item
+              title="Copy Event"
+              iconName="md-copy"
+              onPress={() => {
+                navigation.navigate('CreateEvent', { event: event })
+              }}
+            />
             <Item
               title="Edit Event"
               iconName="md-create"

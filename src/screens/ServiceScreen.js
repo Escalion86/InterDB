@@ -110,6 +110,13 @@ const ServiceScreen = ({ navigation, route }) => {
               }}
             />
             <Item
+              title="Copy Service"
+              iconName="md-copy"
+              onPress={() => {
+                navigation.navigate('CreateService', { service: service })
+              }}
+            />
+            <Item
               title="Edit Service"
               iconName="md-create"
               onPress={() => {
