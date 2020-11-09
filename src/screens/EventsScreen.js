@@ -47,13 +47,6 @@ import {
   useTourGuideController, // hook to start, etc.
 } from 'rn-tourguide'
 
-// import {
-//   copilot,
-//   walkthroughable,
-//   CopilotStep,
-//   FloatComponent,
-// } from '../components/copilot'
-
 const windowHeight = Dimensions.get('window').height
 
 const EventsPage = ({
@@ -464,21 +457,16 @@ const EventsScreen = ({ navigation, route }) => {
     })
   }, [events, theme, services, clients, sorting, dev])
 
-  // const makeTooltipContent = (text) => (
-  //   <View style={styles.tooltipView}>
-  //     <Text style={styles.tooltipText}>{text}</Text>
-  //   </View>
-  // )
-
   const {
     canStart, // a boolean indicate if you can start tour guide
     start, // a function to start the tourguide
-    stop, // a function  to stopping it
+    // stop, // a function  to stopping it
     eventEmitter, // an object for listening some events
   } = useTourGuideController()
 
   useEffect(() => {
     if (canStart && tutorial) {
+      console.log('Tutorial start')
       start()
     }
   }, [canStart, tutorial])
@@ -749,13 +737,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  tooltipView: {
-    paddingHorizontal: 24,
-    paddingVertical: 8,
-  },
-  tooltipText: {
-    color: 'black',
-    fontSize: 18,
   },
 })

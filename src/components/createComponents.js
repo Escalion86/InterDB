@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback } from 'react'
 import {
   StyleSheet,
   Text,
@@ -8,14 +8,12 @@ import {
   Image,
   Dimensions,
 } from 'react-native'
-// import TextInputMask from "react-native-text-input-mask"
 import { useTheme } from '@react-navigation/native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { formatDate, formatTime } from '../helpers/date'
 import { EventIcon } from './icons'
 import * as ImagePicker from 'expo-image-picker'
-// import Switch from './Switch'
 import { Switch as SwitchPaper, RadioButton } from 'react-native-paper'
 import ModalBottomMenu from './Modals/ModalBottomMenu'
 import ModalSplash from './Modals/ModalSplash'
@@ -23,8 +21,6 @@ import Button from './Button'
 import { Picker } from '@react-native-community/picker'
 import { fontSize } from '../theme'
 import { MaskedTextInput, CustomMask } from 'rn-masked-text-input'
-// import TextInputMask from "./TextInputMask"
-// import TextInputMask from "react-native-text-input-mask"
 import { TriangleColorPicker, fromHsv } from 'react-native-color-picker'
 
 export const TextBlock = ({ children, style = {} }) => {
@@ -37,7 +33,6 @@ export const TextBlock = ({ children, style = {} }) => {
         fontSize: fontSize.medium,
         color: colors.text,
         textAlignVertical: 'center',
-        // height: 30,
         ...style,
       }}
     >
@@ -178,7 +173,7 @@ export const ColorPickerBlock = ({
   const ModalColorPicker = useCallback(
     ({ defaultColor }) => {
       const [newColor, setNewColor] = useState(defaultColor)
-      // const [newColorinModal, setNewColorinModal] = useState(newColor)
+
       return (
         <ModalSplash
           title="Выберите цвет"
@@ -201,10 +196,7 @@ export const ColorPickerBlock = ({
             onPress={() => {
               onColorSelected(newColor)
               setModalVisible(false)
-              // setNewColor(newColorinModal)
             }}
-
-            // style={{ backgroundColor: newColor }}
           />
         </ModalSplash>
       )
@@ -229,33 +221,6 @@ export const ColorPickerBlock = ({
           </TextBlock>
         ) : null}
         <View style={{ flex: buttonFlex }}>
-          {/* <TouchableOpacity
-          style={{ flex: buttonFlex }}
-          onPress={() => setModalVisible(true)}
-        >
-          <View
-            style={{
-              flex: 1,
-              borderRadius: 5,
-              borderWidth: 1,
-              backgroundColor: color,
-              justifyContent: 'center',
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: fontSize.medium,
-                color: colors.text,
-                ...buttonTextStyle,
-              }}
-            >
-              {buttonText}
-            </Text>
-
-          </View>
-
-        </TouchableOpacity> */}
           <Button
             style={{ backgroundColor: color }}
             onPress={() => setModalVisible(true)}
@@ -352,11 +317,9 @@ export const ImagePickerBlock = ({
         <View style={{ height: imageDemention, width: imageDemention }}>
           <Image
             style={{
-              // flex: 1,
               borderRadius: 5,
               borderWidth: 1,
               borderColor: colors.card,
-              // backgroundColor: colors.card,
               width: '100%',
               height: '100%',
             }}
@@ -429,8 +392,6 @@ export const TextInputBlock = ({
             borderRadius: 5,
             height: '100%',
             ...fieldStyle,
-
-            // paddingHorizontal: 10,
           }}
         >
           {prefix ? (
@@ -438,11 +399,7 @@ export const TextInputBlock = ({
               style={{
                 minWidth: 32,
                 height: '100%',
-                // borderColor: colors.border,
                 backgroundColor: colors.active,
-                // borderTopWidth: 1,
-                // borderBottomWidth: 1,
-                // borderRightWidth: 1,
                 borderBottomLeftRadius: 5,
                 borderTopLeftRadius: 5,
                 paddingHorizontal: 10,
@@ -496,11 +453,7 @@ export const TextInputBlock = ({
               style={{
                 minWidth: 32,
                 height: '100%',
-                // borderColor: colors.border,
                 backgroundColor: colors.active,
-                // borderTopWidth: 1,
-                // borderBottomWidth: 1,
-                // borderRightWidth: 1,
                 borderBottomRightRadius: 5,
                 borderTopRightRadius: 5,
                 paddingHorizontal: 10,
@@ -670,7 +623,6 @@ export const BirthdayPicker = ({
         backgroundColor: colors.card,
         borderColor: colors.border,
         ...style,
-        // backgroundColor: "#888888",
       }}
     >
       <Picker
@@ -680,11 +632,7 @@ export const BirthdayPicker = ({
           color: colors.text,
           backgroundColor: colors.card,
         }}
-        onValueChange={
-          onValueChange
-          // (itemValue, itemIndex) =>
-          // console.log("itemValue", itemValue)
-        }
+        onValueChange={onValueChange}
         mode="dropdown"
       >
         {items}

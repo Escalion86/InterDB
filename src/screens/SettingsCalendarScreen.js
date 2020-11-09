@@ -123,25 +123,4 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 5,
   },
-  row: {
-    marginBottom: 10,
-  },
-  switchcontainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  thumb: {
-    width: 20,
-    height: 20,
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 10,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowRadius: 2,
-    shadowOpacity: 0.35,
-  },
 })

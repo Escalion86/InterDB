@@ -65,16 +65,12 @@ const EventCard = ({
       }
     }
 
-    // const dispatch = useDispatch()
-
     const profit =
       +event.finance_price -
       +event.finance_road -
       +event.finance_organizator -
       +event.finance_assistants -
       +event.finance_consumables
-    //  +
-    // event.finance_tips
 
     const timing =
       +event.timing_duration +
@@ -165,88 +161,8 @@ const EventCard = ({
       </View>
     )
 
-    // const SwipeContainer = ({ children }) => {
-    //   if (swipeable) {
-    //     return (
-    //       <SwipeableCard
-    //         onLeftOpen={() =>
-    //           navigation.navigate('CreateEvent', {
-    //             eventId: event.id,
-    //           })
-    //         }
-    //         onRightOpen={onDelete}
-    //       >
-    //         {children}
-    //       </SwipeableCard>
-    //     )
-    //   } else {
-    //     return <>{children}</>
-    //   }
-    // }
-
-    // const PopupMenuCardContainer = ({ children }) => {
-    //   if (havePopupMenu) {
-    //     return (
-    //       <Menu
-    //         renderer={Popover}
-    //         rendererProps={{ preferredPlacement: 'top' }}
-    //       >
-    //         <MenuTrigger
-    //           triggerOnLongPress
-    //           onAlternativeAction={onPress}
-    //           customStyles={{
-    //             TriggerTouchableComponent: TouchableHighlight,
-    //             // triggerTouchable: { title: 'Select (Custom Touchables)' },
-    //           }}
-    //         >
-    //           {children}
-    //         </MenuTrigger>
-    //         <MenuOptions
-    //           style={{
-    //             padding: 10,
-    //             borderColor: colors.border,
-    //             borderWidth: 3,
-    //             // borderRadius: 20,
-    //             backgroundColor: colors.card,
-    //             flexDirection: 'row',
-    //             alignItems: 'center',
-    //           }}
-    //         >
-    //           <MenuOption
-    //             onSelect={() =>
-    //               navigation.navigate('CreateEvent', { event: event })
-    //             }
-    //             customStyles={{
-    //               optionText: {
-    //                 color: colors.text,
-    //                 fontSize: fontSize.big,
-    //               },
-    //               optionsContainer: {
-    //                 backgroundColor: 'green',
-    //                 padding: 5,
-    //               },
-    //             }}
-    //             text="Создать событие на основе этого"
-    //           />
-    //         </MenuOptions>
-    //       </Menu>
-    //     )
-    //   } else {
-    //     return (
-    //       <TouchableHighlight
-    //         // activeOpacity={1}
-    //         delayPressIn={50}
-    //         onPress={onPress}
-    //       >
-    //         {children}
-    //       </TouchableHighlight>
-    //     )
-    //   }
-    // }
-
     console.log('render EventCard id: ' + event.id)
 
-    console.log('event', event)
     return (
       <CardContainer
         swipeable={swipeable}
@@ -277,13 +193,6 @@ const EventCard = ({
               eventPartName="status"
               // actionOnSelect={setEventStatus}
             />
-            {/* <IconMenu
-                event={event}
-                // theme={theme}
-                style={{ marginTop: 6 }}
-                eventPartName="finance_status"
-                // actionOnSelect={setFinanceStatus}
-              /> */}
             <FinanceMenu
               iconBackgroundColor={financeColor}
               addIncome={() => financeIncome(incomeLeft)}
@@ -452,12 +361,6 @@ const EventCard = ({
                     value={-event.finance_assistants + ' руб'}
                   />
                 ) : null}
-                {/* {event.finance_tips ? (
-                    <MenuRow
-                      title="Чаевые"
-                      value={event.finance_tips + ' руб'}
-                    />
-                  ) : null} */}
                 <MenuRow
                   title="ИТОГО"
                   value={profit + ' руб'}
@@ -484,7 +387,6 @@ const stylesFactory = ({ colors }) =>
     card: {
       width: '100%',
       marginVertical: 2,
-      // backgroundColor: THEME.SECONDARY_COLOR,
       borderColor: colors.border,
       borderWidth: 1,
       borderRadius: 10,
