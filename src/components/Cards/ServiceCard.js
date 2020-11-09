@@ -111,13 +111,17 @@ const ServiceCard = ({
       <CardContainer
         swipeable={swipeable}
         onPress={onPress}
-        popupMenuOptions={[
-          {
-            text: 'Создать услугу на основе этой',
-            onSelect: () =>
-              navigation.navigate('CreateService', { service: service }),
-          },
-        ]}
+        popupMenuOptions={
+          havePopupMenu
+            ? [
+              {
+                text: 'Создать услугу на основе этой',
+                onSelect: () =>
+                  navigation.navigate('CreateService', { service: service }),
+              },
+            ]
+            : []
+        }
         onLeftOpen={() =>
           navigation.navigate('CreateService', {
             serviceId: service.id,

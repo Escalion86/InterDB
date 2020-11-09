@@ -88,13 +88,17 @@ const ClientCard = ({
       <CardContainer
         swipeable={swipeable}
         onPress={onPress}
-        // popupMenuOptions={[
-        //   {
-        //     text: 'Создать клиента на основе этого',
-        //     onSelect: () =>
-        //       navigation.navigate('CreateClient', { client: client }),
-        //   },
-        // ]}
+        popupMenuOptions={
+          havePopupMenu
+            ? [
+              {
+                text: 'Создать клиента на основе этого',
+                onSelect: () =>
+                  navigation.navigate('CreateClient', { client: client }),
+              },
+            ]
+            : []
+        }
         onLeftOpen={() =>
           navigation.navigate('CreateClient', {
             clientId: client.id,

@@ -121,11 +121,11 @@ const EventCard = ({
         outcomeSum += +finance.sum
       }
     })
-    const resultSum = incomeSum - outcomeSum
+    const resultSum = +incomeSum - outcomeSum
 
-    const incomeLeft = event.finance_price - incomeSum
+    const incomeLeft = +event.finance_price - incomeSum
     const outcomeLeft =
-      event.finance_road +
+      +event.finance_road +
       event.finance_organizator +
       event.finance_assistants +
       event.finance_consumables -
@@ -246,6 +246,7 @@ const EventCard = ({
 
     console.log('render EventCard id: ' + event.id)
 
+    console.log('event', event)
     return (
       <CardContainer
         swipeable={swipeable}
@@ -287,15 +288,15 @@ const EventCard = ({
               iconBackgroundColor={financeColor}
               addIncome={() => financeIncome(incomeLeft)}
               addOutcome={() => financeOutcome(outcomeLeft)}
-              incomePlanValue={event.finance_price}
+              incomePlanValue={+event.finance_price}
               outcomePlanValue={
                 +event.finance_road +
                 event.finance_organizator +
                 event.finance_assistants +
                 event.finance_consumables
               }
-              incomeFactValue={incomeSum}
-              outcomeFactValue={outcomeSum}
+              incomeFactValue={+incomeSum}
+              outcomeFactValue={+outcomeSum}
             />
           </View>
           <View style={styles.middle}>
