@@ -11,6 +11,7 @@ const Button = ({
   style = {},
   disabled = false,
   textFontSize = 'medium',
+  textColor = null,
   size = 'medium',
   outline = false,
   theme = null,
@@ -43,7 +44,7 @@ const Button = ({
         style={{
           ...styles.buttonTitle,
           fontSize: fontSize[textFontSize],
-          color: outline
+          color: textColor || (outline
             ? btnDecline
               ? colors.abort
               : colors.accent
@@ -51,7 +52,7 @@ const Button = ({
               ? colors.disabled
               : btnDecline
                 ? colors.abortText
-                : colors.accentText,
+                : colors.accentText),
         }}
       >
         {title}
