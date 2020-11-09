@@ -32,73 +32,67 @@ const ModalSplash = ({
       //   Alert.alert("Modal has been closed.")
       // }}
     >
-      <TouchableWithoutFeedback onPress={() => onOuterClick()}>
+      <View style={styles.modal}>
+        <TouchableWithoutFeedback onPress={() => onOuterClick()}>
+          <View style={{ flex: 1 }} />
+        </TouchableWithoutFeedback>
         <View
-          style={styles.modal}
-          // onPressOut={() => {
-          //   onOuterClick()
-          // }}
+          style={{
+            ...styles.panel,
+            backgroundColor: colors.modal,
+            borderColor: colors.border,
+          }}
         >
-          <TouchableWithoutFeedback onPress={null}>
-            <View
-              style={{
-                ...styles.panel,
-                backgroundColor: colors.modal,
-                borderColor: colors.border,
-              }}
-              // onSwipePerformed={(action) => {
-              //   if (action === "down") onOuterClick()
-              // }}
-            >
-              <TouchableOpacity
-                style={{ position: 'absolute', right: 18, top: 5 }}
-                onPress={() => {
-                  onOuterClick()
-                }}
-              >
-                <Ionicons name="ios-close" size={36} color={colors.text} />
-              </TouchableOpacity>
-              <View
+          <TouchableOpacity
+            style={{ position: 'absolute', right: 18, top: 5 }}
+            onPress={() => {
+              onOuterClick()
+            }}
+          >
+            <Ionicons name="ios-close" size={36} color={colors.text} />
+          </TouchableOpacity>
+          <View
+            style={{
+              alignItems: 'center',
+              marginBottom: 10,
+              minHeight: 12,
+            }}
+          >
+            {title ? (
+              <Text
                 style={{
-                  alignItems: 'center',
-                  marginBottom: 10,
-                  minHeight: 12,
+                  ...styles.panelTitle,
+                  fontSize: fontSize.giant,
+                  fontWeight: 'bold',
+                  color: colors.text,
                 }}
               >
-                {title ? (
+                {title}
+              </Text>
+            ) : null}
+
+            {text || children ? (
+              <ScrollView style={{ width: '100%', maxHeight: 425 }}>
+                {text ? (
                   <Text
                     style={{
-                      ...styles.panelTitle,
-                      fontSize: fontSize.giant,
-                      fontWeight: 'bold',
+                      ...styles.panelSubtitle,
+                      fontSize: fontSize[textSize],
                       color: colors.text,
                     }}
                   >
-                    {title}
+                    {text}
                   </Text>
                 ) : null}
-
-                {text || children ? (
-                  <ScrollView style={{ width: '100%', maxHeight: 425 }}>
-                    {text ? (
-                      <Text
-                        style={{
-                          ...styles.panelSubtitle,
-                          fontSize: fontSize[textSize],
-                          color: colors.text,
-                        }}
-                      >
-                        {text}
-                      </Text>
-                    ) : null}
-                    {children}
-                  </ScrollView>
-                ) : null}
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
+                {children}
+              </ScrollView>
+            ) : null}
+          </View>
         </View>
-      </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => onOuterClick()}>
+          <View style={{ flex: 1 }} />
+        </TouchableWithoutFeedback>
+      </View>
     </Modal>
   )
 }
