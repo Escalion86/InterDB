@@ -15,6 +15,10 @@ const tariffs = [
     name: 'VIP',
     color: 'gold',
   },
+  {
+    name: 'Разработчик',
+    color: 'purple',
+  },
 ]
 
 export default tariffs
