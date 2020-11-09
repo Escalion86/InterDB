@@ -1,8 +1,15 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Modal,
+} from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import Button from '../Button'
-import GestureRecognizer from 'react-native-swipe-gestures'
+// import GestureRecognizer from 'react-native-swipe-gestures'
 import { Ionicons } from '@expo/vector-icons'
 import { fontSize } from '../../theme'
 
@@ -25,7 +32,7 @@ const ModalBottomMenu = ({
       >
         <View style={{ flex: 1, opacity: 0.9, backgroundColor: '#000' }}></View>
       </Modal>
-      <GestureRecognizer
+      {/* <GestureRecognizer
         onSwipeDown={() => {
           onOuterClick()
         }}
@@ -33,90 +40,84 @@ const ModalBottomMenu = ({
           velocityThreshold: 0.1,
           directionalOffsetThreshold: 80,
         }}
+      > */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={visible}
+        hardwareAccelerated={true}
+        // onRequestClose={() => {
+        //   Alert.alert("Modal has been closed.")
+        // }}
       >
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={visible}
-          hardwareAccelerated={true}
-          // onRequestClose={() => {
-          //   Alert.alert("Modal has been closed.")
-          // }}
-        >
-          <View
-            style={styles.modal}
-            // onPressOut={() => {
-            //   onOuterClick()
-            // }}
-          >
-            {/* <TouchableWithoutFeedback> */}
-            <View
-              style={{
-                ...styles.panel,
-                backgroundColor: colors.modal,
-                borderColor: colors.border,
-              }}
-              // onSwipePerformed={(action) => {
-              //   if (action === "down") onOuterClick()
-              // }}
-            >
-              <TouchableOpacity
-                style={{ position: 'absolute', right: 18, top: 5 }}
-                onPress={() => {
-                  onOuterClick()
-                }}
-              >
-                <Ionicons name="ios-close" size={36} color={colors.text} />
-              </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={() => onOuterClick()}>
+          <View style={styles.modal}>
+            <TouchableWithoutFeedback onPress={null}>
               <View
                 style={{
-                  width: '20%',
-                  height: 7,
+                  ...styles.panel,
+                  backgroundColor: colors.modal,
                   borderColor: colors.border,
-                  borderWidth: 1,
-                  backgroundColor: colors.active,
-                  borderRadius: 5,
-                  alignSelf: 'center',
-                  marginBottom: 6,
-                }}
-              ></View>
-              <View
-                style={{
-                  alignItems: 'center',
-                  marginBottom: 10,
-                  minHeight: 12,
                 }}
               >
-                {title ? (
-                  <Text
-                    style={{
-                      ...styles.panelTitle,
-                      fontSize: fontSize.giant,
-                      fontWeight: 'bold',
-                      color: colors.text,
-                    }}
-                  >
-                    {title}
-                  </Text>
-                ) : null}
-                {subtitle ? (
-                  <Text
-                    style={{
-                      ...styles.panelSubtitle,
-                      fontSize: fontSize.small,
-                      color: colors.text,
-                    }}
-                  >
-                    {subtitle}
-                  </Text>
-                ) : null}
+                <TouchableOpacity
+                  style={{ position: 'absolute', right: 18, top: 5 }}
+                  onPress={() => {
+                    onOuterClick()
+                  }}
+                >
+                  <Ionicons name="ios-close" size={36} color={colors.text} />
+                </TouchableOpacity>
+                <View
+                  style={{
+                    width: '20%',
+                    height: 7,
+                    borderColor: colors.border,
+                    borderWidth: 1,
+                    backgroundColor: colors.active,
+                    borderRadius: 5,
+                    alignSelf: 'center',
+                    marginBottom: 6,
+                  }}
+                ></View>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    marginBottom: 10,
+                    minHeight: 12,
+                  }}
+                >
+                  {title ? (
+                    <Text
+                      style={{
+                        ...styles.panelTitle,
+                        fontSize: fontSize.giant,
+                        fontWeight: 'bold',
+                        color: colors.text,
+                      }}
+                    >
+                      {title}
+                    </Text>
+                  ) : null}
+                  {subtitle ? (
+                    <Text
+                      style={{
+                        ...styles.panelSubtitle,
+                        fontSize: fontSize.small,
+                        color: colors.text,
+                      }}
+                    >
+                      {subtitle}
+                    </Text>
+                  ) : null}
+                </View>
+                <View style={{ maxHeight: 417 }}>{children}</View>
               </View>
-              <View style={{ maxHeight: 417 }}>{children}</View>
-            </View>
-            {/* </TouchableWithoutFeedback> */}
+            </TouchableWithoutFeedback>
           </View>
-        </Modal>
-      </GestureRecognizer>
+        </TouchableWithoutFeedback>
+      </Modal>
+      {/* </GestureRecognizer> */}
     </>
   )
 }
