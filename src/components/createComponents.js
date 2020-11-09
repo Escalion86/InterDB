@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import {
   StyleSheet,
   Text,
@@ -18,19 +18,39 @@ import * as ImagePicker from 'expo-image-picker'
 // import Switch from './Switch'
 import { Switch as SwitchPaper, RadioButton } from 'react-native-paper'
 import ModalBottomMenu from './Modals/ModalBottomMenu'
+import ModalSplash from './Modals/ModalSplash'
 import Button from './Button'
 import { Picker } from '@react-native-community/picker'
 import { fontSize } from '../theme'
 import { MaskedTextInput, CustomMask } from 'rn-masked-text-input'
 // import TextInputMask from "./TextInputMask"
 // import TextInputMask from "react-native-text-input-mask"
+import { TriangleColorPicker, fromHsv } from 'react-native-color-picker'
+
+export const TextBlock = ({ children, style = {} }) => {
+  const { colors } = useTheme()
+
+  return (
+    <Text
+      style={{
+        flex: 1,
+        fontSize: fontSize.medium,
+        color: colors.text,
+        textAlignVertical: 'center',
+        // height: 30,
+        ...style,
+      }}
+    >
+      {children}
+    </Text>
+  )
+}
 
 export const SwitchBlock = ({
   title = '',
   onValueChange = () => {},
   value = null,
 }) => {
-  const { colors } = useTheme()
   return (
     <View
       style={{
@@ -38,23 +58,14 @@ export const SwitchBlock = ({
         justifyContent: 'space-between',
       }}
     >
-      <Text style={{ flex: 1, fontSize: fontSize.medium, color: colors.text }}>
-        {title}
-      </Text>
+      <TextBlock>{title}</TextBlock>
       <SwitchPaper value={value} onValueChange={onValueChange} />
     </View>
   )
 }
 
 export const TitleBlock = ({ title = '' }) => {
-  const { colors } = useTheme()
-  return (
-    <Text
-      style={{ ...styles.title, fontSize: fontSize.giant, color: colors.text }}
-    >
-      {title}
-    </Text>
-  )
+  return <TextBlock style={styles.title}>{title}</TextBlock>
 }
 
 export const RadioBlock = ({
@@ -65,7 +76,6 @@ export const RadioBlock = ({
   titleFlex = 2,
   buttonsFlex = 3,
 }) => {
-  const { colors } = useTheme()
   const radioButtons = radios.map((radio) => {
     return (
       <View
@@ -84,30 +94,19 @@ export const RadioBlock = ({
           //   color: colors.text,
           // }}
         />
-        <Text
-          style={{
-            // ...styles.text,
-            fontSize: fontSize.medium,
-            color: colors.text,
-          }}
-        >
-          {radio.label}
-        </Text>
+        <TextBlock>{radio.label}</TextBlock>
       </View>
     )
   })
   return (
     <View style={{ ...styles.row, height: null }}>
-      <Text
+      <TextBlock
         style={{
-          ...styles.text,
-          fontSize: fontSize.medium,
-          color: colors.text,
           flex: titleFlex,
         }}
       >
         {title}
-      </Text>
+      </TextBlock>
       <View style={{ ...styles.block, flex: buttonsFlex }}>
         <RadioButton.Group onValueChange={onValueChange} value={value}>
           <View style={{ flexDirection: 'column' }}>{radioButtons}</View>
@@ -164,6 +163,108 @@ export const RadioBlock = ({
 //     </View>
 //   )
 // }
+
+export const ColorPickerBlock = ({
+  title = '',
+  color,
+  onColorSelected = () => {},
+  titleFlex = 2,
+  buttonFlex = 2,
+  buttonText = '',
+  buttonOnNextRow,
+}) => {
+  const [modalVisible, setModalVisible] = useState(false)
+
+  const ModalColorPicker = useCallback(
+    ({ defaultColor }) => {
+      const [newColor, setNewColor] = useState(defaultColor)
+      // const [newColorinModal, setNewColorinModal] = useState(newColor)
+      return (
+        <ModalSplash
+          title="Выберите цвет"
+          text=""
+          visible={modalVisible}
+          onOuterClick={() => setModalVisible(false)}
+          textSize="medium"
+        >
+          <View style={{ height: 250 }}>
+            <TriangleColorPicker
+              color={newColor}
+              onColorChange={(color) => {
+                setNewColor(fromHsv(color))
+              }}
+              style={{ flex: 1 }}
+            />
+          </View>
+          <Button
+            title="Выбрать"
+            onPress={() => {
+              onColorSelected(newColor)
+              setModalVisible(false)
+              // setNewColor(newColorinModal)
+            }}
+
+            // style={{ backgroundColor: newColor }}
+          />
+        </ModalSplash>
+      )
+    },
+    [modalVisible]
+  )
+
+  return (
+    <>
+      {buttonOnNextRow ? (
+        <TextBlock style={{ flex: null }}>{title}</TextBlock>
+      ) : null}
+      <View style={styles.row}>
+        <ModalColorPicker defaultColor={color} />
+        {!buttonOnNextRow ? (
+          <TextBlock
+            style={{
+              flex: titleFlex,
+            }}
+          >
+            {title}
+          </TextBlock>
+        ) : null}
+        <View style={{ flex: buttonFlex }}>
+          {/* <TouchableOpacity
+          style={{ flex: buttonFlex }}
+          onPress={() => setModalVisible(true)}
+        >
+          <View
+            style={{
+              flex: 1,
+              borderRadius: 5,
+              borderWidth: 1,
+              backgroundColor: color,
+              justifyContent: 'center',
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: fontSize.medium,
+                color: colors.text,
+                ...buttonTextStyle,
+              }}
+            >
+              {buttonText}
+            </Text>
+
+          </View>
+
+        </TouchableOpacity> */}
+          <Button
+            style={{ backgroundColor: color }}
+            onPress={() => setModalVisible(true)}
+          />
+        </View>
+      </View>
+    </>
+  )
+}
 
 // TODO Возможно стоит продумать автоматическое изменение размера картинки до минимума
 export const ImagePickerBlock = ({
@@ -237,15 +338,13 @@ export const ImagePickerBlock = ({
   return (
     <View style={{ ...styles.row, height: null }}>
       <ModalChoosePhotoSource />
-      <Text
+      <TextBlock
         style={{
-          ...styles.text,
-          fontSize: fontSize.medium,
-          color: colors.text,
+          flex: 2,
         }}
       >
         {title}
-      </Text>
+      </TextBlock>
       <TouchableOpacity
         style={styles.block}
         onPress={async () => setModalVisible(true)}
@@ -304,17 +403,7 @@ export const TextInputBlock = ({
 
   return (
     <View>
-      {inputOnNextRow ? (
-        <Text
-          style={{
-            fontSize: fontSize.medium,
-            color: colors.text,
-            height: 30,
-          }}
-        >
-          {title}
-        </Text>
-      ) : null}
+      {inputOnNextRow ? <TextBlock>{title}</TextBlock> : null}
       <View
         style={{
           ...styles.row,
@@ -322,15 +411,13 @@ export const TextInputBlock = ({
         }}
       >
         {!inputOnNextRow ? (
-          <Text
+          <TextBlock
             style={{
               flex: titleFlex,
-              fontSize: fontSize.medium,
-              color: colors.text,
             }}
           >
             {title}
-          </Text>
+          </TextBlock>
         ) : null}
         <View
           style={{
@@ -362,15 +449,13 @@ export const TextInputBlock = ({
                 justifyContent: 'center',
               }}
             >
-              <Text
+              <TextBlock
                 style={{
-                  color: colors.text,
-                  fontSize: fontSize.medium,
                   textAlign: 'center',
                 }}
               >
                 {prefix}
-              </Text>
+              </TextBlock>
             </View>
           ) : null}
           {phoneMask ? (
@@ -422,15 +507,13 @@ export const TextInputBlock = ({
                 justifyContent: 'center',
               }}
             >
-              <Text
+              <TextBlock
                 style={{
-                  fontSize: fontSize.medium,
-                  color: colors.text,
                   textAlign: 'center',
                 }}
               >
                 {postfix}
-              </Text>
+              </TextBlock>
             </View>
           ) : null}
         </View>
@@ -468,15 +551,13 @@ export const EventRowDropDownPicker = ({
 
   return (
     <View style={styles.row}>
-      <Text
+      <TextBlock
         style={{
-          ...styles.text,
-          fontSize: fontSize.medium,
-          color: colors.text,
+          flex: 2,
         }}
       >
         {name}
-      </Text>
+      </TextBlock>
       <View style={styles.block}>
         <DropDownPicker
           placeholder={placeholder}
@@ -613,15 +694,7 @@ export const BirthdayPicker = ({
 
   return (
     <View style={styles.row}>
-      <Text
-        style={{
-          ...styles.text,
-          fontSize: fontSize.medium,
-          color: colors.text,
-        }}
-      >
-        {title}
-      </Text>
+      <TextBlock style={{ flex: 2 }}>{title}</TextBlock>
       <View style={{ ...styles.datetimecontainer, flex: 3 }}>
         <ObjPicker
           items={daysPickerItems}
@@ -661,33 +734,23 @@ export const DateTimePickerBlock = ({
 
   return (
     <View style={styles.row}>
-      <Text
-        style={{
-          ...styles.text,
-          fontSize: fontSize.medium,
-          color: colors.text,
-        }}
-      >
-        {title}
-      </Text>
+      <TextBlock style={{ flex: 2 }}>{title}</TextBlock>
       <View style={{ ...styles.datetimecontainer, flex: inputFlex }}>
         {pickDate ? (
           <TouchableOpacity
             onPress={() => setDateTimePickerShow('eventDateStart')}
             style={{ flex: 4, marginRight: 8 }}
           >
-            <Text
+            <TextBlock
               style={{
                 ...styles.datetime,
-
-                color: colors.text,
-                fontSize: fontSize.medium,
+                flex: 2,
                 backgroundColor: colors.card,
                 borderColor: colors.border,
               }}
             >
               {dateValue ? formatDate(dateValue, true, showWeek) : 'не выбрана'}
-            </Text>
+            </TextBlock>
             {dateTimePickerShow === 'eventDateStart' ? (
               <DateTimePicker
                 testID="dateTimePicker"
@@ -713,17 +776,16 @@ export const DateTimePickerBlock = ({
             onPress={() => setDateTimePickerShow('eventTimeStart')}
             style={{ flex: 2 }}
           >
-            <Text
+            <TextBlock
               style={{
                 ...styles.datetime,
-                fontSize: fontSize.medium,
-                color: colors.text,
+                flex: 2,
                 backgroundColor: colors.card,
                 borderColor: colors.border,
               }}
             >
               {dateValue ? formatTime(dateValue, true, true) : 'не выбрана'}
-            </Text>
+            </TextBlock>
             {dateTimePickerShow === 'eventTimeStart' ? (
               <DateTimePicker
                 testID="timeTimePicker"
@@ -783,15 +845,13 @@ export const DropDownPickerBlock = ({
   return (
     <View style={styles.row}>
       {name ? (
-        <Text
+        <TextBlock
           style={{
-            ...styles.text,
-            fontSize: fontSize.medium,
-            color: colors.text,
+            flex: 2,
           }}
         >
           {name}
-        </Text>
+        </TextBlock>
       ) : null}
       <View style={styles.block}>
         <DropDownPicker
@@ -841,9 +901,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
     marginBottom: 3,
     // height: 40,
-  },
-  text: {
-    flex: 2,
+    fontSize: fontSize.giant,
   },
   row: {
     flexDirection: 'row',
