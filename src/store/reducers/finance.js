@@ -19,6 +19,7 @@ export const financeReducer = (state = initialState, action) => {
     case LOAD_FINANCES:
       finances = action.finances.map((finance) => {
         finance.date = finance.date * 1000
+        finance.create_date = finance.create_date * 1000
         return finance
       })
 
