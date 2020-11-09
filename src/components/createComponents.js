@@ -222,6 +222,7 @@ export const ColorPickerBlock = ({
         ) : null}
         <View style={{ flex: buttonFlex }}>
           <Button
+            title={buttonText}
             style={{ backgroundColor: color }}
             onPress={() => setModalVisible(true)}
           />
