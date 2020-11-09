@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { StyleSheet, View, ToastAndroid, ScrollView } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  ToastAndroid,
+  ScrollView,
+  Platform,
+} from 'react-native'
 import {
   TextInputBlock,
   DateTimePickerBlock,
   SwitchBlock,
   TitleBlock,
+  ColorPickerBlock,
 } from '../components/createComponents'
 import { setAllNotificationSettings } from '../store/actions/app'
 import * as Calendar from 'expo-calendar'
@@ -13,10 +21,139 @@ import { DevDropDownPicker } from '../components/devComponents'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { HeaderBackButton } from '@react-navigation/stack'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
+import { useTheme } from '@react-navigation/native'
 
 import Button from '../components/Button'
 
 import ModalBottomMenu from '../components/Modals/ModalBottomMenu'
+
+async function getDefaultCalendarSource () {
+  const calendars = await Calendar.getCalendarsAsync()
+  const defaultCalendars = calendars.filter(
+    (each) => each.source.name === 'Default'
+  )
+  return defaultCalendars[0].source
+}
+
+async function createCalendar (title, color, afterCreate = () => {}) {
+  const defaultCalendarSource =
+    Platform.OS === 'ios'
+      ? await getDefaultCalendarSource()
+      : { isLocalAccount: true, name: 'Individual CRM' }
+  const newCalendarID = await Calendar.createCalendarAsync({
+    title: title,
+    color: color,
+    entityType: Calendar.EntityTypes.EVENT,
+    sourceId: defaultCalendarSource.id,
+    source: defaultCalendarSource,
+    name: title,
+    ownerAccount: 'personal',
+    accessLevel: Calendar.CalendarAccessLevel.OWNER,
+  }).then(() => afterCreate())
+  return newCalendarID
+}
+
+const ModalAddCalendar = ({ setModal, afterCreate = () => {} }) => {
+  const { colors } = useTheme()
+
+  const [title, setTitle] = useState('')
+  const [color, setColor] = useState(colors.accent)
+
+  return (
+    <ModalBottomMenu
+      title="Создать локальный календарь"
+      subtitle="Обращаем внимание, что будет создан локальный календарь, который не синхронизируется с облаком по умолчанию"
+      // onAccept={() => navigation.goBack()}
+      visible={true}
+      onOuterClick={() => setModal(null)}
+    >
+      <TextInputBlock
+        title="Заголовок календаря"
+        value={title}
+        onChangeText={setTitle}
+        // inputFlex={2}
+      />
+      <ColorPickerBlock
+        title="Цвет календаря"
+        color={color}
+        onColorSelected={setColor}
+      />
+      <Button
+        title="Создать"
+        btnDecline={false}
+        onPress={() => {
+          if (title.trim() !== '') {
+            setModal(null)
+            createCalendar(title.trim(), color, afterCreate)
+          } else {
+            ToastAndroid.show(
+              'Заголовок не может быть пустым',
+              ToastAndroid.SHORT
+            )
+          }
+        }}
+      />
+      <Button
+        title="Отмена"
+        btnDecline={true}
+        onPress={() => {
+          setModal(null)
+        }}
+      />
+    </ModalBottomMenu>
+  )
+}
+
+const ModalSaveChanges = ({
+  navigation,
+  setModal,
+  newStateApp,
+  saveNotificationSettings,
+}) => (
+  <ModalBottomMenu
+    title="Отменить изменения"
+    subtitle="Уверены что хотите выйти без сохранения?"
+    onAccept={() => navigation.goBack()}
+    visible={true}
+    onOuterClick={() => setModal(null)}
+  >
+    <Button
+      title="Выйти без сохранения"
+      btnDecline={false}
+      onPress={() => {
+        setModal(null)
+        navigation.goBack()
+      }}
+    />
+    <Button
+      title="Сохранить и выйти"
+      btnDecline={false}
+      onPress={() => {
+        setModal(null)
+        if (
+          (!newStateApp.calendarEventTurnOn || newStateApp.calendarEventId) &&
+          (!newStateApp.calendarBirthdayTurnOn ||
+            newStateApp.calendarBirthdayId)
+        ) {
+          saveNotificationSettings()
+          navigation.goBack()
+        } else {
+          ToastAndroid.show(
+            'Настройки не сохранены. Выберите календарь!',
+            ToastAndroid.LONG
+          )
+        }
+      }}
+    />
+    <Button
+      title="Не уходить"
+      btnDecline={true}
+      onPress={() => {
+        setModal(null)
+      }}
+    />
+  </ModalBottomMenu>
+)
 
 const SettingsNotificationsScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
@@ -28,23 +165,24 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
     setNewStateApp({ ...newStateApp, ...item })
   }
 
-  console.log('newStateApp', newStateApp)
-
   const [calendars, setCalendars] = useState([])
 
-  useEffect(() => {
-    ;(async () => {
-      const { status } = await Calendar.requestCalendarPermissionsAsync()
-      if (status === 'granted') {
-        const calendars = await Calendar.getCalendarsAsync()
+  const refreshCalendarList = async () => {
+    const { status } = await Calendar.requestCalendarPermissionsAsync()
+    // console.log('status', status)
+    if (status === 'granted') {
+      const calendars = await Calendar.getCalendarsAsync()
+      // console.log('caledars', calendars)
+      setCalendars(
+        calendars.filter((cal) => {
+          return cal.accessLevel !== 'read'
+        })
+      )
+    }
+  }
 
-        setCalendars(
-          calendars.filter((cal) => {
-            return cal.accessLevel !== 'read'
-          })
-        )
-      }
-    })()
+  useEffect(() => {
+    ;(async () => await refreshCalendarList())()
   }, [])
 
   useEffect(() => {
@@ -52,7 +190,16 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
       headerLeft: () => (
         <HeaderBackButton
           onPress={() => {
-            checkChanges() ? setModal(modalSaveChanges) : navigation.goBack()
+            checkChanges()
+              ? setModal(
+                <ModalSaveChanges
+                  navigation={navigation}
+                  setModal={setModal}
+                  newStateApp={newStateApp}
+                  saveNotificationSettings={saveNotificationSettings}
+                />
+              )
+              : navigation.goBack()
           }}
         />
       ),
@@ -100,52 +247,6 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
     }
   }
 
-  const modalSaveChanges = (
-    <ModalBottomMenu
-      title="Отменить изменения"
-      subtitle="Уверены что хотите выйти без сохранения?"
-      onAccept={() => navigation.goBack()}
-      visible={true}
-      onOuterClick={() => setModal(null)}
-    >
-      <Button
-        title="Выйти без сохранения"
-        btnDecline={false}
-        onPress={() => {
-          setModal(null)
-          navigation.goBack()
-        }}
-      />
-      <Button
-        title="Сохранить и выйти"
-        btnDecline={false}
-        onPress={() => {
-          setModal(null)
-          if (
-            (!newStateApp.calendarEventTurnOn || newStateApp.calendarEventId) &&
-            (!newStateApp.calendarBirthdayTurnOn ||
-              newStateApp.calendarBirthdayId)
-          ) {
-            saveNotificationSettings()
-            navigation.goBack()
-          } else {
-            ToastAndroid.show(
-              'Настройки не сохранены. Выберите календарь!',
-              ToastAndroid.LONG
-            )
-          }
-        }}
-      />
-      <Button
-        title="Не уходить"
-        btnDecline={true}
-        onPress={() => {
-          setModal(null)
-        }}
-      />
-    </ModalBottomMenu>
-  )
-
   const checkChanges = () => {
     for (const key in newStateApp) {
       if (newStateApp[key] !== stateApp[key]) {
@@ -180,20 +281,24 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
           }
         />
         {newStateApp.calendarEventTurnOn ? (
-          <View style={{ height: 60 }}>
-            <DevDropDownPicker
-              tables={calendars}
-              tableValue="id"
-              placeholder="Выберите календарь"
-              defaultValue={newStateApp.calendarEventId}
-              onChangeItem={(value) => {
-                setNewStateItem({ calendarEventId: value.value })
-              }}
-              onPress={() => {}}
-              // disabled={!selectedTable}
-              style={{ flex: 1 }}
-            />
-          </View>
+          calendars.length > 0 ? (
+            <View style={{ height: 60 }}>
+              <DevDropDownPicker
+                tables={calendars}
+                tableValue="id"
+                placeholder="Выберите календарь"
+                defaultValue={newStateApp.calendarEventId}
+                onChangeItem={(value) => {
+                  setNewStateItem({ calendarEventId: value.value })
+                }}
+                onPress={() => {}}
+                // disabled={!selectedTable}
+                style={{ flex: 1 }}
+              />
+            </View>
+          ) : (
+            <Text>Не доступных календарей (в режиме записи)</Text>
+          )
         ) : null}
         <SwitchBlock
           title="Синхронизация Дней рождения клиентов"
@@ -218,6 +323,19 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
             />
           </View>
         ) : null}
+        <View style={{ zIndex: 0 }}>
+          <Button
+            title="Создать новый календарь"
+            onPress={() =>
+              setModal(
+                <ModalAddCalendar
+                  setModal={setModal}
+                  afterCreate={refreshCalendarList}
+                />
+              )
+            }
+          />
+        </View>
         <TitleBlock title="Общие настройки" />
         <TextInputBlock
           title="Оповещать о событиях заранее за"
@@ -247,20 +365,6 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
           pickDate={false}
           inputFlex={1}
         />
-        {/* <Button
-        title="Применить"
-        onPress={() => saveNotificationSettings()}
-        disabled={
-          stateApp.notificationTurnOn === newStateApp.notificationTurnOn &&
-          stateApp.notificationBeforeEvent ===
-            newStateApp.notificationBeforeEvent &&
-          stateApp.notificationBirthday === newStateApp.notificationBirthday &&
-          stateApp.notificationAddPrepareRoadTime ===
-            newStateApp.notificationAddPrepareRoadTime &&
-          stateApp.calendarSyncTurnOn === newStateApp.calendarSyncTurnOn &&
-          stateApp.calendarId === newStateApp.calendarId
-        }
-      /> */}
       </ScrollView>
       {modal}
     </View>
