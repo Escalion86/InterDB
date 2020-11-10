@@ -40,23 +40,23 @@ const ClientsScreen = ({ navigation, route }) => {
 
   clients = clientsFilter(clients, filter)
 
-  clients = clients.filter((item) => {
-    const itemName = `${item.surname} ${item.name} ${item.thirdname}`.trim()
-    return (
-      !filter ||
-      itemName.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >= 0 ||
-      item.phone.indexOf(filter) >= 0 ||
-      item.email.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >= 0 ||
-      item.whatsapp.indexOf(filter) >= 0 ||
-      item.viber.indexOf(filter) >= 0 ||
-      item.telegram.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >=
-        0 ||
-      item.instagram.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >=
-        0 ||
-      item.vk.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >= 0 ||
-      item.facebook.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >= 0
-    )
-  })
+  // clients = clients.filter((item) => {
+  //   const itemName = `${item.surname} ${item.name} ${item.thirdname}`.trim()
+  //   return (
+  //     !filter ||
+  //     itemName.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >= 0 ||
+  //     item.phone.indexOf(filter) >= 0 ||
+  //     item.email.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >= 0 ||
+  //     item.whatsapp.indexOf(filter) >= 0 ||
+  //     item.viber.indexOf(filter) >= 0 ||
+  //     item.telegram.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >=
+  //       0 ||
+  //     item.instagram.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >=
+  //       0 ||
+  //     item.vk.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >= 0 ||
+  //     item.facebook.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) >= 0
+  //   )
+  // })
 
   useEffect(() => {
     navigation.setOptions({
