@@ -1,10 +1,10 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ModalBottomMenu, { ModalBottomMenuYesNo } from './ModalBottomMenu'
-import MainFlatListWithFab from '../MainFlatListWithFab'
 import EventCard from '../Cards/EventCard'
 import { deleteService } from '../../store/actions/service'
 import wordForm from '../../helpers/wordForm'
+import ScrollCardList from '../ScrollCardList'
 
 const ModalDeleteService = ({
   service,
@@ -45,10 +45,11 @@ const ModalDeleteService = ({
       visible={true}
       onOuterClick={callbackToCloseModal}
     >
-      <MainFlatListWithFab
+      <ScrollCardList
         data={eventsDependency}
-        renderItem={({ item }) => (
+        renderItem={(item, index) => (
           <EventCard
+            key={index}
             navigation={navigation}
             event={item}
             onPress={() => {
@@ -59,7 +60,7 @@ const ModalDeleteService = ({
             swipeable={false}
           />
         )}
-        fabVisible={false}
+        containerStyle={{ height: '100%' }}
       />
     </ModalBottomMenu>
   )

@@ -14,7 +14,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { fontSize } from '../../theme'
 
 const ModalBottomMenu = ({
-  children,
+  children = null,
   title = '',
   subtitle = '',
   visible = false,
@@ -30,17 +30,8 @@ const ModalBottomMenu = ({
         visible={visible}
         hardwareAccelerated={true}
       >
-        <View style={{ flex: 1, opacity: 0.9, backgroundColor: '#000' }}></View>
+        <View style={{ flex: 1, opacity: 0.9, backgroundColor: '#000' }} />
       </Modal>
-      {/* <GestureRecognizer
-        onSwipeDown={() => {
-          onOuterClick()
-        }}
-        config={{
-          velocityThreshold: 0.1,
-          directionalOffsetThreshold: 80,
-        }}
-      > */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -50,74 +41,72 @@ const ModalBottomMenu = ({
         //   Alert.alert("Modal has been closed.")
         // }}
       >
-        <TouchableWithoutFeedback onPress={() => onOuterClick()}>
-          <View style={styles.modal}>
-            <TouchableWithoutFeedback onPress={null}>
-              <View
-                style={{
-                  ...styles.panel,
-                  backgroundColor: colors.modal,
-                  borderColor: colors.border,
-                }}
-              >
-                <TouchableOpacity
-                  style={{ position: 'absolute', right: 18, top: 5 }}
-                  onPress={() => {
-                    onOuterClick()
+        <View style={styles.modal}>
+          <TouchableWithoutFeedback onPress={() => onOuterClick()}>
+            <View style={{ flex: 1 }} />
+          </TouchableWithoutFeedback>
+          <View
+            style={{
+              ...styles.panel,
+              backgroundColor: colors.modal,
+              borderColor: colors.border,
+            }}
+          >
+            <TouchableOpacity
+              style={{ position: 'absolute', right: 18, top: 5 }}
+              onPress={() => {
+                onOuterClick()
+              }}
+            >
+              <Ionicons name="ios-close" size={36} color={colors.text} />
+            </TouchableOpacity>
+            <View
+              style={{
+                width: '20%',
+                height: 7,
+                borderColor: colors.border,
+                borderWidth: 1,
+                backgroundColor: colors.active,
+                borderRadius: 5,
+                alignSelf: 'center',
+                marginBottom: 6,
+              }}
+            />
+            <View
+              style={{
+                alignItems: 'center',
+                marginBottom: 10,
+                minHeight: 12,
+              }}
+            >
+              {title ? (
+                <Text
+                  style={{
+                    ...styles.panelTitle,
+                    fontSize: fontSize.giant,
+                    fontWeight: 'bold',
+                    color: colors.text,
                   }}
                 >
-                  <Ionicons name="ios-close" size={36} color={colors.text} />
-                </TouchableOpacity>
-                <View
+                  {title}
+                </Text>
+              ) : null}
+              {subtitle ? (
+                <Text
                   style={{
-                    width: '20%',
-                    height: 7,
-                    borderColor: colors.border,
-                    borderWidth: 1,
-                    backgroundColor: colors.active,
-                    borderRadius: 5,
-                    alignSelf: 'center',
-                    marginBottom: 6,
-                  }}
-                ></View>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    marginBottom: 10,
-                    minHeight: 12,
+                    ...styles.panelSubtitle,
+                    fontSize: fontSize.small,
+                    color: colors.text,
                   }}
                 >
-                  {title ? (
-                    <Text
-                      style={{
-                        ...styles.panelTitle,
-                        fontSize: fontSize.giant,
-                        fontWeight: 'bold',
-                        color: colors.text,
-                      }}
-                    >
-                      {title}
-                    </Text>
-                  ) : null}
-                  {subtitle ? (
-                    <Text
-                      style={{
-                        ...styles.panelSubtitle,
-                        fontSize: fontSize.small,
-                        color: colors.text,
-                      }}
-                    >
-                      {subtitle}
-                    </Text>
-                  ) : null}
-                </View>
-                <View style={{ maxHeight: 417 }}>{children}</View>
-              </View>
-            </TouchableWithoutFeedback>
+                  {subtitle}
+                </Text>
+              ) : null}
+            </View>
+            <View style={{ maxHeight: 417 }}>{children}</View>
           </View>
-        </TouchableWithoutFeedback>
+        </View>
       </Modal>
-      {/* </GestureRecognizer> */}
     </>
   )
 }
@@ -187,7 +176,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 3,
     borderTopWidth: 3,
     borderRightWidth: 3,
-    maxHeight: 500,
+    // maxHeight: 500,
     opacity: 0.9,
     // shadowColor: '#000000',
     // shadowOffset: {width: 0, height: 0},

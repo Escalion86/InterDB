@@ -13,12 +13,11 @@ import { Ionicons } from '@expo/vector-icons'
 import { fontSize } from '../../theme'
 
 const ModalSplash = ({
+  children = null,
   title = '',
-  text = '',
+  subtitle = '',
   visible = false,
   onOuterClick = () => {},
-  textSize = 'medium',
-  children = null,
 }) => {
   const { colors } = useTheme()
 
@@ -71,17 +70,17 @@ const ModalSplash = ({
               </Text>
             ) : null}
 
-            {text || children ? (
+            {subtitle || children ? (
               <ScrollView style={{ width: '100%', maxHeight: 425 }}>
-                {text ? (
+                {subtitle ? (
                   <Text
                     style={{
                       ...styles.panelSubtitle,
-                      fontSize: fontSize[textSize],
+                      fontSize: fontSize.medium,
                       color: colors.text,
                     }}
                   >
-                    {text}
+                    {subtitle}
                   </Text>
                 ) : null}
                 {children}
