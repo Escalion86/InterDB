@@ -174,17 +174,18 @@ export const ColorPickerBlock = ({
     ({ defaultColor }) => {
       const [newColor, setNewColor] = useState(defaultColor)
 
+      if (defaultColor && newColor !== defaultColor) defaultColor = null
+
       return (
         <ModalSplash
           title="Выберите цвет"
-          text=""
           visible={modalVisible}
           onOuterClick={() => setModalVisible(false)}
           textSize="medium"
         >
           <View style={{ height: 250 }}>
             <TriangleColorPicker
-              color={newColor}
+              color={defaultColor}
               onColorChange={(color) => {
                 setNewColor(fromHsv(color))
               }}
