@@ -159,7 +159,28 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
 
   const [modal, setModal] = useState(null)
-  const stateApp = useSelector((state) => state.app)
+  const {
+    notificationBeforeEvent,
+    notificationAddPrepareRoadTime,
+    notificationBirthday,
+    pushEventTurnOn,
+    pushBirthdayTurnOn,
+    calendarEventTurnOn,
+    calendarEventId,
+    calendarBirthdayTurnOn,
+    calendarBirthdayId,
+  } = useSelector((state) => state.app)
+  const stateApp = {
+    notificationBeforeEvent,
+    notificationAddPrepareRoadTime,
+    notificationBirthday,
+    pushEventTurnOn,
+    pushBirthdayTurnOn,
+    calendarEventTurnOn,
+    calendarEventId,
+    calendarBirthdayTurnOn,
+    calendarBirthdayId,
+  }
   const [newStateApp, setNewStateApp] = useState(stateApp)
   const setNewStateItem = (item) => {
     setNewStateApp({ ...newStateApp, ...item })
@@ -227,17 +248,19 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
 
   const saveNotificationSettings = () => {
     if (!checkChanges()) {
-      ToastAndroid.show(
-        'Настройки сохранены (изменений небыло)',
-        ToastAndroid.SHORT
-      )
+      // ToastAndroid.show(
+      //   'Настройки сохранены (изменений небыло)',
+      //   ToastAndroid.SHORT
+      // )
+      navigation.goBack()
     } else {
       if (
         (!newStateApp.calendarEventTurnOn || newStateApp.calendarEventId) &&
         (!newStateApp.calendarBirthdayTurnOn || newStateApp.calendarBirthdayId)
       ) {
         dispatch(setAllNotificationSettings(newStateApp))
-        ToastAndroid.show('Настройки сохранены', ToastAndroid.SHORT)
+        // ToastAndroid.show('Настройки сохранены', ToastAndroid.SHORT)
+        navigation.goBack()
       } else {
         ToastAndroid.show(
           'Настройки не сохранены. Выберите календарь!',
@@ -257,117 +280,115 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView style={styles.content}>
-        <TitleBlock title="Push оповещения" />
-        <SwitchBlock
-          title="Оповещения о событиях"
-          value={newStateApp.pushEventTurnOn}
-          onValueChange={(value) => setNewStateItem({ pushEventTurnOn: value })}
-        />
-        <SwitchBlock
-          title="Оповещения о Днях рождениях клиентов"
-          value={newStateApp.pushBirthdayTurnOn}
-          onValueChange={(value) =>
-            setNewStateItem({ pushBirthdayTurnOn: value })
-          }
-        />
-        <TitleBlock title="Синхронизация с календарем" />
-        <SwitchBlock
-          title="Синхронизация событий"
-          value={newStateApp.calendarEventTurnOn}
-          onValueChange={(value) =>
-            setNewStateItem({ calendarEventTurnOn: value })
-          }
-        />
-        {newStateApp.calendarEventTurnOn ? (
-          calendars.length > 0 ? (
-            <View style={{ height: 60 }}>
-              <DevDropDownPicker
-                tables={calendars}
-                tableValue="id"
-                placeholder="Выберите календарь"
-                defaultValue={newStateApp.calendarEventId}
-                onChangeItem={(value) => {
-                  setNewStateItem({ calendarEventId: value.value })
-                }}
-                onPress={() => {}}
-                // disabled={!selectedTable}
-                style={{ flex: 1 }}
-              />
-            </View>
-          ) : (
-            <Text>Не доступных календарей (в режиме записи)</Text>
-          )
-        ) : null}
-        <SwitchBlock
-          title="Синхронизация Дней рождения клиентов"
-          value={newStateApp.calendarBirthdayTurnOn}
-          onValueChange={(value) =>
-            setNewStateItem({ calendarBirthdayTurnOn: value })
-          }
-        />
-        {newStateApp.calendarBirthdayTurnOn ? (
+    <ScrollView style={styles.container}>
+      <TitleBlock title="Push оповещения" />
+      <SwitchBlock
+        title="Оповещения о событиях"
+        value={newStateApp.pushEventTurnOn}
+        onValueChange={(value) => setNewStateItem({ pushEventTurnOn: value })}
+      />
+      <SwitchBlock
+        title="Оповещения о Днях рождениях клиентов"
+        value={newStateApp.pushBirthdayTurnOn}
+        onValueChange={(value) =>
+          setNewStateItem({ pushBirthdayTurnOn: value })
+        }
+      />
+      <TitleBlock title="Синхронизация с календарем" />
+      <SwitchBlock
+        title="Синхронизация событий"
+        value={newStateApp.calendarEventTurnOn}
+        onValueChange={(value) =>
+          setNewStateItem({ calendarEventTurnOn: value })
+        }
+      />
+      {newStateApp.calendarEventTurnOn ? (
+        calendars.length > 0 ? (
           <View style={{ height: 60 }}>
             <DevDropDownPicker
               tables={calendars}
               tableValue="id"
               placeholder="Выберите календарь"
-              defaultValue={newStateApp.calendarBirthdayId}
+              defaultValue={newStateApp.calendarEventId}
               onChangeItem={(value) => {
-                setNewStateItem({ calendarBirthdayId: value.value })
+                setNewStateItem({ calendarEventId: value.value })
               }}
               onPress={() => {}}
               // disabled={!selectedTable}
               style={{ flex: 1 }}
             />
           </View>
-        ) : null}
-        <View style={{ zIndex: 0 }}>
-          <Button
-            title="Создать новый календарь"
-            onPress={() =>
-              setModal(
-                <ModalAddCalendar
-                  setModal={setModal}
-                  afterCreate={refreshCalendarList}
-                />
-              )
-            }
+        ) : (
+          <Text>Не доступных календарей (в режиме записи)</Text>
+        )
+      ) : null}
+      <SwitchBlock
+        title="Синхронизация Дней рождения клиентов"
+        value={newStateApp.calendarBirthdayTurnOn}
+        onValueChange={(value) =>
+          setNewStateItem({ calendarBirthdayTurnOn: value })
+        }
+      />
+      {newStateApp.calendarBirthdayTurnOn ? (
+        <View style={{ height: 60 }}>
+          <DevDropDownPicker
+            tables={calendars}
+            tableValue="id"
+            placeholder="Выберите календарь"
+            defaultValue={newStateApp.calendarBirthdayId}
+            onChangeItem={(value) => {
+              setNewStateItem({ calendarBirthdayId: value.value })
+            }}
+            onPress={() => {}}
+            // disabled={!selectedTable}
+            style={{ flex: 1 }}
           />
         </View>
-        <TitleBlock title="Общие настройки" />
-        <TextInputBlock
-          title="Оповещать о событиях заранее за"
-          value={newStateApp.notificationBeforeEvent}
-          onChangeText={(text) =>
-            setNewStateItem({ notificationBeforeEvent: text })
-          }
-          keyboardType="numeric"
-          postfix="мин"
-          inputFlex={1}
-        />
-        <SwitchBlock
-          title="Учитывать время на подготовку и дорогу"
-          value={newStateApp.notificationAddPrepareRoadTime}
-          onValueChange={(value) =>
-            setNewStateItem({ notificationAddPrepareRoadTime: value })
+      ) : null}
+      <View style={{ zIndex: 0 }}>
+        <Button
+          title="Создать новый календарь"
+          onPress={() =>
+            setModal(
+              <ModalAddCalendar
+                setModal={setModal}
+                afterCreate={refreshCalendarList}
+              />
+            )
           }
         />
-        <DateTimePickerBlock
-          title="Оповещать о днях рождениях клиентов в"
-          dateValue={convertMinToTime(newStateApp.notificationBirthday)}
-          onChange={(value) => {
-            setNewStateItem({
-              notificationBirthday: convertTimeToMin(value),
-            })
-          }}
-          pickDate={false}
-          inputFlex={1}
-        />
-      </ScrollView>
+      </View>
+      <TitleBlock title="Общие настройки" />
+      <TextInputBlock
+        title="Оповещать о событиях заранее за"
+        value={newStateApp.notificationBeforeEvent}
+        onChangeText={(text) =>
+          setNewStateItem({ notificationBeforeEvent: text })
+        }
+        keyboardType="numeric"
+        postfix="мин"
+        inputFlex={1}
+      />
+      <SwitchBlock
+        title="Учитывать время на подготовку и дорогу"
+        value={newStateApp.notificationAddPrepareRoadTime}
+        onValueChange={(value) =>
+          setNewStateItem({ notificationAddPrepareRoadTime: value })
+        }
+      />
+      <DateTimePickerBlock
+        title="Оповещать о днях рождениях клиентов в"
+        dateValue={convertMinToTime(newStateApp.notificationBirthday)}
+        onChange={(value) => {
+          setNewStateItem({
+            notificationBirthday: convertTimeToMin(value),
+          })
+        }}
+        pickDate={false}
+        inputFlex={1}
+      />
       {modal}
-    </View>
+    </ScrollView>
   )
 }
 
