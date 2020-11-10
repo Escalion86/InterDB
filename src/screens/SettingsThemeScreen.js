@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, ScrollView } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { SwitchBlock, ColorPickerBlock } from '../components/createComponents'
 
@@ -11,7 +11,7 @@ const SettingsThemeScreen = ({ navigation, route }) => {
   const { setDark, setAccent } = useContext(ThemeContext)
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <SwitchBlock
         title="Тёмная тема"
         value={dark}
@@ -26,7 +26,7 @@ const SettingsThemeScreen = ({ navigation, route }) => {
         // buttonFlex={1}
         buttonText="Цвет текста подбирается автоматически"
       />
-    </View>
+    </ScrollView>
   )
 }
 
