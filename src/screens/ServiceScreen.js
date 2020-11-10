@@ -19,16 +19,20 @@ import EventCard from '../components/Cards/EventCard'
 import { TitleBlock } from '../components/createComponents'
 
 const ServiceScreen = ({ navigation, route }) => {
-  const service =
-    route.params !== undefined && route.params.serviceId !== undefined
-      ? useSelector((state) => state.service.services).find(
-        (item) => item.id === route.params.serviceId
-      )
-      : navigation.navigate('Services')
+  let service = {}
+  if (route.params !== undefined && route.params.serviceId !== undefined) {
+    service = useSelector((state) => state.service.services).find(
+      (item) => item.id === route.params.serviceId
+    )
+  } else {
+    navigation.navigate('Services')
+  }
+
+  const serviceId = service ? service.id : 0
 
   const { dark, colors } = useTheme()
 
-  const [archive, setArchive] = useState(service.archive)
+  const [archive, setArchive] = useState(service ? service.archive : null)
   const [modal, setModal] = useState(null)
 
   const modalDeleteService = (service) => {
@@ -54,7 +58,7 @@ const ServiceScreen = ({ navigation, route }) => {
   }
 
   const toggleArchive = () => {
-    dispatch(updateServicePartially(service.id, { archive: !archive }))
+    dispatch(updateServicePartially(serviceId, { archive: !archive }))
     ToastAndroid.show(
       !archive ? 'Услуга архивирована' : 'Услуга восстановлена из архива',
       ToastAndroid.SHORT
@@ -71,7 +75,7 @@ const ServiceScreen = ({ navigation, route }) => {
   const events = useSelector((state) => state.event.events)
 
   const eventsDependency = events.filter((event) => {
-    return event.service === service.id
+    return event.service === serviceId
   })
 
   const eventCards = eventsDependency.map((event) => (
@@ -120,7 +124,7 @@ const ServiceScreen = ({ navigation, route }) => {
               title="Edit Service"
               iconName="md-create"
               onPress={() => {
-                navigation.navigate('CreateService', { serviceId: service.id })
+                navigation.navigate('CreateService', { serviceId: serviceId })
               }}
             />
             {modal}
