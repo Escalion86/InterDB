@@ -1,14 +1,26 @@
-import {
-  SET_ALL_NOTIFICATION_SETTINGS,
-  SET_FIRST_START,
-  SET_LAST_USED_VERSION,
-} from '../types'
+import { SET_SETTINGS, SET_FIRST_START, SET_LAST_USED_VERSION } from '../types'
 import { storeData, retrieveData } from '../../Storage'
 import store from '../'
 import { refreshEventsNotifications } from '../actions/event'
 import { refreshBirthdayNotifications } from '../actions/client'
 import * as Notifications from 'expo-notifications'
 import { initialAppState } from '../reducers/app'
+
+export const setSettings = (appStore) => {
+  return async (dispatch) => {
+    for (var prop in appStore) {
+      if (typeof appStore[prop] === 'boolean') {
+        await storeData(prop, appStore[prop] ? '1' : '0')
+      } else {
+        await storeData(prop, appStore[prop] + '')
+      }
+    }
+    dispatch({
+      type: SET_SETTINGS,
+      appStore,
+    })
+  }
+}
 
 export const setAllNotificationSettings = (appStore) => {
   return async (dispatch) => {
@@ -37,13 +49,13 @@ export const setAllNotificationSettings = (appStore) => {
       }
     }
     dispatch({
-      type: SET_ALL_NOTIFICATION_SETTINGS,
+      type: SET_SETTINGS,
       appStore,
     })
   }
 }
 
-export const getAllNotificationSettings = () => {
+export const getSettings = () => {
   return async (dispatch) => {
     const appStore = initialAppState
     for (var prop in initialAppState) {
@@ -66,7 +78,7 @@ export const getAllNotificationSettings = () => {
 
     // console.log('appStore', appStore)
     dispatch({
-      type: SET_ALL_NOTIFICATION_SETTINGS,
+      type: SET_SETTINGS,
       appStore,
     })
   }

@@ -16,11 +16,11 @@ import { AppContext } from '../AppContext'
 import { ContactIcon } from '../components/infoComponents'
 import { fontSize } from '../theme'
 import ModalChangeLog from '../components/Modals/ModalChangeLog'
+import * as appJson from '../../app.json'
 
 const AboutScreen = ({ navigation, route }) => {
   const { colors } = useTheme()
   const { toggleDev, dev } = useContext(AppContext)
-  const version = useSelector((state) => state.app.version)
 
   const [startToOpenDev, setStartToOpenDev] = useState(null)
   const [modal, setModal] = useState(null)
@@ -153,7 +153,7 @@ const AboutScreen = ({ navigation, route }) => {
         }
       >
         <Text style={{ fontSize: fontSize.small, color: colors.text }}>
-          Версия: {version}
+          Версия: {appJson.expo.version}
         </Text>
       </TouchableOpacity>
       {modal}

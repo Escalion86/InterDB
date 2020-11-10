@@ -3,10 +3,7 @@ import React, { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadAll } from '../store/actions/db'
 import { Provider as PaperProvider } from 'react-native-paper'
-import {
-  getAllNotificationSettings,
-  setLastUsedVersion,
-} from '../store/actions/app'
+import { getSettings, setLastUsedVersion } from '../store/actions/app'
 import * as Notifications from 'expo-notifications'
 
 import { StatusBar } from 'expo-status-bar'
@@ -25,6 +22,7 @@ import SettingsScreen from '../screens/SettingsScreen'
 import CreateClientScreen from '../screens/CreateClientScreen'
 import SettingsNotificationsScreen from '../screens/SettingsNotificationsScreen'
 import SettingsThemeScreen from '../screens/SettingsThemeScreen'
+import SettingsAutofillScreen from '../screens/SettingsAutofillScreen'
 
 import DevScreen from '../screens/DevScreen'
 import DevTableScreen from '../screens/DevTableScreen'
@@ -50,6 +48,7 @@ import { fontSize } from '../theme'
 import firebase from 'firebase'
 import firebaseConfig from '../firebaseConfig'
 import { userSignedIn } from '../store/actions/user'
+import * as appJson from '../../app.json'
 
 import {
   TourGuideProvider, // Main provider
@@ -284,6 +283,14 @@ const SettingsStackScreen = ({ navigation }) => (
         title: 'О приложении',
       }}
     />
+    <SettingsStack.Screen
+      name="SettingsAutofill"
+      component={SettingsAutofillScreen}
+      options={{
+        title: 'Автозаполнение форм',
+      }}
+    />
+
     {/* <SettingsStack.Screen
       name="SettingsCalendar"
       component={SettingsCalendarScreen}
@@ -595,18 +602,17 @@ export const AppNavigation = () => {
 
   const { theme } = useContext(ThemeContext)
 
-  const appStore = useSelector((state) => state.app)
+  const lastUsedVersion = useSelector((state) => state.app.lastUsedVersion)
   const modal =
-    appStore.lastUsedVersion !== '' &&
-    appStore.lastUsedVersion !== appStore.version ? (
-        <ModalChangeLog
-          visible={true}
-          onOuterClick={() => {
-            dispatch(setLastUsedVersion(appStore.version))
+    lastUsedVersion !== '' && lastUsedVersion !== appJson.expo.version ? (
+      <ModalChangeLog
+        visible={true}
+        onOuterClick={() => {
+          dispatch(setLastUsedVersion(appJson.expo.version))
           // setModal(null)
-          }}
-        />
-      ) : null
+        }}
+      />
+    ) : null
 
   // const [modal, setModal] = useState(
   //   useSelector((state) => state.app.firstStart) ? (
@@ -632,7 +638,7 @@ export const AppNavigation = () => {
   // dispatch(loadAll())
   // После загрузки всех компонентов и state - загружаем данные БД
   useEffect(() => {
-    dispatch(getAllNotificationSettings())
+    dispatch(getSettings())
     console.log('Загрузка данных')
     dispatch(loadAll())
   }, [dispatch])

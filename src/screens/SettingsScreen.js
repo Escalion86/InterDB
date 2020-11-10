@@ -64,6 +64,11 @@ const SettingsScreen = ({ navigation, route }) => {
           onPress={() => navigation.navigate('SettingsNotifications')}
           iconName="ios-notifications"
         />
+        <MenuItem
+          title="Автозаполнение форм"
+          onPress={() => navigation.navigate('SettingsAutofill')}
+          iconName="ios-star"
+        />
       </View>
       <MenuItem
         title="Краткий экскурс по программе"
@@ -87,6 +92,5 @@ export default SettingsScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingHorizontal: 5,
   },
 })

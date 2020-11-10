@@ -300,14 +300,25 @@ const ModalServices = ({
 }
 
 const CreateEventScreen = ({ navigation, route }) => {
-  const event =
-    route.params !== undefined && route.params.eventId !== undefined
-      ? useSelector((state) => state.event.events).find(
-        (item) => item.id === route.params.eventId
-      )
-      : route.params !== undefined && route.params.event !== undefined
-        ? { ...route.params.event, id: null }
-        : { ...dbDefault('events'), date: new Date().setSeconds(0, 0) }
+  let event = {}
+  if (
+    route.params === undefined ||
+    (!route.params.eventId && !route.params.event)
+  ) {
+    const { autofillTown, autofillRoad } = useSelector((state) => state.app)
+    event = {
+      ...dbDefault('events'),
+      date: new Date().setSeconds(0, 0),
+      location_town: autofillTown,
+      timing_road: autofillRoad,
+    }
+  } else if (route.params.eventId) {
+    event = useSelector((state) => state.event.events).find(
+      (item) => item.id === route.params.eventId
+    )
+  } else if (route.params.event) {
+    event = { ...route.params.event, id: null }
+  }
 
   const services = useSelector((state) => state.service.services).filter(
     (item) => !item.archive
@@ -630,7 +641,7 @@ const CreateEventScreen = ({ navigation, route }) => {
 
       <TitleBlock title="Адрес" />
       <TextInputBlock
-        title="Название заведения"
+        title="Название места"
         value={newEvent.location_name}
         onChangeText={(text) => setEventItem({ location_name: text })}
       />

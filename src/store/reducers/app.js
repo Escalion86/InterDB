@@ -1,13 +1,12 @@
 import {
   // SET_NOTIFICATION_BEFORE_EVENT,
   // SET_NOTIFICATION_BIRTHDAY_TIME,
-  SET_ALL_NOTIFICATION_SETTINGS,
+  SET_SETTINGS,
   SET_FIRST_START,
   SET_LAST_USED_VERSION,
   // SET_ALL_CALENDAR_SETTINGS,
   // SET_ALL_SETTINGS,
 } from '../types'
-import * as appJson from '../../../app.json'
 
 export const initialAppState = {
   // Общие настройки оповещений
@@ -22,14 +21,20 @@ export const initialAppState = {
   calendarEventId: '',
   calendarBirthdayTurnOn: false,
   calendarBirthdayId: '',
+  // Запуск
   firstStart: false,
   lastUsedVersion: '',
-  version: appJson.expo.version,
+  // Настройки автозаполнения
+  autofillTown: '',
+  autofillRoad: 30,
+  // Прочее
+  tutorial: true,
+  dev: false,
 }
 
 export const appReducer = (state = initialAppState, action) => {
   switch (action.type) {
-    case SET_ALL_NOTIFICATION_SETTINGS:
+    case SET_SETTINGS:
       return {
         ...state,
         ...action.appStore,
