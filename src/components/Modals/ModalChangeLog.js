@@ -6,6 +6,26 @@ import { Text, View } from 'react-native'
 
 const data = [
   {
+    version: '0.3.7',
+    date: '10.11.2020',
+    added: [
+      'Краткий экскурс по программе при первом запуске (также можно запустить из меню настроек)',
+      'Возможность копирования карточки события или услуги (долгий тап по карточке или на экране просмотра события/услуги иконка "Копировать")',
+      'Функция создания календаря (Настройки => Оповещения и календарь)',
+      'Опция настроек "Автозаполнение форм"',
+    ],
+    updated: [
+      'Компонент выбора цвета (при выборе цветовой схемы и создании календаря)',
+    ],
+    deleted: [
+      'Отображение количества событий в заголовке экрана "События"',
+      'Отображение количества транзакций в заголовке экрана "Транзакции"',
+    ],
+    other: [
+      'Авторизация временно не работает в связи с изменением политики безопасности Google.',
+    ],
+  },
+  {
     version: '0.3.6',
     date: '06.11.2020',
     added: [
@@ -73,7 +93,7 @@ const data = [
   {
     version: '0.3.0',
     date: '26.10.2020',
-    other: ['Первая тестовая версия программы'],
+    title: 'Тестовый релиз',
   },
 ]
 
@@ -107,6 +127,19 @@ const TextTitle = ({ children = null, style = {} }) => {
   )
 }
 
+const TextSubTitle = ({ children = null, style = {} }) => {
+  return (
+    <TextDefault
+      style={{
+        marginTop: 6,
+        ...style,
+      }}
+    >
+      {children}
+    </TextDefault>
+  )
+}
+
 const changeLog = data.map((item, index) => {
   return (
     <View key={index} style={{ width: '100%' }}>
@@ -117,10 +150,19 @@ const changeLog = data.map((item, index) => {
           marginTop: index > 0 ? 16 : 0,
         }}
       >
-        <TextTitle style={{ fontWeight: 'bold' }}>{item.version}</TextTitle>
-        <TextTitle style={{ marginLeft: 6 }}>({item.date})</TextTitle>
+        {item.version ? (
+          <TextTitle style={{ fontWeight: 'bold' }}>{item.version}</TextTitle>
+        ) : null}
+        {item.date ? (
+          <TextTitle style={{ marginLeft: 6 }}>({item.date})</TextTitle>
+        ) : null}
+        {item.title ? (
+          <TextTitle style={{ marginLeft: 6, fontWeight: 'bold' }}>
+            {item.title}
+          </TextTitle>
+        ) : null}
       </View>
-      {item.added ? <TextDefault>Добавлено:</TextDefault> : null}
+      {item.added ? <TextSubTitle>Добавлено:</TextSubTitle> : null}
       {item.added
         ? item.added.map((addedItem, index) => (
           <TextDefault key={index} paragraph={1}>
@@ -128,7 +170,7 @@ const changeLog = data.map((item, index) => {
           </TextDefault>
         ))
         : null}
-      {item.updated ? <TextDefault>Обновлено:</TextDefault> : null}
+      {item.updated ? <TextSubTitle>Обновлено:</TextSubTitle> : null}
       {item.updated
         ? item.updated.map((updatedItem, index) => (
           <TextDefault key={index} paragraph={1}>
@@ -136,7 +178,7 @@ const changeLog = data.map((item, index) => {
           </TextDefault>
         ))
         : null}
-      {item.fixed ? <TextDefault>Исправлено:</TextDefault> : null}
+      {item.fixed ? <TextSubTitle>Исправлено:</TextSubTitle> : null}
       {item.fixed
         ? item.fixed.map((fixedItem, index) => (
           <TextDefault key={index} paragraph={1}>
@@ -144,7 +186,7 @@ const changeLog = data.map((item, index) => {
           </TextDefault>
         ))
         : null}
-      {item.deleted ? <TextDefault>Удалено:</TextDefault> : null}
+      {item.deleted ? <TextSubTitle>Удалено:</TextSubTitle> : null}
       {item.deleted
         ? item.deleted.map((deletedItem, index) => (
           <TextDefault key={index} paragraph={1}>
@@ -152,10 +194,11 @@ const changeLog = data.map((item, index) => {
           </TextDefault>
         ))
         : null}
+      {item.other ? <TextSubTitle>Прочее:</TextSubTitle> : null}
       {item.other
         ? item.other.map((otherItem, index) => (
           <TextDefault key={index} paragraph={1}>
-            {otherItem}
+              - {otherItem}
           </TextDefault>
         ))
         : null}
