@@ -330,20 +330,24 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
         }
       />
       {newStateApp.calendarBirthdayTurnOn ? (
-        <View style={{ height: 60 }}>
-          <DevDropDownPicker
-            tables={calendars}
-            tableValue="id"
-            placeholder="Выберите календарь"
-            defaultValue={newStateApp.calendarBirthdayId}
-            onChangeItem={(value) => {
-              setNewStateItem({ calendarBirthdayId: value.value })
-            }}
-            onPress={() => {}}
-            // disabled={!selectedTable}
-            style={{ flex: 1 }}
-          />
-        </View>
+        calendars.length > 0 ? (
+          <View style={{ height: 60 }}>
+            <DevDropDownPicker
+              tables={calendars}
+              tableValue="id"
+              placeholder="Выберите календарь"
+              defaultValue={newStateApp.calendarBirthdayId}
+              onChangeItem={(value) => {
+                setNewStateItem({ calendarBirthdayId: value.value })
+              }}
+              onPress={() => {}}
+              // disabled={!selectedTable}
+              style={{ flex: 1 }}
+            />
+          </View>
+        ) : (
+          <Text>Не доступных календарей (в режиме записи)</Text>
+        )
       ) : null}
       <View style={{ zIndex: 0 }}>
         <Button
