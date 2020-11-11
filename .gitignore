@@ -11,6 +11,7 @@ web-build/
 src/components/noGit/
 .vscode/*
 noGit/
+*.psd
 
 # macOS
 .DS_Store
