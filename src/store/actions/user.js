@@ -8,19 +8,34 @@ import {
 } from '../types'
 
 import * as Google from 'expo-google-app-auth'
+import * as GoogleSignIn from 'expo-google-sign-in'
+import * as Device from 'expo-device'
+// import * as GoogleSignIn from 'expo-google-sign-in'
+
 import firebase from 'firebase'
 
 export const signInWithGoogleAsync = async (dispatch) => {
   try {
-    const result = await Google.logInAsync({
-      // behavior: 'web',
-      androidClientId:
-        '962914417594-s61hn7ho6t8496gcg77dkvgf2bt16tth.apps.googleusercontent.com',
-      // iosClientId: YOUR_CLIENT_ID_HERE,
-      scopes: ['profile', 'email'],
-    })
+    let result = null
+    if (Device.isDevice) {
+      await GoogleSignIn.initAsync({
+        webClientId:
+          '802670153747-tpb9rcteibhos52fgs8n4nmlqrbsf07v.apps.googleusercontent.com',
+      })
+      await GoogleSignIn.askForPlayServicesAsync()
+      result = await GoogleSignIn.signInAsync()
+    } else {
+      result = await Google.logInAsync({
+        // behavior: 'web',
+        androidClientId:
+          '802670153747-rtckrfj8sms7dkhe10plgqae09gse3eh.apps.googleusercontent.com',
+        // iosClientId: YOUR_CLIENT_ID_HERE,
+        scopes: ['profile', 'email'],
+      })
+    }
 
     if (result.type === 'success') {
+      console.log('user', result)
       onSignIn(result)
     } else {
       dispatch({
@@ -103,14 +118,6 @@ const onSignIn = (googleUser) => {
           }
         })
         .catch(function (error) {
-          // Handle Errors here.
-          // var errorCode = error.code
-          // var errorMessage = error.message
-          // The email of the user's account used.
-          // var email = error.email
-          // The firebase.auth.AuthCredential type that was used.
-          // var credential = error.credential
-          // console.log('error :>> ', error)
           user = { error }
           // ...
         })

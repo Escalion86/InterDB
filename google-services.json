@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "802670153747",
+    "firebase_url": "https://individual-crm.firebaseio.com",
+    "project_id": "individual-crm",
+    "storage_bucket": "individual-crm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802670153747:android:1cb1bff4d9177ccf6cefe6",
+        "android_client_info": {
+          "package_name": "com.escalion.individualCRM"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802670153747-s06rtgbuav1ahoqar7gicakhl2r22n4d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.escalion.individualCRM",
+            "certificate_hash": "4e551acd02769fa86465a7aaecb123e5d5d7b62e"
+          }
+        },
+        {
+          "client_id": "802670153747-stv8lv828lprsl883tnr901i9io9f49o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.escalion.individualCRM",
+            "certificate_hash": "af26e2b7142c397cc7ac943012a551dd297e634f"
+          }
+        },
+        {
+          "client_id": "802670153747-tpb9rcteibhos52fgs8n4nmlqrbsf07v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCT6msnK5MK-uyYjDbwpXvb-1H_MHzhuYk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802670153747-tpb9rcteibhos52fgs8n4nmlqrbsf07v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

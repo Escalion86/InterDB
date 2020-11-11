@@ -1,11 +1,11 @@
 const firebaseConfig = {
-  apiKey: 'AIzaSyC5V5AnrjCbE1XDxyiYJVVAM9N3VSdKW7Q',
-  authDomain: 'individual-database.firebaseapp.com',
-  databaseURL: 'https://individual-database.firebaseio.com',
-  projectId: 'individual-database',
-  storageBucket: 'individual-database.appspot.com',
-  messagingSenderId: '962914417594',
-  appId: '1:962914417594:web:e7656e3a3200f9c5553b83',
-  measurementId: 'G-HRCNKCHRNK',
+  apiKey: 'AIzaSyAh8pjVZdjEXwfbFdEJoFH92g2wC0jseRg',
+  authDomain: 'individual-crm.firebaseapp.com',
+  databaseURL: 'https://individual-crm.firebaseio.com',
+  projectId: 'individual-crm',
+  storageBucket: 'individual-crm.appspot.com',
+  messagingSenderId: '802670153747',
+  appId: '1:802670153747:web:3374dc9d827151986cefe6',
+  measurementId: 'G-LNG07TPET6',
 }
 export default firebaseConfig
