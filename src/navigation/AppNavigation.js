@@ -34,6 +34,7 @@ import FinancesScreen from '../screens/FinancesScreen'
 import FinanceScreen from '../screens/FinanceScreen'
 import CreateServiceScreen from '../screens/CreateServiceScreen'
 import CreateFinanceScreen from '../screens/CreateFinanceScreen'
+import AuthScreen from '../screens/AuthScreen'
 import ModalChangeLog from '../components/Modals/ModalChangeLog'
 
 // import SettingsCalendarScreen from '../screens/SettingsCalendarScreen'
@@ -64,6 +65,7 @@ const DevStack = createStackNavigator()
 // const AboutStack = createStackNavigator()
 const SettingsStack = createStackNavigator()
 const FinancesStack = createStackNavigator()
+const AuthStack = createStackNavigator()
 
 // const burgerButton = (navigation) => (
 //   <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
@@ -99,7 +101,7 @@ const StackNavigator = ({ children, navigation, initialRouteName }) => {
 }
 
 const EventsStackScreen = ({ navigation }) => (
-  <StackNavigator navigation={navigation} initialRouteName="Main">
+  <StackNavigator navigation={navigation} initialRouteName="Events">
     <EventsStack.Screen
       name="Events"
       component={EventsScreen}
@@ -162,7 +164,7 @@ const EventsStackScreen = ({ navigation }) => (
 )
 
 const ClientsStackScreen = ({ navigation }) => (
-  <StackNavigator navigation={navigation} initialRouteName="Main">
+  <StackNavigator navigation={navigation} initialRouteName="Clients">
     <ClientsStack.Screen
       name="Clients"
       component={ClientsScreen}
@@ -204,7 +206,7 @@ const ClientsStackScreen = ({ navigation }) => (
 )
 
 const DevStackScreen = ({ navigation }) => (
-  <StackNavigator navigation={navigation} initialRouteName="Main">
+  <StackNavigator navigation={navigation} initialRouteName="DevDB">
     <DevStack.Screen
       name="DevDB"
       component={DevScreen}
@@ -253,7 +255,7 @@ const DevStackScreen = ({ navigation }) => (
 // )
 
 const SettingsStackScreen = ({ navigation }) => (
-  <StackNavigator navigation={navigation} initialRouteName="Main">
+  <StackNavigator navigation={navigation} initialRouteName="Settings">
     <SettingsStack.Screen
       name="Settings"
       component={SettingsScreen}
@@ -301,8 +303,21 @@ const SettingsStackScreen = ({ navigation }) => (
   </StackNavigator>
 )
 
+const AuthStackScreen = ({ navigation }) => (
+  <StackNavigator navigation={navigation} initialRouteName="Auth">
+    <AuthStack.Screen
+      name="Auth"
+      component={AuthScreen}
+      options={{
+        title: 'Авторизация',
+        headerLeft: () => burgerButton(navigation),
+      }}
+    />
+  </StackNavigator>
+)
+
 const FinancesStackScreen = ({ navigation }) => (
-  <StackNavigator navigation={navigation} initialRouteName="Main">
+  <StackNavigator navigation={navigation} initialRouteName="Finances">
     <FinancesStack.Screen
       name="Finances"
       component={FinancesScreen}
@@ -497,6 +512,7 @@ const DrawerScreen = ({ navigation }) => {
       //   width: 300,
       // }}
       drawerContent={(props) => <DrawerContent {...props} />}
+      initialRouteName="Events"
     >
       <Drawer.Screen
         name="Events"
@@ -552,6 +568,14 @@ const DrawerScreen = ({ navigation }) => {
         options={{
           drawerLabel: 'Финансы',
           drawerIcon: <DrawerIcon name="ios-cash" />,
+        }}
+      />
+      <Drawer.Screen
+        name="Auth"
+        component={AuthStackScreen}
+        options={{
+          drawerLabel: 'Авторизация',
+          drawerIcon: <DrawerIcon name="md-calendar" />,
         }}
       />
     </Drawer.Navigator>
