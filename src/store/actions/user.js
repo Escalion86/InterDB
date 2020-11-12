@@ -1,4 +1,3 @@
-import { useDispatch } from 'react-redux'
 import {
   // USER_SIGN_IN,
   USER_SIGN_OUT,
@@ -17,6 +16,7 @@ import firebase from 'firebase'
 export const signInWithGoogleAsync = async (dispatch) => {
   try {
     let result = null
+    let googleUser = {}
     if (Device.isDevice) {
       await GoogleSignIn.initAsync({
         webClientId:
@@ -24,6 +24,11 @@ export const signInWithGoogleAsync = async (dispatch) => {
       })
       await GoogleSignIn.askForPlayServicesAsync()
       result = await GoogleSignIn.signInAsync()
+      googleUser = {
+        uid: result.user.uid,
+        idToken: result.user.auth.idToken,
+        accessToken: result.user.auth.accessToken,
+      }
     } else {
       result = await Google.logInAsync({
         // behavior: 'web',
@@ -32,11 +37,16 @@ export const signInWithGoogleAsync = async (dispatch) => {
         // iosClientId: YOUR_CLIENT_ID_HERE,
         scopes: ['profile', 'email'],
       })
+      googleUser = {
+        uid: result.user.uid,
+        idToken: result.idToken,
+        accessToken: result.accessToken,
+      }
     }
 
     if (result.type === 'success') {
-      console.log('user', result)
-      onSignIn(result)
+      console.log('Google авторизация прошла успешно')
+      onSignIn(googleUser)
     } else {
       dispatch({
         type: USER_SIGNING_IN_CANCEL,
@@ -53,14 +63,14 @@ export const signInWithGoogleAsync = async (dispatch) => {
   }
 }
 
-const isUserEqual = (googleUser, firebaseUser) => {
+const isUserEqual = (googleUserId, firebaseUser) => {
   if (firebaseUser) {
     var providerData = firebaseUser.providerData
     for (var i = 0; i < providerData.length; i++) {
       if (
         providerData[i].providerId ===
           firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
-        providerData[i].uid === googleUser.getBasicProfile().getId()
+        providerData[i].uid === googleUserId
       ) {
         // We don't need to reauth the Firebase connection.
         return true
@@ -70,19 +80,19 @@ const isUserEqual = (googleUser, firebaseUser) => {
   return false
 }
 
-const onSignIn = (googleUser) => {
+const onSignIn = ({ uid, idToken, accessToken }) => {
   let user = {}
   // console.log('Google Auth Response', googleUser)
   // We need to register an Observer on Firebase Auth to make sure auth is initialized.
-  var unsubscribe = firebase.auth().onAuthStateChanged(function (firebaseUser) {
+  var unsubscribe = firebase.auth().onAuthStateChanged((firebaseUser) => {
     unsubscribe()
     // Check if we are already signed-in Firebase with the correct user.
 
-    if (!isUserEqual(googleUser, firebaseUser)) {
+    if (!isUserEqual(uid, firebaseUser)) {
       // Build Firebase credential with the Google ID token.
       var credential = firebase.auth.GoogleAuthProvider.credential(
-        googleUser.idToken,
-        googleUser.accessToken
+        idToken,
+        accessToken
       )
       // Sign in with credential from the Google user.
       // console.log('Подключаемся к FireBase')
@@ -117,12 +127,12 @@ const onSignIn = (googleUser) => {
               .update(user)
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           user = { error }
           // ...
         })
     } else {
-      // console.log('User already signed-in Firebase.')
+      console.log('User already signed-in Firebase.')
     }
   })
   return user
@@ -153,6 +163,12 @@ export const userSignOut = (uid) => {
       .ref('/users/' + uid)
       .off('value')
     firebase.auth().signOut()
+    if (Device.isDevice) {
+      GoogleSignIn.signOutAsync()
+    }
+    // } else {
+    //   Google.logOutAsync()
+    // }
     dispatch({
       type: USER_SIGN_OUT,
     })
