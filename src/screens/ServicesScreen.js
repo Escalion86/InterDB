@@ -34,6 +34,12 @@ const ServicesScreen = ({ navigation, route }) => {
   const [modal, setModal] = useState(null)
   const [filter, setFilter] = useState('')
 
+  const noServices = services.length === 0
+
+  useEffect(() => {
+    if (noServices && filter !== '') setFilter('')
+  }, [noServices])
+
   const modalDelete = (service) => {
     setModal(
       <ModalDeleteService
@@ -95,7 +101,9 @@ const ServicesScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <SearchPanel theme={theme} filter={filter} setFilter={setFilter} />
+      {!noServices ? (
+        <SearchPanel theme={theme} filter={filter} setFilter={setFilter} />
+      ) : null}
       {services.length === 0 ? (
         <View style={styles.center}>
           <Text style={{ fontSize: fontSize.giant, color: colors.text }}>

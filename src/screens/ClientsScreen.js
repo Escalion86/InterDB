@@ -28,6 +28,12 @@ const ClientsScreen = ({ navigation, route }) => {
   const [modal, setModal] = useState(null)
   const [filter, setFilter] = useState('')
 
+  const noClients = clients.length === 0
+
+  useEffect(() => {
+    if (noClients && filter !== '') setFilter('')
+  }, [noClients])
+
   const modalDelete = (client) => {
     setModal(
       <ModalDeleteClient
@@ -79,7 +85,9 @@ const ClientsScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <SearchPanel theme={theme} filter={filter} setFilter={setFilter} />
+      {!noClients ? (
+        <SearchPanel theme={theme} filter={filter} setFilter={setFilter} />
+      ) : null}
       {clients.length === 0 ? (
         <View style={styles.center}>
           <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
