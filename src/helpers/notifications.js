@@ -215,25 +215,29 @@ export const addCalendarEvent = async (event, appStore = null) => {
       ? (body) => Calendar.updateEventAsync(event.calendar_id, body)
       : (body) => Calendar.createEventAsync(calendarEventId, body)
 
+    const location = event.location_town
+      ? `${event.location_town}, ${event.location_street} ${event.location_house}`
+      : null
+
     const newCalendarEventId = await CalendarFunc({
       title: service ? service.name : 'Заказ неизвестной услуги',
-      startDate: event.date,
-      endDate: event.date + event.timing_duration * 60000, // 60 * 1000
-      location: `${event.location_town}, ${event.location_street} ${event.location_house}`,
+      startDate: +event.date,
+      endDate: +event.date + event.timing_duration * 60000, // 60 * 1000
+      location: location,
       notes:
         (notificationAddPrepareRoadTime ||
-        event.timing_road + event.timing_preparetime > 0
-          ? `Ожидаемое время на дорогу и сбор: ${
-              event.timing_road + event.timing_preparetime
-            } мин\n`
-          : '') + (event.comment ? `Комментарий: ${event.comment}` : ''),
+          (+event.timing_road + event.timing_preparetime > 0
+            ? `Ожидаемое время на дорогу и сбор: ${
+                +event.timing_road + event.timing_preparetime
+              } мин\n`
+            : '')) + (event.comment ? `Комментарий: ${event.comment}` : ''),
       allDay: false,
       alarms: [
         {
           relativeOffset:
             -notificationBeforeEvent -
             (notificationAddPrepareRoadTime
-              ? event.timing_road + event.timing_preparetime
+              ? +event.timing_road + event.timing_preparetime
               : 0),
           method: Calendar.AlarmMethod.DEFAULT,
         },
