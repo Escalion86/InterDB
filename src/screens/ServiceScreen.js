@@ -170,7 +170,7 @@ const ServiceScreen = ({ navigation, route }) => {
           <TextBlock text={service.name} center big />
         </View>
       </View>
-      <TextBlock text={service.description} />
+      {service.description ? <TextBlock text={service.description} /> : null}
       <TitleBlock title="Затраты времени" />
       <TextBlock text={`Продолжительность: ${service.duration} мин`} />
       <TextBlock text={`Время на подготовку: ${service.preparetime} мин`} />
