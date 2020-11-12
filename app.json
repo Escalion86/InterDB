@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "iDB",
-    "slug": "Individual_DataBase",
-    "version": "0.3.7",
+    "name": "IndividualCRM",
+    "slug": "IndividualCRM",
+    "version": "0.4.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "platforms": ["android"],
@@ -24,8 +24,8 @@
     "android": {
       "icon": "./assets/gear96.png",
       "useNextNotificationsApi": true,
-      "package": "com.escalion.iDB",
-      "versionCode": 37,
+      "package": "com.escalion.individualCRM",
+      "versionCode": 42,
       "permissions": [],
       "googleServicesFile": "./google-services.json"
     }

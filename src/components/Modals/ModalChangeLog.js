@@ -6,6 +6,23 @@ import { Text, View } from 'react-native'
 
 const data = [
   {
+    version: '0.4.1',
+    date: '12.11.2020',
+    updated: ['Обновлен логотип'],
+    fixed: ['Авторизация через Google'],
+    other: ['Мелкие исправления и улучшения'],
+  },
+  {
+    version: '0.4.0',
+    date: '10.11.2020',
+    title: 'New app name + HotFix',
+    updated: ['Название приложения теперь "Individual CRM"'],
+    fixed: [
+      'Ошибка удаления услуги на экране информации услуги',
+      'Прочие мелкие исправления',
+    ],
+  },
+  {
     version: '0.3.7',
     date: '10.11.2020',
     added: [
