@@ -126,6 +126,26 @@ import tariffs from '../tariffs'
 //   })
 // }
 
+const DrawerItemMenu = ({ label, iconName, onPress }) => {
+  const { colors } = useTheme()
+  const labelStyle = {
+    fontSize: fontSize.medium,
+    color: colors.text,
+  }
+  return (
+    <DrawerItem
+      icon={() => (
+        <View style={{ width: 22, alignItems: 'center' }}>
+          <Ionicons name={iconName} size={iconSize.small} color={colors.icon} />
+        </View>
+      )}
+      label={label}
+      labelStyle={labelStyle}
+      onPress={onPress}
+    />
+  )
+}
+
 const DrawerContent = (props) => {
   const theme = useTheme()
   const { colors } = theme
@@ -135,11 +155,6 @@ const DrawerContent = (props) => {
   const { dev } = useContext(AppContext)
   const user = useSelector((state) => state.user)
   // console.log('user :>> ', user)
-
-  const labelStyle = {
-    fontSize: fontSize.medium,
-    color: colors.text,
-  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -307,62 +322,30 @@ const DrawerContent = (props) => {
             </View>
           </Drawer.Section>
           <Drawer.Section style={styles.drawerSection}>
-            <DrawerItem
-              icon={({ color, size }) => (
-                <Ionicons
-                  name="md-calendar"
-                  size={iconSize.small}
-                  color={colors.icon}
-                  // style={{ marginLeft: 5 }}
-                />
-              )}
+            <DrawerItemMenu
               label="События"
-              labelStyle={labelStyle}
+              iconName="md-calendar"
               onPress={() => {
                 props.navigation.navigate('Events')
               }}
             />
-            <DrawerItem
-              icon={({ color, size }) => (
-                <Ionicons
-                  name="md-people"
-                  size={iconSize.small}
-                  color={colors.icon}
-                  // style={{ marginLeft: 5 }}
-                />
-              )}
+            <DrawerItemMenu
               label="Клиенты"
-              labelStyle={labelStyle}
+              iconName="md-people"
               onPress={() => {
                 props.navigation.navigate('Clients')
               }}
             />
-            <DrawerItem
-              icon={({ color, size }) => (
-                <Ionicons
-                  name="md-briefcase"
-                  size={iconSize.small}
-                  color={colors.icon}
-                  // style={{ marginLeft: 5 }}
-                />
-              )}
+            <DrawerItemMenu
               label="Услуги"
-              labelStyle={labelStyle}
+              iconName="md-briefcase"
               onPress={() => {
                 props.navigation.navigate('Services')
               }}
             />
-            <DrawerItem
-              icon={({ color, size }) => (
-                <Ionicons
-                  name="ios-cash"
-                  size={iconSize.small}
-                  color={colors.icon}
-                  // style={{ marginLeft: 5 }}
-                />
-              )}
+            <DrawerItemMenu
               label="Финансы"
-              labelStyle={labelStyle}
+              iconName="ios-cash"
               onPress={() => {
                 props.navigation.navigate('Finances')
               }}
@@ -386,64 +369,21 @@ const DrawerContent = (props) => {
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
         {dev ? (
-          <DrawerItem
-            icon={({ color, size }) => (
-              <Ionicons
-                name="md-bug"
-                size={iconSize.small}
-                color={colors.icon}
-                // style={{ marginLeft: 5 }}
-              />
-            )}
+          <DrawerItemMenu
             label="Панель разработчика"
-            labelStyle={labelStyle}
+            iconName="md-bug"
             onPress={() => {
               props.navigation.navigate('Dev')
             }}
           />
         ) : null}
-        <DrawerItem
-          icon={({ color, size }) => (
-            <Ionicons
-              name="md-settings"
-              size={iconSize.small}
-              color={colors.icon}
-              // style={{ marginLeft: 5 }}
-            />
-          )}
+        <DrawerItemMenu
           label="Настройки"
-          labelStyle={labelStyle}
+          iconName="md-settings"
           onPress={() => {
             props.navigation.navigate('Settings')
           }}
         />
-        {/* <DrawerItem
-          icon={({ color, size }) => (
-            <Ionicons
-              name="md-information-circle-outline"
-              size={iconSize.small}
-              color={colors.icon}
-              // style={{ marginLeft: 5 }}
-            />
-          )}
-          label="О приложении"
-          labelStyle={labelStyle}
-          onPress={() => {
-            props.navigation.navigate('About')
-          }}
-        /> */}
-
-        {/* <DrawerItem
-          icon={() => (
-            <Ionicons
-              name="ios-log-out"
-              size={22}
-              color={colors.icon}
-              style={{ marginLeft: 5 }}
-            />
-          )}
-          label="Выход"
-        /> */}
       </Drawer.Section>
     </View>
   )
