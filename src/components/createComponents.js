@@ -254,7 +254,7 @@ export const ImagePickerBlock = ({
       aspect: [1, 1],
     })
 
-    onPick(img.uri)
+    onPick(img.uri === undefined ? '' : img.uri)
   }
 
   const chooseImage = async () => {
@@ -265,7 +265,7 @@ export const ImagePickerBlock = ({
       aspect: [1, 1],
     })
 
-    onPick(img.uri)
+    onPick(img.uri === undefined ? '' : img.uri)
   }
   const [modalVisible, setModalVisible] = useState(false)
 

@@ -148,9 +148,7 @@ const CreateClientScreen = ({ navigation, route }) => {
         title={'Аватар'}
         image={newClient.avatar}
         noImageUrl={noImageUrl}
-        onPick={(img) =>
-          setClientItem({ avatar: img === undefined ? '' : img })
-        }
+        onPick={(img) => setClientItem({ avatar: img })}
       />
 
       {/* <GenderSwitch
