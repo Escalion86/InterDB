@@ -80,7 +80,7 @@ export const addEventNotification = async (event, appStore = null) => {
             event.location_street ? `, ${event.location_street}` : ''
           }${event.location_house ? `, ${event.location_house}` : ''}${
             event.location_room ? ` - ${event.location_room}` : ''
-          }${event.location_name ? ` (${event.location_name})` : ''}`
+          }${event.location_name ? ` (${event.location_name})` : ''}`.trim()
         : ''
 
       const service = store
@@ -95,7 +95,7 @@ export const addEventNotification = async (event, appStore = null) => {
           true,
           false,
           true
-        )}\nАдрес: ${adress}`,
+        )}${adress ? `\nАдрес: ${adress}` : ''}`,
         subtitle: 'Напоминание о событии',
         date: date,
         data: {
