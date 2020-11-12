@@ -8,12 +8,12 @@ const tariffs = [
     color: 'silver',
   },
   {
-    name: 'Тестировщик',
-    color: 'skyblue',
-  },
-  {
     name: 'VIP',
     color: 'gold',
+  },
+  {
+    name: 'Тестировщик',
+    color: 'skyblue',
   },
   {
     name: 'Разработчик',
