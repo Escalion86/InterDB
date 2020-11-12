@@ -2,7 +2,7 @@
   "expo": {
     "name": "IndividualCRM",
     "slug": "IndividualCRM",
-    "version": "0.4.1",
+    "version": "0.4.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "platforms": ["android"],
@@ -24,8 +24,8 @@
     "android": {
       "icon": "./assets/gear96.png",
       "useNextNotificationsApi": true,
-      "package": "com.escalion.individualCRM",
-      "versionCode": 42,
+      "package": "com.escalion.Individual_CRM",
+      "versionCode": 40,
       "permissions": [],
       "googleServicesFile": "./google-services.json"
     }
