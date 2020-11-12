@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppContext } from '../AppContext'
 import {
   StyleSheet,
   Text,
@@ -26,11 +25,12 @@ import {
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
 import ModalDeleteFinance from '../components/Modals/ModalDeleteFinance'
 import { fontSize } from '../theme'
+import isDeveloper from '../helpers/isDeveloper'
 
 const FinancesScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
 
-  const { dev } = useContext(AppContext)
+  const dev = isDeveloper()
 
   const { colors } = useTheme()
 

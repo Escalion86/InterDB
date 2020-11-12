@@ -46,6 +46,7 @@ import {
   TourGuideZoneByPosition, // Component to use mask on overlay (ie, position absolute)
   useTourGuideController, // hook to start, etc.
 } from 'rn-tourguide'
+import isDeveloper from '../helpers/isDeveloper'
 
 const windowHeight = Dimensions.get('window').height
 
@@ -277,7 +278,9 @@ const EventsScreen = ({ navigation, route }) => {
   // const finances = useSelector((state) => state.finance.finances)
   const loading = useSelector((state) => state.event.loading)
 
-  const { dev, tutorial, toggleTutorial } = useContext(AppContext)
+  const dev = isDeveloper()
+
+  const { tutorial, toggleTutorial } = useContext(AppContext)
 
   let sortMenu = null
   const srtMenu = (r) => {

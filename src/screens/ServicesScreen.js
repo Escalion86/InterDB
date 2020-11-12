@@ -1,6 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppContext } from '../AppContext'
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
@@ -14,11 +13,12 @@ import ModalDeleteService from '../components/Modals/ModalDeleteService'
 import { fontSize } from '../theme'
 import SearchPanel from '../components/SearchPanel'
 import { servicesFilter } from '../helpers/filters'
+import isDeveloper from '../helpers/isDeveloper'
 
 const ServicesScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
 
-  const { dev } = useContext(AppContext)
+  const dev = isDeveloper()
 
   const showArchvedOnly = route.name === 'Archive'
 

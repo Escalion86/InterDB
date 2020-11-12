@@ -152,9 +152,9 @@ const DrawerContent = (props) => {
 
   const dispatch = useDispatch()
 
-  const { dev } = useContext(AppContext)
+  // const dev = isDeveloper()
+  // const dev = useSelector((state) => state.app.dev)
   const user = useSelector((state) => state.user)
-  // console.log('user :>> ', user)
 
   return (
     <View style={{ flex: 1 }}>
@@ -368,7 +368,7 @@ const DrawerContent = (props) => {
         </View>
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
-        {dev ? (
+        {user.tariff === 4 ? (
           <DrawerItemMenu
             label="Панель разработчика"
             iconName="md-bug"

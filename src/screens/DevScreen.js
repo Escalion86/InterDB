@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import * as Notifications from 'expo-notifications'
 
 import { StyleSheet, View } from 'react-native'
@@ -6,10 +7,15 @@ import { DB } from '../db/db'
 import { DevDropDownPicker } from '../components/devComponents'
 import Button from '../components/Button'
 import { showAllNotifications } from '../helpers/notifications'
+import { SwitchBlock } from '../components/createComponents'
+import { setSettings } from '../store/actions/app'
 
 const DevScreen = ({ navigation, route }) => {
+  const dev = useSelector((state) => state.app.dev)
   const [tables, setTables] = useState([])
   const [selectedTable, setSelectedTable] = useState(null)
+
+  const dispatch = useDispatch()
 
   async function loadTables () {
     const data = await DB.getTables()
@@ -22,6 +28,11 @@ const DevScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <SwitchBlock
+        title="Режим разработчика"
+        value={dev}
+        onValueChange={(value) => dispatch(setSettings({ dev: value }))}
+      />
       <Button
         title="Удалить все оповещения"
         onPress={async () => {

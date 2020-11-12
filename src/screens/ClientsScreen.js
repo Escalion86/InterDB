@@ -1,10 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
-import { AppContext } from '../AppContext'
 import ClientCard from '../components/Cards/ClientCard'
 import Fab from '../components/Fab'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
@@ -14,6 +13,7 @@ import ModalDeleteClient from '../components/Modals/ModalDeleteClient'
 import { fontSize } from '../theme'
 import SearchPanel from '../components/SearchPanel'
 import { clientsFilter } from '../helpers/filters'
+import isDeveloper from '../helpers/isDeveloper'
 
 const ClientsScreen = ({ navigation, route }) => {
   const theme = useTheme()
@@ -23,7 +23,7 @@ const ClientsScreen = ({ navigation, route }) => {
   let clients = useSelector((state) => state.client.clients)
   const loading = useSelector((state) => state.client.loading)
 
-  const { dev } = useContext(AppContext)
+  const dev = isDeveloper()
 
   const [modal, setModal] = useState(null)
   const [filter, setFilter] = useState('')
