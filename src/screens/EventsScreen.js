@@ -687,7 +687,7 @@ const EventsScreen = ({ navigation, route }) => {
     console.log('render EventsScreen loading')
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color={colors.text} />
+        <ActivityIndicator size="large" color={colors.accent} />
       </View>
     )
   }

@@ -60,7 +60,7 @@ const ClientCard = ({
           }}
         >
           {client.loading ? (
-            <ActivityIndicator size="large" color={colors.text} />
+            <ActivityIndicator size="large" color={colors.accent} />
           ) : (
             <Ionicons
               name={'ios-trash'}

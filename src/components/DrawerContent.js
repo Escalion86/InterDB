@@ -174,7 +174,7 @@ const DrawerContent = (props) => {
                       alignItems: 'center',
                     }}
                   >
-                    <ActivityIndicator size="large" color={colors.text} />
+                    <ActivityIndicator size="large" color={colors.accent} />
                   </View>
                 ) : (
                   <View

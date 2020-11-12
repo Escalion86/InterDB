@@ -136,7 +136,7 @@ const ServiceScreen = ({ navigation, route }) => {
   if (!service || service.loading || service.deleting) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color={colors.text} />
+        <ActivityIndicator size="large" color={colors.accent} />
       </View>
     )
   }

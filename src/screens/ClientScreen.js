@@ -81,7 +81,7 @@ const ClientScreen = ({ navigation, route }) => {
   if (!client || client.loading || client.deleting) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color={colors.text} />
+        <ActivityIndicator size="large" color={colors.accent} />
       </View>
     )
   }

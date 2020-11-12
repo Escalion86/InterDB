@@ -92,7 +92,7 @@ const EventScreen = ({ navigation, route }) => {
   if (!event || event.loading || event.deleting) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color={colors.text} />
+        <ActivityIndicator size="large" color={colors.accent} />
       </View>
     )
   }
