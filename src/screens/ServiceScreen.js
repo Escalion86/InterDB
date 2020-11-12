@@ -52,7 +52,6 @@ const ServiceScreen = ({ navigation, route }) => {
         event={event}
         navigation={navigation}
         callbackToCloseModal={() => setModal(null)}
-        callbackAfterAccept={() => {}}
       />
     )
   }

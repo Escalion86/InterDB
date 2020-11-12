@@ -93,27 +93,6 @@ const ServicesScreen = ({ navigation, route }) => {
     )
   }
 
-  // if (services.length === 0) {
-  //   return (
-  //     <View style={styles.container}>
-  //       <SearchPanel />
-  //       <View style={styles.center}>
-  //         <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
-  //           {showArchvedOnly ? 'Архив пуст' : 'Услуг нет'}
-  //         </Text>
-
-  //         <Fab
-  //           visible={!showArchvedOnly}
-  //           onPress={() => {
-  //             navigation.navigate('CreateService')
-  //           }}
-  //           label="Добавить услугу"
-  //         />
-  //       </View>
-  //     </View>
-  //   )
-  // }
-
   return (
     <View style={styles.container}>
       <SearchPanel theme={theme} filter={filter} setFilter={setFilter} />

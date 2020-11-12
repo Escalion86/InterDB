@@ -56,7 +56,6 @@ const EventsPage = ({
   setModal,
   dispatch,
   theme,
-  noServices = false,
 }) => {
   const { colors } = theme
 
@@ -68,11 +67,6 @@ const EventsPage = ({
     >
       {events.length === 0 ? (
         <>
-          {/* {noServices ? (
-            <>
-
-            </>
-          ) : null} */}
           <View style={styles.center}>
             <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
               Событий нет

@@ -114,69 +114,6 @@ const CreateFinanceScreen = ({ navigation, route }) => {
         inputOnNextRow={true}
         textAlign="left"
       />
-      {/* <TextInputBlock
-        title="Описание"
-        value={newService.description}
-        onChangeText={(text) => setServiceItem({ description: text })}
-        multiline={true}
-      />
-      <ImagePickerBlock
-        title={'Картинка'}
-        image={newService.image}
-        onPick={(img) => setServiceItem({ image: img })}
-      />
-      <TitleBlock title="Затраты времени" />
-      <TextInputBlock
-        title="Продолжительность"
-        value={newService.duration}
-        keyboardType="numeric"
-        onChangeText={(text) => setServiceItem({ duration: text })}
-        postfix="мин"
-        placeholder="0"
-      />
-      <TextInputBlock
-        title="Время на подготовку"
-        value={newService.preparetime}
-        keyboardType="numeric"
-        onChangeText={(text) => setServiceItem({ preparetime: text })}
-        postfix="мин"
-        placeholder="0"
-      />
-      <TextInputBlock
-        title="Время на сбор"
-        value={newService.collecttime}
-        keyboardType="numeric"
-        onChangeText={(text) => setServiceItem({ collecttime: text })}
-        postfix="мин"
-        placeholder="0"
-      />
-      <TitleBlock title="Финансы по умолчанию" />
-      <TextInputBlock
-        title="Стоимость"
-        value={newService.finance_price}
-        onChangeText={(text) => setServiceItem({ price: text })}
-        keyboardType="numeric"
-        postfix="&#8381;"
-        placeholder="0"
-      />
-      <TextInputBlock
-        title="Затраты на расходники"
-        value={newService.finance_consumables}
-        onChangeText={(text) => setServiceItem({ price: text })}
-        keyboardType="numeric"
-        prefix="-"
-        postfix="&#8381;"
-        placeholder="0"
-      />
-      <TextInputBlock
-        title="Затраты на ассистентов"
-        value={newService.finance_assistants}
-        onChangeText={(text) => setServiceItem({ price: text })}
-        keyboardType="numeric"
-        prefix="-"
-        postfix="&#8381;"
-        placeholder="0"
-      /> */}
       {modal}
     </ScrollView>
   )
