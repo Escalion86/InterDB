@@ -346,9 +346,7 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
             />
           </View>
         ) : (
-          <Text style={{ color: colors.text }}>
-            Не доступных календарей (в режиме записи)
-          </Text>
+          <TitleBlock title="Не доступных календарей (в режиме записи)" />
         )
       ) : null}
       <View style={{ zIndex: 0 }}>
