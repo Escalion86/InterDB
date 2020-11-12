@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  TouchableHighlight,
-  Image,
-} from 'react-native'
+import { StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native'
 import {
   Menu,
   MenuOptions,
@@ -34,18 +27,13 @@ const ServiceCard = ({
 
   if (!service) {
     return (
-      <TouchableHighlight
-        // activeOpacity={1}
-        delayPressIn={50}
-        style={styles.card}
-        onPress={onPress}
-      >
+      <View style={styles.card}>
         <View style={styles.middle}>
           <View style={styles.cardheader}>
             <Text style={styles.cardtitle}>Ошибка! Услуга не найдена</Text>
           </View>
         </View>
-      </TouchableHighlight>
+      </View>
     )
   } else {
     if (!onPress) {

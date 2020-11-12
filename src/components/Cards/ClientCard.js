@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  TouchableHighlight,
-  Image,
-} from 'react-native'
+import { StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
 import ContactsMenu from '../ContactsMenu'
@@ -29,18 +22,13 @@ const ClientCard = ({
 
   if (!client) {
     return (
-      <TouchableHighlight
-        // activeOpacity={1}
-        delayPressIn={50}
-        style={styles.card}
-        onPress={onPress}
-      >
+      <View style={styles.card}>
         <View style={styles.middle}>
           <View style={styles.cardheader}>
             <Text style={styles.cardtitle}>Ошибка! Клиент не найден</Text>
           </View>
         </View>
-      </TouchableHighlight>
+      </View>
     )
   } else {
     if (!onPress) {
