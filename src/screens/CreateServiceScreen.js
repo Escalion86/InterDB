@@ -109,7 +109,9 @@ const CreateServiceScreen = ({ navigation, route }) => {
       <ImagePickerBlock
         title={'Картинка'}
         image={newService.image}
-        onPick={(img) => setServiceItem({ image: img })}
+        onPick={(img) =>
+          setServiceItem({ image: img === undefined ? '' : img })
+        }
       />
       <TitleBlock title="Затраты времени" />
       <TextInputBlock
