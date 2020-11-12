@@ -29,6 +29,8 @@ import { HeaderBackButton } from '@react-navigation/stack'
 import { fontSize } from '../theme'
 import SearchPanel from '../components/SearchPanel'
 import { servicesFilter, clientsFilter } from '../helpers/filters'
+import ModalExitSaveChanges from '../components/Modals/ModalExitSaveChanges'
+import arrayEqual from '../helpers/arrayEqual'
 // import { addEventNotification } from "../helpers/notifications"
 
 const InfoMenu = () => {
@@ -105,27 +107,6 @@ const InfoMenu = () => {
     </Menu>
   )
 }
-
-const ModalSaveChanges = ({ onOuterClick, onPressNoSave, onPressSave }) => (
-  <ModalBottomMenu
-    title="Отменить изменения"
-    subtitle="Уверены что хотите выйти без сохранения?"
-    visible={true}
-    onOuterClick={onOuterClick}
-  >
-    <Button
-      title="Выйти без сохранения"
-      btnDecline={false}
-      onPress={onPressNoSave}
-    />
-    <Button
-      title="Сохранить и выйти"
-      btnDecline={false}
-      onPress={onPressSave}
-    />
-    <Button title="Не уходить" btnDecline={true} onPress={onOuterClick} />
-  </ModalBottomMenu>
-)
 
 const ModalUpdateFinance = ({ service, onOuterClick, setEventItem }) => {
   return (
@@ -373,26 +354,23 @@ const CreateEventScreen = ({ navigation, route }) => {
   }
 
   const checkChanges = () => {
-    for (const key in newEvent) {
-      if (newEvent[key] !== event[key]) {
-        setModal(
-          <ModalSaveChanges
-            onOuterClick={() => setModal(null)}
-            onPressNoSave={() => {
-              setModal(null)
-              navigation.goBack()
-            }}
-            onPressSave={() => {
-              setModal(null)
-              saveHandler()
-              navigation.goBack()
-            }}
-          />
-        )
-        return
-      }
+    if (arrayEqual(newEvent, event)) {
+      navigation.goBack()
+    } else {
+      setModal(
+        <ModalExitSaveChanges
+          onSave={() => {
+            setModal(null)
+            saveHandler()
+          }}
+          onNoSave={() => {
+            setModal(null)
+            navigation.goBack()
+          }}
+          onDecline={() => setModal(null)}
+        />
+      )
     }
-    navigation.goBack()
   }
 
   useEffect(() => {

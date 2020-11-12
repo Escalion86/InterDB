@@ -13,8 +13,8 @@ import {
 } from '../components/createComponents'
 import trimingArrayValues from '../helpers/trimingArrayValues'
 import { HeaderBackButton } from '@react-navigation/stack'
-import ModalBottomMenu from '../components/Modals/ModalBottomMenu'
-import Button from '../components/Button'
+import ModalExitSaveChanges from '../components/Modals/ModalExitSaveChanges'
+import arrayEqual from '../helpers/arrayEqual'
 
 const CreateFinanceScreen = ({ navigation, route }) => {
   const finance =
@@ -43,49 +43,24 @@ const CreateFinanceScreen = ({ navigation, route }) => {
     }
   }
 
-  const modalSaveChanges = (
-    <ModalBottomMenu
-      title="Отменить изменения"
-      subtitle="Уверены что хотите выйти без сохранения?"
-      onAccept={() => navigation.goBack()}
-      visible={true}
-      onOuterClick={() => setModal(null)}
-    >
-      <Button
-        title="Выйти без сохранения"
-        btnDecline={false}
-        onPress={() => {
-          setModal(null)
-          navigation.goBack()
-        }}
-      />
-      <Button
-        title="Сохранить и выйти"
-        btnDecline={false}
-        onPress={() => {
-          setModal(null)
-          saveHandler()
-          navigation.goBack()
-        }}
-      />
-      <Button
-        title="Не уходить"
-        btnDecline={true}
-        onPress={() => {
-          setModal(null)
-        }}
-      />
-    </ModalBottomMenu>
-  )
-
   const checkChanges = () => {
-    for (const key in newFinance) {
-      if (newFinance[key] !== finance[key]) {
-        setModal(modalSaveChanges)
-        return
-      }
+    if (arrayEqual(newFinance, finance)) {
+      navigation.goBack()
+    } else {
+      setModal(
+        <ModalExitSaveChanges
+          onSave={() => {
+            setModal(null)
+            saveHandler()
+          }}
+          onNoSave={() => {
+            setModal(null)
+            navigation.goBack()
+          }}
+          onDecline={() => setModal(null)}
+        />
+      )
     }
-    navigation.goBack()
   }
 
   useEffect(() => {
