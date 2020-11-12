@@ -165,6 +165,8 @@ const DrawerContent = (props) => {
                   <View
                     style={{
                       ...styles.avatar,
+                      width: 52,
+                      height: 52,
                       borderColor: tariffs[user.tariff].color,
                       borderWidth: 1,
                       borderRadius: 50,
