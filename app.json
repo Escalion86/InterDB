@@ -26,7 +26,13 @@
       "useNextNotificationsApi": true,
       "package": "com.escalion.Individual_CRM",
       "versionCode": 40,
-      "permissions": [],
+      "permissions": [
+        "CAMERA",
+        "READ_CONTACTS",
+        "WRITE_CONTACTS",
+        "READ_CALENDAR",
+        "WRITE_CALENDAR"
+      ],
       "googleServicesFile": "./google-services.json"
     }
   }
