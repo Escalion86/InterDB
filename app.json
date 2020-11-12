@@ -2,7 +2,7 @@
   "expo": {
     "name": "IndividualCRM",
     "slug": "IndividualCRM",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "platforms": ["android"],
@@ -25,13 +25,15 @@
       "icon": "./assets/gear96.png",
       "useNextNotificationsApi": true,
       "package": "com.escalion.Individual_CRM",
-      "versionCode": 40,
+      "versionCode": 41,
       "permissions": [
         "CAMERA",
         "READ_CONTACTS",
         "WRITE_CONTACTS",
         "READ_CALENDAR",
-        "WRITE_CALENDAR"
+        "WRITE_CALENDAR",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
       ],
       "googleServicesFile": "./google-services.json"
     }
