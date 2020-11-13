@@ -193,14 +193,18 @@ const EventScreen = ({ navigation, route }) => {
       <TextBlock text={`Итого: ${profit} руб`} />
       <TitleBlock title="Транзакции" />
       {financesCards}
-      <TitleBlock title="Адрес" />
-      <TextBlock
-        text={`${event.location_town}, ${event.location_street}, ${
-          event.location_house
-        }${event.location_room ? ` - ${event.location_room}` : ''}${
-          event.location_name ? ` (${event.location_name})` : ''
-        }`}
-      />
+      {event.location_town ? (
+        <>
+          <TitleBlock title="Адрес" />
+          <TextBlock
+            text={`${event.location_town}, ${event.location_street}, ${
+              event.location_house
+            }${event.location_room ? ` - ${event.location_room}` : ''}${
+              event.location_name ? ` (${event.location_name})` : ''
+            }`}
+          />
+        </>
+      ) : null}
       <TitleBlock title="Тайминг" />
       {event.timing_duration ? (
         <TextBlock text={`Продолжительность: ${event.timing_duration} мин`} />
