@@ -15,8 +15,7 @@ import { useTheme } from '@react-navigation/native'
 import { TextBlock, ContactIcon } from '../components/infoComponents'
 import { contactsIcons } from '../db/dependencies'
 import { formatBirthday } from '../helpers/date'
-import ModalDeleteClient from '../components/Modals/ModalDeleteClient'
-import ModalDeleteEvent from '../components/Modals/ModalDeleteEvent'
+import { ModalDeleteClient, ModalDeleteEvent } from '../components/Modals'
 import EventCard from '../components/Cards/EventCard'
 
 const ClientScreen = ({ navigation, route }) => {

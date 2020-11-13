@@ -26,13 +26,13 @@ import { useTheme } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import Fab from '../components/Fab'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
-import ModalDeleteEvent from '../components/Modals/ModalDeleteEvent'
 import { fontSize } from '../theme'
 import { addFinance } from '../store/actions/finance'
 import {
   ModalFinanceIncome,
   ModalFinanceOutcome,
-} from '../components/Modals/modalsFinance'
+  ModalDeleteEvent,
+} from '../components/Modals'
 
 import RNPickerSelect from 'react-native-picker-select'
 

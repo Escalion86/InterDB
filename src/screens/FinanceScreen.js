@@ -8,7 +8,7 @@ import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { TitleBlock } from '../components/createComponents'
 import { useTheme } from '@react-navigation/native'
 import { TextBlock } from '../components/infoComponents'
-import ModalDeleteFinance from '../components/Modals/ModalDeleteFinance'
+import { ModalDeleteFinance } from '../components/Modals'
 import EventCard from '../components/Cards/EventCard'
 import { formatDate, formatTime } from '../helpers/date'
 

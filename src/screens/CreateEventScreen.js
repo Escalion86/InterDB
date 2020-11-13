@@ -12,7 +12,6 @@ import {
   DateTimePickerBlock,
   TitleBlock,
 } from '../components/createComponents'
-import ModalBottomMenu from '../components/Modals/ModalBottomMenu'
 import ScrollCardList from '../components/ScrollCardList'
 import ServiceCard from '../components/Cards/ServiceCard'
 import ClientCard from '../components/Cards/ClientCard'
@@ -29,7 +28,7 @@ import { HeaderBackButton } from '@react-navigation/stack'
 import { fontSize } from '../theme'
 import SearchPanel from '../components/SearchPanel'
 import { servicesFilter, clientsFilter } from '../helpers/filters'
-import ModalExitSaveChanges from '../components/Modals/ModalExitSaveChanges'
+import { ModalExitSaveChanges, ModalBottomMenu } from '../components/Modals'
 import arrayEqual from '../helpers/arrayEqual'
 // import { addEventNotification } from "../helpers/notifications"
 

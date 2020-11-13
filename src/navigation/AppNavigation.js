@@ -34,7 +34,7 @@ import FinanceScreen from '../screens/FinanceScreen'
 import CreateServiceScreen from '../screens/CreateServiceScreen'
 import CreateFinanceScreen from '../screens/CreateFinanceScreen'
 import AuthScreen from '../screens/AuthScreen'
-import ModalChangeLog from '../components/Modals/ModalChangeLog'
+import { ModalChangeLog } from '../components/Modals'
 
 // import SettingsCalendarScreen from '../screens/SettingsCalendarScreen'
 

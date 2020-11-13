@@ -6,7 +6,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { HeaderBackButton } from '@react-navigation/stack'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import Button from '../components/Button'
-import ModalBottomMenu from '../components/Modals/ModalBottomMenu'
+import { ModalBottomMenu } from '../components/Modals'
 import { setSettings } from '../store/actions/app'
 
 const ModalSaveChanges = ({

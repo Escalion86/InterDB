@@ -25,7 +25,7 @@ import { useTheme } from '@react-navigation/native'
 
 import Button from '../components/Button'
 
-import ModalBottomMenu from '../components/Modals/ModalBottomMenu'
+import { ModalBottomMenu } from '../components/Modals'
 
 async function getDefaultCalendarSource () {
   const calendars = await Calendar.getCalendarsAsync()

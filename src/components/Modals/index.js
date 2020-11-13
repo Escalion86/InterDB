@@ -1,13 +1,11 @@
-import React from 'react'
-import ModalBottomMenu from './ModalBottomMenu'
-import ModalSplash from './ModalSplash'
-
-const Modal = (props) => {
-  return props.bottom ? (
-    <ModalBottomMenu {...props} />
-  ) : (
-    <ModalSplash {...props} />
-  )
-}
-
-export default Modal
+export { default as Modal } from './Modal'
+export { default as ModalBottomMenu } from './ModalBottomMenu'
+export { default as ModalSplash } from './ModalSplash'
+export { default as ModalChangeLog } from './ModalChangeLog'
+export { default as ModalDeleteClient } from './ModalDeleteClient'
+export { default as ModalDeleteEvent } from './ModalDeleteEvent'
+export { default as ModalDeleteFinance } from './ModalDeleteFinance'
+export { default as ModalDeleteService } from './ModalDeleteService'
+export { default as ModalExitSaveChanges } from './ModalExitSaveChanges'
+export { default as ModalYesNo } from './ModalYesNo'
+export { ModalFinanceOutcome, ModalFinanceIncome } from './modalsFinance'

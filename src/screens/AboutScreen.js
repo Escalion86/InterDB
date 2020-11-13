@@ -15,7 +15,7 @@ import Button from '../components/Button'
 // import { AppContext } from '../AppContext'
 import { ContactIcon } from '../components/infoComponents'
 import { fontSize } from '../theme'
-import ModalChangeLog from '../components/Modals/ModalChangeLog'
+import { ModalChangeLog } from '../components/Modals'
 import * as appJson from '../../app.json'
 
 const AboutScreen = ({ navigation, route }) => {

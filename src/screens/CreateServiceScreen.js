@@ -13,7 +13,7 @@ import {
 } from '../components/createComponents'
 import trimingArrayValues from '../helpers/trimingArrayValues'
 import { HeaderBackButton } from '@react-navigation/stack'
-import ModalExitSaveChanges from '../components/Modals/ModalExitSaveChanges'
+import { ModalExitSaveChanges } from '../components/Modals'
 import arrayEqual from '../helpers/arrayEqual'
 
 const CreateServiceScreen = ({ navigation, route }) => {
