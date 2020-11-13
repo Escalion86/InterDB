@@ -15,6 +15,17 @@ import SearchPanel from '../components/SearchPanel'
 import { clientsFilter } from '../helpers/filters'
 import isDeveloper from '../helpers/isDeveloper'
 import * as Notifications from 'expo-notifications'
+import SortMenu from '../components/SortMenu'
+
+const sortList = [
+  {
+    title: 'По имени',
+    items: [
+      { name: 'от А до Я', value: 'nameASC' },
+      { name: 'от Я до А', value: 'nameDESC' },
+    ],
+  },
+]
 
 const ClientsScreen = ({ navigation, route }) => {
   const theme = useTheme()
@@ -28,6 +39,7 @@ const ClientsScreen = ({ navigation, route }) => {
 
   const [modal, setModal] = useState(null)
   const [filter, setFilter] = useState('')
+  const [sorting, setSorting] = useState('nameASC')
 
   const noClients = clients.length === 0
 
@@ -52,6 +64,11 @@ const ClientsScreen = ({ navigation, route }) => {
       title: `Клиенты (${clients.length})`,
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+          <SortMenu
+            sortList={sortList}
+            onClickItem={setSorting}
+            activeValues={[sorting]}
+          />
           {dev ? (
             <Item
               title="Delete all clients"
@@ -95,6 +112,32 @@ const ClientsScreen = ({ navigation, route }) => {
         <ActivityIndicator size="large" color={colors.accent} />
       </View>
     )
+  }
+
+  switch (sorting) {
+    case 'nameASC':
+      clients.sort((a, b) =>
+        `${a.surname} ${a.name} ${a.thirdname}` >
+        `${b.surname} ${b.name} ${b.thirdname}`
+          ? 1
+          : -1
+      )
+      break
+    case 'nameDESC':
+      clients.sort((a, b) =>
+        `${a.surname} ${a.name} ${a.thirdname}` <
+        `${b.surname} ${b.name} ${b.thirdname}`
+          ? 1
+          : -1
+      )
+      break
+    default:
+      clients.sort((a, b) =>
+        `${a.surname} ${a.name} ${a.thirdname}` >
+        `${b.surname} ${b.name} ${b.thirdname}`
+          ? 1
+          : -1
+      )
   }
 
   return (

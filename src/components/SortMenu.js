@@ -9,7 +9,7 @@ import { useTheme } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import { Text, View, TouchableOpacity } from 'react-native'
 import { fontSize } from '../theme'
-import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { Item } from 'react-navigation-header-buttons'
 
 const SortMenu = ({
   sortList = [],
@@ -30,7 +30,7 @@ const SortMenu = ({
         <TouchableOpacity
           style={{
             flexDirection: 'row',
-            justifyContent: 'flex-end',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             height: 30,
           }}
@@ -41,17 +41,19 @@ const SortMenu = ({
         >
           {activeValues.includes(value) ? (
             <Ionicons
-              style={{ flex: 1, marginLeft: 6 }}
+              style={{ marginHorizontal: 8 }}
               name="md-checkmark"
               size={24}
               color={colors.text}
             />
-          ) : null}
+          ) : (
+            <View style={{ width: 34 }} />
+          )}
           <Text
             style={{
               fontSize: fontSize.medium,
               color: colors.text,
-              width: 150,
+              // width: 150,
             }}
           >
             {name}
@@ -84,6 +86,7 @@ const SortMenu = ({
               backgroundColor: colors.active,
               color: colors.text,
               height: 30,
+              paddingHorizontal: 8,
               textAlign: 'center',
               textAlignVertical: 'center',
             }}
@@ -123,7 +126,7 @@ const SortMenu = ({
           backgroundColor: colors.card,
         }}
       >
-        <View style={{ width: 180 }}>
+        <View>
           <SortBlocks sortList={sortList} />
         </View>
       </MenuOptions>

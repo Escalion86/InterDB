@@ -14,6 +14,31 @@ import { fontSize } from '../theme'
 import SearchPanel from '../components/SearchPanel'
 import { servicesFilter } from '../helpers/filters'
 import isDeveloper from '../helpers/isDeveloper'
+import SortMenu from '../components/SortMenu'
+
+const sortList = [
+  {
+    title: 'По названию',
+    items: [
+      { name: 'от А до Я', value: 'nameASC' },
+      { name: 'от Я до А', value: 'nameDESC' },
+    ],
+  },
+  {
+    title: 'По чистой прибыли',
+    items: [
+      { name: 'По возрастанию', value: 'profitASC' },
+      { name: 'По убыванию', value: 'profitDESC' },
+    ],
+  },
+  {
+    title: 'По временным затратам',
+    items: [
+      { name: 'По возрастанию', value: 'timeASC' },
+      { name: 'По убыванию', value: 'timeDESC' },
+    ],
+  },
+]
 
 const ServicesScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
@@ -33,6 +58,7 @@ const ServicesScreen = ({ navigation, route }) => {
 
   const [modal, setModal] = useState(null)
   const [filter, setFilter] = useState('')
+  const [sorting, setSorting] = useState('nameASC')
 
   const noServices = services.length === 0
 
@@ -61,6 +87,11 @@ const ServicesScreen = ({ navigation, route }) => {
         title: `Услуги (${services.length})`,
         headerRight: () => (
           <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+            <SortMenu
+              sortList={sortList}
+              onClickItem={setSorting}
+              activeValues={[sorting]}
+            />
             {dev ? (
               <Item
                 title="Delete all services"
@@ -97,6 +128,51 @@ const ServicesScreen = ({ navigation, route }) => {
         <ActivityIndicator size="large" color={colors.accent} />
       </View>
     )
+  }
+
+  switch (sorting) {
+    case 'nameDESC':
+      services.sort((a, b) => (a.name < b.name ? 1 : -1))
+      break
+    case 'nameASC':
+      services.sort((a, b) => (a.name > b.name ? 1 : -1))
+      break
+    case 'profitDESC':
+      services.sort((a, b) =>
+        a.finance_price - a.finance_assistants - a.finance_consumables <
+        b.finance_price - b.finance_assistants - b.finance_consumables
+          ? 1
+          : -1
+      )
+      break
+    case 'profitASC':
+      services.sort((a, b) =>
+        a.finance_price - a.finance_assistants - a.finance_consumables >
+        b.finance_price - b.finance_assistants - b.finance_consumables
+          ? 1
+          : -1
+      )
+      break
+    case 'timeDESC':
+      services.sort((a, b) =>
+        a.preparetime + a.collecttime + a.service <
+        b.preparetime + b.collecttime + b.service
+          ? 1
+          : -1
+      )
+      break
+
+    case 'timeASC':
+      services.sort((a, b) =>
+        a.preparetime + a.collecttime + a.duration >
+        b.preparetime + b.collecttime + b.duration
+          ? 1
+          : -1
+      )
+      break
+
+    default:
+      services.sort((a, b) => (a.name > b.name ? 1 : -1))
   }
 
   return (

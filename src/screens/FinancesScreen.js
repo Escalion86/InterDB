@@ -5,7 +5,6 @@ import {
   Text,
   View,
   ActivityIndicator,
-  TouchableOpacity,
   ToastAndroid,
 } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
@@ -14,18 +13,21 @@ import { addFinance, deleteAllFinances } from '../store/actions/finance'
 import { dbGenerator } from '../db/dbTemplate'
 import { FinanceCard } from '../components/Cards'
 import { useTheme } from '@react-navigation/native'
-import { Ionicons } from '@expo/vector-icons'
-import {
-  Menu,
-  MenuOptions,
-  MenuTrigger,
-  renderers,
-} from 'react-native-popup-menu'
-// import Fab from '../components/Fab'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
 import { ModalDeleteFinance } from '../components/Modals'
 import { fontSize } from '../theme'
 import isDeveloper from '../helpers/isDeveloper'
+import SortMenu from '../components/SortMenu'
+
+const sortList = [
+  {
+    title: 'По дате',
+    items: [
+      { name: 'По возрастанию', value: 'dateASC' },
+      { name: 'По убыванию', value: 'dateDESC' },
+    ],
+  },
+]
 
 const FinancesScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
@@ -34,18 +36,11 @@ const FinancesScreen = ({ navigation, route }) => {
 
   const { colors } = useTheme()
 
-  const { Popover } = renderers
-
   const finances = useSelector((state) => state.finance.finances)
   const events = useSelector((state) => state.event.events)
   const loading = useSelector((state) => state.finance.loading)
 
-  const [sorting, setSorting] = useState('dateDESC')
-
-  let sortMenu = null
-  const srtMenu = (r) => {
-    sortMenu = r
-  }
+  const [sorting, setSorting] = useState('dateASC')
 
   const [modal, setModal] = useState(null)
 
@@ -63,108 +58,11 @@ const FinancesScreen = ({ navigation, route }) => {
       title: 'Транзакции',
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-          <Menu
-            // name="sorting"
-            // style={styles.finance}
-            ref={srtMenu}
-            renderer={Popover}
-            rendererProps={{ preferredPlacement: 'bottom' }}
-          >
-            <MenuTrigger>
-              <Item
-                title="Sorting"
-                iconName="md-funnel"
-                // onPress={() => {
-                //   alert("Сортировка")
-                // }}
-                onPress={() => sortMenu.open()}
-              />
-            </MenuTrigger>
-            <MenuOptions
-              style={{
-                padding: 5,
-                borderColor: colors.border,
-                borderWidth: 1,
-                // borderRadius: 20,
-                backgroundColor: colors.card,
-              }}
-            >
-              <View style={{ width: 180 }}>
-                <Text
-                  style={{
-                    fontSize: fontSize.medium,
-                    borderBottomWidth: 1,
-                    borderBottomColor: colors.text,
-                    color: colors.text,
-                    height: 30,
-                    textAlign: 'center',
-                  }}
-                >
-                  По дате
-                </Text>
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                    height: 30,
-                  }}
-                  onPress={() => {
-                    setSorting('dateDESC')
-                    sortMenu.close()
-                  }}
-                >
-                  {sorting === 'dateDESC' ? (
-                    <Ionicons
-                      style={{ flex: 1 }}
-                      name="md-checkmark"
-                      size={24}
-                      color={colors.text}
-                    />
-                  ) : null}
-                  <Text
-                    style={{
-                      fontSize: fontSize.medium,
-                      color: colors.text,
-                      width: 150,
-                    }}
-                  >
-                    По возрастанию
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                    height: 30,
-                  }}
-                  onPress={() => {
-                    setSorting('dateASC')
-                    sortMenu.close()
-                  }}
-                >
-                  {sorting === 'dateASC' ? (
-                    <Ionicons
-                      style={{ flex: 1 }}
-                      name="md-checkmark"
-                      size={24}
-                      color={colors.text}
-                    />
-                  ) : null}
-                  <Text
-                    style={{
-                      fontSize: fontSize.medium,
-                      color: colors.text,
-                      width: 150,
-                    }}
-                  >
-                    По убыванию
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </MenuOptions>
-          </Menu>
+          <SortMenu
+            sortList={sortList}
+            onClickItem={setSorting}
+            activeValues={[sorting]}
+          />
           {dev ? (
             <Item
               title="Delete all finances"
@@ -223,10 +121,10 @@ const FinancesScreen = ({ navigation, route }) => {
   }
 
   switch (sorting) {
-    case 'dateDESC':
+    case 'dateASC':
       finances.sort((a, b) => (a.date > b.date ? 1 : -1))
       break
-    case 'dateASC':
+    case 'dateDESC':
       finances.sort((a, b) => (a.date < b.date ? 1 : -1))
       break
     default:

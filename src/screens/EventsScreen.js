@@ -267,15 +267,8 @@ const sortList = [
   {
     title: 'По дате',
     items: [
-      { name: 'По возрастанию', value: 'dateDESC' },
-      { name: 'По убыванию', value: 'dateASC' },
-    ],
-  },
-  {
-    title: 'По дате',
-    items: [
-      { name: 'По возрастанию', value: 'dateDESC' },
-      { name: 'По убыванию', value: 'dateASC' },
+      { name: 'По возрастанию', value: 'dateASC' },
+      { name: 'По убыванию', value: 'dateDESC' },
     ],
   },
 ]
@@ -284,7 +277,7 @@ const EventsScreen = ({ navigation, route }) => {
   const theme = useTheme()
   const { colors } = theme
   const dispatch = useDispatch()
-  const [sorting, setSorting] = useState('dateDESC')
+  const [sorting, setSorting] = useState('dateASC')
   const [modal, setModal] = useState(null)
   const [monthFilter, setMonthFilter] = useState(new Date().getMonth())
   const [yearFilter, setYearFilter] = useState(new Date().getFullYear())
@@ -404,10 +397,10 @@ const EventsScreen = ({ navigation, route }) => {
   console.log('render EventsScreen Header finished')
 
   switch (sorting) {
-    case 'dateDESC':
+    case 'dateASC':
       events.sort((a, b) => (a.date > b.date ? 1 : -1))
       break
-    case 'dateASC':
+    case 'dateDESC':
       events.sort((a, b) => (a.date < b.date ? 1 : -1))
       break
     default:
