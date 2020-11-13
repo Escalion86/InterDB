@@ -14,6 +14,7 @@ import { fontSize } from '../theme'
 import SearchPanel from '../components/SearchPanel'
 import { clientsFilter } from '../helpers/filters'
 import isDeveloper from '../helpers/isDeveloper'
+import * as Notifications from 'expo-notifications'
 
 const ClientsScreen = ({ navigation, route }) => {
   const theme = useTheme()
@@ -74,6 +75,19 @@ const ClientsScreen = ({ navigation, route }) => {
       ),
     })
   }, [clients, dev])
+
+  useEffect(() => {
+    Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log('Notification response:', response)
+      const { toScreen, props } = response.notification.request.content.data
+      if (toScreen === 'Client') {
+        navigation.navigate(toScreen, props)
+      }
+      // console.log('navigation', navigation)
+      // navigation.navigate('Clients', data.props)
+      // Linking.openUrl(url);
+    })
+  }, [])
 
   if (loading) {
     return (

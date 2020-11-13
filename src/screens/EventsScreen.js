@@ -47,6 +47,7 @@ import {
   useTourGuideController, // hook to start, etc.
 } from 'rn-tourguide'
 import isDeveloper from '../helpers/isDeveloper'
+import * as Notifications from 'expo-notifications'
 
 const windowHeight = Dimensions.get('window').height
 
@@ -468,12 +469,25 @@ const EventsScreen = ({ navigation, route }) => {
     }
   }, [canStart, tutorial])
 
-  React.useEffect(() => {
+  useEffect(() => {
     // eventEmitter.on('start', null)
     eventEmitter.on('stop', () => toggleTutorial(false))
     // eventEmitter.on('stepChange', null)
 
     return () => eventEmitter.off('*', null)
+  }, [])
+
+  useEffect(() => {
+    Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log('Notification response:', response)
+      const { toScreen, props } = response.notification.request.content.data
+      if (toScreen === 'Event') {
+        navigation.navigate(toScreen, props)
+      }
+      // console.log('navigation', navigation)
+      // navigation.navigate('Clients', data.props)
+      // Linking.openUrl(url);
+    })
   }, [])
 
   console.log('render EventsScreen Header finished')

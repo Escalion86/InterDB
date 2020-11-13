@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { loadAll } from '../store/actions/db'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { getSettings, setLastUsedVersion } from '../store/actions/app'
-import * as Notifications from 'expo-notifications'
 
 import { StatusBar } from 'expo-status-bar'
 import burgerButton from '../components/burgerButton'
@@ -322,7 +321,7 @@ const FinancesStackScreen = ({ navigation }) => (
       name="Finances"
       component={FinancesScreen}
       options={{
-        title: 'Финансы',
+        title: 'Трензакции',
         headerLeft: () => burgerButton(navigation),
       }}
     />
@@ -480,21 +479,12 @@ const ServicesStackScreen = ({ navigation }) => (
 
 const Drawer = createDrawerNavigator()
 
-const DrawerScreen = ({ navigation }) => {
+const DrawerScreen = () => {
   const { colors } = useTheme()
   const DrawerIcon = ({ name }) => (
     <Ionicons name={name} size={24} color={colors.text} />
   )
   DrawerIcon.displayName = 'DrawerIcon'
-
-  useEffect(() => {
-    Notifications.addNotificationResponseReceivedListener((response) => {
-      console.log('Notification response:', response)
-      const data = response.notification.request.content.data
-      navigation.navigate(data.toScreen, data.props)
-      // Linking.openUrl(url);
-    })
-  }, [])
 
   return (
     <Drawer.Navigator
