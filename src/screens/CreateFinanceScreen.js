@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet, ScrollView, ToastAndroid } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
@@ -63,7 +63,7 @@ const CreateFinanceScreen = ({ navigation, route }) => {
     }
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       title: finance.id ? 'Редактирование транзакции' : 'Создание транзакции',
       headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,

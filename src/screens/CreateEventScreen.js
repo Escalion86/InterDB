@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { StyleSheet, ScrollView, View, ToastAndroid, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
@@ -371,7 +371,7 @@ const CreateEventScreen = ({ navigation, route }) => {
     }
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       title: event.id ? 'Редактирование события' : 'Создание события',
       headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,

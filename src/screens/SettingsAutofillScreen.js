@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet, ScrollView, ToastAndroid } from 'react-native'
 import { TitleBlock, TextInputBlock } from '../components/createComponents'
@@ -71,7 +71,7 @@ const SettingsAutofillScreen = ({ navigation, route }) => {
     setNewStateApp({ ...newStateApp, ...item })
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
         <HeaderBackButton

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
@@ -58,7 +58,7 @@ const FinancesScreen = ({ navigation, route }) => {
     )
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       title: 'Транзакции',
       headerRight: () => (

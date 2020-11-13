@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import { useTheme } from '@react-navigation/native'
@@ -47,7 +47,7 @@ const ClientsScreen = ({ navigation, route }) => {
 
   clients = clientsFilter(clients, filter)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       title: `Клиенты (${clients.length})`,
       headerRight: () => (

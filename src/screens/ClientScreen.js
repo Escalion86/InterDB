@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { useSelector } from 'react-redux'
 import {
   StyleSheet,
@@ -53,7 +53,7 @@ const ClientScreen = ({ navigation, route }) => {
 
   const events = useSelector((state) => state.event.events)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (client) {
       navigation.setOptions({
         title: 'Клиент',

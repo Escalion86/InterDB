@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native'
@@ -36,7 +36,7 @@ const FinanceScreen = ({ navigation, route }) => {
 
   console.log('finance', finance)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (finance) {
       navigation.setOptions({
         title: 'Транзакция',

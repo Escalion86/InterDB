@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
@@ -51,7 +51,7 @@ const ServicesScreen = ({ navigation, route }) => {
   }
   services = servicesFilter(services, filter, !showArchvedOnly, showArchvedOnly)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (showArchvedOnly) {
       navigation.setOptions({
         title: `Архив услуг (${services.length})`,

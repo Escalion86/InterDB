@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native'
 import { useSelector } from 'react-redux'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
@@ -40,7 +40,7 @@ const EventScreen = ({ navigation, route }) => {
     )
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (event) {
       navigation.setOptions({
         title: 'Событие',

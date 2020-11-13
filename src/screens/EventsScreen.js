@@ -1,21 +1,20 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react'
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  useLayoutEffect,
+} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
   Text,
   View,
   ActivityIndicator,
-  TouchableOpacity,
   ToastAndroid,
   Dimensions,
 } from 'react-native'
 // import Button from '../components/Button'
-import {
-  Menu,
-  MenuOptions,
-  MenuTrigger,
-  renderers,
-} from 'react-native-popup-menu'
 import { AppContext } from '../AppContext'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
@@ -35,6 +34,7 @@ import {
 } from '../components/Modals'
 
 import RNPickerSelect from 'react-native-picker-select'
+import SortMenu from '../components/SortMenu'
 
 // import SafeAreaView from 'react-native-safe-area-view'
 
@@ -263,11 +263,27 @@ const Tutorial = ({ navigation }) => {
   )
 }
 
+const sortList = [
+  {
+    title: 'По дате',
+    items: [
+      { name: 'По возрастанию', value: 'dateDESC' },
+      { name: 'По убыванию', value: 'dateASC' },
+    ],
+  },
+  {
+    title: 'По дате',
+    items: [
+      { name: 'По возрастанию', value: 'dateDESC' },
+      { name: 'По убыванию', value: 'dateASC' },
+    ],
+  },
+]
+
 const EventsScreen = ({ navigation, route }) => {
   const theme = useTheme()
   const { colors } = theme
   const dispatch = useDispatch()
-  const { Popover } = renderers
   const [sorting, setSorting] = useState('dateDESC')
   const [modal, setModal] = useState(null)
   const [monthFilter, setMonthFilter] = useState(new Date().getMonth())
@@ -283,11 +299,6 @@ const EventsScreen = ({ navigation, route }) => {
 
   const { tutorial, toggleTutorial } = useContext(AppContext)
 
-  let sortMenu = null
-  const srtMenu = (r) => {
-    sortMenu = r
-  }
-
   const modalDelete = (event) => {
     setModal(
       <ModalDeleteEvent
@@ -298,113 +309,16 @@ const EventsScreen = ({ navigation, route }) => {
     )
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       title: 'События',
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-          <Menu
-            // name="sorting"
-            // style={styles.finance}
-            ref={srtMenu}
-            renderer={Popover}
-            rendererProps={{ preferredPlacement: 'bottom' }}
-          >
-            <MenuTrigger>
-              <Item
-                title="Sorting"
-                iconName="md-funnel"
-                // onPress={() => {
-                //   alert("Сортировка")
-                // }}
-                onPress={() => sortMenu.open()}
-              />
-            </MenuTrigger>
-            <MenuOptions
-              style={{
-                padding: 5,
-                borderColor: colors.border,
-                borderWidth: 1,
-                // borderRadius: 20,
-                backgroundColor: colors.card,
-              }}
-            >
-              <View style={{ width: 180 }}>
-                <Text
-                  style={{
-                    fontSize: fontSize.medium,
-                    borderBottomWidth: 1,
-                    borderBottomColor: colors.text,
-                    color: colors.text,
-                    height: 30,
-                    textAlign: 'center',
-                  }}
-                >
-                  По дате
-                </Text>
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                    height: 30,
-                  }}
-                  onPress={() => {
-                    setSorting('dateDESC')
-                    sortMenu.close()
-                  }}
-                >
-                  {sorting === 'dateDESC' ? (
-                    <Ionicons
-                      style={{ flex: 1 }}
-                      name="md-checkmark"
-                      size={24}
-                      color={colors.text}
-                    />
-                  ) : null}
-                  <Text
-                    style={{
-                      fontSize: fontSize.medium,
-                      color: colors.text,
-                      width: 150,
-                    }}
-                  >
-                    По возрастанию
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                    height: 30,
-                  }}
-                  onPress={() => {
-                    setSorting('dateASC')
-                    sortMenu.close()
-                  }}
-                >
-                  {sorting === 'dateASC' ? (
-                    <Ionicons
-                      style={{ flex: 1 }}
-                      name="md-checkmark"
-                      size={24}
-                      color={colors.text}
-                    />
-                  ) : null}
-                  <Text
-                    style={{
-                      fontSize: fontSize.medium,
-                      color: colors.text,
-                      width: 150,
-                    }}
-                  >
-                    По убыванию
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </MenuOptions>
-          </Menu>
+          <SortMenu
+            sortList={sortList}
+            onClickItem={setSorting}
+            activeValues={[sorting]}
+          />
           {dev ? (
             <Item
               title="Delete all events"
@@ -484,9 +398,6 @@ const EventsScreen = ({ navigation, route }) => {
       if (toScreen === 'Event') {
         navigation.navigate(toScreen, props)
       }
-      // console.log('navigation', navigation)
-      // navigation.navigate('Clients', data.props)
-      // Linking.openUrl(url);
     })
   }, [])
 

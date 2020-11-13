@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
@@ -206,7 +206,7 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
     ;(async () => await refreshCalendarList())()
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
         <HeaderBackButton

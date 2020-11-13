@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet, ScrollView, ToastAndroid } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
@@ -71,7 +71,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
     }
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       title: service.id ? 'Редактирование услуги' : 'Создание услуги',
       headerLeft: () => <HeaderBackButton onPress={() => checkChanges()} />,
