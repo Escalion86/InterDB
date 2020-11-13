@@ -165,6 +165,10 @@ export const addClientNotification = async (client = null, appStore = null) => {
             : null,
         subtitle: 'День рождения клиента',
         date: date,
+        data: {
+          toScreen: 'Client',
+          props: { clientId: client.id },
+        },
       })
     } else {
       return ''
