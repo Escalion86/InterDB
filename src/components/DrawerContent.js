@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { StyleSheet, View, ActivityIndicator, Text } from 'react-native'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
@@ -11,7 +11,6 @@ import {
   Avatar,
 } from 'react-native-paper'
 import { Ionicons } from '@expo/vector-icons'
-import { AppContext } from '../AppContext'
 import { iconSize, fontSize } from '../theme'
 // import Button from './Button'
 // import * as Google from 'expo-google-app-auth'
@@ -344,7 +343,7 @@ const DrawerContent = (props) => {
               }}
             />
             <DrawerItemMenu
-              label="Финансы"
+              label="Транзакции"
               iconName="ios-cash"
               onPress={() => {
                 props.navigation.navigate('Finances')

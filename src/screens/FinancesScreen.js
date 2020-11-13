@@ -60,7 +60,7 @@ const FinancesScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: 'Финансы',
+      title: 'Транзакции',
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
           <Menu
