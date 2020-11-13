@@ -43,7 +43,7 @@ const ServiceCard = ({
     }
 
     const profit =
-      service.finance_price -
+      +service.finance_price -
       service.finance_assistants -
       service.finance_consumables
 
