@@ -13,8 +13,7 @@ import {
   TitleBlock,
 } from '../components/createComponents'
 import ScrollCardList from '../components/ScrollCardList'
-import ServiceCard from '../components/Cards/ServiceCard'
-import ClientCard from '../components/Cards/ClientCard'
+import { ClientCard, ServiceCard } from '../components/Cards'
 import { useTheme } from '@react-navigation/native'
 import Button from '../components/Button'
 import { Ionicons } from '@expo/vector-icons'

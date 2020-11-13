@@ -14,7 +14,7 @@ import { updateServicePartially } from '../store/actions/service'
 import { useTheme } from '@react-navigation/native'
 import { ModalDeleteService, ModalDeleteEvent } from '../components/Modals'
 import { TextBlock } from '../components/infoComponents'
-import EventCard from '../components/Cards/EventCard'
+import { EventCard } from '../components/Cards'
 import { TitleBlock } from '../components/createComponents'
 
 const ServiceScreen = ({ navigation, route }) => {

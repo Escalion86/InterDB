@@ -12,7 +12,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { addFinance, deleteAllFinances } from '../store/actions/finance'
 import { dbGenerator } from '../db/dbTemplate'
-import FinanceCard from '../components/Cards/FinanceCard'
+import { FinanceCard } from '../components/Cards'
 import { useTheme } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import {

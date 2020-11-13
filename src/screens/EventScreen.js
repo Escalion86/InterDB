@@ -7,9 +7,7 @@ import { formatDate, formatTime } from '../helpers/date'
 import { ModalDeleteEvent } from '../components/Modals'
 import { TextBlock } from '../components/infoComponents'
 import { TitleBlock } from '../components/createComponents'
-import ServiceCard from '../components/Cards/ServiceCard'
-import ClientCard from '../components/Cards/ClientCard'
-import FinanceCard from '../components/Cards/FinanceCard'
+import { ClientCard, ServiceCard, FinanceCard } from '../components/Cards'
 
 import * as Calendar from 'expo-calendar'
 

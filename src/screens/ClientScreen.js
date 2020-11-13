@@ -16,7 +16,7 @@ import { TextBlock, ContactIcon } from '../components/infoComponents'
 import { contactsIcons } from '../db/dependencies'
 import { formatBirthday } from '../helpers/date'
 import { ModalDeleteClient, ModalDeleteEvent } from '../components/Modals'
-import EventCard from '../components/Cards/EventCard'
+import { EventCard } from '../components/Cards'
 
 const ClientScreen = ({ navigation, route }) => {
   const client =
