@@ -62,7 +62,7 @@ export class DB {
         // Если колонка должна быть, но ее нет, то создаем
         console.log(`Создана колонка '${colName}' в таблице ${table}`)
         await DB.addColumn(
-          'events',
+          table,
           colName,
           columnsToBe[i].db_type,
           columnsToBe[i].not_null,
