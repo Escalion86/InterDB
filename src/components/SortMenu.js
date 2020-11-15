@@ -7,7 +7,7 @@ import {
 } from 'react-native-popup-menu'
 import { useTheme } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 import { fontSize } from '../theme'
 import { Item } from 'react-navigation-header-buttons'
 
@@ -16,7 +16,7 @@ const SortMenu = ({
   onClickItem = () => {},
   activeValues = [],
 }) => {
-  const { Popover } = renderers
+  // const { Popover } = renderers
   const { colors } = useTheme()
 
   let sortMenu = null
@@ -64,6 +64,24 @@ const SortMenu = ({
     )
   }
 
+  const Title = ({ children, style = {} }) => {
+    return (
+      <Text
+        style={{
+          ...styles.title,
+          borderBottomColor: colors.border,
+          borderTopWidth: 1,
+          borderTopColor: colors.border,
+          backgroundColor: colors.active,
+          color: colors.text,
+          ...style,
+        }}
+      >
+        {children}
+      </Text>
+    )
+  }
+
   const SortBlocks = ({ sortList }) => {
     return sortList.map((sortListItem, index) => {
       const items = sortListItem.items.map((item, index) => (
@@ -76,24 +94,13 @@ const SortMenu = ({
 
       return (
         <View key={'sortBlock' + index}>
-          <Text
+          <Title
             style={{
-              fontSize: fontSize.medium,
-              fontWeight: 'bold',
-              borderBottomWidth: 1,
-              borderBottomColor: colors.border,
               borderTopWidth: index > 0 ? 1 : 0,
-              borderTopColor: colors.border,
-              backgroundColor: colors.active,
-              color: colors.text,
-              height: 30,
-              paddingHorizontal: 8,
-              textAlign: 'center',
-              textAlignVertical: 'center',
             }}
           >
             {sortListItem.title}
-          </Text>
+          </Title>
           {items}
         </View>
       )
@@ -105,8 +112,8 @@ const SortMenu = ({
       // name="sorting"
       // style={styles.finance}
       ref={srtMenu}
-      renderer={Popover}
-      rendererProps={{ preferredPlacement: 'bottom' }}
+      renderer={renderers.Popover}
+      rendererProps={{ placement: 'bottom' }}
     >
       <MenuTrigger>
         <Item
@@ -128,6 +135,14 @@ const SortMenu = ({
         }}
       >
         <View>
+          <Title
+            style={{
+              borderTopWidth: 0,
+              fontSize: fontSize.big,
+            }}
+          >
+            Сортировка
+          </Title>
           <SortBlocks sortList={sortList} />
         </View>
       </MenuOptions>
@@ -136,3 +151,15 @@ const SortMenu = ({
 }
 
 export default SortMenu
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: fontSize.medium,
+    fontWeight: 'bold',
+    borderBottomWidth: 1,
+    height: 30,
+    paddingHorizontal: 8,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+})
