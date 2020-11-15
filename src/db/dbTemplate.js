@@ -1,5 +1,3 @@
-// import { addEventNotification } from "../helpers/notifications"
-
 let dbTemplate = ['events', 'clients', 'services']
 
 const rndArray = (array) => {
@@ -212,6 +210,7 @@ export const dbGenerator = (
         facebook: '',
         avatar: '',
         create_date: '',
+        town: town,
       }
     }
     case 'service': {
@@ -626,6 +625,15 @@ export default dbTemplate = {
       type: 'string',
       db_type: 'TEXT',
       not_null: false,
+      default: '',
+      db_default: '',
+    },
+    {
+      db_name: 'town',
+      desc: 'Город проживания',
+      type: 'text',
+      db_type: 'TEXT',
+      not_null: true,
       default: '',
       db_default: '',
     },

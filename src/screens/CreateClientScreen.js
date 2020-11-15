@@ -178,6 +178,14 @@ const CreateClientScreen = ({ navigation, route }) => {
         onMonthChange={(value) => setClientItem({ birthday_month: value })}
         onYearChange={(value) => setClientItem({ birthday_year: value })}
       />
+      <TextInputBlock
+        title="Город"
+        value={newClient.town}
+        onChangeText={(text) => setClientItem({ town: text })}
+        // keyboardType="numeric"
+        // postfix="&#8381;"
+        // placeholder="Иванов Иван Иванович"
+      />
       <TitleBlock title="Связь" />
       <TextInputBlock
         title="Телефон"

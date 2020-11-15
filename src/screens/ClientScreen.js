@@ -150,6 +150,7 @@ const ClientScreen = ({ navigation, route }) => {
             big
           />
           {birthday ? <TextBlock text={birthday} center /> : null}
+          {client.town ? <TextBlock text={client.town} center /> : null}
         </View>
       </View>
 
