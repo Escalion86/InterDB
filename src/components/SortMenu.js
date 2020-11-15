@@ -53,6 +53,7 @@ const SortMenu = ({
             style={{
               fontSize: fontSize.medium,
               color: colors.text,
+              paddingRight: 8,
               // width: 150,
             }}
           >
