@@ -1,7 +1,5 @@
-import store from '../store'
-
-const isDeveloper = () => {
-  return store.getState().app.dev && store.getState().user.tariff === 4
+const isDeveloper = (user = { dev: false }, app = { tariff: 0 }) => {
+  return app.dev && user.tariff === 4
 }
 
 export default isDeveloper

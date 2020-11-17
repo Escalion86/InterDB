@@ -34,8 +34,10 @@ const ClientsScreen = ({ navigation, route }) => {
 
   let clients = useSelector((state) => state.client.clients)
   const loading = useSelector((state) => state.client.loading)
+  const user = useSelector((state) => state.user)
+  const app = useSelector((state) => state.app)
 
-  const dev = isDeveloper()
+  const dev = isDeveloper(user, app)
 
   const [modal, setModal] = useState(null)
   const [filter, setFilter] = useState('')

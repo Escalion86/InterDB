@@ -32,7 +32,10 @@ const sortList = [
 const FinancesScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
 
-  const dev = isDeveloper()
+  const user = useSelector((state) => state.user)
+  const app = useSelector((state) => state.app)
+
+  const dev = isDeveloper(user, app)
 
   const { colors } = useTheme()
 

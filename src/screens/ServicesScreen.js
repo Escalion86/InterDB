@@ -43,7 +43,10 @@ const sortList = [
 const ServicesScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
 
-  const dev = isDeveloper()
+  const user = useSelector((state) => state.user)
+  const app = useSelector((state) => state.app)
+
+  const dev = isDeveloper(user, app)
 
   const showArchvedOnly = route.name === 'Archive'
 

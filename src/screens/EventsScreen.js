@@ -287,8 +287,10 @@ const EventsScreen = ({ navigation, route }) => {
   const clients = useSelector((state) => state.client.clients)
   // const finances = useSelector((state) => state.finance.finances)
   const loading = useSelector((state) => state.event.loading)
+  const user = useSelector((state) => state.user)
+  const app = useSelector((state) => state.app)
 
-  const dev = isDeveloper()
+  const dev = isDeveloper(user, app)
 
   const { tutorial, toggleTutorial } = useContext(AppContext)
 
