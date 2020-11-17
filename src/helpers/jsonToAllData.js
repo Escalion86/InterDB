@@ -16,6 +16,7 @@ const jsonToAllData = (json) => {
       const event = json[key]
       if (event['Тип'] === 'Выступление') {
         if (event['Данные транзакций'] !== '') {
+          let outcomeExist = false
           const financesStrArray = String(event['Данные транзакций']).split('|')
           for (let i = 0; i < financesStrArray.length; i++) {
             const financeTemp = financesStrArray[i].split('&')
@@ -26,33 +27,38 @@ const jsonToAllData = (json) => {
               date: Date.parse(financeTemp[1]),
               eventTempId: key,
             })
+            if (financeTemp[0] !== 'Доход') {
+              outcomeExist = true
+            }
           }
-          if (event['Дорога'] !== '0') {
-            finances.push({
-              ...defaultFinance,
-              type: 'outcome',
-              sum: event['Дорога'],
-              date: finances[finances.length - 1].date,
-              eventTempId: key,
-            })
-          }
-          if (event['Ассистентке'] !== '') {
-            finances.push({
-              ...defaultFinance,
-              type: 'outcome',
-              sum: parseInt(event['Ассистентке']),
-              date: finances[finances.length - 1].date,
-              eventTempId: key,
-            })
-          }
-          if (event['Организатору'] !== '') {
-            finances.push({
-              ...defaultFinance,
-              type: 'outcome',
-              sum: parseInt(event['Организатору']),
-              date: finances[finances.length - 1].date,
-              eventTempId: key,
-            })
+          if (!outcomeExist) {
+            if (event['Дорога'] !== '0') {
+              finances.push({
+                ...defaultFinance,
+                type: 'outcome',
+                sum: event['Дорога'],
+                date: finances[finances.length - 1].date,
+                eventTempId: key,
+              })
+            }
+            if (event['Ассистентка'] && event['Ассистентке'] !== '') {
+              finances.push({
+                ...defaultFinance,
+                type: 'outcome',
+                sum: parseInt(event['Ассистентке']),
+                date: finances[finances.length - 1].date,
+                eventTempId: key,
+              })
+            }
+            if (event['Организатору'] !== '') {
+              finances.push({
+                ...defaultFinance,
+                type: 'outcome',
+                sum: parseInt(event['Организатору']),
+                date: finances[finances.length - 1].date,
+                eventTempId: key,
+              })
+            }
           }
         }
 
