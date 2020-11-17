@@ -425,7 +425,7 @@ const EventsScreen = ({ navigation, route }) => {
   })
 
   years = years
-    .sort((a, b) => (a.date > b.date ? 1 : -1))
+    .sort((a, b) => (a < b ? 1 : -1))
     .map((year) => {
       return { label: year + '', value: year }
     })
