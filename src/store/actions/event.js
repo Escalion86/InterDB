@@ -1,9 +1,11 @@
 import {
   LOAD_EVENTS,
   ADD_EVENT,
+  ADD_EVENTS,
   UPDATE_EVENT,
   UPDATE_EVENT_PARTIALLY,
   LOADING_EVENTS,
+  LOADING_EVENTS_COMPLITE,
   DELETE_EVENT,
   DELETE_ALL_EVENTS,
   SET_EVENT_STATUS,
@@ -22,6 +24,7 @@ import {
 
 export const loadEvents = () => {
   return async (dispatch) => {
+    dispatch(loadingEvents())
     const events = await DB.getTableData('events')
     dispatch({
       type: LOAD_EVENTS,
@@ -33,6 +36,12 @@ export const loadEvents = () => {
 export const loadingEvents = () => {
   return {
     type: LOADING_EVENTS,
+  }
+}
+
+export const loadingEventsComplite = () => {
+  return {
+    type: LOADING_EVENTS_COMPLITE,
   }
 }
 
@@ -57,55 +66,43 @@ export const loadingEventComplite = (id) => {
   }
 }
 
+export const prepareAndAddEventToDB = async (event) => {
+  // Добавляем напоминание
+  const notificationId = await addEventNotification(event)
+  event.notification_id = notificationId
+  event.create_date = Math.floor(new Date() / 1000)
+  // Добавляем запись в календарь
+  const calendarId = await addCalendarEvent(event)
+  event.calendar_id = calendarId
+
+  const eventId = await DB.addEvent(event)
+  event.id = eventId
+  return await event
+}
+
 export const addEvent = (event) => {
   return async (dispatch) => {
     await dispatch(loadingEvents())
-    // Добавляем напоминание
-    const notificationId = await addEventNotification(event)
-    event.notification_id = notificationId
-    event.create_date = Math.floor(new Date() / 1000)
-    // Добавляем запись в календарь
-    const calendarId = await addCalendarEvent(event)
-    event.calendar_id = calendarId
+    event = await prepareAndAddEventToDB(event)
 
-    // const storeState = store.getState()
-    // if (storeState.app.calendarSyncTurnOn) {
-    //   const calendarId = storeState.app.calendarId
-    //   const service = storeState.service.services.find((service) => {
-    //     return service.id === event.service
-    //   })
-    //   const calendarEventId = await Calendar.createEventAsync(calendarId, {
-    //     title: service ? service.name : 'Заказ неизвестной услуги',
-    //     startDate: event.date,
-    //     endDate: event.date + event.timing_duration * 60000, // 60 * 1000
-    //     location: `${event.location_town}, ${event.location_street} ${event.location_house}`,
-    //     notes: event.comment,
-    //     allDay: false,
-    //     alarms: [
-    //       {
-    //         relativeOffset:
-    //           storeState.app.notificationBeforeEvent +
-    //           storeState.app.notificationAddPrepareRoadTime
-    //             ? -(event.timing_road + event.timing_preparetime)
-    //             : 0,
-    //         method: Calendar.AlarmMethod.DEFAULT,
-    //       },
-    //       // {
-    //       //   relativeOffset: -event.timing_preparetime,
-    //       //   method: Calendar.AlarmMethod.DEFAULT,
-    //       // },
-    //     ],
-    //   })
-    //   event.calendar_id = calendarEventId
-    // } else {
-    //   event.calendar_id = ''
-    // }
-
-    const eventId = await DB.addEvent(event)
-    event.id = eventId
-    dispatch({
+    await dispatch({
       type: ADD_EVENT,
       event,
+    })
+  }
+}
+
+export const addEvents = (events, noPrepare = false) => {
+  return async (dispatch) => {
+    if (!noPrepare) {
+      await dispatch(loadingEvents())
+      for (let i = 0; i < events.length; i++) {
+        events[i] = prepareAndAddEventToDB(events[i])
+      }
+    }
+    dispatch({
+      type: ADD_EVENTS,
+      events,
     })
   }
 }

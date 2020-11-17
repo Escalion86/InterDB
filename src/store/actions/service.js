@@ -1,9 +1,11 @@
 import {
   LOAD_SERVICES,
   ADD_SERVICE,
+  ADD_SERVICES,
   UPDATE_SERVICE,
   UPDATE_SERVICE_PARTIALLY,
   LOADING_SERVICES,
+  LOADING_SERVICES_COMPLITE,
   DELETE_SERVICE,
   DELETE_ALL_SERVICES,
   DELETING_SERVICE,
@@ -14,6 +16,7 @@ import { DB } from '../../db/db'
 
 export const loadServices = () => {
   return async (dispatch) => {
+    dispatch(loadingServices())
     const services = await DB.getTableData('services')
     dispatch({
       type: LOAD_SERVICES,
@@ -49,16 +52,43 @@ export const loadingServiceComplite = (id) => {
   }
 }
 
+export const loadingServicesComplite = (id) => {
+  return {
+    type: LOADING_SERVICES_COMPLITE,
+    id,
+  }
+}
+
+export const prepareAndAddServiceToDB = async (service) => {
+  service.create_date = Math.floor(new Date() / 1000)
+  const serviceId = await DB.addService(service)
+  service.id = serviceId
+  return await service
+}
+
 export const addService = (service) => {
   return async (dispatch) => {
     await dispatch(loadingServices())
-    service.create_date = Math.floor(new Date() / 1000)
-    const serviceId = await DB.addService(service)
-    service.id = serviceId
+    service = await prepareAndAddServiceToDB(service)
 
     dispatch({
       type: ADD_SERVICE,
       service,
+    })
+  }
+}
+
+export const addServices = (services, noPrepare = false) => {
+  return async (dispatch) => {
+    if (!noPrepare) {
+      await dispatch(loadingServices())
+      for (let i = 0; i < services.length; i++) {
+        services[i] = prepareAndAddServiceToDB(services[i])
+      }
+    }
+    dispatch({
+      type: ADD_SERVICES,
+      services,
     })
   }
 }

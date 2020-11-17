@@ -1,8 +1,10 @@
 import {
   LOAD_CLIENTS,
   ADD_CLIENT,
+  ADD_CLIENTS,
   UPDATE_CLIENT,
-  LOADING,
+  LOADING_CLIENTS,
+  LOADING_CLIENTS_COMPLITE,
   DELETE_CLIENT,
   DELETE_ALL_CLIENTS,
   DELETING_CLIENT,
@@ -33,11 +35,19 @@ export const clientReducer = (state = initialState, action) => {
         clients,
         loading: false,
       }
-    case LOADING:
+
+    case LOADING_CLIENTS:
       return {
         ...state,
         loading: true,
       }
+
+    case LOADING_CLIENTS_COMPLITE:
+      return {
+        ...state,
+        loading: false,
+      }
+
     case LOADING_CLIENT:
       clients = state.clients.map((client) => {
         if (client.id === action.id) {
@@ -69,6 +79,14 @@ export const clientReducer = (state = initialState, action) => {
         loading: false,
         clients: [{ ...action.client, loading: false }, ...state.clients],
       }
+
+    case ADD_CLIENTS:
+      return {
+        ...state,
+        loading: false,
+        clients: [...action.clients, ...state.clients],
+      }
+
     case DELETE_ALL_CLIENTS:
       return {
         ...state,

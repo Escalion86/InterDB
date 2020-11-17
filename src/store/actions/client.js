@@ -1,9 +1,11 @@
 import {
   LOAD_CLIENTS,
   ADD_CLIENT,
+  ADD_CLIENTS,
   UPDATE_CLIENT,
   UPDATE_CLIENT_PARTIALLY,
   LOADING_CLIENTS,
+  LOADING_CLIENTS_COMPLITE,
   DELETE_CLIENT,
   DELETE_ALL_CLIENTS,
   DELETING_CLIENT,
@@ -50,6 +52,7 @@ export const refreshBirthdayNotifications = (
 
 export const loadClients = () => {
   return async (dispatch) => {
+    await dispatch(loadingClients())
     const clients = await DB.getTableData('clients')
     dispatch({
       type: LOAD_CLIENTS,
@@ -61,6 +64,12 @@ export const loadClients = () => {
 export const loadingClients = () => {
   return {
     type: LOADING_CLIENTS,
+  }
+}
+
+export const loadingClientsComplite = () => {
+  return {
+    type: LOADING_CLIENTS_COMPLITE,
   }
 }
 
@@ -85,19 +94,40 @@ export const loadingClientComplite = (id) => {
   }
 }
 
+export const prepareAndAddClientToDB = async (client) => {
+  const notificationId = await addClientNotification(client)
+  client.notification_id = notificationId
+  const calendarId = await addCalendarClientBirthday(client)
+  client.calendar_id = calendarId
+  client.create_date = Math.floor(new Date() / 1000)
+  const clientId = await DB.addClient(client)
+  client.id = clientId
+  return await client
+}
+
 export const addClient = (client) => {
   return async (dispatch) => {
     await dispatch(loadingClients())
-    const notificationId = await addClientNotification(client)
-    client.notification_id = notificationId
-    const calendarId = await addCalendarClientBirthday(client)
-    client.calendar_id = calendarId
-    client.create_date = Math.floor(new Date() / 1000)
-    const clientId = await DB.addClient(client)
-    client.id = clientId
+    client = await prepareAndAddClientToDB(client)
+
     dispatch({
       type: ADD_CLIENT,
       client,
+    })
+  }
+}
+
+export const addClients = (clients, noPrepare = false) => {
+  return async (dispatch) => {
+    if (!noPrepare) {
+      await dispatch(loadingClients())
+      for (let i = 0; i < clients.length; i++) {
+        clients[i] = prepareAndAddClientToDB(clients[i])
+      }
+    }
+    dispatch({
+      type: ADD_CLIENTS,
+      clients,
     })
   }
 }

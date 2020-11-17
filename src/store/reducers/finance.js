@@ -1,10 +1,15 @@
 import {
   LOAD_FINANCES,
+  LOADING_FINANCES,
+  LOADING_FINANCES_COMPLITE,
   ADD_FINANCE,
+  ADD_FINANCES,
   UPDATE_FINANCE,
   DELETE_FINANCE,
   DELETE_ALL_FINANCES,
   DELETING_FINANCE,
+  LOADING_FINANCE,
+  LOADING_FINANCE_COMPLITE,
 } from '../types'
 
 const initialState = {
@@ -29,10 +34,58 @@ export const financeReducer = (state = initialState, action) => {
         loading: false,
       }
 
+    case LOADING_FINANCES:
+      return {
+        ...state,
+        loading: true,
+      }
+
+    case LOADING_FINANCES_COMPLITE:
+      return {
+        ...state,
+        loading: false,
+      }
+
+    case LOADING_FINANCE:
+      finances = state.finances.map((finance) => {
+        if (finance.id === action.id) {
+          finance.loading = true
+        }
+        return finance
+      })
+
+      return {
+        ...state,
+        finances,
+      }
+
+    // TODO возможно можно оптимизировать
+    case LOADING_FINANCE_COMPLITE:
+      finances = state.finances.map((finance) => {
+        if (finance.id === action.id) {
+          finance.loading = false
+          finance.deleting = false
+        }
+        return finance
+      })
+
+      return {
+        ...state,
+        finances,
+      }
+
     case ADD_FINANCE:
       return {
         ...state,
+        loading: false,
         finances: [action.finance, ...state.finances],
+      }
+
+    case ADD_FINANCES:
+      return {
+        ...state,
+        loading: false,
+        finances: [...action.finances, ...state.finances],
       }
 
     case UPDATE_FINANCE:

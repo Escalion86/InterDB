@@ -1,15 +1,21 @@
 import {
   LOAD_FINANCES,
+  LOADING_FINANCES,
+  LOADING_FINANCES_COMPLITE,
   ADD_FINANCE,
+  ADD_FINANCES,
   UPDATE_FINANCE,
   DELETE_FINANCE,
   DELETE_ALL_FINANCES,
   DELETING_FINANCE,
+  LOADING_FINANCE,
+  LOADING_FINANCE_COMPLITE,
 } from '../types'
 import { DB } from '../../db/db'
 
 export const loadFinances = () => {
   return async (dispatch) => {
+    dispatch(loadingFinances())
     const finances = await DB.getTableData('finances')
     dispatch({
       type: LOAD_FINANCES,
@@ -18,15 +24,62 @@ export const loadFinances = () => {
   }
 }
 
+export const loadingFinance = (id) => {
+  return {
+    type: LOADING_FINANCE,
+    id,
+  }
+}
+
+export const loadingFinanceComplite = (id) => {
+  return {
+    type: LOADING_FINANCE_COMPLITE,
+    id,
+  }
+}
+
+export const loadingFinances = () => {
+  return {
+    type: LOADING_FINANCES,
+  }
+}
+
+export const loadingFinancesComplite = () => {
+  return {
+    type: LOADING_FINANCES_COMPLITE,
+  }
+}
+
+export const prepareAndAddFinanceToDB = async (finance) => {
+  finance.create_date = Math.floor(new Date() / 1000)
+  const financeId = await DB.addFinance(finance)
+  finance.id = financeId
+  return await finance
+}
+
 export const addFinance = (finance) => {
   return async (dispatch) => {
-    finance.create_date = Math.floor(new Date() / 1000)
-    const financeId = await DB.addFinance(finance)
-    finance.id = financeId
+    await dispatch(loadingFinances())
+    finance = await prepareAndAddFinanceToDB(finance)
 
     dispatch({
       type: ADD_FINANCE,
       finance,
+    })
+  }
+}
+
+export const addFinances = (finances, noPrepare = false) => {
+  return async (dispatch) => {
+    if (!noPrepare) {
+      await dispatch(loadingFinances())
+      for (let i = 0; i < finances.length; i++) {
+        finances[i] = prepareAndAddFinanceToDB(finances[i])
+      }
+    }
+    dispatch({
+      type: ADD_FINANCES,
+      finances,
     })
   }
 }

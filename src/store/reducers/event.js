@@ -1,8 +1,10 @@
 import {
   LOAD_EVENTS,
   ADD_EVENT,
+  ADD_EVENTS,
   UPDATE_EVENT,
-  LOADING,
+  LOADING_EVENTS,
+  LOADING_EVENTS_COMPLITE,
   DELETE_EVENT,
   DELETE_ALL_EVENTS,
   DELETING_EVENT,
@@ -35,11 +37,19 @@ export const eventReducer = (state = initialState, action) => {
         events,
         loading: false,
       }
-    case LOADING:
+
+    case LOADING_EVENTS:
       return {
         ...state,
         loading: true,
       }
+
+    case LOADING_EVENTS_COMPLITE:
+      return {
+        ...state,
+        loading: false,
+      }
+
     case LOADING_EVENT:
       events = state.events.map((event) => {
         if (event.id === action.id) {
@@ -65,12 +75,21 @@ export const eventReducer = (state = initialState, action) => {
         ...state,
         events,
       }
+
     case ADD_EVENT:
       return {
         ...state,
         loading: false,
         events: [{ ...action.event, loading: false }, ...state.events],
       }
+
+    case ADD_EVENTS:
+      return {
+        ...state,
+        loading: false,
+        events: [...action.events, ...state.events],
+      }
+
     case DELETE_ALL_EVENTS:
       return {
         ...state,

@@ -1,8 +1,10 @@
 import {
   LOAD_SERVICES,
   ADD_SERVICE,
+  ADD_SERVICES,
   UPDATE_SERVICE,
-  LOADING,
+  LOADING_SERVICES,
+  LOADING_SERVICES_COMPLITE,
   DELETE_SERVICE,
   DELETE_ALL_SERVICES,
   DELETING_SERVICE,
@@ -33,11 +35,18 @@ export const serviceReducer = (state = initialState, action) => {
         services,
         loading: false,
       }
-    case LOADING:
+    case LOADING_SERVICES:
       return {
         ...state,
         loading: true,
       }
+
+    case LOADING_SERVICES_COMPLITE:
+      return {
+        ...state,
+        loading: false,
+      }
+
     case LOADING_SERVICE:
       services = state.services.map((service) => {
         if (service.id === action.id) {
@@ -69,6 +78,14 @@ export const serviceReducer = (state = initialState, action) => {
         loading: false,
         services: [{ ...action.service, loading: false }, ...state.services],
       }
+
+    case ADD_SERVICES:
+      return {
+        ...state,
+        loading: false,
+        services: [...action.services, ...state.services],
+      }
+
     case DELETE_ALL_SERVICES:
       return {
         ...state,
