@@ -138,7 +138,8 @@ const SortMenu = ({
           <Title
             style={{
               borderTopWidth: 0,
-              fontSize: fontSize.big,
+              // fontSize: fontSize.big,
+              fontWeight: 'bold',
             }}
           >
             Сортировка
@@ -155,7 +156,7 @@ export default SortMenu
 const styles = StyleSheet.create({
   title: {
     fontSize: fontSize.medium,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     borderBottomWidth: 1,
     height: 30,
     paddingHorizontal: 8,
