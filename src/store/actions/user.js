@@ -8,8 +8,8 @@ import {
 
 import * as Google from 'expo-google-app-auth'
 import * as GoogleSignIn from 'expo-google-sign-in'
-// import * as Device from 'expo-device'
-import isExpo from '../../helpers/isExpo'
+import * as Device from 'expo-device'
+// import isExpo from '../../helpers/isExpo'
 // import * as GoogleSignIn from 'expo-google-sign-in'
 
 import firebase from 'firebase'
@@ -18,7 +18,7 @@ export const signInWithGoogleAsync = async (dispatch) => {
   try {
     let result = null
     let googleUser = {}
-    if (/* Device.isDevice &&  */ !isExpo) {
+    if (Device.isDevice) {
       await GoogleSignIn.initAsync({
         webClientId:
           '802670153747-tpb9rcteibhos52fgs8n4nmlqrbsf07v.apps.googleusercontent.com',
@@ -164,7 +164,7 @@ export const userSignOut = (uid) => {
       .ref('/users/' + uid)
       .off('value')
     firebase.auth().signOut()
-    if (!isExpo) {
+    if (!Device.isDevice) {
       GoogleSignIn.signOutAsync()
     }
     // } else {
