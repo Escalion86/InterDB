@@ -14,6 +14,7 @@ const DevScreen = ({ navigation, route }) => {
   const dev = useSelector((state) => state.app.dev)
   const [tables, setTables] = useState([])
   const [selectedTable, setSelectedTable] = useState(null)
+  const [devMode, setDevMode] = useState(dev)
 
   const dispatch = useDispatch()
 
@@ -30,8 +31,11 @@ const DevScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <SwitchBlock
         title="Режим разработчика"
-        value={dev}
-        onValueChange={(value) => dispatch(setSettings({ dev: value }))}
+        value={devMode}
+        onValueChange={(value) => {
+          setDevMode(value)
+          dispatch(setSettings({ dev: value }))
+        }}
       />
       <Button
         title="Удалить все оповещения"
