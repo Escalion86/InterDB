@@ -128,6 +128,7 @@ const EventCard = ({
       outcomeSum
 
     const financeSumToColor = (sum, profit) => {
+      if (sum === 0 && profit === 0) return 'gray'
       if (sum < profit) return 'orange'
       if (sum === profit) return 'green'
       if (sum > profit) return 'blue'
