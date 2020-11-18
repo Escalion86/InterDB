@@ -1,5 +1,5 @@
 import React, { useState /* , useContext */ } from 'react'
-// import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
   Text,
@@ -7,7 +7,7 @@ import {
   Linking,
   Image,
   ScrollView,
-  // ToastAndroid,
+  ToastAndroid,
 } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -17,23 +17,27 @@ import { ContactIcon } from '../components/infoComponents'
 import { fontSize } from '../theme'
 import { ModalChangeLog } from '../components/Modals'
 import * as appJson from '../../app.json'
+import { setSettings } from '../store/actions/app'
 
 const AboutScreen = ({ navigation, route }) => {
   const { colors } = useTheme()
   // const { toggleDev, dev } = useContext(AppContext)
 
-  // const [startToOpenDev, setStartToOpenDev] = useState(null)
+  const [startToOpenDev, setStartToOpenDev] = useState(null)
   const [modal, setModal] = useState(null)
+  const dev = useSelector((state) => state.app.dev)
 
-  // const endToOpenDev = () => {
-  //   if (Math.floor((new Date() - startToOpenDev) / 1000) >= 5) {
-  //     ToastAndroid.show(
-  //       `Режим разработчика ${dev ? 'деактивирован' : 'активирован'}`,
-  //       ToastAndroid.SHORT
-  //     )
-  //     toggleDev()
-  //   }
-  // }
+  const dispatch = useDispatch()
+
+  const endToOpenDev = () => {
+    if (Math.floor((new Date() - startToOpenDev) / 1000) >= 5) {
+      ToastAndroid.show(
+        `Режим разработчика ${dev ? 'деактивирован' : 'активирован'}`,
+        ToastAndroid.SHORT
+      )
+      dispatch(setSettings({ dev: !dev }))
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -114,8 +118,8 @@ const AboutScreen = ({ navigation, route }) => {
           </View>
           <TouchableOpacity
             activeOpacity={1}
-            // onPressIn={() => setStartToOpenDev(new Date())}
-            // onPressOut={() => endToOpenDev()}
+            onPressIn={() => setStartToOpenDev(new Date())}
+            onPressOut={() => endToOpenDev()}
           >
             <Image
               style={{
