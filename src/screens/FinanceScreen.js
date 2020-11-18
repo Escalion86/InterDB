@@ -98,7 +98,6 @@ const FinanceScreen = ({ navigation, route }) => {
           navigation.navigate('Event', { eventId: event.id })
         }}
         listMode={true}
-        showClient={false}
       />
       {modal}
     </ScrollView>
