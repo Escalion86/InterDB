@@ -163,6 +163,8 @@ const EventCard = ({
     )
 
     console.log('render EventCard id: ' + event.id)
+    // const height = null
+    const height = showService && showAdress && event.location_town ? 152 : 122
 
     return (
       <CardContainer
@@ -186,7 +188,7 @@ const EventCard = ({
         }
         onRightOpen={onDelete}
       >
-        <View style={styles.card}>
+        <View style={{ ...styles.card, height: height }}>
           <View style={styles.left}>
             <IconMenu
               event={event}
@@ -219,7 +221,12 @@ const EventCard = ({
               </View>
             ) : null}
             {showAdress && event.location_town ? (
-              <View style={styles.carddesc}>
+              <View
+                style={{
+                  ...styles.carddesc,
+                  borderTopWidth: showService ? 1 : 0,
+                }}
+              >
                 <Text style={styles.carddesctext}>
                   {`${event.location_town}${
                     event.location_street ? `, ${event.location_street}` : ''
@@ -267,7 +274,13 @@ const EventCard = ({
             ) : null}
 
             {showClient ? (
-              <View style={styles.carddesc}>
+              <View
+                style={{
+                  ...styles.carddesc,
+                  borderTopWidth:
+                    showService || (showAdress && event.location_town) ? 1 : 0,
+                }}
+              >
                 <Text style={styles.carddesctext}>
                   {client
                     ? `${client.surname} ${client.name} ${client.thirdname}`.trim()
@@ -289,7 +302,7 @@ const EventCard = ({
               </Text>
             </View>
             <Menu
-              // style={styles.cardtiming}
+              style={{ flex: 1, minHeight: 34 }}
               renderer={Popover}
               rendererProps={{ preferredPlacement: 'left' }}
             >
@@ -326,7 +339,7 @@ const EventCard = ({
               </MenuOptions>
             </Menu>
             <Menu
-              style={styles.finance}
+              style={{ flex: 1, minHeight: 34 }}
               renderer={Popover}
               rendererProps={{ preferredPlacement: 'left' }}
             >
@@ -401,13 +414,6 @@ const stylesFactory = ({ colors }) =>
       justifyContent: 'space-around',
       borderRightColor: colors.border,
     },
-    carddate: {
-      flex: 1,
-      minHeight: 36,
-      padding: 5,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
     // cardtiming: {
     //   flex: 1,
     //   minHeight: 36,
@@ -435,7 +441,7 @@ const stylesFactory = ({ colors }) =>
     },
     cardtitle: {
       fontFamily: 'open-bold',
-      fontSize: fontSize.medium,
+      fontSize: fontSize.small,
       color: colors.text,
       textAlign: 'center',
     },
@@ -454,7 +460,7 @@ const stylesFactory = ({ colors }) =>
       padding: 5,
       justifyContent: 'center',
       alignItems: 'center',
-      borderTopWidth: 1,
+      // borderTopWidth: 1,
       borderColor: colors.border,
     },
     center: {
@@ -467,11 +473,18 @@ const stylesFactory = ({ colors }) =>
       textAlign: 'right',
       color: colors.text,
     },
+    carddate: {
+      flex: 1,
+      minHeight: 36,
+      padding: 5,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     profit: {
       // flex: 1,
       fontSize: fontSize.small,
       width: '100%',
-      height: 44,
+      height: '100%',
       textAlignVertical: 'center',
       textAlign: 'center',
       color: colors.money,
@@ -483,12 +496,13 @@ const stylesFactory = ({ colors }) =>
       backgroundColor: colors.active,
     },
     timing: {
-      flex: 1,
+      width: '100%',
+      height: '100%',
       color: colors.text,
       textAlignVertical: 'center',
       textAlign: 'center',
       fontSize: fontSize.small,
-      minHeight: 35,
+      minHeight: 34,
       padding: 5,
       borderColor: colors.border,
       borderTopWidth: 1,
