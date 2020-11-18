@@ -32,11 +32,11 @@ const jsonToAllData = (json) => {
             }
           }
           if (!outcomeExist) {
-            if (event['Дорога'] !== '0') {
+            if (parseInt(event['Дорога']) !== 0) {
               finances.push({
                 ...defaultFinance,
                 type: 'outcome',
-                sum: event['Дорога'],
+                sum: parseInt(event['Дорога']),
                 date: finances[finances.length - 1].date,
                 eventTempId: key,
               })
