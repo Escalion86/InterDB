@@ -6,6 +6,8 @@ import {
   USER_SIGNING_IN_CANCEL,
 } from '../types'
 
+import { setSettings } from './app'
+
 import * as Google from 'expo-google-app-auth'
 import * as GoogleSignIn from 'expo-google-sign-in'
 import * as Device from 'expo-device'
@@ -59,6 +61,7 @@ export const signInWithGoogleAsync = async (dispatch) => {
     dispatch({
       type: USER_SIGNING_IN_CANCEL,
     })
+    alert('Ошибка авторизации: ' + e)
     console.log('Ошибка авторизации')
     // return { error: true }
   }
@@ -85,6 +88,7 @@ const onSignIn = ({ uid, idToken, accessToken }) => {
   let user = {}
   // console.log('Google Auth Response', googleUser)
   // We need to register an Observer on Firebase Auth to make sure auth is initialized.
+
   var unsubscribe = firebase.auth().onAuthStateChanged((firebaseUser) => {
     unsubscribe()
     // Check if we are already signed-in Firebase with the correct user.
@@ -96,7 +100,6 @@ const onSignIn = ({ uid, idToken, accessToken }) => {
         accessToken
       )
       // Sign in with credential from the Google user.
-      // console.log('Подключаемся к FireBase')
       firebase
         .auth()
         .signInWithCredential(credential)
@@ -130,6 +133,7 @@ const onSignIn = ({ uid, idToken, accessToken }) => {
         })
         .catch((error) => {
           user = { error }
+          alert('Ошибка firebase:' + error)
           // ...
         })
     } else {
@@ -150,6 +154,9 @@ export const userSignIn = () => {
 
 export const userSignedIn = (user) => {
   return async (dispatch) => {
+    if (user.tariff !== 4) {
+      dispatch(setSettings({ dev: false }))
+    }
     dispatch({
       type: USER_SIGNED_IN,
       user,
@@ -164,7 +171,7 @@ export const userSignOut = (uid) => {
       .ref('/users/' + uid)
       .off('value')
     firebase.auth().signOut()
-    if (!Device.isDevice) {
+    if (Device.isDevice) {
       GoogleSignIn.signOutAsync()
     }
     // } else {
