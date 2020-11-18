@@ -67,7 +67,7 @@ const InfoMenu = () => {
         <Text
           style={{
             color: colors.text,
-            fontSize: fontSize.medium,
+            fontSize: fontSize.small,
             lineHeight: 20,
           }}
         >
@@ -544,7 +544,9 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Цена для клиента"
         value={newEvent.finance_price}
-        onChangeText={(text) => setEventItem({ finance_price: text.trim() })}
+        onChangeText={(text) =>
+          setEventItem({ finance_price: text.replace(/[^\d]/g, '') })
+        }
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
@@ -557,7 +559,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         title="Расходные материалы"
         value={newEvent.finance_consumables}
         onChangeText={(text) =>
-          setEventItem({ finance_consumables: text.trim() })
+          setEventItem({ finance_consumables: text.replace(/[^\d]/g, '') })
         }
         keyboardType="numeric"
         placeholder="0"
@@ -572,7 +574,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         title="Ассистентам"
         value={newEvent.finance_assistants}
         onChangeText={(text) =>
-          setEventItem({ finance_assistants: text.trim() })
+          setEventItem({ finance_assistants: text.replace(/[^\d]/g, '') })
         }
         keyboardType="numeric"
         placeholder="0"
@@ -586,7 +588,9 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="За дорогу"
         value={newEvent.finance_road}
-        onChangeText={(text) => setEventItem({ finance_road: text.trim() })}
+        onChangeText={(text) =>
+          setEventItem({ finance_road: text.replace(/[^\d]/g, '') })
+        }
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
@@ -596,7 +600,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         title="Организатору"
         value={newEvent.finance_organizator}
         onChangeText={(text) =>
-          setEventItem({ finance_organizator: text.trim() })
+          setEventItem({ finance_organizator: text.replace(/[^\d]/g, '') })
         }
         keyboardType="numeric"
         placeholder="0"
@@ -666,7 +670,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         title="На подготовку"
         value={newEvent.timing_preparetime}
         onChangeText={(text) =>
-          setEventItem({ timing_preparetime: Math.floor(text) })
+          setEventItem({ timing_preparetime: text.replace(/[^\d]/g, '') })
         }
         keyboardType="numeric"
         placeholder="0"
@@ -680,7 +684,7 @@ const CreateEventScreen = ({ navigation, route }) => {
         title="На сбор"
         value={newEvent.timing_collecttime}
         onChangeText={(text) =>
-          setEventItem({ timing_collecttime: Math.floor(text) })
+          setEventItem({ timing_collecttime: text.replace(/[^\d]/g, '') })
         }
         keyboardType="numeric"
         placeholder="0"
@@ -693,7 +697,9 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="На транспортировку в одну сторону"
         value={newEvent.timing_road}
-        onChangeText={(text) => setEventItem({ timing_road: Math.floor(text) })}
+        onChangeText={(text) =>
+          setEventItem({ timing_road: text.replace(/[^\d]/g, '') })
+        }
         keyboardType="numeric"
         placeholder="0"
         postfix="мин"
