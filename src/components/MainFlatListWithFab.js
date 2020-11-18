@@ -9,6 +9,9 @@ const MainFlatListWithFab = ({
   containerStyle = {},
   fabStyle = {},
   fabVisible = true,
+  ListEmptyComponent = null,
+  getItemLayout = null,
+  initialNumToRender = null,
 }) => {
   const [fabIsVisible, setFabIsVisible] = useState(fabVisible)
   const [scrollPosition, setScrollPosition] = useState(0)
@@ -18,6 +21,13 @@ const MainFlatListWithFab = ({
       <FlatList
         style={styles.list}
         data={data}
+        removeClippedSubviews={true}
+        initialNumToRender={10}
+        windowSize={5}
+        maxToRenderPerBatch={5}
+        updateCellsBatchingPeriod={1000}
+        getItemLayout={getItemLayout}
+        ListEmptyComponent={ListEmptyComponent}
         keyExtractor={(item) => item.id.toString()}
         // scrollsToTop={false}
         // onMomentumScrollEnd={() => console.log("end")}

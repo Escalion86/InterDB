@@ -86,6 +86,14 @@ const EventsPage = ({
       ) : (
         <MainFlatListWithFab
           data={events}
+          getItemLayout={(data, index) => {
+            const height = data[index].location_town ? 156 : 126
+            return {
+              length: height,
+              offset: height * index,
+              index,
+            }
+          }}
           renderItem={({ item }) => (
             <EventCard
               navigation={navigation}

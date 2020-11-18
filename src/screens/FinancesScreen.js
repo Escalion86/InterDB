@@ -138,6 +138,11 @@ const FinancesScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <MainFlatListWithFab
         data={finances}
+        getItemLayout={(data, index) => ({
+          length: 52,
+          offset: 52 * index,
+          index,
+        })}
         fabVisible={false}
         renderItem={({ item }) => (
           <FinanceCard

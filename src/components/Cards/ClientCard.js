@@ -102,8 +102,8 @@ const ClientCard = ({
                 borderRadius: 5,
                 borderWidth: 1,
                 borderColor: colors.border,
-                width: 80,
-                height: 80,
+                width: 76,
+                height: 76,
               }}
               source={!client.avatar ? noImageUrl : { uri: client.avatar }}
               // resizeMethod="scale"
@@ -148,7 +148,7 @@ const stylesFactory = ({ colors }) =>
       borderRadius: 10,
       flexDirection: 'row',
       backgroundColor: colors.card,
-      minHeight: 80,
+      height: 88,
     },
     left: {
       padding: 5,

@@ -163,6 +163,11 @@ const ClientsScreen = ({ navigation, route }) => {
       ) : (
         <MainFlatListWithFab
           data={clients}
+          getItemLayout={(data, index) => ({
+            length: 92,
+            offset: 92 * index,
+            index,
+          })}
           renderItem={({ item }) => (
             <ClientCard
               navigation={navigation}

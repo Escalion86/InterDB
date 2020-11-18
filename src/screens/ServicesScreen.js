@@ -200,6 +200,11 @@ const ServicesScreen = ({ navigation, route }) => {
       ) : (
         <MainFlatListWithFab
           data={services}
+          getItemLayout={(data, index) => ({
+            length: 100,
+            offset: 100 * index,
+            index,
+          })}
           fabVisible={!showArchvedOnly}
           renderItem={({ item }) => (
             <ServiceCard

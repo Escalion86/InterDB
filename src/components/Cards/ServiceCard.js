@@ -200,7 +200,7 @@ const stylesFactory = ({ colors }) =>
       borderRadius: 10,
       flexDirection: 'row',
       backgroundColor: colors.card,
-      minHeight: 80,
+      height: 96,
     },
     left: {
       flex: 1,
