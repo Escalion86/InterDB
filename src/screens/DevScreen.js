@@ -9,6 +9,10 @@ import Button from '../components/Button'
 import { showAllNotifications } from '../helpers/notifications'
 import { SwitchBlock } from '../components/createComponents'
 import { setSettings } from '../store/actions/app'
+import { deleteAllEvents } from '../store/actions/event'
+import { deleteAllServices } from '../store/actions/service'
+import { deleteAllClients } from '../store/actions/client'
+import { deleteAllFinances } from '../store/actions/finance'
 
 const DevScreen = ({ navigation, route }) => {
   const dev = useSelector((state) => state.app.dev)
@@ -47,6 +51,15 @@ const DevScreen = ({ navigation, route }) => {
         title="Показать оповещения"
         onPress={async () => {
           await showAllNotifications()
+        }}
+      />
+      <Button
+        title="Удалить все данные"
+        onPress={() => {
+          dispatch(deleteAllEvents())
+          dispatch(deleteAllServices())
+          dispatch(deleteAllClients())
+          dispatch(deleteAllFinances())
         }}
       />
       <Button

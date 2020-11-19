@@ -8,6 +8,7 @@ import {
   DELETE_FINANCE,
   DELETE_ALL_FINANCES,
   DELETING_FINANCE,
+  DELETE_FINANCES_IN_EVENT,
   LOADING_FINANCE,
   LOADING_FINANCE_COMPLITE,
 } from '../types'
@@ -111,6 +112,14 @@ export const financeReducer = (state = initialState, action) => {
       return {
         ...state,
         finances: state.finances.filter((finance) => finance.id !== action.id),
+      }
+
+    case DELETE_FINANCES_IN_EVENT:
+      return {
+        ...state,
+        finances: state.finances.filter(
+          (finance) => finance.event !== action.eventId
+        ),
       }
 
     case DELETING_FINANCE:

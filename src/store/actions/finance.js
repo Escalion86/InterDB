@@ -8,6 +8,7 @@ import {
   DELETE_FINANCE,
   DELETE_ALL_FINANCES,
   DELETING_FINANCE,
+  DELETE_FINANCES_IN_EVENT,
   LOADING_FINANCE,
   LOADING_FINANCE_COMPLITE,
 } from '../types'
@@ -93,6 +94,13 @@ export const deletingFinance = (id) => {
   return {
     type: DELETING_FINANCE,
     id,
+  }
+}
+
+export const deleteFinancesInEvent = (eventId) => {
+  return {
+    type: DELETE_FINANCES_IN_EVENT,
+    eventId,
   }
 }
 
