@@ -394,39 +394,6 @@ const CreateEventScreen = ({ navigation, route }) => {
         placeholder={'Выберите статус события'}
         onChangeItem={(item) => setEventItem({ status: item.value })}
       />
-      {/* <EventRowDropDownPicker
-        dependencies={eventIconDependencies}
-        name="Услуга"
-        // IconEventComponent={EventIcon}
-        defeultValue={newEvent.event}
-        placeholder={"Выберите услугу"}
-        onChangeItem={(item) => setEventItem({ event: item.value })}
-      /> */}
-
-      {/* <EventRowDropDownPicker
-        dependencies={financeIconDependencies}
-        name="Статус оплаты"
-        // IconEventComponent={FinanceIcon}
-        defeultValue={newEvent.finance_status}
-        placeholder={'Выберите статус оплаты'}
-        onChangeItem={(item) => setEventItem({ finance_status: item.value })}
-      /> */}
-      {/* <EventRowDropDownPicker
-        dependencies={eventIconDependencies}
-        name="Тип события"
-        // IconEventComponent={EventIcon}
-        defeultValue={newEvent.event}
-        placeholder={"Выберите тип события"}
-        onChangeItem={(item) => setEventItem({ event: item.value })}
-      />
-      <EventRowDropDownPicker
-        dependencies={auditoryIconDependencies}
-        name="Аудитория"
-        // IconEventComponent={AuditoryIcon}
-        defeultValue={newEvent.auditory}
-        placeholder={"Выберите аудиторию"}
-        onChangeItem={(item) => setEventItem({ auditory: item.value })}
-      /> */}
       <DateTimePickerBlock
         title="Дата и время начала"
         dateValue={newEvent.date}
