@@ -2,7 +2,7 @@
   "expo": {
     "name": "IndividualCRM",
     "slug": "IndividualCRM",
-    "version": "0.4.3f",
+    "version": "0.4.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "platforms": ["android"],
@@ -25,7 +25,7 @@
       "icon": "./assets/gear96.png",
       "useNextNotificationsApi": true,
       "package": "com.escalion.Individual_CRM",
-      "versionCode": 49,
+      "versionCode": 43,
       "permissions": [
         "CAMERA",
         "READ_CONTACTS",

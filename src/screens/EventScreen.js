@@ -189,15 +189,17 @@ const EventScreen = ({ navigation, route }) => {
         <TextBlock text={`Чаевые: ${event.finance_tips} руб`} />
       ) : null} */}
       <TextBlock text={`Итого: ${profit} руб`} />
+      <TitleBlock title="Транзакции" />
+      {financesCards}
       {event.location_town ? (
         <>
           <TitleBlock title="Адрес" />
           <TextBlock
-            text={`${event.location_town}${
-              event.location_street ? `, ${event.location_street}` : ''
-            }${event.location_house ? `, ${event.location_house}` : ''}${
-              event.location_room ? ` - ${event.location_room}` : ''
-            }${event.location_name ? ` (${event.location_name})` : ''}`}
+            text={`${event.location_town}, ${event.location_street}, ${
+              event.location_house
+            }${event.location_room ? ` - ${event.location_room}` : ''}${
+              event.location_name ? ` (${event.location_name})` : ''
+            }`}
           />
         </>
       ) : null}
@@ -217,8 +219,6 @@ const EventScreen = ({ navigation, route }) => {
         />
       ) : null}
       <TextBlock text={`Итого (с учетом дороги обратно): ${timing} мин`} />
-      <TitleBlock title="Транзакции" />
-      {financesCards}
       {modal}
     </ScrollView>
   )

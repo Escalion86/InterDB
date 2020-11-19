@@ -95,7 +95,7 @@ const FinancesScreen = ({ navigation, route }) => {
         </HeaderButtons>
       ),
     })
-  }, [finances, dev, sorting, events])
+  }, [finances, dev, sorting])
 
   if (loading) {
     return (
