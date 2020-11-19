@@ -139,8 +139,8 @@ const FinancesScreen = ({ navigation, route }) => {
       <MainFlatListWithFab
         data={finances}
         getItemLayout={(data, index) => ({
-          length: 52,
-          offset: 52 * index,
+          length: 42,
+          offset: 42 * index,
           index,
         })}
         fabVisible={false}
