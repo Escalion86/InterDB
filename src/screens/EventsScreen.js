@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  useCallback,
-  useLayoutEffect,
-} from 'react'
+import React, { useState, useContext, useEffect, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
@@ -22,7 +16,6 @@ import { addEvent, deleteAllEvents } from '../store/actions/event'
 import { EventCard } from '../components/Cards'
 import { dbGenerator } from '../db/dbTemplate'
 import { useTheme } from '@react-navigation/native'
-import { Ionicons } from '@expo/vector-icons'
 import Fab from '../components/Fab'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
 import { fontSize } from '../theme'
@@ -33,13 +26,7 @@ import {
   ModalDeleteEvent,
 } from '../components/Modals'
 
-import RNPickerSelect from 'react-native-picker-select'
 import SortMenu from '../components/SortMenu'
-
-// import SafeAreaView from 'react-native-safe-area-view'
-
-import ScrollableTabView from 'react-native-scrollable-tab-view'
-import TabBar from 'react-native-underline-tabbar'
 
 import {
   // TourGuideZone, // Main wrapper of highlight component
@@ -48,6 +35,8 @@ import {
 } from 'rn-tourguide'
 import isDeveloper from '../helpers/isDeveloper'
 import * as Notifications from 'expo-notifications'
+
+import Filter from '../components/Filter'
 
 const windowHeight = Dimensions.get('window').height
 
@@ -157,21 +146,6 @@ const EventsPage = ({
     </View>
   )
 }
-
-const months = [
-  'янв',
-  'фев',
-  'мар',
-  'апр',
-  'май',
-  'июн',
-  'июл',
-  'авг',
-  'сен',
-  'окт',
-  'ноя',
-  'дек',
-]
 
 const Tutorial = ({ navigation }) => {
   return (
@@ -306,7 +280,6 @@ const EventsScreen = ({ navigation, route }) => {
     setModal(
       <ModalDeleteEvent
         event={event}
-        navigation={navigation}
         callbackToCloseModal={() => setModal(null)}
       />
     )
@@ -404,19 +377,6 @@ const EventsScreen = ({ navigation, route }) => {
     })
   }, [])
 
-  console.log('render EventsScreen Header finished')
-
-  switch (sorting) {
-    case 'dateASC':
-      events.sort((a, b) => (a.date > b.date ? 1 : -1))
-      break
-    case 'dateDESC':
-      events.sort((a, b) => (a.date < b.date ? 1 : -1))
-      break
-    default:
-      events.sort((a, b) => (a.date > b.date ? 1 : -1))
-  }
-
   let years = [new Date().getFullYear()]
   const eventsInMonths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
@@ -438,178 +398,38 @@ const EventsScreen = ({ navigation, route }) => {
       return { label: year + '', value: year }
     })
 
-  const YearsDropDownList = useCallback(() => {
+  const YearMonthFilter = () => {
+    // if (monthFilter && monthFilter !== month) month = null
+
     return (
-      <View
-        style={{
-          width: 80,
-          borderBottomColor: colors.border,
-          borderBottomWidth: 1,
-          borderLeftColor: colors.border,
-          borderLeftWidth: 1,
-          zIndex: 10,
-          // elevation: 10,
-        }}
-      >
-        {/* <DropDownPicker
-          items={years}
-          defaultValue={filter.year}
-          labelStyle={{
-            fontSize: fontSize.medium,
-            textAlign: 'left',
-            color: colors.text,
-          }}
-          containerStyle={{ marginVertical: 2 }}
-          style={{
-            flex: 1,
-            backgroundColor: 'transparent',
-            borderColor: 'transparent',
-            borderWidth: 0,
-            minHeight: 38,
-            // marginRight: 5,
-            zIndex: 10,
-          }}
-          dropDownMaxHeight={350}
-          itemStyle={{
-            justifyContent: 'flex-start',
-          }}
-          dropDownStyle={{
-            backgroundColor: colors.card,
-            borderColor: colors.border,
-            zIndex: 10,
-          }}
-          activeItemStyle={{ backgroundColor: colors.border }}
-          arrowColor={colors.text}
-          onChangeItem={(item) =>
-            setFilter({ month: filter.month, year: item })
+      <Filter
+        years={years}
+        onChangeMonth={(i) => {
+          if (i !== monthFilter) {
+            setMonthFilter(i)
           }
-        /> */}
-        <RNPickerSelect
-          items={years}
-          // style={{ width: 100, height: 30 }}
-          useNativeAndroidPickerStyle={false}
-          placeholder={{}}
-          // InputAccessoryView={() => null}
-          onValueChange={(value) => setYearFilter(value)}
-          Icon={() => {
-            return (
-              <Ionicons name="ios-arrow-down" size={18} color={colors.text} />
-            )
-          }}
-          style={{
-            inputAndroid: {
-              fontSize: 16,
-              // paddingHorizontal: 10,
-              height: 36,
-              // paddingVertical: 8,
-              // borderWidth: 0.5,
-              // borderColor: 'purple',
-              // borderRadius: 8,
-              color: colors.text,
-              paddingLeft: 8,
-              paddingRight: 30, // to ensure the text is never behind the icon
-              // maxWidth: 100,
-              // borderColor: 'red',
-              // borderWidth: 3,
-            },
-            iconContainer: {
-              top: 11,
-              right: 10,
-            },
-            // placeholder: {
-            //   // color: 'purple',
-            //   fontSize: 12,
-            //   fontWeight: 'bold',
-            // },
-          }}
-          value={yearFilter}
-          // textInputProps={{ underlineColorAndroid: 'cyan' }}
-        />
-      </View>
-    )
-  }, [years, yearFilter, colors])
-
-  const MonthTabs = useCallback(() => {
-    const tabs = []
-    for (let i = 0; i < eventsInMonths.length; i++) {
-      tabs.push(
-        <View
-          key={i}
-          tabLabel={{
-            label: months[i],
-            badge: eventsInMonths[i],
-            badgeColor: colors.accent,
-          }}
-        />
-      )
-    }
-
-    return (
-      <View
-        style={{
-          height: 38,
-          flex: 1,
-          borderBottomColor: colors.border,
-          borderBottomWidth: 1,
         }}
-      >
-        <ScrollableTabView
-          onChangeTab={({ i }) => {
-            if (i !== monthFilter) setMonthFilter(i)
-          }}
-          initialPage={monthFilter}
-          // style={{ borderColor: 'red', borderWidth: 2, paddingTop: 0, flex: 1 }}
-          renderTabBar={() => (
-            <TabBar
-              underlineColor={colors.accent}
-              tabBarTextStyle={{
-                color: colors.text,
-                fontSize: fontSize.medium,
-              }}
-              tabBarStyle={{
-                marginTop: 0,
-                borderBottomColor: 'transparent',
-                borderBottomWidth: 0,
-                // zIndex: 0,
-                // height: 200,
-              }}
-              // scrollContainerStyle={{ flex: 1 }}
-              activeTabTextStyle={{
-                // color: colors.accent,
-                fontSize: fontSize.medium,
-                fontWeight: 'bold',
-              }}
-              tabStyles={{
-                tab: { paddingTop: 6, paddingBottom: 6 },
-                badgeText: {
-                  color: colors.accentText,
-                  fontSize: fontSize.tiny - 2,
-                },
-              }}
-              style={{ paddingTop: 0 }}
-            />
-          )}
-        >
-          {tabs}
-        </ScrollableTabView>
-      </View>
+        scrollWithoutAnimation={false}
+        onChangeYear={setYearFilter}
+        month={monthFilter}
+        year={yearFilter}
+        monthBadges={eventsInMonths}
+      />
     )
-  }, [
-    eventsInMonths[0],
-    eventsInMonths[1],
-    eventsInMonths[2],
-    eventsInMonths[3],
-    eventsInMonths[4],
-    eventsInMonths[5],
-    eventsInMonths[6],
-    eventsInMonths[7],
-    eventsInMonths[8],
-    eventsInMonths[9],
-    eventsInMonths[10],
-    eventsInMonths[11],
-    colors,
-    monthFilter,
-  ])
+  }
+
+  console.log('render EventsScreen Header finished')
+
+  switch (sorting) {
+    case 'dateASC':
+      events.sort((a, b) => (a.date > b.date ? 1 : -1))
+      break
+    case 'dateDESC':
+      events.sort((a, b) => (a.date < b.date ? 1 : -1))
+      break
+    default:
+      events.sort((a, b) => (a.date > b.date ? 1 : -1))
+  }
 
   if (loading) {
     console.log('render EventsScreen loading')
@@ -622,15 +442,10 @@ const EventsScreen = ({ navigation, route }) => {
 
   console.log('render EventsScreen loading skipped')
 
-  // console.log('render EventsScreen events = 0 skipped')
-
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row' }}>
-        <MonthTabs />
-        <YearsDropDownList />
-      </View>
-
+      <YearMonthFilter />
+      {/* <TabBar /> */}
       <EventsPage
         // tabLabel={{
         //   label: months[0],
