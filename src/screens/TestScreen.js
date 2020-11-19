@@ -13,25 +13,25 @@ import illusionistData from '../../assets/illusionist.json'
 import {
   loadingEvents,
   addEvents,
-  prepareAndAddEventToDB,
+  // prepareAndAddEventToDB,
 } from '../store/actions/event'
 import {
   loadingClients,
   addClients,
-  prepareAndAddClientToDB,
+  // prepareAndAddClientToDB,
 } from '../store/actions/client'
 import {
   loadingServices,
   addServices,
-  prepareAndAddServiceToDB,
+  // prepareAndAddServiceToDB,
 } from '../store/actions/service'
 import {
   loadingFinances,
   addFinances,
-  prepareAndAddFinanceToDB,
+  // prepareAndAddFinanceToDB,
 } from '../store/actions/finance'
 
-import { dbDefault } from '../db/dbTemplate'
+import { prepareAndSendCardDataToDB } from '../db/db'
 
 const TestScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
@@ -54,12 +54,21 @@ const TestScreen = ({ navigation, route }) => {
       await dispatch(loadingServices())
       await dispatch(loadingClients())
       await dispatch(loadingFinances())
-      for (let i = 0; i < services.length; i++) {
-        services[i] = await prepareAndAddServiceToDB(services[i])
+
+      for (let i = 0; i < clients.length; i++) {
+        const preperedClient = await prepareAndSendCardDataToDB(
+          'clients',
+          clients[i]
+        )
+        clients[i] = { ...clients[i], ...preperedClient }
         setProcess(++process)
       }
-      for (let i = 0; i < clients.length; i++) {
-        clients[i] = await prepareAndAddClientToDB(clients[i])
+      for (let i = 0; i < services.length; i++) {
+        const preparedService = await prepareAndSendCardDataToDB(
+          'services',
+          services[i]
+        )
+        services[i] = { ...services[i], ...preparedService }
         setProcess(++process)
       }
 
@@ -76,7 +85,11 @@ const TestScreen = ({ navigation, route }) => {
         )
         events[i].client = client.id
         // Формируем событие
-        events[i] = await prepareAndAddEventToDB(events[i])
+        const preparedEvent = await prepareAndSendCardDataToDB(
+          'events',
+          events[i]
+        )
+        events[i] = { ...events[i], ...preparedEvent }
         setProcess(++process)
       }
 
@@ -86,9 +99,14 @@ const TestScreen = ({ navigation, route }) => {
         )
         finances[i].event = event.id
 
-        finances[i] = await prepareAndAddFinanceToDB(finances[i])
+        const preparedFinance = await prepareAndSendCardDataToDB(
+          'finances',
+          finances[i]
+        )
+        finances[i] = { ...finances[i], ...preparedFinance }
         setProcess(++process)
       }
+
       dispatch(addEvents(events, true))
       dispatch(addServices(services, true))
       dispatch(addClients(clients, true))
