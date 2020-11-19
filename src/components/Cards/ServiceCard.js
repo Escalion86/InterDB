@@ -15,7 +15,6 @@ const ServiceCard = ({
   navigation,
   service,
   onPress = null,
-  listMode = false,
   onDelete = null,
   swipeable = true,
   havePopupMenu = false,

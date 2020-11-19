@@ -11,7 +11,7 @@ const ClientCard = ({
   navigation,
   client,
   onPress = null,
-  listMode = false,
+  showContacts = true,
   onDelete = null,
   swipeable = true,
   havePopupMenu = false,
@@ -124,11 +124,11 @@ const ClientCard = ({
               </View>
             ) : null}
           </View>
-          {listMode ? null : (
+          {showContacts ? (
             <View style={styles.right}>
               <ContactsMenu client={client} />
             </View>
-          )}
+          ) : null}
         </View>
       </CardContainer>
     )

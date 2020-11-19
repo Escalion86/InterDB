@@ -182,19 +182,11 @@ const ModalClients = ({ clients, navigation, onOuterClick, setEventItem }) => {
       <SearchPanel filter={filter} setFilter={setFilter} />
       <ScrollCardList
         data={clients}
-        renderItem={(item, index) => (
-          <ClientCard
-            key={index}
-            navigation={navigation}
-            client={item}
-            onPress={() => {
-              setEventItem({ client: item.id })
-              onOuterClick()
-            }}
-            listMode={true}
-            swipeable={false}
-          />
-        )}
+        type="client"
+        onChoose={(item) => {
+          setEventItem({ client: item.id })
+          onOuterClick()
+        }}
         containerStyle={{ height: 328 }}
       />
     </ModalBottomMenu>
@@ -235,44 +227,35 @@ const ModalServices = ({
       <SearchPanel filter={filter} setFilter={setFilter} />
       <ScrollCardList
         data={services}
-        renderItem={(item, index) => (
-          <ServiceCard
-            key={index}
-            navigation={navigation}
-            service={item}
-            onPress={() => {
-              // Если сервис был выбран, то нужно спросить об обновлении финансовых данных
-              onOuterClick()
+        type="service"
+        onChoose={(item) => {
+          // Если сервис был выбран, то нужно спросить об обновлении финансовых данных
+          onOuterClick()
 
-              if (servicePicked) {
-                setEventItem({
-                  service: item.id,
-                })
-                setModal(
-                  <ModalUpdateFinance
-                    service={item}
-                    onOuterClick={onOuterClick}
-                    setEventItem={setEventItem}
-                  />
-                )
-              } else {
-                setEventItem({
-                  service: item.id,
-                  finance_price: item.finance_price,
-                  finance_consumables: item.finance_consumables,
-                  finance_assistants: item.finance_assistants,
-                  timing_duration: item.duration,
-                  timing_preparetime: item.preparetime,
-                  timing_collecttime: item.collecttime,
-                })
-              }
-            }}
-            listMode={true}
-            swipeable={false}
-          />
-        )}
+          if (servicePicked) {
+            setEventItem({
+              service: item.id,
+            })
+            setModal(
+              <ModalUpdateFinance
+                service={item}
+                onOuterClick={onOuterClick}
+                setEventItem={setEventItem}
+              />
+            )
+          } else {
+            setEventItem({
+              service: item.id,
+              finance_price: item.finance_price,
+              finance_consumables: item.finance_consumables,
+              finance_assistants: item.finance_assistants,
+              timing_duration: item.duration,
+              timing_preparetime: item.preparetime,
+              timing_collecttime: item.collecttime,
+            })
+          }
+        }}
         containerStyle={{ height: 328 }}
-        // fabVisible={false}
       />
     </ModalBottomMenu>
   )

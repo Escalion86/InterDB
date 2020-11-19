@@ -97,7 +97,7 @@ const FinanceScreen = ({ navigation, route }) => {
         onPress={() => {
           navigation.navigate('Event', { eventId: event.id })
         }}
-        listMode={true}
+        swipeable={false}
       />
       {modal}
     </ScrollView>

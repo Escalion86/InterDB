@@ -1,7 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ModalBottomMenu, { ModalBottomMenuYesNo } from './ModalBottomMenu'
-import { EventCard } from '../Cards'
 import { deleteClient } from '../../store/actions/client'
 import wordForm from '../../helpers/wordForm'
 import ScrollCardList from '../ScrollCardList'
@@ -51,19 +50,11 @@ const ModalDeleteClient = ({
     >
       <ScrollCardList
         data={eventsDependency}
-        renderItem={(item, index) => (
-          <EventCard
-            key={index}
-            navigation={navigation}
-            event={item}
-            onPress={() => {
-              callbackToCloseModal()
-              navigation.navigate('Event', { eventId: item.id })
-            }}
-            listMode={true}
-            swipeable={false}
-          />
-        )}
+        type="event"
+        onChoose={(item) => {
+          callbackToCloseModal()
+          navigation.navigate('Event', { eventId: item.id })
+        }}
         containerStyle={{ height: '100%' }}
       />
     </ModalBottomMenu>
