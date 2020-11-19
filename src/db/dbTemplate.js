@@ -22,10 +22,23 @@ const rndArray = (array) => {
 // }
 
 export const prepareForDB = (dbTableName, data) => {
+  if (!data.create_date) {
+    data.create_date = new Date().setMilliseconds(0)
+  }
+
   const preperedData = {}
   dbTemplate[dbTableName].forEach((item) => {
-    preperedData[item.db_name] = data[item.db_name]
+    if (item.db_type === 'TEXT') {
+      preperedData[item.db_name] = String(data[item.db_name]).trim()
+    } else if (item.db_type === 'INT') {
+      preperedData[item.db_name] = parseInt(
+        String(data[item.db_name]).replace(/[^\d]/g, '')
+      )
+    } else {
+      preperedData[item.db_name] = data[item.db_name]
+    }
   })
+
   return preperedData
 }
 
@@ -259,7 +272,6 @@ export default dbTemplate = {
     {
       db_name: 'service',
       desc: 'Услуга',
-      type: 'integer',
       db_type: 'INT',
       not_null: false,
       default: null,
@@ -268,7 +280,6 @@ export default dbTemplate = {
     {
       db_name: 'client',
       desc: 'Клиент',
-      type: 'integer',
       db_type: 'INT',
       not_null: false,
       default: null,
@@ -277,7 +288,6 @@ export default dbTemplate = {
     {
       db_name: 'date',
       desc: 'Дата и время начала',
-      type: 'date',
       db_type: 'TEXT',
       not_null: true,
       default: '',
@@ -286,7 +296,6 @@ export default dbTemplate = {
     {
       db_name: 'notification_id',
       desc: 'ID идентификатора оповещения',
-      type: 'string',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -295,7 +304,6 @@ export default dbTemplate = {
     {
       db_name: 'calendar_id',
       desc: 'ID идентификатора календаря',
-      type: 'string',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -304,8 +312,7 @@ export default dbTemplate = {
     {
       db_name: 'timing_duration',
       desc: 'Продолжительность в минутах',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 30,
       db_default: 30,
@@ -313,8 +320,7 @@ export default dbTemplate = {
     {
       db_name: 'timing_preparetime',
       desc: 'Время на подготовку в минутах',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 20,
       db_default: 20,
@@ -322,8 +328,7 @@ export default dbTemplate = {
     {
       db_name: 'timing_collecttime',
       desc: 'Время на сбор в минутах',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 15,
       db_default: 15,
@@ -331,8 +336,7 @@ export default dbTemplate = {
     {
       db_name: 'timing_road',
       desc: 'Время на транспортировку до места в минутах',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 30,
       db_default: 30,
@@ -340,7 +344,6 @@ export default dbTemplate = {
     {
       db_name: 'location_town',
       desc: 'Локация - город',
-      type: 'text',
       db_type: 'TEXT',
       not_null: true,
       default: '',
@@ -349,7 +352,6 @@ export default dbTemplate = {
     {
       db_name: 'location_street',
       desc: 'Локация - улица',
-      type: 'text',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -358,7 +360,6 @@ export default dbTemplate = {
     {
       db_name: 'location_house',
       desc: 'Локация - дом',
-      type: 'text',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -367,7 +368,6 @@ export default dbTemplate = {
     {
       db_name: 'location_room',
       desc: 'Локация - комната',
-      type: 'text',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -376,7 +376,6 @@ export default dbTemplate = {
     {
       db_name: 'location_name',
       desc: 'Локация - Название заведения',
-      type: 'text',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -385,7 +384,6 @@ export default dbTemplate = {
     {
       db_name: 'location_floor',
       desc: 'Локация - Этаж',
-      type: 'integer',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -394,8 +392,7 @@ export default dbTemplate = {
     {
       db_name: 'finance_price',
       desc: 'Финансы - цена',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 0,
       db_default: 0,
@@ -403,8 +400,7 @@ export default dbTemplate = {
     {
       db_name: 'finance_road',
       desc: 'Финансы - за дорогу',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 0,
       db_default: 0,
@@ -412,8 +408,7 @@ export default dbTemplate = {
     {
       db_name: 'finance_organizator',
       desc: 'Финансы - организатору',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 0,
       db_default: 0,
@@ -421,8 +416,7 @@ export default dbTemplate = {
     {
       db_name: 'finance_assistants',
       desc: 'Финансы - ассистентам',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 0,
       db_default: 0,
@@ -430,8 +424,7 @@ export default dbTemplate = {
     {
       db_name: 'finance_consumables',
       desc: 'Финансы - расходные материалы',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 0,
       db_default: 0,
@@ -439,7 +432,6 @@ export default dbTemplate = {
     {
       db_name: 'comment',
       desc: 'Комментарий',
-      type: 'text',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -448,7 +440,6 @@ export default dbTemplate = {
     {
       db_name: 'status',
       desc: 'Статус выполнения',
-      type: 'text',
       db_type: 'TEXT',
       not_null: true,
       default: 'Заметка',
@@ -457,7 +448,6 @@ export default dbTemplate = {
     {
       db_name: 'create_date',
       desc: 'Дата и время создания',
-      type: 'date',
       db_type: 'TEXT',
       not_null: true,
       default: '',
@@ -469,7 +459,6 @@ export default dbTemplate = {
     {
       db_name: 'name',
       desc: 'Имя',
-      type: 'text',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -478,7 +467,6 @@ export default dbTemplate = {
     {
       db_name: 'birthday_day',
       desc: 'Дата рождения - число',
-      type: 'integer',
       db_type: 'INT',
       not_null: false,
       default: null,
@@ -487,7 +475,6 @@ export default dbTemplate = {
     {
       db_name: 'birthday_month',
       desc: 'Дата рождения - месяц',
-      type: 'integer',
       db_type: 'INT',
       not_null: false,
       default: null,
@@ -496,7 +483,6 @@ export default dbTemplate = {
     {
       db_name: 'birthday_year',
       desc: 'Дата рождения - год',
-      type: 'integer',
       db_type: 'INT',
       not_null: false,
       default: null,
@@ -505,7 +491,6 @@ export default dbTemplate = {
     {
       db_name: 'notification_id',
       desc: 'ID идентификатора оповещения о дне рождения',
-      type: 'string',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -514,7 +499,6 @@ export default dbTemplate = {
     {
       db_name: 'calendar_id',
       desc: 'ID идентификатора календаря',
-      type: 'string',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -523,7 +507,6 @@ export default dbTemplate = {
     {
       db_name: 'surname',
       desc: 'Фамилия',
-      type: 'text',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -532,7 +515,6 @@ export default dbTemplate = {
     {
       db_name: 'thirdname',
       desc: 'Отчество',
-      type: 'text',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -541,7 +523,6 @@ export default dbTemplate = {
     {
       db_name: 'gender',
       desc: 'Пол',
-      type: 'boolean',
       db_type: 'INT',
       not_null: true,
       default: 0,
@@ -550,7 +531,6 @@ export default dbTemplate = {
     {
       db_name: 'phone',
       desc: 'Телефон',
-      type: 'phone',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -559,7 +539,6 @@ export default dbTemplate = {
     {
       db_name: 'email',
       desc: 'EMail',
-      type: 'email',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -568,7 +547,6 @@ export default dbTemplate = {
     {
       db_name: 'whatsapp',
       desc: 'WhatsApp',
-      type: 'phone',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -577,7 +555,6 @@ export default dbTemplate = {
     {
       db_name: 'viber',
       desc: 'Viber',
-      type: 'phone',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -586,7 +563,6 @@ export default dbTemplate = {
     {
       db_name: 'telegram',
       desc: 'Telegram',
-      type: 'phone',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -595,7 +571,6 @@ export default dbTemplate = {
     {
       db_name: 'instagram',
       desc: 'Instagram логин',
-      type: 'text',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -604,7 +579,6 @@ export default dbTemplate = {
     {
       db_name: 'vk',
       desc: 'VK логин',
-      type: 'text',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -613,7 +587,6 @@ export default dbTemplate = {
     {
       db_name: 'facebook',
       desc: 'Facebook логин',
-      type: 'text',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -622,7 +595,6 @@ export default dbTemplate = {
     {
       db_name: 'avatar',
       desc: 'Аватар',
-      type: 'string',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -631,7 +603,6 @@ export default dbTemplate = {
     {
       db_name: 'town',
       desc: 'Город проживания',
-      type: 'text',
       db_type: 'TEXT',
       not_null: true,
       default: '',
@@ -640,7 +611,6 @@ export default dbTemplate = {
     {
       db_name: 'create_date',
       desc: 'Дата и время создания',
-      type: 'date',
       db_type: 'TEXT',
       not_null: true,
       default: '',
@@ -652,7 +622,6 @@ export default dbTemplate = {
     {
       db_name: 'name',
       desc: 'Название программы',
-      type: 'text',
       db_type: 'TEXT',
       not_null: true,
       default: '',
@@ -661,7 +630,6 @@ export default dbTemplate = {
     {
       db_name: 'description',
       desc: 'Описание программы',
-      type: 'text',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -670,8 +638,7 @@ export default dbTemplate = {
     {
       db_name: 'finance_price',
       desc: 'Цена',
-      type: 'text',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 0,
       db_default: 0,
@@ -679,8 +646,7 @@ export default dbTemplate = {
     {
       db_name: 'finance_assistants',
       desc: 'Финансы - ассистентам',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 0,
       db_default: 0,
@@ -688,8 +654,7 @@ export default dbTemplate = {
     {
       db_name: 'finance_consumables',
       desc: 'Финансы - расходные материалы',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 0,
       db_default: 0,
@@ -697,8 +662,7 @@ export default dbTemplate = {
     {
       db_name: 'duration',
       desc: 'Продолжительность минут',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 0,
       db_default: 0,
@@ -706,8 +670,7 @@ export default dbTemplate = {
     {
       db_name: 'preparetime',
       desc: 'Время на подготовку',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 0,
       db_default: 0,
@@ -715,8 +678,7 @@ export default dbTemplate = {
     {
       db_name: 'collecttime',
       desc: 'Время на сбор',
-      type: 'integer',
-      db_type: 'INTEGER',
+      db_type: 'INT',
       not_null: true,
       default: 0,
       db_default: 0,
@@ -724,7 +686,6 @@ export default dbTemplate = {
     {
       db_name: 'image',
       desc: 'Картинка',
-      type: 'string',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -733,7 +694,6 @@ export default dbTemplate = {
     {
       db_name: 'archive',
       desc: 'Архивировано',
-      type: 'boolean',
       db_type: 'INT',
       not_null: true,
       default: 0,
@@ -742,7 +702,6 @@ export default dbTemplate = {
     {
       db_name: 'create_date',
       desc: 'Дата и время создания',
-      type: 'date',
       db_type: 'TEXT',
       not_null: true,
       default: '',
@@ -753,7 +712,6 @@ export default dbTemplate = {
     {
       db_name: 'event',
       desc: 'Событие',
-      type: 'integer',
       db_type: 'INT',
       not_null: true,
       default: 0,
@@ -762,7 +720,6 @@ export default dbTemplate = {
     {
       db_name: 'type',
       desc: 'Поступление/Списание',
-      type: 'text',
       db_type: 'TEXT',
       not_null: true,
       default: 'income',
@@ -771,7 +728,6 @@ export default dbTemplate = {
     {
       db_name: 'sum',
       desc: 'Сумма',
-      type: 'integer',
       db_type: 'INT',
       not_null: true,
       default: 0,
@@ -780,7 +736,6 @@ export default dbTemplate = {
     {
       db_name: 'comment',
       desc: 'Комментарий',
-      type: 'integer',
       db_type: 'TEXT',
       not_null: false,
       default: '',
@@ -789,7 +744,6 @@ export default dbTemplate = {
     {
       db_name: 'date',
       desc: 'Дата и время транзакции',
-      type: 'date',
       db_type: 'TEXT',
       not_null: true,
       default: '',
@@ -798,7 +752,6 @@ export default dbTemplate = {
     {
       db_name: 'create_date',
       desc: 'Дата и время создания',
-      type: 'date',
       db_type: 'TEXT',
       not_null: true,
       default: '',

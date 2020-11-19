@@ -12,7 +12,7 @@ import {
   LOADING_CLIENT,
   LOADING_CLIENT_COMPLITE,
 } from '../types'
-import { DB } from '../../db/db'
+import { prepareAndSendCardDataToDB, DB } from '../../db/db'
 import {
   addClientNotification,
   deleteNotification,
@@ -94,21 +94,10 @@ export const loadingClientComplite = (id) => {
   }
 }
 
-export const prepareAndAddClientToDB = async (client) => {
-  const notificationId = await addClientNotification(client)
-  client.notification_id = notificationId
-  const calendarId = await addCalendarClientBirthday(client)
-  client.calendar_id = calendarId
-  client.create_date = Math.floor(new Date() / 1000)
-  const clientId = await DB.addClient(client)
-  client.id = clientId
-  return await client
-}
-
 export const addClient = (client) => {
   return async (dispatch) => {
     await dispatch(loadingClients())
-    client = await prepareAndAddClientToDB(client)
+    client = await prepareAndSendCardDataToDB('clients', client)
 
     dispatch({
       type: ADD_CLIENT,
@@ -122,7 +111,7 @@ export const addClients = (clients, noPrepare = false) => {
     if (!noPrepare) {
       await dispatch(loadingClients())
       for (let i = 0; i < clients.length; i++) {
-        clients[i] = prepareAndAddClientToDB(clients[i])
+        clients[i] = prepareAndSendCardDataToDB('clients', clients[i])
       }
     }
     dispatch({
@@ -135,11 +124,7 @@ export const addClients = (clients, noPrepare = false) => {
 export const updateClient = (client) => {
   return async (dispatch) => {
     await dispatch(loadingClient(client.id))
-    const notificationId = await addClientNotification(client)
-    client.notification_id = notificationId
-    const calendarId = await addCalendarClientBirthday(client)
-    client.calendar_id = calendarId
-    await DB.updateClient(client)
+    client = await prepareAndSendCardDataToDB('clients', client)
     dispatch({
       type: UPDATE_CLIENT,
       client,

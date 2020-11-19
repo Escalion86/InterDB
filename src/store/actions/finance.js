@@ -11,7 +11,8 @@ import {
   LOADING_FINANCE,
   LOADING_FINANCE_COMPLITE,
 } from '../types'
-import { DB } from '../../db/db'
+
+import { prepareAndSendCardDataToDB, DB } from '../../db/db'
 
 export const loadFinances = () => {
   return async (dispatch) => {
@@ -50,17 +51,10 @@ export const loadingFinancesComplite = () => {
   }
 }
 
-export const prepareAndAddFinanceToDB = async (finance) => {
-  finance.create_date = Math.floor(new Date() / 1000)
-  const financeId = await DB.addFinance(finance)
-  finance.id = financeId
-  return await finance
-}
-
 export const addFinance = (finance) => {
   return async (dispatch) => {
     await dispatch(loadingFinances())
-    finance = await prepareAndAddFinanceToDB(finance)
+    finance = await prepareAndSendCardDataToDB('finances', finance)
 
     dispatch({
       type: ADD_FINANCE,
@@ -74,7 +68,7 @@ export const addFinances = (finances, noPrepare = false) => {
     if (!noPrepare) {
       await dispatch(loadingFinances())
       for (let i = 0; i < finances.length; i++) {
-        finances[i] = prepareAndAddFinanceToDB(finances[i])
+        finances[i] = prepareAndSendCardDataToDB('finances', finances[i])
       }
     }
     dispatch({
@@ -86,8 +80,8 @@ export const addFinances = (finances, noPrepare = false) => {
 
 export const updateFinance = (finance) => {
   return async (dispatch) => {
-    // await dispatch(loadingFinance(finance.id))
-    await DB.updateFinance(finance)
+    await dispatch(loadingFinance(finance.id))
+    finance = await prepareAndSendCardDataToDB('finances', finance)
     dispatch({
       type: UPDATE_FINANCE,
       finance,

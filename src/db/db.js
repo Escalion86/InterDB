@@ -1,5 +1,11 @@
 import * as SQLite from 'expo-sqlite'
 import dbTemplate, { prepareForDB } from './dbTemplate'
+import {
+  addEventNotification,
+  addCalendarEvent,
+  addClientNotification,
+  addCalendarClientBirthday,
+} from '../helpers/notifications'
 
 const DBName = 'events26.db'
 
@@ -36,6 +42,86 @@ export const dbTemplateToSqlFull = () => {
     sql += `${dbTemplateToSql(table)}; `
   })
   return sql
+}
+
+// Функция чистит данные (обрезает, приводит к формату), сравнивает с шаблоном и добавляет в соответствующую DB
+export const prepareAndSendCardDataToDB = async (table, data) => {
+  // Сначала зафиксируем ID если он есть, так как он удалится
+  let dataId = data.id
+
+  let tableFunc = {}
+  switch (table) {
+    case 'events': {
+      tableFunc = {
+        name: 'events',
+        add: DB.addEvent,
+        update: DB.updateEvent,
+      }
+      break
+    }
+    case 'clients': {
+      tableFunc = {
+        name: 'clients',
+        add: DB.addClient,
+        update: DB.updateClient,
+      }
+      break
+    }
+    case 'services': {
+      tableFunc = {
+        name: 'services',
+        add: DB.addService,
+        update: DB.updateService,
+      }
+      break
+    }
+    case 'finances': {
+      tableFunc = {
+        name: 'finances',
+        add: DB.addFinance,
+        update: DB.updateFinance,
+      }
+      break
+    }
+    default: {
+      return data
+    }
+  }
+
+  const preparedData = prepareForDB(tableFunc.name, data)
+
+  if (tableFunc.name === 'events') {
+    // Добавляем напоминание
+    const notificationId = await addEventNotification(preparedData)
+    preparedData.notification_id = notificationId
+    // Добавляем запись в календарь
+    const calendarId = await addCalendarEvent(preparedData)
+    preparedData.calendar_id = calendarId
+  } else if (tableFunc.name === 'clients') {
+    // Добавляем напоминание
+    const notificationId = await addClientNotification(preparedData)
+    preparedData.notification_id = notificationId
+    // Добавляем запись в календарь
+    const calendarId = await addCalendarClientBirthday(preparedData)
+    preparedData.calendar_id = calendarId
+  }
+
+  if (dataId) {
+    // Если задан, то обновляем запись
+    preparedData.id = dataId
+    await tableFunc.update(preparedData)
+  } else {
+    // Иначе добавляем
+    dataId = await tableFunc.add(preparedData)
+    preparedData.id = dataId
+  }
+
+  if (preparedData.date) {
+    preparedData.date = +preparedData.date
+  }
+  preparedData.create_date = +preparedData.create_date
+
+  return preparedData
 }
 
 export class DB {
@@ -207,8 +293,10 @@ export class DB {
   }
 
   static addEvent (event) {
-    const newEvent = prepareForDB('events', event)
+    // const newEvent = prepareForDB('events', event)
+    const newEvent = { ...event }
     newEvent.date = Math.floor(newEvent.date / 1000)
+    newEvent.create_date = Math.floor(newEvent.create_date / 1000)
 
     return new Promise((resolve, reject) => {
       const eventKeys = Object.keys(newEvent)
@@ -227,11 +315,14 @@ export class DB {
   }
 
   static updateEvent (event) {
-    const eventToSend = prepareForDB('events', event)
+    // const eventToSend = prepareForDB('events', event)
+    const eventToSend = { ...event }
+
     eventToSend.date = Math.floor(eventToSend.date / 1000)
+    eventToSend.create_date = Math.floor(eventToSend.create_date / 1000)
 
     const eventKeys = Object.keys(eventToSend)
-    const eventValues = [...Object.values(eventToSend), event.id]
+    const eventValues = [...Object.values(eventToSend), eventToSend.id]
     // console.log(`UPDATE events SET ${eventKeys.join(" = ? ")} = ? WHERE id = ?`)
     // console.log(
     //   "DB Update Event :>> ",

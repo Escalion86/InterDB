@@ -12,7 +12,8 @@ import {
   LOADING_SERVICE,
   LOADING_SERVICE_COMPLITE,
 } from '../types'
-import { DB } from '../../db/db'
+
+import { prepareAndSendCardDataToDB, DB } from '../../db/db'
 
 export const loadServices = () => {
   return async (dispatch) => {
@@ -59,17 +60,10 @@ export const loadingServicesComplite = (id) => {
   }
 }
 
-export const prepareAndAddServiceToDB = async (service) => {
-  service.create_date = Math.floor(new Date() / 1000)
-  const serviceId = await DB.addService(service)
-  service.id = serviceId
-  return await service
-}
-
 export const addService = (service) => {
   return async (dispatch) => {
     await dispatch(loadingServices())
-    service = await prepareAndAddServiceToDB(service)
+    service = await prepareAndSendCardDataToDB('services', service)
 
     dispatch({
       type: ADD_SERVICE,
@@ -83,7 +77,7 @@ export const addServices = (services, noPrepare = false) => {
     if (!noPrepare) {
       await dispatch(loadingServices())
       for (let i = 0; i < services.length; i++) {
-        services[i] = prepareAndAddServiceToDB(services[i])
+        services[i] = prepareAndSendCardDataToDB('services', services[i])
       }
     }
     dispatch({
@@ -96,7 +90,8 @@ export const addServices = (services, noPrepare = false) => {
 export const updateService = (service) => {
   return async (dispatch) => {
     await dispatch(loadingService(service.id))
-    await DB.updateService(service)
+    service = await prepareAndSendCardDataToDB('services', service)
+
     dispatch({
       type: UPDATE_SERVICE,
       service,

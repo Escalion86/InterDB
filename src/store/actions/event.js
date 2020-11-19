@@ -14,7 +14,8 @@ import {
   LOADING_EVENT_COMPLITE,
   SET_FINANCE_STATUS,
 } from '../types'
-import { DB } from '../../db/db'
+import { prepareAndSendCardDataToDB, DB } from '../../db/db'
+
 import {
   addEventNotification,
   deleteNotification,
@@ -66,24 +67,10 @@ export const loadingEventComplite = (id) => {
   }
 }
 
-export const prepareAndAddEventToDB = async (event) => {
-  // Добавляем напоминание
-  const notificationId = await addEventNotification(event)
-  event.notification_id = notificationId
-  event.create_date = Math.floor(new Date() / 1000)
-  // Добавляем запись в календарь
-  const calendarId = await addCalendarEvent(event)
-  event.calendar_id = calendarId
-
-  const eventId = await DB.addEvent(event)
-  event.id = eventId
-  return await event
-}
-
 export const addEvent = (event) => {
   return async (dispatch) => {
     await dispatch(loadingEvents())
-    event = await prepareAndAddEventToDB(event)
+    event = await prepareAndSendCardDataToDB('events', event)
 
     await dispatch({
       type: ADD_EVENT,
@@ -97,7 +84,7 @@ export const addEvents = (events, noPrepare = false) => {
     if (!noPrepare) {
       await dispatch(loadingEvents())
       for (let i = 0; i < events.length; i++) {
-        events[i] = prepareAndAddEventToDB(events[i])
+        events[i] = await prepareAndSendCardDataToDB('events', events[i])
       }
     }
     dispatch({
@@ -125,13 +112,7 @@ export const refreshEventsNotifications = (events, appStore) => {
 export const updateEvent = (event) => {
   return async (dispatch) => {
     await dispatch(loadingEvent(event.id))
-    // Обновляем напоминание
-    const notificationId = await addEventNotification(event)
-    event.notification_id = notificationId
-    // Обновляем запись в календаре
-    const calendarId = await addCalendarEvent(event)
-    event.calendar_id = calendarId
-    await DB.updateEvent(event)
+    event = await prepareAndSendCardDataToDB('events', event)
     dispatch({
       type: UPDATE_EVENT,
       event,
