@@ -25,10 +25,16 @@ export const prepareForDB = (dbTableName, data) => {
   if (!data.create_date) {
     data.create_date = new Date().setMilliseconds(0)
   }
+  if (dbTableName === 'events') {
+    console.log('event data', data)
+    console.log('dbTemplate["events"]', dbTemplate[dbTableName])
+  }
 
   const preperedData = {}
   dbTemplate[dbTableName].forEach((item) => {
-    if (item.db_type === 'TEXT') {
+    if (!data[item.db_name]) {
+      preperedData[item.db_name] = item.db_default
+    } else if (item.db_type === 'TEXT') {
       preperedData[item.db_name] = String(data[item.db_name]).trim()
     } else if (item.db_type === 'INT') {
       preperedData[item.db_name] = parseInt(
