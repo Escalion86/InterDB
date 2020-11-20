@@ -1,9 +1,9 @@
 import React from 'react'
-import { TouchableHighlight } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 
-import SwipeableCard from './SwipeableCard'
+import SwipeableCard from '../SwipeableCard'
 import { useTheme } from '@react-navigation/native'
-import { fontSize } from '../theme'
+import { fontSize } from '../../theme'
 
 import {
   Menu,
@@ -41,6 +41,7 @@ const PopupMenuCardContainer = ({
 
     return (
       <Menu
+        name={'menu'}
         renderer={renderers.Popover}
         rendererProps={{ preferredPlacement: 'top' }}
       >
@@ -48,7 +49,8 @@ const PopupMenuCardContainer = ({
           triggerOnLongPress
           onAlternativeAction={onPress}
           customStyles={{
-            TriggerTouchableComponent: TouchableHighlight,
+            TriggerTouchableComponent: TouchableOpacity,
+            triggerTouchable: { delayPressIn: 10 },
             // triggerTouchable: { title: 'Select (Custom Touchables)' },
           }}
         >
@@ -83,13 +85,13 @@ const PopupMenuCardContainer = ({
     )
   } else {
     return (
-      <TouchableHighlight
+      <TouchableOpacity
         // activeOpacity={1}
-        delayPressIn={50}
+        delayPressIn={10}
         onPress={onPress}
       >
         {children}
-      </TouchableHighlight>
+      </TouchableOpacity>
     )
   }
 }

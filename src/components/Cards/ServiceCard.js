@@ -9,7 +9,7 @@ import {
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
 import { fontSize } from '../../theme'
-import CardContainer from '../CardContainer'
+import CardContainer from './CardContainer'
 import { SERVICE_CARD_HEIGHT } from '../../constants'
 
 const ServiceCard = ({

@@ -5,7 +5,7 @@ import { useTheme } from '@react-navigation/native'
 import ContactsMenu from '../ContactsMenu'
 import { formatBirthday } from '../../helpers/date'
 import { fontSize } from '../../theme'
-import CardContainer from '../CardContainer'
+import CardContainer from './CardContainer'
 import { CLIENT_CARD_HEIGHT } from '../../constants'
 
 const ClientCard = ({

@@ -1,24 +1,17 @@
 import React from 'react'
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  TouchableHighlight,
-} from 'react-native'
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
 import { MainIcon } from '../icons'
 import { fontSize } from '../../theme'
 import { formatDate, formatTime } from '../../helpers/date'
-import CardContainer from '../CardContainer'
+import CardContainer from './CardContainer'
 import { FINANCE_CARD_HEIGHT } from '../../constants'
 
 const FinanceCard = ({
   navigation,
   finance,
   onPress = null,
-  listMode = false,
   onDelete = null,
   swipeable = true,
 }) => {
@@ -28,12 +21,7 @@ const FinanceCard = ({
 
   if (!finance) {
     return (
-      <TouchableHighlight
-        // activeOpacity={1}
-        delayPressIn={50}
-        style={styles.card}
-        onPress={onPress}
-      >
+      <View style={styles.card}>
         <View style={styles.middle}>
           <View style={styles.cardheader}>
             <Text style={styles.cardtitle}>
@@ -41,7 +29,7 @@ const FinanceCard = ({
             </Text>
           </View>
         </View>
-      </TouchableHighlight>
+      </View>
     )
   } else {
     if (!onPress) {

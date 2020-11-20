@@ -5,7 +5,6 @@ import {
   Text,
   View,
   ActivityIndicator,
-  TouchableHighlight,
 } from 'react-native'
 import {
   Menu,
@@ -22,7 +21,7 @@ import FinanceMenu from '../FinanceMenu'
 import ContactsMenu from '../ContactsMenu'
 import { fontSize } from '../../theme'
 import NavigatorMenu from '../NavigatorMenu'
-import CardContainer from '../CardContainer'
+import CardContainer from './CardContainer'
 import { EVENT_CARD_HEIGHT, EVENT_CARD_HEIGHT_FULL } from '../../constants'
 
 const EventCard = ({
@@ -46,18 +45,13 @@ const EventCard = ({
 
   if (!event) {
     return (
-      <TouchableHighlight
-        // activeOpacity={1}
-        delayPressIn={50}
-        style={styles.card}
-        onPress={onPress}
-      >
+      <View style={styles.card}>
         <View style={styles.middle}>
           <View style={styles.cardheader}>
             <Text style={styles.cardtitle}>Ошибка! Событие не найдено</Text>
           </View>
         </View>
-      </TouchableHighlight>
+      </View>
     )
   } else {
     if (!onPress) {
