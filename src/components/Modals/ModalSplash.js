@@ -70,19 +70,19 @@ const ModalSplash = ({
               </Text>
             ) : null}
 
-            {subtitle || children ? (
+            {subtitle ? (
+              <Text
+                style={{
+                  ...styles.panelSubtitle,
+                  fontSize: fontSize.medium,
+                  color: colors.text,
+                }}
+              >
+                {subtitle}
+              </Text>
+            ) : null}
+            {children ? (
               <ScrollView style={{ width: '100%', maxHeight: 425 }}>
-                {subtitle ? (
-                  <Text
-                    style={{
-                      ...styles.panelSubtitle,
-                      fontSize: fontSize.medium,
-                      color: colors.text,
-                    }}
-                  >
-                    {subtitle}
-                  </Text>
-                ) : null}
                 {children}
               </ScrollView>
             ) : null}
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.4,
   },
   panelTitle: {
-    height: 35,
+    minHeight: 35,
     textAlign: 'center',
   },
   panelSubtitle: {
