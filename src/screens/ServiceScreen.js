@@ -128,7 +128,6 @@ const ServiceScreen = ({ navigation, route }) => {
   useLayoutEffect(() => {
     if (service) {
       navigation.setOptions({
-        title: 'Услуга',
         headerRight: () => (
           <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
             <Item

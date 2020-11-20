@@ -45,8 +45,6 @@ const EventScreen = ({ navigation, route }) => {
   useLayoutEffect(() => {
     if (event) {
       navigation.setOptions({
-        title: 'Событие',
-
         headerRight: () => (
           <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
             <Item

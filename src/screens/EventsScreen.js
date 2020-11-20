@@ -295,7 +295,6 @@ const EventsScreen = ({ navigation, route }) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'События',
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
           <SortMenu

@@ -117,27 +117,8 @@ const EventsStackScreen = ({ navigation }) => (
         title: 'Событие',
       }}
     />
-    <EventsStack.Screen
-      name="CreateEvent"
-      component={CreateEventScreen}
-      options={{
-        title: '',
-      }}
-    />
-    <EventsStack.Screen
-      name="CreateClient"
-      component={CreateClientScreen}
-      options={{
-        title: '',
-      }}
-    />
-    <EventsStack.Screen
-      name="CreateService"
-      component={CreateServiceScreen}
-      options={{
-        title: '',
-      }}
-    />
+    <EventsStack.Screen name="CreateEvent" component={CreateEventScreen} />
+
     <EventsStack.Screen
       name="Service"
       component={ServiceScreen}
@@ -145,6 +126,7 @@ const EventsStackScreen = ({ navigation }) => (
         title: 'Услуга',
       }}
     />
+    <EventsStack.Screen name="CreateService" component={CreateServiceScreen} />
     <EventsStack.Screen
       name="Client"
       component={ClientScreen}
@@ -152,6 +134,7 @@ const EventsStackScreen = ({ navigation }) => (
         title: 'Клиент',
       }}
     />
+    <EventsStack.Screen name="CreateClient" component={CreateClientScreen} />
     <EventsStack.Screen
       name="Finance"
       component={FinanceScreen}
@@ -159,6 +142,7 @@ const EventsStackScreen = ({ navigation }) => (
         title: 'Транзакция',
       }}
     />
+    <EventsStack.Screen name="CreateFinance" component={CreateFinanceScreen} />
   </StackNavigator>
 )
 
@@ -180,13 +164,7 @@ const ClientsStackScreen = ({ navigation }) => (
         title: 'Клиент',
       }}
     />
-    <ClientsStack.Screen
-      name="CreateClient"
-      component={CreateClientScreen}
-      options={{
-        title: '',
-      }}
-    />
+    <ClientsStack.Screen name="CreateClient" component={CreateClientScreen} />
     <ClientsStack.Screen
       name="Event"
       component={EventScreen}
@@ -194,13 +172,23 @@ const ClientsStackScreen = ({ navigation }) => (
         title: 'Событие',
       }}
     />
+    <ClientsStack.Screen name="CreateEvent" component={CreateEventScreen} />
     <ClientsStack.Screen
-      name="CreateEvent"
-      component={CreateEventScreen}
+      name="Service"
+      component={ServiceScreen}
       options={{
-        title: '',
+        title: 'Услуга',
       }}
     />
+    <ClientsStack.Screen name="CreateService" component={CreateServiceScreen} />
+    <ClientsStack.Screen
+      name="Finance"
+      component={FinanceScreen}
+      options={{
+        title: 'Событие',
+      }}
+    />
+    <ClientsStack.Screen name="CreateFinance" component={CreateFinanceScreen} />
   </StackNavigator>
 )
 
@@ -335,9 +323,33 @@ const FinancesStackScreen = ({ navigation }) => (
     <FinancesStack.Screen
       name="CreateFinance"
       component={CreateFinanceScreen}
+    />
+    <FinancesStack.Screen
+      name="Event"
+      component={EventScreen}
       options={{
-        title: 'Редактирование транзакции',
+        title: 'Событие',
       }}
+    />
+    <FinancesStack.Screen name="CreateEvent" component={CreateEventScreen} />
+    <FinancesStack.Screen
+      name="Client"
+      component={ClientScreen}
+      options={{
+        title: 'Клиент',
+      }}
+    />
+    <FinancesStack.Screen name="CreateClient" component={CreateClientScreen} />
+    <FinancesStack.Screen
+      name="Service"
+      component={ServiceScreen}
+      options={{
+        title: 'Услуга',
+      }}
+    />
+    <FinancesStack.Screen
+      name="CreateService"
+      component={CreateServiceScreen}
     />
   </StackNavigator>
 )
@@ -371,9 +383,6 @@ const ServicesStackScreen = ({ navigation }) => (
     <ServicesStack.Screen
       name="CreateService"
       component={CreateServiceScreen}
-      options={{
-        title: '',
-      }}
     />
     <ServicesStack.Screen
       name="Event"
@@ -382,12 +391,25 @@ const ServicesStackScreen = ({ navigation }) => (
         title: 'Событие',
       }}
     />
+    <ServicesStack.Screen name="CreateEvent" component={CreateEventScreen} />
     <ServicesStack.Screen
-      name="CreateEvent"
-      component={CreateEventScreen}
+      name="Client"
+      component={ClientScreen}
       options={{
-        title: '',
+        title: 'Клиент',
       }}
+    />
+    <ServicesStack.Screen name="CreateClient" component={CreateClientScreen} />
+    <ServicesStack.Screen
+      name="Finance"
+      component={FinanceScreen}
+      options={{
+        title: 'Трензакция',
+      }}
+    />
+    <ServicesStack.Screen
+      name="CreateFinance"
+      component={CreateFinanceScreen}
     />
   </StackNavigator>
 )

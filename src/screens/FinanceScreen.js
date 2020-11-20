@@ -34,12 +34,9 @@ const FinanceScreen = ({ navigation, route }) => {
     )
   }
 
-  console.log('finance', finance)
-
   useLayoutEffect(() => {
     if (finance) {
       navigation.setOptions({
-        title: 'Транзакция',
         headerRight: () => (
           <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
             <Item

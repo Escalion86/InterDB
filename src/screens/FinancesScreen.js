@@ -62,7 +62,6 @@ const FinancesScreen = ({ navigation, route }) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'Транзакции',
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
           <SortMenu

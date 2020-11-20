@@ -62,7 +62,6 @@ const ClientScreen = ({ navigation, route }) => {
   useLayoutEffect(() => {
     if (client) {
       navigation.setOptions({
-        title: 'Клиент',
         headerRight: () => (
           <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
             <Item
