@@ -23,6 +23,7 @@ import ContactsMenu from '../ContactsMenu'
 import { fontSize } from '../../theme'
 import NavigatorMenu from '../NavigatorMenu'
 import CardContainer from '../CardContainer'
+import { EVENT_CARD_HEIGHT, EVENT_CARD_HEIGHT_FULL } from '../../constants'
 
 const EventCard = ({
   navigation,
@@ -164,7 +165,10 @@ const EventCard = ({
 
     console.log('render EventCard id: ' + event.id)
     // const height = null
-    const height = showService && showAdress && event.location_town ? 152 : 122
+    const height =
+      showService && showAdress && event.location_town
+        ? EVENT_CARD_HEIGHT_FULL
+        : EVENT_CARD_HEIGHT
 
     return (
       <CardContainer

@@ -6,6 +6,7 @@ import ContactsMenu from '../ContactsMenu'
 import { formatBirthday } from '../../helpers/date'
 import { fontSize } from '../../theme'
 import CardContainer from '../CardContainer'
+import { CLIENT_CARD_HEIGHT } from '../../constants'
 
 const ClientCard = ({
   navigation,
@@ -148,7 +149,7 @@ const stylesFactory = ({ colors }) =>
       borderRadius: 10,
       flexDirection: 'row',
       backgroundColor: colors.card,
-      height: 88,
+      height: CLIENT_CARD_HEIGHT,
     },
     left: {
       padding: 5,

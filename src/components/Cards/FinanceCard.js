@@ -12,6 +12,7 @@ import { MainIcon } from '../icons'
 import { fontSize } from '../../theme'
 import { formatDate, formatTime } from '../../helpers/date'
 import CardContainer from '../CardContainer'
+import { FINANCE_CARD_HEIGHT } from '../../constants'
 
 const FinanceCard = ({
   navigation,
@@ -138,7 +139,7 @@ const stylesFactory = ({ colors }) =>
       borderRadius: 10,
       flexDirection: 'row',
       backgroundColor: colors.card,
-      height: 38,
+      height: FINANCE_CARD_HEIGHT,
     },
     left: {
       // flex: 1,

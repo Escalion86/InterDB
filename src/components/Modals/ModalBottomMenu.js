@@ -12,6 +12,7 @@ import Button from '../Button'
 // import GestureRecognizer from 'react-native-swipe-gestures'
 import { Ionicons } from '@expo/vector-icons'
 import { fontSize } from '../../theme'
+import { MODAL_BOTTOM_CONTAINER_MAX_HEIGHT } from '../../constants'
 
 const ModalBottomMenu = ({
   children = null,
@@ -103,7 +104,9 @@ const ModalBottomMenu = ({
                 </Text>
               ) : null}
             </View>
-            <View style={{ maxHeight: 417 }}>{children}</View>
+            <View style={{ maxHeight: MODAL_BOTTOM_CONTAINER_MAX_HEIGHT }}>
+              {children}
+            </View>
           </View>
         </View>
       </Modal>

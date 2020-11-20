@@ -10,12 +10,13 @@ import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
 import { fontSize } from '../../theme'
 import CardContainer from '../CardContainer'
+import { SERVICE_CARD_HEIGHT } from '../../constants'
 
 const ServiceCard = ({
   navigation,
   service,
-  onPress = null,
-  onDelete = null,
+  onPress = () => {},
+  onDelete = () => {},
   swipeable = true,
   havePopupMenu = false,
 }) => {
@@ -199,7 +200,7 @@ const stylesFactory = ({ colors }) =>
       borderRadius: 10,
       flexDirection: 'row',
       backgroundColor: colors.card,
-      height: 96,
+      height: SERVICE_CARD_HEIGHT,
     },
     left: {
       flex: 1,
