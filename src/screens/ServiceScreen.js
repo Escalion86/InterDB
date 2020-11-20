@@ -12,10 +12,16 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { updateServicePartially } from '../store/actions/service'
 import { useTheme } from '@react-navigation/native'
-import { ModalDeleteService, ModalDeleteEvent } from '../components/Modals'
+import {
+  ModalDeleteService,
+  ModalDeleteEvent,
+  ModalBottomMenu,
+} from '../components/Modals'
 import { TextBlock } from '../components/infoComponents'
 import { EventCard } from '../components/Cards'
 import { TitleBlock } from '../components/createComponents'
+import Button from '../components/Button'
+import CardListForModal from '../components/Modals/CardListForModal'
 
 const ServiceScreen = ({ navigation, route }) => {
   let service = {}
@@ -76,19 +82,48 @@ const ServiceScreen = ({ navigation, route }) => {
     return event.service === serviceId
   })
 
-  const eventCards = eventsDependency.map((event) => (
-    <EventCard
-      key={event.id}
-      navigation={navigation}
-      event={event}
-      onPress={() => {
-        navigation.navigate('Event', { eventId: event.id })
-      }}
-      // listMode={true}
-      showService={false}
-      onDelete={() => modalDeleteEvent(event)}
-    />
-  ))
+  const eventCards =
+    eventsDependency && eventsDependency.length > 0 ? (
+      eventsDependency.length <= 4 ? (
+        eventsDependency.map((event) => (
+          <EventCard
+            key={event.id}
+            navigation={navigation}
+            event={event}
+            onPress={() => {
+              navigation.navigate('Event', { eventId: event.id })
+            }}
+            // listMode={true}
+            showService={false}
+            onDelete={() => modalDeleteEvent(event)}
+          />
+        ))
+      ) : (
+        <Button
+          title={`Посмотреть ${eventsDependency.length} событий`}
+          onPress={() =>
+            setModal(
+              <ModalBottomMenu
+                title={'Список событий'}
+                visible={true}
+                onOuterClick={() => setModal(null)}
+              >
+                <CardListForModal
+                  data={eventsDependency}
+                  type="events"
+                  onChoose={(item) => {
+                    setModal(null)
+                    navigation.navigate('Event', { eventId: item.id })
+                  }}
+                />
+              </ModalBottomMenu>
+            )
+          }
+        />
+      )
+    ) : (
+      <TextBlock text="Нет связанных с услугой событий" center />
+    )
 
   useLayoutEffect(() => {
     if (service) {

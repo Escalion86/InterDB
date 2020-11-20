@@ -120,14 +120,38 @@ const EventScreen = ({ navigation, route }) => {
 
   const financesCards =
     finances && finances.length > 0 ? (
-      finances.map((finance) => (
-        <FinanceCard
-          key={finance.id}
-          navigation={navigation}
-          finance={finance}
-          swipeable={false}
+      finances.length <= 5 ? (
+        finances.map((finance) => (
+          <FinanceCard
+            key={finance.id}
+            navigation={navigation}
+            finance={finance}
+            swipeable={false}
+          />
+        ))
+      ) : (
+        <Button
+          title={`Посмотреть ${finances.length} транзакций`}
+          onPress={() =>
+            setModal(
+              <ModalBottomMenu
+                title={'Список транзакций'}
+                visible={true}
+                onOuterClick={() => setModal(null)}
+              >
+                <CardListForModal
+                  data={finances}
+                  type="finances"
+                  onChoose={(item) => {
+                    setModal(null)
+                    navigation.navigate('Finance', { financeId: item.id })
+                  }}
+                />
+              </ModalBottomMenu>
+            )
+          }
         />
-      ))
+      )
     ) : (
       <TextBlock text="Транзакций нет" />
     )
@@ -220,27 +244,6 @@ const EventScreen = ({ navigation, route }) => {
       ) : null}
       <TextBlock text={`Итого (с учетом дороги обратно): ${timing} мин`} />
       <TitleBlock title="Транзакции" />
-      <Button
-        title="Посмотреть транзакции"
-        onPress={() =>
-          setModal(
-            <ModalBottomMenu
-              title={'Список транзакций'}
-              visible={true}
-              onOuterClick={() => setModal(null)}
-            >
-              <CardListForModal
-                data={finances}
-                type="finances"
-                onChoose={(item) => {
-                  setModal(null)
-                  navigation.navigate('Finance', { financeId: item.id })
-                }}
-              />
-            </ModalBottomMenu>
-          )
-        }
-      />
       {financesCards}
       {modal}
     </ScrollView>

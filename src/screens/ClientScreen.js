@@ -15,8 +15,14 @@ import { useTheme } from '@react-navigation/native'
 import { TextBlock, ContactIcon } from '../components/infoComponents'
 import { contactsIcons } from '../db/dependencies'
 import { formatBirthday } from '../helpers/date'
-import { ModalDeleteClient, ModalDeleteEvent } from '../components/Modals'
+import {
+  ModalDeleteClient,
+  ModalDeleteEvent,
+  ModalBottomMenu,
+} from '../components/Modals'
 import { EventCard } from '../components/Cards'
+import Button from '../components/Button'
+import CardListForModal from '../components/Modals/CardListForModal'
 
 const ClientScreen = ({ navigation, route }) => {
   const client =
@@ -98,19 +104,48 @@ const ClientScreen = ({ navigation, route }) => {
     return event.client === client.id
   })
 
-  const eventCards = eventsDependency.map((event) => (
-    <EventCard
-      key={event.id}
-      navigation={navigation}
-      event={event}
-      onPress={() => {
-        navigation.navigate('Event', { eventId: event.id })
-      }}
-      // listMode={true}
-      showClient={false}
-      onDelete={() => modalDeleteEvent(event)}
-    />
-  ))
+  const eventCards =
+    eventsDependency && eventsDependency.length > 0 ? (
+      eventsDependency.length <= 4 ? (
+        eventsDependency.map((event) => (
+          <EventCard
+            key={event.id}
+            navigation={navigation}
+            event={event}
+            onPress={() => {
+              navigation.navigate('Event', { eventId: event.id })
+            }}
+            // listMode={true}
+            showClient={false}
+            onDelete={() => modalDeleteEvent(event)}
+          />
+        ))
+      ) : (
+        <Button
+          title={`Посмотреть ${eventsDependency.length} событий`}
+          onPress={() =>
+            setModal(
+              <ModalBottomMenu
+                title={'Список событий'}
+                visible={true}
+                onOuterClick={() => setModal(null)}
+              >
+                <CardListForModal
+                  data={eventsDependency}
+                  type="events"
+                  onChoose={(item) => {
+                    setModal(null)
+                    navigation.navigate('Event', { eventId: item.id })
+                  }}
+                />
+              </ModalBottomMenu>
+            )
+          }
+        />
+      )
+    ) : (
+      <TextBlock text="Нет связанных с клиентом событий" center />
+    )
 
   const birthday = formatBirthday(
     client.birthday_year,
@@ -176,12 +211,8 @@ const ClientScreen = ({ navigation, route }) => {
           ) : null
         })}
       </View>
-      <TitleBlock title={`События (${eventsDependency.length})`} />
-      {eventsDependency.length === 0 ? (
-        <TextBlock text="Нет связанных с клиентом событий" center />
-      ) : (
-        eventCards
-      )}
+      <TitleBlock title="События" />
+      {eventCards}
       {modal}
     </ScrollView>
   )
