@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
@@ -11,13 +11,14 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { addFinance, deleteAllFinances } from '../store/actions/finance'
 import { dbGenerator } from '../db/dbTemplate'
-import { FinanceCard } from '../components/Cards'
 import { useTheme } from '@react-navigation/native'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
 import { ModalDeleteFinance } from '../components/Modals'
 import { fontSize } from '../theme'
 import isDeveloper from '../helpers/isDeveloper'
 import SortMenu from '../components/SortMenu'
+
+import Filter from '../components/Filter'
 
 const sortList = [
   {
@@ -39,7 +40,10 @@ const FinancesScreen = ({ navigation, route }) => {
 
   const { colors } = useTheme()
 
-  const finances = useSelector((state) => state.finance.finances)
+  const [monthFilter, setMonthFilter] = useState(new Date().getMonth())
+  const [yearFilter, setYearFilter] = useState(new Date().getFullYear())
+
+  const allFinances = useSelector((state) => state.finance.finances)
   const events = useSelector((state) => state.event.events)
   const loading = useSelector((state) => state.finance.loading)
 
@@ -95,7 +99,7 @@ const FinancesScreen = ({ navigation, route }) => {
         </HeaderButtons>
       ),
     })
-  }, [finances, dev, sorting, events])
+  }, [dev, sorting, events])
 
   if (loading) {
     return (
@@ -105,20 +109,41 @@ const FinancesScreen = ({ navigation, route }) => {
     )
   }
 
+  const YearMonthFilter = useCallback(() => {
+    // if (monthFilter && monthFilter !== month) month = null
+
+    return (
+      <Filter
+        data={allFinances}
+        // years={years}
+        onChangeMonth={(i) => {
+          if (i !== monthFilter) {
+            setMonthFilter(i)
+          }
+        }}
+        onChangeYear={setYearFilter}
+        month={monthFilter}
+        year={yearFilter}
+        // monthBadges={eventsInMonths}
+      />
+    )
+  }, [allFinances, monthFilter, yearFilter])
+
+  const finances = allFinances.filter((finance) => {
+    const year = new Date(finance.date).getFullYear()
+    const month = new Date(finance.date).getMonth()
+    return month === monthFilter && year === yearFilter
+  })
+
   if (finances.length === 0) {
     return (
-      <View style={styles.center}>
-        <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
-          Транзакций нет
-        </Text>
-
-        {/* <Fab
-          visible={true}
-          onPress={() => {
-            navigation.navigate('CreateFinance')
-          }}
-          label="Добавить транзакцию"
-        /> */}
+      <View style={styles.container}>
+        <YearMonthFilter />
+        <View style={styles.center}>
+          <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
+            Транзакций нет
+          </Text>
+        </View>
       </View>
     )
   }
@@ -136,23 +161,27 @@ const FinancesScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <YearMonthFilter />
       <MainFlatListWithFab
         data={finances}
-        getItemLayout={(data, index) => ({
-          length: 42,
-          offset: 42 * index,
-          index,
-        })}
+        type="finances"
+        navigation={navigation}
+        onDelete={modalDelete}
+        // getItemLayout={(data, index) => ({
+        //   length: 42,
+        //   offset: 42 * index,
+        //   index,
+        // })}
         fabVisible={false}
-        renderItem={({ item }) => (
-          <FinanceCard
-            navigation={navigation}
-            finance={item}
-            onDelete={() => {
-              modalDelete(item)
-            }}
-          />
-        )}
+        // renderItem={({ item }) => (
+        //   <FinanceCard
+        //     navigation={navigation}
+        //     finance={item}
+        //     onDelete={() => {
+        //       modalDelete(item)
+        //     }}
+        //   />
+        // )}
         // onPressFab={() => {
         //   navigation.navigate('CreateService')
         // }}

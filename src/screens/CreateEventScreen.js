@@ -12,7 +12,7 @@ import {
   DateTimePickerBlock,
   TitleBlock,
 } from '../components/createComponents'
-import ScrollCardList from '../components/ScrollCardList'
+import CardListForModal from '../components/Modals/CardListForModal'
 import { ClientCard, ServiceCard } from '../components/Cards'
 import { useTheme } from '@react-navigation/native'
 import Button from '../components/Button'
@@ -27,7 +27,12 @@ import { HeaderBackButton } from '@react-navigation/stack'
 import { fontSize } from '../theme'
 import SearchPanel from '../components/SearchPanel'
 import { servicesFilter, clientsFilter } from '../helpers/filters'
-import { ModalExitSaveChanges, ModalBottomMenu } from '../components/Modals'
+import {
+  ModalExitSaveChanges,
+  ModalBottomMenu,
+  ModalDeleteService,
+  ModalDeleteClient,
+} from '../components/Modals'
 import arrayEqual from '../helpers/arrayEqual'
 // import { addEventNotification } from "../helpers/notifications"
 
@@ -180,14 +185,14 @@ const ModalClients = ({ clients, navigation, onOuterClick, setEventItem }) => {
         title={'Создать клиента'}
       />
       <SearchPanel filter={filter} setFilter={setFilter} />
-      <ScrollCardList
+      <CardListForModal
         data={clients}
-        type="client"
+        type="clients"
         onChoose={(item) => {
           setEventItem({ client: item.id })
           onOuterClick()
         }}
-        containerStyle={{ height: 328 }}
+        // containerStyle={{ height: 328 }}
       />
     </ModalBottomMenu>
   )
@@ -225,9 +230,9 @@ const ModalServices = ({
         title={'Создать услугу'}
       />
       <SearchPanel filter={filter} setFilter={setFilter} />
-      <ScrollCardList
+      <CardListForModal
         data={services}
-        type="service"
+        type="services"
         onChoose={(item) => {
           // Если сервис был выбран, то нужно спросить об обновлении финансовых данных
           onOuterClick()
@@ -255,7 +260,7 @@ const ModalServices = ({
             })
           }
         }}
-        containerStyle={{ height: 328 }}
+        // containerStyle={{ height: 328 }}
       />
     </ModalBottomMenu>
   )
@@ -423,6 +428,15 @@ const CreateEventScreen = ({ navigation, route }) => {
         <ServiceCard
           navigation={navigation}
           service={serviceObj}
+          onDelete={() =>
+            setModal(
+              <ModalDeleteService
+                service={serviceObj}
+                navigation={navigation}
+                callbackToCloseModal={() => setModal(null)}
+              />
+            )
+          }
           onPress={() => {
             setModal(
               <ModalServices
@@ -435,7 +449,7 @@ const CreateEventScreen = ({ navigation, route }) => {
               />
             )
           }}
-          swipeable={false}
+          // swipeable={false}
         />
       )}
 
@@ -472,6 +486,15 @@ const CreateEventScreen = ({ navigation, route }) => {
         <ClientCard
           navigation={navigation}
           client={clientObj}
+          onDelete={() => {
+            setModal(
+              <ModalDeleteClient
+                client={clientObj}
+                navigation={navigation}
+                callbackToCloseModal={() => setModal(null)}
+              />
+            )
+          }}
           onPress={() => {
             setModal(
               <ModalClients
@@ -482,7 +505,6 @@ const CreateEventScreen = ({ navigation, route }) => {
               />
             )
           }}
-          swipeable={false}
         />
       )}
 

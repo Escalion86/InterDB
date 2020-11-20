@@ -200,25 +200,29 @@ const ServicesScreen = ({ navigation, route }) => {
       ) : (
         <MainFlatListWithFab
           data={services}
-          getItemLayout={(data, index) => ({
-            length: 100,
-            offset: 100 * index,
-            index,
-          })}
+          type="services"
+          navigation={navigation}
+          onDelete={modalDelete}
+          // getItemLayout={(data, index) => ({
+          //   length: 100,
+          //   offset: 100 * index,
+          //   index,
+          // })}
           fabVisible={!showArchvedOnly}
-          renderItem={({ item }) => (
-            <ServiceCard
-              navigation={navigation}
-              service={item}
-              onDelete={() => {
-                modalDelete(item)
-              }}
-              havePopupMenu
-            />
-          )}
+          // renderItem={({ item }) => (
+          //   <ServiceCard
+          //     navigation={navigation}
+          //     service={item}
+          //     onDelete={() => {
+          //       modalDelete(item)
+          //     }}
+          //     havePopupMenu
+          //   />
+          // )}
           onPressFab={() => {
             navigation.navigate('CreateService')
           }}
+          cardsHavePopupMenu={true}
         />
       )}
       {modal}

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import ModalBottomMenu, { ModalBottomMenuYesNo } from './ModalBottomMenu'
 import { deleteService } from '../../store/actions/service'
 import wordForm from '../../helpers/wordForm'
-import ScrollCardList from '../ScrollCardList'
+import CardListForModal from './CardListForModal'
 
 const ModalDeleteService = ({
   service,
@@ -44,14 +44,13 @@ const ModalDeleteService = ({
       visible={true}
       onOuterClick={callbackToCloseModal}
     >
-      <ScrollCardList
+      <CardListForModal
         data={eventsDependency}
-        type="event"
+        type="events"
         onChoose={(item) => {
           callbackToCloseModal()
           navigation.navigate('Event', { eventId: item.id })
         }}
-        containerStyle={{ height: '100%' }}
       />
     </ModalBottomMenu>
   )

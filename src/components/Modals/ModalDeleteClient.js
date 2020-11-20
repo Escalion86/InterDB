@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import ModalBottomMenu, { ModalBottomMenuYesNo } from './ModalBottomMenu'
 import { deleteClient } from '../../store/actions/client'
 import wordForm from '../../helpers/wordForm'
-import ScrollCardList from '../ScrollCardList'
+import CardListForModal from './CardListForModal'
 
 const ModalDeleteClient = ({
   client,
@@ -48,14 +48,13 @@ const ModalDeleteClient = ({
       visible={true}
       onOuterClick={callbackToCloseModal}
     >
-      <ScrollCardList
+      <CardListForModal
         data={eventsDependency}
-        type="event"
+        type="events"
         onChoose={(item) => {
           callbackToCloseModal()
           navigation.navigate('Event', { eventId: item.id })
         }}
-        containerStyle={{ height: '100%' }}
       />
     </ModalBottomMenu>
   )

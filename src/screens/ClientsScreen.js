@@ -163,18 +163,28 @@ const ClientsScreen = ({ navigation, route }) => {
       ) : (
         <MainFlatListWithFab
           data={clients}
-          getItemLayout={(data, index) => ({
-            length: 92,
-            offset: 92 * index,
-            index,
-          })}
-          renderItem={({ item }) => (
-            <ClientCard
-              navigation={navigation}
-              client={item}
-              onDelete={() => modalDelete(item)}
-            />
-          )}
+          type="clients"
+          navigation={navigation}
+          onDelete={modalDelete}
+          // onChoose={( item ) => (
+          //   <ClientCard
+          //     navigation={navigation}
+          //     client={item}
+          //     onDelete={() => modalDelete(item)}
+          //   />
+          // )}
+          // getItemLayout={(data, index) => ({
+          //   length: 92,
+          //   offset: 92 * index,
+          //   index,
+          // })}
+          // renderItem={({ item }) => (
+          //   <ClientCard
+          //     navigation={navigation}
+          //     client={item}
+          //     onDelete={() => modalDelete(item)}
+          //   />
+          // )}
           onPressFab={() => {
             navigation.navigate('CreateClient')
           }}

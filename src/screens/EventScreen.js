@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { formatDate, formatTime } from '../helpers/date'
-import { ModalDeleteEvent } from '../components/Modals'
+import { ModalDeleteEvent, ModalBottomMenu } from '../components/Modals'
 import { TextBlock } from '../components/infoComponents'
 import { TitleBlock } from '../components/createComponents'
 import { ClientCard, ServiceCard, FinanceCard } from '../components/Cards'
@@ -12,6 +12,8 @@ import { ClientCard, ServiceCard, FinanceCard } from '../components/Cards'
 import * as Calendar from 'expo-calendar'
 
 import { useTheme } from '@react-navigation/native'
+import Button from '../components/Button'
+import CardListForModal from '../components/Modals/CardListForModal'
 
 const EventScreen = ({ navigation, route }) => {
   const event =
@@ -189,17 +191,15 @@ const EventScreen = ({ navigation, route }) => {
         <TextBlock text={`Чаевые: ${event.finance_tips} руб`} />
       ) : null} */}
       <TextBlock text={`Итого: ${profit} руб`} />
-      <TitleBlock title="Транзакции" />
-      {financesCards}
       {event.location_town ? (
         <>
           <TitleBlock title="Адрес" />
           <TextBlock
-            text={`${event.location_town}, ${event.location_street}, ${
-              event.location_house
-            }${event.location_room ? ` - ${event.location_room}` : ''}${
-              event.location_name ? ` (${event.location_name})` : ''
-            }`}
+            text={`${event.location_town}${
+              event.location_street ? `, ${event.location_street}` : ''
+            }${event.location_house ? `, ${event.location_house}` : ''}${
+              event.location_room ? ` - ${event.location_room}` : ''
+            }${event.location_name ? ` (${event.location_name})` : ''}`}
           />
         </>
       ) : null}
@@ -219,6 +219,29 @@ const EventScreen = ({ navigation, route }) => {
         />
       ) : null}
       <TextBlock text={`Итого (с учетом дороги обратно): ${timing} мин`} />
+      <TitleBlock title="Транзакции" />
+      <Button
+        title="Посмотреть транзакции"
+        onPress={() =>
+          setModal(
+            <ModalBottomMenu
+              title={'Список транзакций'}
+              visible={true}
+              onOuterClick={() => setModal(null)}
+            >
+              <CardListForModal
+                data={finances}
+                type="finances"
+                onChoose={(item) => {
+                  setModal(null)
+                  navigation.navigate('Finance', { financeId: item.id })
+                }}
+              />
+            </ModalBottomMenu>
+          )
+        }
+      />
+      {financesCards}
       {modal}
     </ScrollView>
   )

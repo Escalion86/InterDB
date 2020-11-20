@@ -22,16 +22,32 @@ const months = [
   'дек',
 ]
 
-const Filter = ({
-  years = [new Date().getFullYear()],
-  onChangeMonth,
-  onChangeYear,
-  month,
-  year,
-  monthBadges = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  monthPages = [],
-}) => {
+const yearsPrepare = (years) => {
+  return years
+    .sort((a, b) => (a < b ? 1 : -1))
+    .map((year) => {
+      return { label: year + '', value: year }
+    })
+}
+
+const Filter = ({ data, onChangeMonth, onChangeYear, month, year }) => {
   const { colors } = useTheme()
+
+  let years = [new Date().getFullYear()]
+  const monthBadges = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+  for (let i = 0; i < data.length; i++) {
+    const dataYear = new Date(data[i].date).getFullYear()
+    const dataMonth = new Date(data[i].date).getMonth()
+    if (!years.includes(dataYear)) {
+      years.push(dataYear)
+    }
+    if (year === dataYear) {
+      monthBadges[dataMonth] += 1
+    }
+  }
+
+  years = yearsPrepare(years)
 
   const YearsDropDownList = useCallback(() => {
     return (
@@ -91,20 +107,19 @@ const Filter = ({
     )
   }, [colors.border, colors.text, year]) /* , [year, years, colors]) */
 
-  const MonthTabs = useCallback(() => {
-    if (monthPages.length === 0) {
-      for (let i = 0; i < months.length; i++) {
-        monthPages.push(
-          <View
-            key={i}
-            tabLabel={{
-              label: months[i],
-              badge: monthBadges[i],
-              badgeColor: colors.accent,
-            }}
-          />
-        )
-      }
+  const Tabs = useCallback(() => {
+    const monthTabs = []
+    for (let i = 0; i < months.length; i++) {
+      monthTabs.push(
+        <View
+          key={i}
+          tabLabel={{
+            label: months[i],
+            badge: monthBadges[i],
+            badgeColor: colors.accent,
+          }}
+        />
+      )
     }
 
     const TabBarMonth = () => (
@@ -157,7 +172,7 @@ const Filter = ({
           // style={{ borderColor: 'red', borderWidth: 2, paddingTop: 0, flex: 1 }}
           renderTabBar={TabBarMonth}
         >
-          {monthPages}
+          {monthTabs}
         </ScrollableTabView>
       </View>
     )
@@ -181,7 +196,7 @@ const Filter = ({
 
   return (
     <View style={{ flexDirection: 'row' }}>
-      <MonthTabs />
+      <Tabs />
       <YearsDropDownList />
     </View>
   )

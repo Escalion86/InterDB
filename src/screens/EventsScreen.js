@@ -1,4 +1,10 @@
-import React, { useState, useContext, useEffect, useLayoutEffect } from 'react'
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
@@ -75,14 +81,16 @@ const EventsPage = ({
       ) : (
         <MainFlatListWithFab
           data={events}
-          getItemLayout={(data, index) => {
-            const height = data[index].location_town ? 156 : 126
-            return {
-              length: height,
-              offset: height * index,
-              index,
-            }
-          }}
+          type="events"
+          navigation={navigation}
+          // getItemLayout={(data, index) => {
+          //   const height = data[index].location_town ? 156 : 126
+          //   return {
+          //     length: height,
+          //     offset: height * index,
+          //     index,
+          //   }
+          // }}
           renderItem={({ item }) => (
             <EventCard
               navigation={navigation}
@@ -264,7 +272,7 @@ const EventsScreen = ({ navigation, route }) => {
   const [monthFilter, setMonthFilter] = useState(new Date().getMonth())
   const [yearFilter, setYearFilter] = useState(new Date().getFullYear())
 
-  let events = useSelector((state) => state.event.events)
+  const allEvents = useSelector((state) => state.event.events)
   const services = useSelector((state) => state.service.services)
   const clients = useSelector((state) => state.client.clients)
   // const finances = useSelector((state) => state.finance.finances)
@@ -343,7 +351,7 @@ const EventsScreen = ({ navigation, route }) => {
         </HeaderButtons>
       ),
     })
-  }, [events, theme, services, clients, sorting, dev])
+  }, [theme, services, clients, sorting, dev])
 
   const {
     canStart, // a boolean indicate if you can start tour guide
@@ -377,46 +385,52 @@ const EventsScreen = ({ navigation, route }) => {
     })
   }, [])
 
-  let years = [new Date().getFullYear()]
-  const eventsInMonths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  // const years = [new Date().getFullYear()]
+  // const eventsInMonths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-  events = events.filter((event) => {
-    const year = new Date(event.date).getFullYear()
-    const month = new Date(event.date).getMonth()
-    if (!years.includes(year)) {
-      years.push(year)
-    }
-    if (year === yearFilter) {
-      eventsInMonths[month] += 1
-    }
-    return month === monthFilter && year === yearFilter
-  })
+  // events = events.filter((event) => {
+  //   const year = new Date(event.date).getFullYear()
+  //   const month = new Date(event.date).getMonth()
+  //   if (!years.includes(year)) {
+  //     years.push(year)
+  //   }
+  //   if (year === yearFilter) {
+  //     eventsInMonths[month] += 1
+  //   }
+  //   return month === monthFilter && year === yearFilter
+  // })
 
-  years = years
-    .sort((a, b) => (a < b ? 1 : -1))
-    .map((year) => {
-      return { label: year + '', value: year }
-    })
+  // years = years
+  //   .sort((a, b) => (a < b ? 1 : -1))
+  //   .map((year) => {
+  //     return { label: year + '', value: year }
+  //   })
 
-  const YearMonthFilter = () => {
-    // if (monthFilter && monthFilter !== month) month = null
-
-    return (
+  const YearMonthFilter = useCallback(
+    () => (
       <Filter
-        years={years}
+        // years={years}
+        data={allEvents}
         onChangeMonth={(i) => {
           if (i !== monthFilter) {
             setMonthFilter(i)
           }
         }}
-        scrollWithoutAnimation={false}
+        // scrollWithoutAnimation={false}
         onChangeYear={setYearFilter}
         month={monthFilter}
         year={yearFilter}
-        monthBadges={eventsInMonths}
+        // monthBadges={eventsInMonths}
       />
-    )
-  }
+    ),
+    [allEvents, monthFilter, yearFilter]
+  )
+
+  const events = allEvents.filter((event) => {
+    const year = new Date(event.date).getFullYear()
+    const month = new Date(event.date).getMonth()
+    return month === monthFilter && year === yearFilter
+  })
 
   console.log('render EventsScreen Header finished')
 
