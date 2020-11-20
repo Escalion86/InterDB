@@ -255,6 +255,16 @@ const DrawerContent = (props) => {
                         onPress={() => dispatch(userSignOut())}
                       /> */}
                     </View>
+                  ) : user.loading ? (
+                    <Text
+                      style={{
+                        color: 'gray',
+                        fontSize: fontSize.medium,
+                        marginBottom: 2,
+                      }}
+                    >
+                      Авторизация...
+                    </Text>
                   ) : (
                     <TouchableOpacity
                       style={{
