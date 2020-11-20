@@ -41,7 +41,6 @@ const PopupMenuCardContainer = ({
 
     return (
       <Menu
-        name={'menu'}
         renderer={renderers.Popover}
         rendererProps={{ preferredPlacement: 'top' }}
       >
