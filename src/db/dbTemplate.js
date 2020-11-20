@@ -25,10 +25,6 @@ export const prepareForDB = (dbTableName, data) => {
   if (!data.create_date) {
     data.create_date = new Date().setMilliseconds(0)
   }
-  if (dbTableName === 'events') {
-    console.log('event data', data)
-    console.log('dbTemplate["events"]', dbTemplate[dbTableName])
-  }
 
   const preperedData = {}
   dbTemplate[dbTableName].forEach((item) => {

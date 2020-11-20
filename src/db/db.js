@@ -146,7 +146,7 @@ export class DB {
         columnsExist.splice(columnsExist.indexOf(colName), 1)
       } else {
         // Если колонка должна быть, но ее нет, то создаем
-        console.log(`Создана колонка '${colName}' в таблице ${table}`)
+        // console.log(`Создана колонка '${colName}' в таблице ${table}`)
         await DB.addColumn(
           table,
           colName,
