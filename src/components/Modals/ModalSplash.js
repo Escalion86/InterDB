@@ -43,7 +43,7 @@ const ModalSplash = ({
           }}
         >
           <TouchableOpacity
-            style={{ position: 'absolute', right: 18, top: 5 }}
+            style={{ position: 'absolute', right: 18, top: 5, zIndex: 99 }}
             onPress={() => {
               onOuterClick()
             }}
