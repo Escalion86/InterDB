@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@bugsnag/expo": "^7.5.2",
+    "@dudigital/react-native-zoomable-view": "^1.0.15",
     "@expo/vector-icons": "^10.0.0",
     "@react-native-community/async-storage": "~1.12.0",
     "@react-native-community/datetimepicker": "3.0.0",
@@ -39,6 +40,7 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",
     "react-native-animatable": "^1.3.3",
+    "react-native-chart-kit": "^6.7.0",
     "react-native-color-picker": "^0.6.0",
     "react-native-dropdown-picker": "^3.7.1",
     "react-native-elements": "^2.3.2",
