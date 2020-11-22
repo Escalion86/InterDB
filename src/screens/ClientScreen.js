@@ -187,6 +187,9 @@ const ClientScreen = ({ navigation, route }) => {
           {client.town ? <TextBlock text={client.town} center /> : null}
         </View>
       </View>
+      {client.comment ? (
+        <TextBlock text={`Комментарий: ${client.comment}`} />
+      ) : null}
 
       <TitleBlock title="Связь" />
       <View

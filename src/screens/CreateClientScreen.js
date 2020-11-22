@@ -186,6 +186,14 @@ const CreateClientScreen = ({ navigation, route }) => {
         // postfix="&#8381;"
         // placeholder="Иванов Иван Иванович"
       />
+      <TextInputBlock
+        title="Комментарий"
+        value={newClient.comment}
+        onChangeText={(text) => setClientItem({ comment: text })}
+        multiline={true}
+        inputOnNextRow={true}
+        textAlign="left"
+      />
       <TitleBlock title="Связь" />
       <TextInputBlock
         title="Телефон"
