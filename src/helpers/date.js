@@ -15,6 +15,11 @@ const monthsNames = [
   'декабря',
 ]
 
+export const minToTime = (min) => {
+  const minutes = min % 60
+  return `${Math.floor(min / 60)}:${minutes < 10 ? `0${minutes}` : minutes}`
+}
+
 export const formatDate = (
   date = new Date(),
   fullYear = false,

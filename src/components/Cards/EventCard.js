@@ -1,11 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-} from 'react-native'
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import {
   Menu,
   MenuOptions,
@@ -13,7 +8,12 @@ import {
   renderers,
 } from 'react-native-popup-menu'
 import { Ionicons } from '@expo/vector-icons'
-import { formatDate, formatTime, getWeekDay } from '../../helpers/date'
+import {
+  formatDate,
+  formatTime,
+  getWeekDay,
+  minToTime,
+} from '../../helpers/date'
 import { useTheme } from '@react-navigation/native'
 
 import IconMenu from '../IconMenu'
@@ -305,7 +305,7 @@ const EventCard = ({
               rendererProps={{ preferredPlacement: 'left' }}
             >
               <MenuTrigger>
-                <Text style={styles.timing}>{`${timing} мин`}</Text>
+                <Text style={styles.timing}>{minToTime(timing)}</Text>
               </MenuTrigger>
               <MenuOptions style={styles.menuOptions}>
                 <MenuRow

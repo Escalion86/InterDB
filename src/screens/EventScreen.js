@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native'
 import { useSelector } from 'react-redux'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
-import { formatDate, formatTime } from '../helpers/date'
+import { formatDate, formatTime, minToTime } from '../helpers/date'
 import { ModalDeleteEvent, ModalBottomMenu } from '../components/Modals'
 import { TextBlock } from '../components/infoComponents'
 import { TitleBlock } from '../components/createComponents'
@@ -227,20 +227,44 @@ const EventScreen = ({ navigation, route }) => {
       ) : null}
       <TitleBlock title="Тайминг" />
       {event.timing_duration ? (
-        <TextBlock text={`Продолжительность: ${event.timing_duration} мин`} />
+        <TextBlock
+          text={`Продолжительность: ${event.timing_duration} мин${
+            event.timing_duration > 60
+              ? ` (${minToTime(event.timing_duration)})`
+              : ''
+          }`}
+        />
       ) : null}
       {event.timing_preparetime ? (
-        <TextBlock text={`На подготовку: ${event.timing_preparetime} мин`} />
+        <TextBlock
+          text={`На подготовку: ${event.timing_preparetime} мин${
+            event.timing_preparetime > 60
+              ? ` (${minToTime(event.timing_preparetime)})`
+              : ''
+          }`}
+        />
       ) : null}
       {event.timing_collecttime ? (
-        <TextBlock text={`На сбор: ${event.timing_collecttime} мин`} />
+        <TextBlock
+          text={`На сбор: ${event.timing_collecttime} мин${
+            event.timing_collecttime > 60
+              ? ` (${minToTime(event.timing_collecttime)})`
+              : ''
+          }`}
+        />
       ) : null}
       {event.timing_road ? (
         <TextBlock
-          text={`На транспортировку в одну сторону: ${event.timing_road} мин`}
+          text={`На транспортировку в одну сторону: ${event.timing_road} мин${
+            event.timing_road > 60 ? ` (${minToTime(event.timing_road)})` : ''
+          }`}
         />
       ) : null}
-      <TextBlock text={`Итого (с учетом дороги обратно): ${timing} мин`} />
+      <TextBlock
+        text={`Итого (с учетом дороги обратно): ${timing} мин${
+          timing > 60 ? ` (${minToTime(timing)})` : ''
+        }`}
+      />
       <TitleBlock title="Транзакции" />
       {financesCards}
       {modal}

@@ -11,6 +11,7 @@ import {
   TextInputBlock,
   DateTimePickerBlock,
   TitleBlock,
+  TimeInputBlock,
 } from '../components/createComponents'
 import CardListForModal from '../components/Modals/CardListForModal'
 import { ClientCard, ServiceCard } from '../components/Cards'
@@ -626,56 +627,38 @@ const CreateEventScreen = ({ navigation, route }) => {
         <TitleBlock title="Тайминг" />
         <InfoMenu />
       </View>
-      <TextInputBlock
+      <TimeInputBlock
         title="Продолжительность"
         value={newEvent.timing_duration}
         onChangeText={(text) =>
           setEventItem({ timing_duration: Math.floor(text) })
         }
-        keyboardType="numeric"
-        placeholder="0"
-        postfix="мин"
         success={serviceObj && newEvent.timing_duration === serviceObj.duration}
-        inputFlex={1}
       />
-      <TextInputBlock
+      <TimeInputBlock
         title="На подготовку"
         value={newEvent.timing_preparetime}
         onChangeText={(text) =>
-          setEventItem({ timing_preparetime: text.replace(/[^\d]/g, '') })
+          setEventItem({ timing_preparetime: Math.floor(text) })
         }
-        keyboardType="numeric"
-        placeholder="0"
-        postfix="мин"
         success={
           serviceObj && newEvent.timing_preparetime === serviceObj.preparetime
         }
-        inputFlex={1}
       />
-      <TextInputBlock
+      <TimeInputBlock
         title="На сбор"
         value={newEvent.timing_collecttime}
         onChangeText={(text) =>
-          setEventItem({ timing_collecttime: text.replace(/[^\d]/g, '') })
+          setEventItem({ timing_collecttime: Math.floor(text) })
         }
-        keyboardType="numeric"
-        placeholder="0"
-        postfix="мин"
         success={
           serviceObj && newEvent.timing_collecttime === serviceObj.collecttime
         }
-        inputFlex={1}
       />
-      <TextInputBlock
+      <TimeInputBlock
         title="На транспортировку в одну сторону"
         value={newEvent.timing_road}
-        onChangeText={(text) =>
-          setEventItem({ timing_road: text.replace(/[^\d]/g, '') })
-        }
-        keyboardType="numeric"
-        placeholder="0"
-        postfix="мин"
-        inputFlex={1}
+        onChangeText={(text) => setEventItem({ timing_road: Math.floor(text) })}
       />
       {modal}
     </ScrollView>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import {
   StyleSheet,
   Text,
@@ -210,7 +210,7 @@ export const ColorPickerBlock = ({
       {buttonOnNextRow ? (
         <TextBlock style={{ flex: null }}>{title}</TextBlock>
       ) : null}
-      <View style={styles.row}>
+      <View style={{ ...styles.row, height: null }}>
         <ModalColorPicker defaultColor={color} />
         {!buttonOnNextRow ? (
           <TextBlock
@@ -331,6 +331,133 @@ export const ImagePickerBlock = ({
           />
         </View>
       </TouchableOpacity>
+    </View>
+  )
+}
+
+export const TimeInputBlock = ({
+  title = '',
+  value = '',
+  typeValue = 1,
+  onChangeText = () => {},
+  fieldStyle = {},
+  titleFlex = 3,
+  inputFlex = 2,
+  textAlign = 'center',
+  success = false,
+}) => {
+  const { colors } = useTheme()
+
+  console.log('success', success ? '1' : '0')
+  const textColor = success ? colors.success : colors.text
+
+  const [type, setType] = useState(typeValue)
+  const realValue = value ? parseInt(value) : 0
+
+  useEffect(() => {
+    if (realValue % 60 === 0) {
+      setType(60)
+    }
+  }, [])
+
+  if (type === 60 && realValue % 60 > 0) {
+    setType(1)
+  }
+  const textValue = realValue / type
+  return (
+    <View>
+      <View style={styles.row}>
+        <TextBlock
+          style={{
+            flex: titleFlex,
+          }}
+        >
+          {title}
+        </TextBlock>
+        <View
+          style={{
+            flex: inputFlex,
+            flexDirection: 'row',
+            height: '100%',
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              borderColor: colors.border,
+              backgroundColor: colors.card,
+              borderWidth: 1,
+              borderRadius: 5,
+              height: '100%',
+              ...fieldStyle,
+            }}
+          >
+            <TextInput
+              style={{
+                flex: 1,
+                textAlign: textAlign,
+                fontSize: fontSize.medium,
+                color: textColor,
+                padding: 5,
+              }}
+              keyboardType="numeric"
+              onChangeText={(text) => {
+                // setTextValue(text ? parseInt(text) : 0)
+                onChangeText((text ? parseInt(text) : 0) * type)
+              }}
+              placeholder="0"
+              placeholderTextColor={colors.text}
+              value={String(textValue)}
+            />
+          </View>
+          <DropDownPicker
+            items={[
+              { label: 'мин', value: 1 },
+              { label: 'час', value: 60 },
+            ]}
+            labelStyle={{
+              fontSize: fontSize.medium,
+              textAlign: 'left',
+              color: colors.text,
+            }}
+            defaultValue={type}
+            // labelStyle={{
+            //   fontSize: 16,
+            //   textAlign: "left",
+            //   color: colors.text,
+            // }}
+            containerStyle={{ height: '100%', width: 70 }}
+            style={{
+              backgroundColor: colors.card,
+              borderColor: colors.border,
+              paddingLeft: 0,
+              color: '#fff',
+              // ...style,
+            }}
+            dropDownMaxHeight={350}
+            itemStyle={{
+              justifyContent: 'flex-start',
+              paddingHorizontal: 5,
+              color: '#fff',
+            }}
+            dropDownStyle={{
+              backgroundColor: colors.card,
+              borderColor: colors.border,
+              paddingHorizontal: 0,
+              paddingVertical: 0,
+              zIndex: 99,
+            }}
+            // containerStyle={{ padding: 0, margin: 0, paddingHorizontal: 0 }}
+            activeItemStyle={{ backgroundColor: colors.active }}
+            arrowColor={colors.icon}
+            onChangeItem={({ value }) => {
+              setType(value)
+              onChangeText(textValue * value) // setTextValue(textValue * value)
+            }}
+          />
+        </View>
+      </View>
     </View>
   )
 }
