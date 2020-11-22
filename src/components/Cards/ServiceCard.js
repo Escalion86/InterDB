@@ -11,6 +11,7 @@ import { useTheme } from '@react-navigation/native'
 import { fontSize } from '../../theme'
 import CardContainer from './CardContainer'
 import { SERVICE_CARD_HEIGHT } from '../../constants'
+import { minToTime } from '../../helpers/date'
 
 const ServiceCard = ({
   navigation,
@@ -146,9 +147,9 @@ const ServiceCard = ({
           <View style={styles.right}>
             <View style={styles.carddate}>
               <Text style={styles.time}>
-                {`${
+                {minToTime(
                   +service.preparetime + service.collecttime + service.duration
-                } мин`}
+                )}
               </Text>
             </View>
             {/* <Text style={styles.price}>{service.price}</Text> */}
@@ -224,8 +225,7 @@ const stylesFactory = ({ colors }) =>
     right: {
       borderLeftWidth: 1,
       borderLeftColor: colors.border,
-      minWidth: 70,
-
+      minWidth: 60,
       justifyContent: 'space-between',
     },
     cardheader: {
