@@ -1,21 +1,21 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import {
   StyleSheet,
   View,
   Text,
   ScrollView,
-  Image,
-  StatusBar,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native'
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView'
 
-import { TitleBlock, TextBlock } from '../components/createComponents'
+import { TextBlock } from '../components/createComponents'
 import { LineChart } from 'react-native-chart-kit'
 import { useTheme } from '@react-navigation/native'
 import { months, monthsFull } from '../constants'
 import { fontSize } from '../theme'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 const chartConfigs = {
   light: {
@@ -52,6 +52,8 @@ const chartColors = [
   { r: 135, g: 100, b: 133 }, // #8764DF
 ]
 
+const tooltipWidth = 120
+
 const ChartScreen = ({ navigation, route }) => {
   const theme = useTheme()
 
@@ -66,6 +68,12 @@ const ChartScreen = ({ navigation, route }) => {
 
   const width = Dimensions.get('window').width
   const height = Dimensions.get('window').height
+
+  let tooltipLeft = selectedDot ? selectedDot.x - 6 - 53 : 0
+  if (tooltipLeft + tooltipWidth + 12 > width) {
+    tooltipLeft = width - tooltipWidth - 12
+  }
+  if (tooltipLeft < 2) tooltipLeft = 2
 
   const labelStyle = {
     color: theme.colors.text,
@@ -85,7 +93,7 @@ const ChartScreen = ({ navigation, route }) => {
 
   const datasets = {}
   let data = {}
-  const maxValue = 0
+
   if (allEvents.length > 0) {
     for (let i = 0; i < allEvents.length; i++) {
       const year = new Date(allEvents[i].date).getFullYear()
@@ -124,121 +132,152 @@ const ChartScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={labelStyle}>Чистая прибыль по месяцам</Text>
       {allEvents.length > 0 ? (
-        <View
-          style={{
-            backgroundColor: chartTheme.backgroundColor,
-            borderColor: theme.colors.active,
-            // borderBottomWidth: 2,
-            borderTopWidth: 2,
-            // maxHeight: 290,
-            // height: height * 0.75,
-            flex: 1,
-          }}
-        >
-          <ScrollView style={{ height: '100%' }}>
-            <ReactNativeZoomableView
-              maxZoom={1.5}
-              minZoom={1}
-              // zoomStep={0.5}
-              initialZoom={1}
-              bindToBorders={true}
-              // onZoomAfter={logOutZoomState}
-              // onDoubleTapAfter={(props) => logOutZoomState(props)}
-              // onZoomAfter={this.logOutZoomState}
-              // style={{
-              //   padding: 10,
-              //   backgroundColor: 'red',
-              // }}
-            >
-              <LineChart
-                data={data}
-                width={width}
-                height={height * 0.68}
-                chartConfig={chartTheme}
-                bezier
-                style={graphStyle}
-                fromZero
-                // yAxisInterval={2}
-                segments={5}
-                onDataPointClick={({ index, value, x, y, dataset }) =>
-                  setSelectedDot({
-                    month: index,
-                    profit: value,
-                    x,
-                    y,
-                    year: dataset.year,
-                  })
-                }
-                // renderDotContent={({ x, y, index, indexData }) => {
-                //   console.log(
-                //     'x:',
-                //     x,
-                //     'y:',
-                //     y,
-                //     'index:',
-                //     index,
-                //     'indexData:',
-                //     indexData
-                //   )
+        <>
+          <Text style={labelStyle}>Чистая прибыль по месяцам</Text>
+          <View
+            style={{
+              backgroundColor: chartTheme.backgroundColor,
+              borderColor: theme.colors.active,
+              // borderBottomWidth: 2,
+              borderTopWidth: 2,
+              // maxHeight: 290,
+              // height: height * 0.75,
+              flex: 1,
+            }}
+          >
+            <ScrollView style={{ height: '100%' }}>
+              <ReactNativeZoomableView
+                maxZoom={1.5}
+                minZoom={1}
+                // zoomStep={0.5}
+                initialZoom={1}
+                bindToBorders={true}
+                // onZoomAfter={logOutZoomState}
+                // onDoubleTapAfter={(props) => logOutZoomState(props)}
+                // onZoomAfter={this.logOutZoomState}
+                // style={{
+                //   padding: 10,
+                //   backgroundColor: 'red',
                 // }}
-                // yAxisLabel="Чистая прибыль"
-                verticalLabelRotation={90}
-                // horizontalLabelRotation={90}
-              />
-              {selectedDot ? (
-                <>
-                  <View
-                    style={{
-                      height: 12,
-                      width: 12,
-                      position: 'absolute',
-                      top: selectedDot.y + height * 0.102 - 6,
-                      left: selectedDot.x - 6,
-                      zIndex: 99,
-                      borderColor: theme.colors.accent,
-                      borderWidth: 3,
-                      borderRadius: 10,
-                    }}
-                  />
-                  <View
-                    style={{
-                      position: 'absolute',
-                      top: selectedDot.y + height * 0.1 + 16,
-                      left: selectedDot.x - 6 - 53,
-                      width: 120,
-                      padding: 5,
-                      borderColor: theme.colors.border,
-                      borderWidth: 1,
-                      // borderRadius: 20,
-                      backgroundColor: theme.colors.card,
-                    }}
-                  >
-                    <TextBlock
+              >
+                <LineChart
+                  data={data}
+                  width={width}
+                  height={height * 0.68}
+                  chartConfig={chartTheme}
+                  bezier
+                  style={graphStyle}
+                  fromZero
+                  // yAxisInterval={2}
+                  segments={5}
+                  onDataPointClick={({ index, value, x, y, dataset }) => {
+                    if (
+                      selectedDot &&
+                      x === selectedDot.x &&
+                      y === selectedDot.y
+                    ) {
+                      setSelectedDot(null)
+                    } else {
+                      setSelectedDot({
+                        month: index,
+                        profit: value,
+                        x,
+                        y,
+                        year: dataset.year,
+                      })
+                    }
+                  }}
+                  // renderDotContent={({ x, y, index, indexData }) => {
+                  //   console.log(
+                  //     'x:',
+                  //     x,
+                  //     'y:',
+                  //     y,
+                  //     'index:',
+                  //     index,
+                  //     'indexData:',
+                  //     indexData
+                  //   )
+                  // }}
+                  // yAxisLabel="Чистая прибыль"
+                  verticalLabelRotation={90}
+                  // horizontalLabelRotation={90}
+                />
+                {selectedDot ? (
+                  <>
+                    {/* <View
                       style={{
-                        height: 24,
-                        fontSize: fontSize.small,
-                        textAlign: 'center',
+                        height: 10,
+                        width: 10,
+                        position: 'absolute',
+                        top: selectedDot.y + height * 0.102 - 5,
+                        left: selectedDot.x - 5,
+                        zIndex: 99,
+                        borderColor: theme.colors.accent,
+                        borderWidth: 2,
+                        borderRadius: 10,
                       }}
-                    >{`${
-                      monthsFull[selectedDot.month].charAt(0).toUpperCase() +
-                      monthsFull[selectedDot.month].slice(1)
-                    } ${selectedDot.year}`}</TextBlock>
-                    <TextBlock
+                    /> */}
+                    <View
                       style={{
-                        height: 24,
-                        textAlign: 'center',
-                        fontSize: fontSize.small,
+                        position: 'absolute',
+                        top: selectedDot.y + height * 0.102 + 4,
+                        left: selectedDot.x - 5,
+                        width: 0,
+                        height: 0,
+                        backgroundColor: 'transparent',
+                        borderStyle: 'solid',
+                        borderLeftWidth: 5,
+                        borderRightWidth: 5,
+                        borderBottomWidth: 10,
+                        borderLeftColor: 'transparent',
+                        borderRightColor: 'transparent',
+                        borderBottomColor: 'white',
                       }}
-                    >{`${selectedDot.profit} руб`}</TextBlock>
-                  </View>
-                </>
-              ) : null}
-            </ReactNativeZoomableView>
-          </ScrollView>
-        </View>
-      ) : null}
+                    />
+                    <TouchableOpacity
+                      style={{
+                        position: 'absolute',
+                        top: selectedDot.y + height * 0.1 + 15,
+                        left: tooltipLeft,
+                        width: tooltipWidth,
+                        padding: 5,
+                        borderColor: theme.colors.border,
+                        borderWidth: 1,
+                        // borderRadius: 20,
+                        backgroundColor: theme.colors.card,
+                        borderRadius: 5,
+                      }}
+                      onPress={() => setSelectedDot(null)}
+                    >
+                      <TextBlock
+                        style={{
+                          height: 24,
+                          fontSize: fontSize.small,
+                          textAlign: 'center',
+                        }}
+                      >{`${
+                        monthsFull[selectedDot.month].charAt(0).toUpperCase() +
+                        monthsFull[selectedDot.month].slice(1)
+                      } ${selectedDot.year}`}</TextBlock>
+                      <TextBlock
+                        style={{
+                          height: 24,
+                          textAlign: 'center',
+                          fontSize: fontSize.small,
+                        }}
+                      >{`${selectedDot.profit} руб`}</TextBlock>
+                    </TouchableOpacity>
+                  </>
+                ) : null}
+              </ReactNativeZoomableView>
+            </ScrollView>
+          </View>
+        </>
+      ) : (
+        <Text style={labelStyle}>Нет данных для формирования графика</Text>
+      )}
     </View>
   )
 }
