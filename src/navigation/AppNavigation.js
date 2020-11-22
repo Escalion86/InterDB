@@ -31,6 +31,8 @@ import ServiceScreen from '../screens/ServiceScreen'
 import AboutScreen from '../screens/AboutScreen'
 import FinancesScreen from '../screens/FinancesScreen'
 import FinanceScreen from '../screens/FinanceScreen'
+import ChartsScreen from '../screens/ChartsScreen'
+import ChartScreen from '../screens/ChartScreen'
 import CreateServiceScreen from '../screens/CreateServiceScreen'
 import CreateFinanceScreen from '../screens/CreateFinanceScreen'
 import AuthScreen from '../screens/AuthScreen'
@@ -64,6 +66,7 @@ const DevStack = createStackNavigator()
 // const AboutStack = createStackNavigator()
 const SettingsStack = createStackNavigator()
 const FinancesStack = createStackNavigator()
+const ChartsStack = createStackNavigator()
 const AuthStack = createStackNavigator()
 
 // const burgerButton = (navigation) => (
@@ -220,6 +223,27 @@ const DevStackScreen = ({ navigation }) => (
       name="DevColumn"
       component={DevColumnScreen}
     /> */}
+  </StackNavigator>
+)
+
+const ChartsStackScreen = ({ navigation }) => (
+  <StackNavigator navigation={navigation} initialRouteName="DevDB">
+    <ChartsStack.Screen
+      name="Charts"
+      component={ChartsScreen}
+      options={{
+        title: 'Аналитика',
+        headerLeft: () => burgerButton(navigation),
+      }}
+    />
+    <ChartsStack.Screen
+      name="Chart"
+      component={ChartScreen}
+      options={{
+        title: 'График',
+      }}
+    />
+    {/* <ChartsStack.Screen name="CreateChart" component={CreateChartScreen} /> */}
   </StackNavigator>
 )
 
@@ -529,34 +553,51 @@ const DrawerScreen = () => {
       <Drawer.Screen
         name="Events"
         component={EventsStackScreen}
-        options={{
-          drawerLabel: 'События',
-          drawerIcon: <DrawerIcon name="md-calendar" />,
-        }}
+        // options={{
+        //   drawerLabel: 'События',
+        //   drawerIcon: <DrawerIcon name="md-calendar" />,
+        // }}
       />
       <Drawer.Screen
         name="Clients"
         component={ClientsStackScreen}
-        options={{
-          drawerLabel: 'Клиенты',
-          drawerIcon: <DrawerIcon name="md-people" />,
-        }}
+        // options={{
+        //   drawerLabel: 'Клиенты',
+        //   drawerIcon: <DrawerIcon name="md-people" />,
+        // }}
       />
       <Drawer.Screen
         name="Services"
         component={ServicesStackScreen}
-        options={{
-          drawerLabel: 'Услуги',
-          drawerIcon: <DrawerIcon name="md-briefcase" />,
-        }}
+        // options={{
+        //   drawerLabel: 'Услуги',
+        //   drawerIcon: <DrawerIcon name="md-briefcase" />,
+        // }}
+      />
+      <Drawer.Screen
+        name="Finances"
+        component={FinancesStackScreen}
+        // options={{
+        //   drawerLabel: 'Финансы',
+        //   drawerIcon: <DrawerIcon name="ios-cash" />,
+        // }}
+      />
+      <Drawer.Screen
+        name="Charts"
+        component={ChartsStackScreen}
+        // IconComponent={FontAwesome5}
+        // options={{
+        //   drawerLabel: 'Аналитика',
+        //   drawerIcon: <DrawerIcon name="md-stats" />,
+        // }}
       />
       <Drawer.Screen
         name="Dev"
         component={DevStackScreen}
-        options={{
-          drawerLabel: 'Панель разработчика',
-          drawerIcon: <DrawerIcon name="md-bug" />,
-        }}
+        // options={{
+        //   drawerLabel: 'Панель разработчика',
+        //   drawerIcon: <DrawerIcon name="md-bug" />,
+        // }}
       />
       {/* <Drawer.Screen
         name="About"
@@ -569,26 +610,19 @@ const DrawerScreen = () => {
       <Drawer.Screen
         name="Settings"
         component={SettingsStackScreen}
-        options={{
-          drawerLabel: 'Настройки',
-          drawerIcon: <DrawerIcon name="md-settings" />,
-        }}
+        // options={{
+        //   drawerLabel: 'Настройки',
+        //   drawerIcon: <DrawerIcon name="md-settings" />,
+        // }}
       />
-      <Drawer.Screen
-        name="Finances"
-        component={FinancesStackScreen}
-        options={{
-          drawerLabel: 'Финансы',
-          drawerIcon: <DrawerIcon name="ios-cash" />,
-        }}
-      />
+
       <Drawer.Screen
         name="Auth"
         component={AuthStackScreen}
-        options={{
-          drawerLabel: 'Авторизация',
-          drawerIcon: <DrawerIcon name="md-calendar" />,
-        }}
+        // options={{
+        //   drawerLabel: 'Авторизация',
+        //   drawerIcon: <DrawerIcon name="md-calendar" />,
+        // }}
       />
     </Drawer.Navigator>
   )

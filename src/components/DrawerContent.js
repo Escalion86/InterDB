@@ -125,8 +125,9 @@ import tariffs from '../tariffs'
 //   })
 // }
 
-const DrawerItemMenu = ({ label, iconName, onPress }) => {
+const DrawerItemMenu = ({ label, iconName, onPress, IconComponent = null }) => {
   const { colors } = useTheme()
+  if (!IconComponent) IconComponent = Ionicons
   const labelStyle = {
     fontSize: fontSize.medium,
     color: colors.text,
@@ -135,7 +136,11 @@ const DrawerItemMenu = ({ label, iconName, onPress }) => {
     <DrawerItem
       icon={() => (
         <View style={{ width: 22, alignItems: 'center' }}>
-          <Ionicons name={iconName} size={iconSize.small} color={colors.icon} />
+          <IconComponent
+            name={iconName}
+            size={iconSize.small}
+            color={colors.icon}
+          />
         </View>
       )}
       label={label}
@@ -360,6 +365,17 @@ const DrawerContent = (props) => {
               }}
             />
           </Drawer.Section>
+          {dev || user.tariff >= 3 ? (
+            <Drawer.Section style={styles.drawerSection}>
+              <DrawerItemMenu
+                label="Аналитика"
+                iconName="md-stats"
+                onPress={() => {
+                  props.navigation.navigate('Charts')
+                }}
+              />
+            </Drawer.Section>
+          ) : null}
           {/* <Drawer.Section title="Настройки">
             <TouchableRipple
               onPress={() => {

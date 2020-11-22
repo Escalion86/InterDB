@@ -1,52 +1,7 @@
 import React, { useContext } from 'react'
-import { StyleSheet, View, TouchableHighlight, Text } from 'react-native'
-import { useTheme } from '@react-navigation/native'
-import { fontSize, iconSize } from '../theme'
-import { Ionicons } from '@expo/vector-icons'
+import { StyleSheet, View } from 'react-native'
 import { AppContext } from '../AppContext'
-
-const MenuItem = ({
-  title = '',
-  onPress = () => {},
-  iconName = 'ios-bug',
-  small = false,
-}) => {
-  const { colors } = useTheme()
-  return (
-    <TouchableHighlight
-      style={{
-        // flex: 1,
-        height: small ? 45 : 60,
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        backgroundColor: colors.card,
-        borderBottomColor: colors.border,
-        borderBottomWidth: 1,
-        paddingLeft: 20,
-      }}
-      onPress={onPress}
-    >
-      <View style={{ flexDirection: 'row' }}>
-        <View style={{ alignItems: 'center', width: 24, marginRight: 20 }}>
-          <Ionicons
-            name={iconName}
-            size={iconSize.medium}
-            color={colors.icon}
-          />
-        </View>
-        <Text
-          style={{
-            color: colors.text,
-            fontSize: fontSize.big,
-            textAlignVertical: 'center',
-          }}
-        >
-          {title}
-        </Text>
-      </View>
-    </TouchableHighlight>
-  )
-}
+import MenuItem from '../components/MenuItem'
 
 const SettingsScreen = ({ navigation, route }) => {
   const { toggleTutorial } = useContext(AppContext)
