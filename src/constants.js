@@ -7,3 +7,32 @@ export const FINANCE_CARD_HEIGHT = 38
 
 // Modals
 export const MODAL_BOTTOM_CONTAINER_MAX_HEIGHT = 417
+
+export const months = [
+  'янв',
+  'фев',
+  'мар',
+  'апр',
+  'май',
+  'июн',
+  'июл',
+  'авг',
+  'сен',
+  'окт',
+  'ноя',
+  'дек',
+]
+export const monthsFull = [
+  'январь',
+  'февраль',
+  'март',
+  'апрель',
+  'май',
+  'июнь',
+  'июль',
+  'август',
+  'сентябрь',
+  'октябрь',
+  'ноябрь',
+  'декабрь',
+]
