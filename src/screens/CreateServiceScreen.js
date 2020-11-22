@@ -10,6 +10,7 @@ import {
   TextInputBlock,
   ImagePickerBlock,
   TitleBlock,
+  TimeInputBlock,
 } from '../components/createComponents'
 import trimingArrayValues from '../helpers/trimingArrayValues'
 import { HeaderBackButton } from '@react-navigation/stack'
@@ -112,33 +113,24 @@ const CreateServiceScreen = ({ navigation, route }) => {
         onPick={(img) => setServiceItem({ image: img })}
       />
       <TitleBlock title="Затраты времени" />
-      <TextInputBlock
+      <TimeInputBlock
         title="Продолжительность"
         value={newService.duration}
-        keyboardType="numeric"
         onChangeText={(text) => setServiceItem({ duration: Math.floor(text) })}
-        postfix="мин"
-        placeholder="0"
       />
-      <TextInputBlock
+      <TimeInputBlock
         title="Время на подготовку"
         value={newService.preparetime}
-        keyboardType="numeric"
         onChangeText={(text) =>
           setServiceItem({ preparetime: Math.floor(text) })
         }
-        postfix="мин"
-        placeholder="0"
       />
-      <TextInputBlock
+      <TimeInputBlock
         title="Время на сбор"
         value={newService.collecttime}
-        keyboardType="numeric"
         onChangeText={(text) =>
           setServiceItem({ collecttime: Math.floor(text) })
         }
-        postfix="мин"
-        placeholder="0"
       />
       <TitleBlock title="Финансы по умолчанию" />
       <TextInputBlock
