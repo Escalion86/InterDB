@@ -355,7 +355,7 @@ export const TimeInputBlock = ({
   const realValue = value ? parseInt(value) : 0
 
   useEffect(() => {
-    if (realValue % 60 === 0) {
+    if (realValue > 0 && realValue % 60 === 0) {
       setType(60)
     }
   }, [])
