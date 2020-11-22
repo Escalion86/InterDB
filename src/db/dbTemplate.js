@@ -531,6 +531,14 @@ export default dbTemplate = {
       db_default: 0,
     },
     {
+      db_name: 'comment',
+      desc: 'Комментарий',
+      db_type: 'TEXT',
+      not_null: false,
+      default: '',
+      db_default: '',
+    },
+    {
       db_name: 'phone',
       desc: 'Телефон',
       db_type: 'TEXT',
