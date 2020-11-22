@@ -16,28 +16,37 @@ const Button = ({
   size = 'medium',
   outline = false,
   theme = null,
+  compact = false,
+  mode = 'contained',
 }) => {
   if (!theme) theme = useTheme()
   const { colors } = theme
 
   return (
     <PaperButton
-      mode={outline ? 'outlined' : 'contained'}
+      mode={mode} // 'outlined' / 'text'
+      color={btnDecline ? colors.abort : colors.accent}
       style={{
         ...styles.button,
-        backgroundColor: outline
-          ? 'transparent'
-          : btnDecline
-            ? colors.abort
-            : colors.accent,
-        borderColor: outline
-          ? btnDecline
-            ? colors.abort
-            : colors.accent
-          : 'transparent',
+        // backgroundColor: outline
+        //   ? 'transparent'
+        //   : btnDecline
+        //     ? colors.abort
+        //     : colors.accent,
+        // borderColor: !outline
+        //   ? btnDecline
+        //     ? colors.abort
+        //     : colors.accent
+        //   : 'transparent',
         // minHeight: size === 'small' ? 32 : size === 'big' ? 56 : 44,
         // paddingHorizontal: size === 'small' ? 10 : size === 'big' ? 14 : 12,
         ...style,
+      }}
+      contentStyle={{
+        // borderColor: 'red',
+        // borderWidth: 1,
+        width: '100%',
+        // minWidth: 20,
       }}
       onPress={!disabled ? onPress : null}
       onLongPress={!disabled ? onLongPress : null}
@@ -46,7 +55,7 @@ const Button = ({
         fontSize: fontSize[textFontSize],
         color:
           textColor ||
-          (outline
+          (mode !== 'contained'
             ? btnDecline
               ? colors.abort
               : colors.accent
@@ -56,6 +65,7 @@ const Button = ({
                 ? colors.abortText
                 : colors.accentText),
       }}
+      compact={compact}
     >
       {title}
     </PaperButton>
@@ -112,19 +122,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     marginVertical: 7,
-    // width: '100%',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
+    // // width: '100%',
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.23,
+    // shadowRadius: 2.62,
 
-    elevation: 4,
+    // elevation: 4,
   },
   buttonTitle: {
     // fontWeight: 'bold',
+    // width: '100%',
+    flex: 1,
     color: 'white',
     textAlign: 'center',
   },
