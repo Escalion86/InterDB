@@ -6,21 +6,7 @@ import { fontSize } from '../theme'
 import { Ionicons } from '@expo/vector-icons'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import TabBar from 'react-native-underline-tabbar'
-
-const months = [
-  'янв',
-  'фев',
-  'мар',
-  'апр',
-  'май',
-  'июн',
-  'июл',
-  'авг',
-  'сен',
-  'окт',
-  'ноя',
-  'дек',
-]
+import { months } from '../constants'
 
 const yearsPrepare = (years) => {
   return years
