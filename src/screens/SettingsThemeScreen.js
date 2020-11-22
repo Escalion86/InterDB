@@ -24,7 +24,7 @@ const SettingsThemeScreen = ({ navigation, route }) => {
         onColorSelected={setAccent}
         buttonTextStyle={{ fontWeight: 'bold' }}
         // buttonFlex={1}
-        buttonText="Цвет текста подбирается автоматически"
+        buttonText="Выбрать цвет"
       />
     </ScrollView>
   )
