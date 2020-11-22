@@ -15,6 +15,8 @@ export const DevDropDownPicker = ({
   onPress = () => {},
   disabled = false,
   tableValue = 'id',
+  dropDownFlex = 2,
+  buttonFlex = 1,
 }) => {
   if (defaultValue === 'null') defaultValue = null
   if (tables.length === 0) return null
@@ -29,38 +31,40 @@ export const DevDropDownPicker = ({
 
   return (
     <View style={{ ...style, flexDirection: 'row' }}>
-      <DropDownPicker
-        placeholder={placeholder}
-        items={tablesItems}
-        defaultValue={defaultValue || null}
-        labelStyle={{
-          fontSize: fontSize.medium,
-          textAlign: 'left',
-          color: colors.text,
-        }}
-        containerStyle={{ marginVertical: 5, ...style }}
-        style={{
-          backgroundColor: colors.card,
-          borderColor: colors.border,
-          marginRight: 5,
-        }}
-        dropDownMaxHeight={350}
-        itemStyle={{
-          justifyContent: 'flex-start',
-        }}
-        dropDownStyle={{
-          backgroundColor: colors.card,
-          borderColor: colors.border,
-        }}
-        activeItemStyle={{ backgroundColor: colors.border }}
-        arrowColor={colors.text}
-        onChangeItem={onChangeItem}
-      />
+      <View style={{ flex: dropDownFlex }}>
+        <DropDownPicker
+          placeholder={placeholder}
+          items={tablesItems}
+          defaultValue={defaultValue || null}
+          labelStyle={{
+            fontSize: fontSize.medium,
+            textAlign: 'left',
+            color: colors.text,
+          }}
+          containerStyle={{ marginVertical: 5, ...style }}
+          style={{
+            backgroundColor: colors.card,
+            borderColor: colors.border,
+            marginRight: 5,
+          }}
+          dropDownMaxHeight={350}
+          itemStyle={{
+            justifyContent: 'flex-start',
+          }}
+          dropDownStyle={{
+            backgroundColor: colors.card,
+            borderColor: colors.border,
+          }}
+          activeItemStyle={{ backgroundColor: colors.border }}
+          arrowColor={colors.text}
+          onChangeItem={onChangeItem}
+        />
+      </View>
       {buttonTitle ? (
         <Button
           title={buttonTitle}
           onPress={onPress}
-          style={{ width: '40%' }}
+          style={{ flex: buttonFlex }}
           textFontSize="small"
           disabled={disabled}
         />
