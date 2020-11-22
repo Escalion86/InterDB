@@ -44,40 +44,44 @@ const Tooltip = ({
         {!isLastStep ? (
           <Button
             theme={resultTheme}
-            size="small"
-            textFontSize="small"
+            textFontSize="tiny"
             title={labels.skip || 'Пропустить'}
-            style={{ marginLeft: 5 }}
+            style={{ marginLeft: 5, width: 110 }}
             onPress={handleStop}
+            compact
+            mode="text"
           />
         ) : null}
         {!isFirstStep ? (
           <Button
             theme={resultTheme}
-            size="small"
-            textFontSize="small"
+            textFontSize="tiny"
             title={labels.previous || 'Пред'}
-            style={{ marginLeft: 5 }}
+            style={{ marginLeft: 5, width: 70 }}
             onPress={handlePrev}
+            compact
+            mode="text"
           />
         ) : null}
         {!isLastStep ? (
           <Button
             theme={resultTheme}
-            size="small"
-            textFontSize="small"
+            textFontSize="tiny"
             title={labels.next || 'След'}
-            style={{ marginLeft: 5 }}
+            style={{ marginLeft: 5, width: 70 }}
             onPress={handleNext}
+            compact
+            mode="text"
           />
         ) : (
           <Button
             theme={resultTheme}
-            size="small"
-            textFontSize="small"
+            textFontSize="tiny"
             title={labels.finish || 'Завершить'}
-            style={{ marginLeft: 5 }}
+            style={{ marginLeft: 5, width: 110 }}
             onPress={handleStop}
+            compact
+            mode="text"
           />
         )}
       </View>
