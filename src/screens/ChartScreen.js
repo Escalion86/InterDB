@@ -15,6 +15,7 @@ import { TitleBlock, TextBlock } from '../components/createComponents'
 import { LineChart } from 'react-native-chart-kit'
 import { useTheme } from '@react-navigation/native'
 import { months, monthsFull } from '../constants'
+import { fontSize } from '../theme'
 
 const chartConfigs = {
   light: {
@@ -67,13 +68,14 @@ const ChartScreen = ({ navigation, route }) => {
   const height = Dimensions.get('window').height
 
   const labelStyle = {
-    color: chartTheme.color(),
-    marginVertical: 10,
+    color: theme.colors.text,
+    height: 32,
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: fontSize.medium,
+    textAlignVertical: 'center',
   }
   const graphStyle = {
-    marginVertical: 8,
+    // marginVertical: 8,
     // borderColor: theme.colors.active,
     // borderWidth: 2,
     ...chartTheme.style,
@@ -128,17 +130,18 @@ const ChartScreen = ({ navigation, route }) => {
           style={{
             backgroundColor: chartTheme.backgroundColor,
             borderColor: theme.colors.active,
-            borderBottomWidth: 2,
+            // borderBottomWidth: 2,
             borderTopWidth: 2,
             // maxHeight: 290,
-            height: height * 0.65,
+            // height: height * 0.75,
+            flex: 1,
           }}
         >
-          <ScrollView>
+          <ScrollView style={{ height: '100%' }}>
             <ReactNativeZoomableView
               maxZoom={1.5}
               minZoom={1}
-              zoomStep={0.5}
+              // zoomStep={0.5}
               initialZoom={1}
               bindToBorders={true}
               // onZoomAfter={logOutZoomState}
@@ -152,11 +155,13 @@ const ChartScreen = ({ navigation, route }) => {
               <LineChart
                 data={data}
                 width={width}
-                height={height * 0.52}
+                height={height * 0.68}
                 chartConfig={chartTheme}
                 bezier
                 style={graphStyle}
                 fromZero
+                // yAxisInterval={2}
+                segments={5}
                 onDataPointClick={({ index, value, x, y, dataset }) =>
                   setSelectedDot({
                     month: index,
@@ -183,35 +188,55 @@ const ChartScreen = ({ navigation, route }) => {
                 // horizontalLabelRotation={90}
               />
               {selectedDot ? (
-                <View
-                  style={{
-                    height: 14,
-                    width: 14,
-                    position: 'absolute',
-                    top: selectedDot.y + height * 0.079,
-                    left: selectedDot.x - 7,
-                    zIndex: 99,
-                    borderColor: theme.colors.accent,
-                    borderWidth: 4,
-                    borderRadius: 10,
-                  }}
-                />
+                <>
+                  <View
+                    style={{
+                      height: 12,
+                      width: 12,
+                      position: 'absolute',
+                      top: selectedDot.y + height * 0.102 - 6,
+                      left: selectedDot.x - 6,
+                      zIndex: 99,
+                      borderColor: theme.colors.accent,
+                      borderWidth: 3,
+                      borderRadius: 10,
+                    }}
+                  />
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: selectedDot.y + height * 0.1 + 16,
+                      left: selectedDot.x - 6 - 53,
+                      width: 120,
+                      padding: 5,
+                      borderColor: theme.colors.border,
+                      borderWidth: 1,
+                      // borderRadius: 20,
+                      backgroundColor: theme.colors.card,
+                    }}
+                  >
+                    <TextBlock
+                      style={{
+                        height: 24,
+                        fontSize: fontSize.small,
+                        textAlign: 'center',
+                      }}
+                    >{`${
+                      monthsFull[selectedDot.month].charAt(0).toUpperCase() +
+                      monthsFull[selectedDot.month].slice(1)
+                    } ${selectedDot.year}`}</TextBlock>
+                    <TextBlock
+                      style={{
+                        height: 24,
+                        textAlign: 'center',
+                        fontSize: fontSize.small,
+                      }}
+                    >{`${selectedDot.profit} руб`}</TextBlock>
+                  </View>
+                </>
               ) : null}
             </ReactNativeZoomableView>
           </ScrollView>
-        </View>
-      ) : null}
-      {selectedDot ? (
-        <View style={{ flex: 1 }}>
-          <TextBlock style={{ flex: null, height: 30 }}>{`Месяц, год: ${
-            monthsFull[selectedDot.month]
-          } ${selectedDot.year}`}</TextBlock>
-          <TextBlock
-            style={{ flex: null, height: 30 }}
-          >{`Чистая прибыль: ${selectedDot.profit} руб`}</TextBlock>
-
-          {/* <TextBlock>{`x: ${selectedDot.x}`}</TextBlock>
-          <TextBlock>{`y: ${selectedDot.y}`}</TextBlock> */}
         </View>
       ) : null}
     </View>
