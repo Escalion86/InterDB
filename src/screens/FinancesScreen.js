@@ -100,14 +100,6 @@ const FinancesScreen = ({ navigation, route }) => {
     })
   }, [dev, sorting, events])
 
-  if (loading) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color={colors.accent} />
-      </View>
-    )
-  }
-
   const YearMonthFilter = useCallback(() => {
     // if (monthFilter && monthFilter !== month) month = null
 
@@ -127,6 +119,14 @@ const FinancesScreen = ({ navigation, route }) => {
       />
     )
   }, [allFinances, monthFilter, yearFilter])
+
+  if (loading) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" color={colors.accent} />
+      </View>
+    )
+  }
 
   const finances = allFinances.filter((finance) => {
     const year = new Date(finance.date).getFullYear()
