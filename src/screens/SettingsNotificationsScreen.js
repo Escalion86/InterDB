@@ -279,27 +279,6 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
     return false
   }
 
-  const Calendars = ({ defaultValue, onChangeItem }) => {
-    try {
-      return calendars.length > 0 ? (
-        <View style={{ height: 60 }}>
-          <DevDropDownPicker
-            tables={calendars}
-            tableValue="id"
-            placeholder="Выберите календарь"
-            defaultValue={defaultValue}
-            onChangeItem={onChangeItem}
-            style={{ flex: 1 }}
-          />
-        </View>
-      ) : (
-        <Text>Не доступных календарей (в режиме записи)</Text>
-      )
-    } catch (error) {
-      alert(error)
-    }
-  }
-
   return (
     <ScrollView style={styles.container}>
       <TitleBlock title="Push оповещения" />
@@ -324,12 +303,24 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
         }
       />
       {newStateApp.calendarEventTurnOn ? (
-        <Calendars
-          defaultValue={newStateApp.calendarEventId}
-          onChangeItem={({ value }) => {
-            setNewStateItem({ calendarEventId: value })
-          }}
-        />
+        calendars.length > 0 ? (
+          <View style={{ height: 60 }}>
+            <DevDropDownPicker
+              tables={calendars}
+              tableValue="id"
+              placeholder="Выберите календарь"
+              defaultValue={newStateApp.calendarEventId}
+              onChangeItem={(value) => {
+                setNewStateItem({ calendarEventId: value.value })
+              }}
+              onPress={() => {}}
+              // disabled={!selectedTable}
+              style={{ flex: 1 }}
+            />
+          </View>
+        ) : (
+          <Text>Не доступных календарей (в режиме записи)</Text>
+        )
       ) : null}
       <SwitchBlock
         title="Синхронизация Дней рождения клиентов"
@@ -339,12 +330,24 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
         }
       />
       {newStateApp.calendarBirthdayTurnOn ? (
-        <Calendars
-          defaultValue={newStateApp.calendarBirthdayId}
-          onChangeItem={({ value }) => {
-            setNewStateItem({ calendarBirthdayId: value })
-          }}
-        />
+        calendars.length > 0 ? (
+          <View style={{ height: 60 }}>
+            <DevDropDownPicker
+              tables={calendars}
+              tableValue="id"
+              placeholder="Выберите календарь"
+              defaultValue={newStateApp.calendarBirthdayId}
+              onChangeItem={(value) => {
+                setNewStateItem({ calendarBirthdayId: value.value })
+              }}
+              onPress={() => {}}
+              // disabled={!selectedTable}
+              style={{ flex: 1 }}
+            />
+          </View>
+        ) : (
+          <TitleBlock title="Не доступных календарей (в режиме записи)" />
+        )
       ) : null}
       <View style={{ zIndex: 0 }}>
         <Button
