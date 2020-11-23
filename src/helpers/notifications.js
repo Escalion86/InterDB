@@ -179,7 +179,13 @@ export const addClientNotification = async (client = null, appStore = null) => {
 }
 
 export const deleteCalendarEvent = async (id = '') => {
-  if (id) await Calendar.deleteEventAsync(id, { futureEvents: true })
+  if (id) {
+    const { status } = await Calendar.requestCalendarPermissionsAsync()
+    // console.log('status', status)
+    if (status === 'granted') {
+      await Calendar.deleteEventAsync(id, { futureEvents: true })
+    }
+  }
 }
 
 export const addCalendarEvent = async (event, appStore = null) => {
@@ -198,60 +204,66 @@ export const addCalendarEvent = async (event, appStore = null) => {
   //   calendarEventTurnOn = storeState.app.calendarEventTurnOn
   // }
   if (calendarEventTurnOn && event.date > new Date()) {
-    const service = store.getState().service.services.find((service) => {
-      return service.id === event.service
-    })
+    const { status } = await Calendar.requestCalendarPermissionsAsync()
+    // console.log('status', status)
+    if (status === 'granted') {
+      const service = store.getState().service.services.find((service) => {
+        return service.id === event.service
+      })
 
-    // if (!notificationBeforeEvent) {
-    //   notificationBeforeEvent = storeState.app.notificationBeforeEvent
-    // }
+      // if (!notificationBeforeEvent) {
+      //   notificationBeforeEvent = storeState.app.notificationBeforeEvent
+      // }
 
-    // if (!calendarEventId) {
-    //   calendarEventId = storeState.app.calendarEventId
-    // }
+      // if (!calendarEventId) {
+      //   calendarEventId = storeState.app.calendarEventId
+      // }
 
-    // if (!notificationAddPrepareRoadTime) {
-    //   notificationAddPrepareRoadTime =
-    //     storeState.app.notificationAddPrepareRoadTime
-    // }
+      // if (!notificationAddPrepareRoadTime) {
+      //   notificationAddPrepareRoadTime =
+      //     storeState.app.notificationAddPrepareRoadTime
+      // }
 
-    const CalendarFunc = event.calendar_id
-      ? (body) => Calendar.updateEventAsync(event.calendar_id, body)
-      : (body) => Calendar.createEventAsync(calendarEventId, body)
+      const CalendarFunc = event.calendar_id
+        ? (body) => Calendar.updateEventAsync(event.calendar_id, body)
+        : (body) => Calendar.createEventAsync(calendarEventId, body)
 
-    const location = event.location_town
-      ? `${event.location_town}, ${event.location_street} ${event.location_house}`
-      : null
+      const location = event.location_town
+        ? `${event.location_town}, ${event.location_street} ${event.location_house}`
+        : null
 
-    const newCalendarEventId = await CalendarFunc({
-      title: service ? service.name : 'Заказ неизвестной услуги',
-      startDate: +event.date,
-      endDate: +event.date + event.timing_duration * 60000, // 60 * 1000
-      location: location,
-      notes:
-        (notificationAddPrepareRoadTime ||
-          (+event.timing_road + event.timing_preparetime > 0
-            ? `Ожидаемое время на дорогу и сбор: ${
-                +event.timing_road + event.timing_preparetime
-              } мин\n`
-            : '')) + (event.comment ? `Комментарий: ${event.comment}` : ''),
-      allDay: false,
-      alarms: [
-        {
-          relativeOffset:
-            -notificationBeforeEvent -
-            (notificationAddPrepareRoadTime
-              ? +event.timing_road + event.timing_preparetime
-              : 0),
-          method: Calendar.AlarmMethod.DEFAULT,
-        },
-        // {
-        //   relativeOffset: -event.timing_preparetime,
-        //   method: Calendar.AlarmMethod.DEFAULT,
-        // },
-      ],
-    })
-    return newCalendarEventId
+      const newCalendarEventId = await CalendarFunc({
+        title: service ? service.name : 'Заказ неизвестной услуги',
+        startDate: +event.date,
+        endDate: +event.date + event.timing_duration * 60000, // 60 * 1000
+        location: location,
+        notes:
+          (notificationAddPrepareRoadTime ||
+            (+event.timing_road + event.timing_preparetime > 0
+              ? `Ожидаемое время на дорогу и сбор: ${
+                  +event.timing_road + event.timing_preparetime
+                } мин\n`
+              : '')) + (event.comment ? `Комментарий: ${event.comment}` : ''),
+        allDay: false,
+        alarms: [
+          {
+            relativeOffset:
+              -notificationBeforeEvent -
+              (notificationAddPrepareRoadTime
+                ? +event.timing_road + event.timing_preparetime
+                : 0),
+            method: Calendar.AlarmMethod.DEFAULT,
+          },
+          // {
+          //   relativeOffset: -event.timing_preparetime,
+          //   method: Calendar.AlarmMethod.DEFAULT,
+          // },
+        ],
+      })
+      return newCalendarEventId
+    } else {
+      return ''
+    }
   } else {
     return ''
   }
@@ -275,62 +287,68 @@ export const addCalendarClientBirthday = async (
     // }
 
     if (calendarBirthdayTurnOn) {
-      if (client.calendar_id) {
-        deleteCalendarEvent(client.calendar_id)
-      }
+      const { status } = await Calendar.requestCalendarPermissionsAsync()
+      // console.log('status', status)
+      if (status === 'granted') {
+        if (client.calendar_id) {
+          deleteCalendarEvent(client.calendar_id)
+        }
 
-      // if (calendarBirthdayId === null) {
-      //   calendarBirthdayId = appStore.calendarBirthdayId
-      // }
+        // if (calendarBirthdayId === null) {
+        //   calendarBirthdayId = appStore.calendarBirthdayId
+        // }
 
-      const CalendarFunc = (body) =>
-        Calendar.createEventAsync(calendarBirthdayId, body)
-      // const CalendarFunc = client.calendar_id
-      //   ? (body) =>
-      //     Calendar.updateEventAsync(client.calendar_id, body, {
-      //       futureEvents: true,
-      //     })
-      //   : (body) => Calendar.createEventAsync(calendarId, body)
+        const CalendarFunc = (body) =>
+          Calendar.createEventAsync(calendarBirthdayId, body)
+        // const CalendarFunc = client.calendar_id
+        //   ? (body) =>
+        //     Calendar.updateEventAsync(client.calendar_id, body, {
+        //       futureEvents: true,
+        //     })
+        //   : (body) => Calendar.createEventAsync(calendarId, body)
 
-      // if (!notificationBirthday) {
-      //   notificationBirthday = appStore.notificationBirthday
-      // }
+        // if (!notificationBirthday) {
+        //   notificationBirthday = appStore.notificationBirthday
+        // }
 
-      const today = new Date().setHours(0, 0, 0, 0)
-      let birthday = new Date().setFullYear(
-        new Date().getFullYear(),
-        client.birthday_month,
-        client.birthday_day
-      )
-      birthday = new Date(birthday).setHours(0, 0, 0, 0)
-      if (today > birthday) {
-        birthday = new Date(birthday).setFullYear(
-          new Date(birthday).getFullYear() + 1
+        const today = new Date().setHours(0, 0, 0, 0)
+        let birthday = new Date().setFullYear(
+          new Date().getFullYear(),
+          client.birthday_month,
+          client.birthday_day
         )
-      }
+        birthday = new Date(birthday).setHours(0, 0, 0, 0)
+        if (today > birthday) {
+          birthday = new Date(birthday).setFullYear(
+            new Date(birthday).getFullYear() + 1
+          )
+        }
 
-      const calendarClientId = await CalendarFunc({
-        title: `День рождения клиента ${client.surname} ${client.name} ${client.thirdname}`.trim(),
-        startDate: birthday,
-        endDate: birthday,
-        allDay: true,
-        alarms: [
-          {
-            relativeOffset: +notificationBirthday,
-            method: Calendar.AlarmMethod.DEFAULT,
+        const calendarClientId = await CalendarFunc({
+          title: `День рождения клиента ${client.surname} ${client.name} ${client.thirdname}`.trim(),
+          startDate: birthday,
+          endDate: birthday,
+          allDay: true,
+          alarms: [
+            {
+              relativeOffset: +notificationBirthday,
+              method: Calendar.AlarmMethod.DEFAULT,
+            },
+            // {
+            //   relativeOffset: -event.timing_preparetime,
+            //   method: Calendar.AlarmMethod.DEFAULT,
+            // },
+          ],
+          recurrenceRule: {
+            frequency: Calendar.Frequency.YEARLY,
+            interval: 1,
+            occurrence: 30,
           },
-          // {
-          //   relativeOffset: -event.timing_preparetime,
-          //   method: Calendar.AlarmMethod.DEFAULT,
-          // },
-        ],
-        recurrenceRule: {
-          frequency: Calendar.Frequency.YEARLY,
-          interval: 1,
-          occurrence: 30,
-        },
-      })
-      return calendarClientId
+        })
+        return calendarClientId
+      } else {
+        return ''
+      }
     } else {
       return ''
     }
