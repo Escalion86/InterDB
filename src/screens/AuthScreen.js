@@ -137,11 +137,13 @@ const AuthScreen = ({ navigation, route }) => {
         title="Логин"
         value={auth.email}
         onChangeText={(text) => setAuth({ ...auth, email: text })}
+        inputOnNextRow
       />
       <TextInputBlock
         title="Пароль"
         value={auth.password}
         onChangeText={(text) => setAuth({ ...auth, password: text })}
+        inputOnNextRow
       />
       <Button title="Создать аккаунт" onPress={() => createUser(auth)} />
       <Button
