@@ -713,18 +713,6 @@ export const AppNavigation = () => {
     dispatch(loadAll())
   }, [dispatch])
 
-  useEffect(() => {
-    ;(async () => {
-      await Calendar.requestCalendarPermissionsAsync()
-      // const { status } = await Calendar.requestCalendarPermissionsAsync()
-      // if (status === 'granted') {
-      //   const calendars = await Calendar.getCalendarsAsync()
-      //   console.log('Here are all your calendars:')
-      //   console.log({ calendars })
-      // }
-    })()
-  }, [])
-
   console.log('Render AppNavigation')
 
   return (
