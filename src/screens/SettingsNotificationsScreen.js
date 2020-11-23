@@ -188,6 +188,26 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
 
   const [calendars, setCalendars] = useState([])
 
+  // useEffect(() => {
+  //   if (newStateApp.calendarEventTurnOn || newStateApp.calendarBirthdayTurnOn) {
+  //     ;(async () => {
+  //       const { status } = await Calendar.requestCalendarPermissionsAsync()
+  //       if (status !== 'granted') {
+  //         setNewStateItem({
+  //           calendarEventTurnOn: false,
+  //           calendarBirthdayTurnOn: false,
+  //         })
+  //         dispatch(
+  //           setAllNotificationSettings({
+  //             calendarEventTurnOn: false,
+  //             calendarBirthdayTurnOn: false,
+  //           })
+  //         )
+  //       }
+  //     })()
+  //   }
+  // }, [newStateApp.calendarEventTurnOn, newStateApp.calendarBirthdayTurnOn])
+
   const refreshCalendarList = async () => {
     const { status } = await Calendar.requestCalendarPermissionsAsync()
     // console.log('status', status)
@@ -199,12 +219,25 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
           return cal.accessLevel !== 'read'
         })
       )
+    } else {
+      setNewStateItem({
+        calendarEventTurnOn: false,
+        calendarBirthdayTurnOn: false,
+      })
+      dispatch(
+        setAllNotificationSettings({
+          calendarEventTurnOn: false,
+          calendarBirthdayTurnOn: false,
+        })
+      )
     }
   }
 
   useEffect(() => {
-    ;(async () => await refreshCalendarList())()
-  }, [])
+    if (newStateApp.calendarEventTurnOn || newStateApp.calendarBirthdayTurnOn) {
+      ;(async () => await refreshCalendarList())()
+    }
+  }, [newStateApp.calendarEventTurnOn, newStateApp.calendarBirthdayTurnOn])
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -279,6 +312,27 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
     return false
   }
 
+  const Calendars = ({ defaultValue, onChangeItem }) => {
+    try {
+      return calendars.length > 0 ? (
+        <View style={{ height: 60 }}>
+          <DevDropDownPicker
+            tables={calendars}
+            tableValue="id"
+            placeholder="Выберите календарь"
+            defaultValue={defaultValue}
+            onChangeItem={onChangeItem}
+            style={{ flex: 1 }}
+          />
+        </View>
+      ) : (
+        <Text>Не доступных календарей (в режиме записи)</Text>
+      )
+    } catch (error) {
+      alert(error)
+    }
+  }
+
   return (
     <ScrollView style={styles.container}>
       <TitleBlock title="Push оповещения" />
@@ -298,56 +352,46 @@ const SettingsNotificationsScreen = ({ navigation, route }) => {
       <SwitchBlock
         title="Синхронизация событий"
         value={newStateApp.calendarEventTurnOn}
-        onValueChange={(value) =>
-          setNewStateItem({ calendarEventTurnOn: value })
-        }
+        onValueChange={async (value) => {
+          if (value) {
+            const { status } = await Calendar.requestCalendarPermissionsAsync()
+            if (status === 'granted') {
+              setNewStateItem({ calendarEventTurnOn: value })
+            }
+          } else {
+            setNewStateItem({ calendarEventTurnOn: value })
+          }
+        }}
       />
       {newStateApp.calendarEventTurnOn ? (
-        calendars.length > 0 ? (
-          <View style={{ height: 60 }}>
-            <DevDropDownPicker
-              tables={calendars}
-              tableValue="id"
-              placeholder="Выберите календарь"
-              defaultValue={newStateApp.calendarEventId}
-              onChangeItem={(value) => {
-                setNewStateItem({ calendarEventId: value.value })
-              }}
-              onPress={() => {}}
-              // disabled={!selectedTable}
-              style={{ flex: 1 }}
-            />
-          </View>
-        ) : (
-          <Text>Не доступных календарей (в режиме записи)</Text>
-        )
+        <Calendars
+          defaultValue={newStateApp.calendarEventId}
+          onChangeItem={({ value }) => {
+            setNewStateItem({ calendarEventId: value })
+          }}
+        />
       ) : null}
       <SwitchBlock
         title="Синхронизация Дней рождения клиентов"
         value={newStateApp.calendarBirthdayTurnOn}
-        onValueChange={(value) =>
-          setNewStateItem({ calendarBirthdayTurnOn: value })
-        }
+        onValueChange={async (value) => {
+          if (value) {
+            const { status } = await Calendar.requestCalendarPermissionsAsync()
+            if (status === 'granted') {
+              setNewStateItem({ calendarBirthdayTurnOn: value })
+            }
+          } else {
+            setNewStateItem({ calendarBirthdayTurnOn: value })
+          }
+        }}
       />
       {newStateApp.calendarBirthdayTurnOn ? (
-        calendars.length > 0 ? (
-          <View style={{ height: 60 }}>
-            <DevDropDownPicker
-              tables={calendars}
-              tableValue="id"
-              placeholder="Выберите календарь"
-              defaultValue={newStateApp.calendarBirthdayId}
-              onChangeItem={(value) => {
-                setNewStateItem({ calendarBirthdayId: value.value })
-              }}
-              onPress={() => {}}
-              // disabled={!selectedTable}
-              style={{ flex: 1 }}
-            />
-          </View>
-        ) : (
-          <TitleBlock title="Не доступных календарей (в режиме записи)" />
-        )
+        <Calendars
+          defaultValue={newStateApp.calendarBirthdayId}
+          onChangeItem={({ value }) => {
+            setNewStateItem({ calendarBirthdayId: value })
+          }}
+        />
       ) : null}
       <View style={{ zIndex: 0 }}>
         <Button
