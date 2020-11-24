@@ -422,9 +422,9 @@ const EventsScreen = ({ navigation, route }) => {
         // monthBadges={eventsInMonths}
       />
     ),
-    [allEvents, monthFilter, yearFilter]
+    [allEvents.length]
+    // [allEvents.length, monthFilter, yearFilter]
   )
-
   const events = allEvents.filter((event) => {
     const year = new Date(event.date).getFullYear()
     const month = new Date(event.date).getMonth()
