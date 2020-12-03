@@ -455,6 +455,14 @@ export default dbTemplate = {
       default: '',
       db_default: '',
     },
+    {
+      db_name: 'update_date',
+      desc: 'Дата и время последнего обновления',
+      db_type: 'TEXT',
+      not_null: true,
+      default: '',
+      db_default: '',
+    },
   ],
 
   clients: [
@@ -626,6 +634,14 @@ export default dbTemplate = {
       default: '',
       db_default: '',
     },
+    {
+      db_name: 'update_date',
+      desc: 'Дата и время последнего обновления',
+      db_type: 'TEXT',
+      not_null: true,
+      default: '',
+      db_default: '',
+    },
   ],
 
   services: [
@@ -717,6 +733,14 @@ export default dbTemplate = {
       default: '',
       db_default: '',
     },
+    {
+      db_name: 'update_date',
+      desc: 'Дата и время последнего обновления',
+      db_type: 'TEXT',
+      not_null: true,
+      default: '',
+      db_default: '',
+    },
   ],
   finances: [
     {
@@ -762,6 +786,14 @@ export default dbTemplate = {
     {
       db_name: 'create_date',
       desc: 'Дата и время создания',
+      db_type: 'TEXT',
+      not_null: true,
+      default: '',
+      db_default: '',
+    },
+    {
+      db_name: 'update_date',
+      desc: 'Дата и время последнего обновления',
       db_type: 'TEXT',
       not_null: true,
       default: '',
