@@ -348,7 +348,6 @@ export const TimeInputBlock = ({
 }) => {
   const { colors } = useTheme()
 
-  console.log('success', success ? '1' : '0')
   const textColor = success ? colors.success : colors.text
 
   const [type, setType] = useState(typeValue)
