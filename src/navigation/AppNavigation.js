@@ -26,6 +26,7 @@ import SettingsAutofillScreen from '../screens/SettingsAutofillScreen'
 import DevScreen from '../screens/DevScreen'
 import DevTableScreen from '../screens/DevTableScreen'
 import TestScreen from '../screens/TestScreen'
+import TestScreen2 from '../screens/TestScreen2'
 import ServicesScreen from '../screens/ServicesScreen'
 import ServiceScreen from '../screens/ServiceScreen'
 import AboutScreen from '../screens/AboutScreen'
@@ -217,6 +218,13 @@ const DevStackScreen = ({ navigation }) => (
       component={TestScreen}
       options={{
         title: 'Тест',
+      }}
+    />
+    <DevStack.Screen
+      name="Test2"
+      component={TestScreen2}
+      options={{
+        title: 'Тест2',
       }}
     />
     {/* <DevStack.Screen
@@ -639,7 +647,7 @@ export const AppNavigation = () => {
           .database()
           .ref('/users/' + user.uid)
           .on('value', function (snapshot) {
-            console.log('snapshot.val() :>> ', snapshot.val())
+            // console.log('snapshot.val() :>> ', snapshot.val())
             dispatch(userSignedIn(snapshot.val()))
           })
         // const currentUser = firebase.auth().currentUser
