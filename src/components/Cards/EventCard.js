@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import {
@@ -24,6 +24,35 @@ import NavigatorMenu from '../NavigatorMenu'
 import CardContainer from './CardContainer'
 import { EVENT_CARD_HEIGHT, EVENT_CARD_HEIGHT_FULL } from '../../constants'
 
+const financeSumToColor = (sum, profit) => {
+  if (sum === 0 && profit === 0) return 'gray'
+  if (sum <= 0) return 'red'
+  if (sum < profit) return 'orange'
+  if (sum === profit) return 'green'
+  if (sum > profit) return 'blue'
+}
+
+const loadCardData = async (state, event) => {
+  const services = state.service.services
+  const clients = state.client.clients
+
+  const service = services.find((data) => data.id === event.service)
+
+  const client = clients.find((data) => data.id === event.client)
+
+  const finances = state.finance.finances.filter((finance) => {
+    return finance.event === event.id
+  })
+
+  return { service, client, finances }
+  // setCardState({ service, client, incomeSum, outcomeSum, loading: false })
+  // setIncomeSum(tempIncomeSum)
+  // setOutcomeSum(tempOutcomeSum)
+  // setService(service)
+  // setClient(client)
+  // setLoading(false)
+}
+
 const EventCard = ({
   navigation,
   event,
@@ -37,11 +66,34 @@ const EventCard = ({
   financeIncome = () => {},
   financeOutcome = () => {},
 }) => {
-  const { Popover } = renderers
   const theme = useTheme()
   const { colors } = theme
   const styles = stylesFactory(theme)
+  // const [loading, setLoading] = useState(true)
+  const [cardState, setCardState] = useState({
+    loading: true,
+    client: {},
+    service: {},
+    finances: [],
+  })
+
+  // const setCardStateParam = (newState) => {
+  //   setCardState({ ...cardState, ...newState })
+  // }
+  // const [incomeSum, setIncomeSum] = useState(0)
+  // const [outcomeSum, setOutcomeSum] = useState(0)
+  // const [service, setService] = useState({})
+  // const [client, setClient] = useState({})
   // const [modal, setModal] = useState(null)
+  const state = useSelector((state) => state)
+
+  useEffect(() => {
+    if (event && !event.loading) {
+      loadCardData(state, event).then((data) =>
+        setCardState({ ...data, loading: false })
+      )
+    }
+  }, [event.loading])
 
   if (!event) {
     return (
@@ -73,16 +125,29 @@ const EventCard = ({
       event.timing_collecttime +
       event.timing_road * 2
 
-    if (event.loading || event.deleting) {
+    // loadCardData(state, event).then((data) =>
+    //   setCardState({ ...data, loading: false })
+    // )
+
+    // client: {},
+    // service: {},
+    // finances: [],
+
+    const height =
+      showService && showAdress && event.location_town
+        ? EVENT_CARD_HEIGHT_FULL
+        : EVENT_CARD_HEIGHT
+
+    if (cardState.loading || event.loading || event.deleting) {
       return (
         <View
           style={{
             ...styles.center,
             ...styles.card,
-            minHeight: 94,
+            minHeight: height,
           }}
         >
-          {event.loading ? (
+          {cardState.loading || event.loading ? (
             <ActivityIndicator size="large" color={colors.accent} />
           ) : (
             <Ionicons
@@ -95,23 +160,19 @@ const EventCard = ({
       )
     }
 
-    const services = useSelector((state) => state.service.services)
-    const clients = useSelector((state) => state.client.clients)
-    const finances = useSelector((state) => state.finance.finances).filter(
-      (finance) => {
-        return finance.event === event.id
-      }
-    )
-
     let incomeSum = 0
     let outcomeSum = 0
-    finances.forEach((finance) => {
+    cardState.finances.forEach((finance) => {
       if (finance.type === 'income') {
         incomeSum += +finance.sum
       } else {
         outcomeSum += +finance.sum
       }
     })
+
+    // let incomeSum = 0
+    // let outcomeSum = 0
+
     const resultSum = +incomeSum - outcomeSum
 
     const incomeLeft = +event.finance_price - incomeSum
@@ -122,23 +183,7 @@ const EventCard = ({
       event.finance_consumables -
       outcomeSum
 
-    const financeSumToColor = (sum, profit) => {
-      if (sum === 0 && profit === 0) return 'gray'
-      if (sum <= 0) return 'red'
-      if (sum < profit) return 'orange'
-      if (sum === profit) return 'green'
-      if (sum > profit) return 'blue'
-    }
-
     const financeColor = financeSumToColor(resultSum, profit)
-
-    const service = services.filter((data) => {
-      if (data.id === event.service) return data
-    })[0]
-
-    const client = clients.filter((data) => {
-      if (data.id === event.client) return data
-    })[0]
 
     const MenuRow = ({ title = '', value = '0', style = {} }) => (
       <View style={{ ...styles.row, ...style }}>
@@ -159,10 +204,6 @@ const EventCard = ({
 
     console.log('render EventCard id: ' + event.id)
     // const height = null
-    const height =
-      showService && showAdress && event.location_town
-        ? EVENT_CARD_HEIGHT_FULL
-        : EVENT_CARD_HEIGHT
 
     return (
       <CardContainer
@@ -214,7 +255,9 @@ const EventCard = ({
               <View style={styles.cardheader}>
                 <Text style={styles.cardtitle}>
                   {/* {event.auditory},  */}
-                  {service ? service.name : '[услуга не найдена]'}
+                  {cardState.service
+                    ? cardState.service.name
+                    : '[услуга не найдена]'}
                 </Text>
               </View>
             ) : null}
@@ -280,11 +323,13 @@ const EventCard = ({
                 }}
               >
                 <Text style={styles.carddesctext}>
-                  {client
-                    ? `${client.surname} ${client.name} ${client.thirdname}`.trim()
+                  {cardState.client
+                    ? `${cardState.client.surname} ${cardState.client.name} ${cardState.client.thirdname}`.trim()
                     : '[клиент не найден]'}
                 </Text>
-                {client ? <ContactsMenu client={client} /> : null}
+                {cardState.client ? (
+                  <ContactsMenu client={cardState.client} />
+                ) : null}
               </View>
             ) : null}
           </View>
@@ -301,7 +346,7 @@ const EventCard = ({
             </View>
             <Menu
               style={{ flex: 1, minHeight: 34 }}
-              renderer={Popover}
+              renderer={renderers.Popover}
               rendererProps={{ preferredPlacement: 'left' }}
             >
               <MenuTrigger>
@@ -338,7 +383,7 @@ const EventCard = ({
             </Menu>
             <Menu
               style={{ flex: 1, minHeight: 34 }}
-              renderer={Popover}
+              renderer={renderers.Popover}
               rendererProps={{ preferredPlacement: 'left' }}
             >
               <MenuTrigger>
