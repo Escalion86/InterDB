@@ -1,24 +1,16 @@
-import React, { useState, useLayoutEffect, useCallback } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  ToastAndroid,
-} from 'react-native'
+import { StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { addFinance, deleteAllFinances } from '../store/actions/finance'
 import { dbGenerator } from '../db/dbTemplate'
 import { useTheme } from '@react-navigation/native'
-import MainFlatListWithFab from '../components/MainFlatListWithFab'
 import { ModalDeleteFinance } from '../components/Modals'
-import { fontSize } from '../theme'
 import isDeveloper from '../helpers/isDeveloper'
 import SortMenu from '../components/SortMenu'
-
-import Filter from '../components/Filter'
+import FinancesPage from '../components/FinancesPage'
+import MonthFilterFlatList from '../components/MonthFilterFlatList'
 
 const sortList = [
   {
@@ -28,6 +20,11 @@ const sortList = [
       { name: 'По убыванию', value: 'dateDESC' },
     ],
   },
+]
+
+const badges = [
+  { param: 'type', values: ['income'], color: '#006600' },
+  { param: 'type', values: ['outcome'], color: 'red' },
 ]
 
 const FinancesScreen = ({ navigation, route }) => {
@@ -40,8 +37,8 @@ const FinancesScreen = ({ navigation, route }) => {
 
   const { colors } = useTheme()
 
-  const [monthFilter, setMonthFilter] = useState(new Date().getMonth())
-  const [yearFilter, setYearFilter] = useState(new Date().getFullYear())
+  // const [monthFilter, setMonthFilter] = useState(new Date().getMonth())
+  // const [yearFilter, setYearFilter] = useState(new Date().getFullYear())
 
   const allFinances = useSelector((state) => state.finance.finances)
   const events = useSelector((state) => state.event.events)
@@ -100,26 +97,6 @@ const FinancesScreen = ({ navigation, route }) => {
     })
   }, [dev, sorting, events])
 
-  const YearMonthFilter = useCallback(() => {
-    // if (monthFilter && monthFilter !== month) month = null
-
-    return (
-      <Filter
-        data={allFinances}
-        // years={years}
-        onChangeMonth={(i) => {
-          if (i !== monthFilter) {
-            setMonthFilter(i)
-          }
-        }}
-        onChangeYear={setYearFilter}
-        month={monthFilter}
-        year={yearFilter}
-        // monthBadges={eventsInMonths}
-      />
-    )
-  }, [allFinances, monthFilter, yearFilter])
-
   if (loading) {
     return (
       <View style={styles.center}>
@@ -128,62 +105,51 @@ const FinancesScreen = ({ navigation, route }) => {
     )
   }
 
-  const finances = allFinances.filter((finance) => {
-    const year = new Date(finance.date).getFullYear()
-    const month = new Date(finance.date).getMonth()
-    return month === monthFilter && year === yearFilter
-  })
+  // const finances = allFinances.filter((finance) => {
+  //   const year = new Date(finance.date).getFullYear()
+  //   const month = new Date(finance.date).getMonth()
+  //   return month === monthFilter && year === yearFilter
+  // })
 
-  if (finances.length === 0) {
-    return (
-      <View style={styles.container}>
-        <YearMonthFilter />
-        <View style={styles.center}>
-          <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
-            Транзакций нет
-          </Text>
-        </View>
-      </View>
-    )
-  }
+  // if (finances.length === 0) {
+  //   return (
+  //     <View style={styles.container}>
+  //       <YearMonthFilter />
+  //       <View style={styles.center}>
+  //         <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
+  //           Транзакций нет
+  //         </Text>
+  //       </View>
+  //     </View>
+  //   )
+  // }
 
-  switch (sorting) {
-    case 'dateASC':
-      finances.sort((a, b) => (a.date > b.date ? 1 : -1))
-      break
-    case 'dateDESC':
-      finances.sort((a, b) => (a.date < b.date ? 1 : -1))
-      break
-    default:
-      finances.sort((a, b) => (a.date > b.date ? 1 : -1))
+  // switch (sorting) {
+  //   case 'dateASC':
+  //     finances.sort((a, b) => (a.date > b.date ? 1 : -1))
+  //     break
+  //   case 'dateDESC':
+  //     finances.sort((a, b) => (a.date < b.date ? 1 : -1))
+  //     break
+  //   default:
+  //     finances.sort((a, b) => (a.date > b.date ? 1 : -1))
+  // }
+
+  const onPressFab = () => {
+    navigation.navigate('CreateEvent')
   }
 
   return (
     <View style={styles.container}>
-      <YearMonthFilter />
-      <MainFlatListWithFab
-        data={finances}
-        type="finances"
+      <MonthFilterFlatList
+        PageComponent={FinancesPage}
+        datas={allFinances}
+        badges={badges}
+        setModal={setModal}
+        sorting={sorting}
         navigation={navigation}
         onDelete={modalDelete}
-        // getItemLayout={(data, index) => ({
-        //   length: 42,
-        //   offset: 42 * index,
-        //   index,
-        // })}
-        fabVisible={false}
-        // renderItem={({ item }) => (
-        //   <FinanceCard
-        //     navigation={navigation}
-        //     finance={item}
-        //     onDelete={() => {
-        //       modalDelete(item)
-        //     }}
-        //   />
-        // )}
-        // onPressFab={() => {
-        //   navigation.navigate('CreateService')
-        // }}
+        onPressFab={onPressFab}
       />
       {modal}
     </View>

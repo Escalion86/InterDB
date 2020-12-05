@@ -1,15 +1,13 @@
 import React, { useState, useLayoutEffect, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
-import Fab from '../components/Fab'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
 import { dbGenerator } from '../db/dbTemplate'
 import { addClient, deleteAllClients } from '../store/actions/client'
 import { ModalDeleteClient } from '../components/Modals'
-import { fontSize } from '../theme'
 import SearchPanel from '../components/SearchPanel'
 import { clientsFilter } from '../helpers/filters'
 import isDeveloper from '../helpers/isDeveloper'
@@ -141,54 +139,23 @@ const ClientsScreen = ({ navigation, route }) => {
       )
   }
 
+  const onPressFab = () => {
+    navigation.navigate('CreateClient')
+  }
+
   return (
     <View style={styles.container}>
       {!noClients ? (
         <SearchPanel theme={theme} filter={filter} setFilter={setFilter} />
       ) : null}
-      {clients.length === 0 ? (
-        <View style={styles.center}>
-          <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
-            Клиентов нет
-          </Text>
-          <Fab
-            visible={true}
-            onPress={() => {
-              navigation.navigate('CreateClient')
-            }}
-            label="Добавить клиента"
-          />
-        </View>
-      ) : (
-        <MainFlatListWithFab
-          data={clients}
-          type="clients"
-          navigation={navigation}
-          onDelete={modalDelete}
-          // onChoose={( item ) => (
-          //   <ClientCard
-          //     navigation={navigation}
-          //     client={item}
-          //     onDelete={() => modalDelete(item)}
-          //   />
-          // )}
-          // getItemLayout={(data, index) => ({
-          //   length: 92,
-          //   offset: 92 * index,
-          //   index,
-          // })}
-          // renderItem={({ item }) => (
-          //   <ClientCard
-          //     navigation={navigation}
-          //     client={item}
-          //     onDelete={() => modalDelete(item)}
-          //   />
-          // )}
-          onPressFab={() => {
-            navigation.navigate('CreateClient')
-          }}
-        />
-      )}
+      <MainFlatListWithFab
+        data={clients}
+        type="clients"
+        textIfNoData="Клиентов нет"
+        navigation={navigation}
+        onDelete={modalDelete}
+        onPressFab={onPressFab}
+      />
       {modal}
     </View>
   )

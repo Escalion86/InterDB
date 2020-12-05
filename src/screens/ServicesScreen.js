@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { addService, deleteAllServices } from '../store/actions/service'
 import { dbGenerator } from '../db/dbTemplate'
 import { useTheme } from '@react-navigation/native'
-import Fab from '../components/Fab'
 import MainFlatListWithFab from '../components/MainFlatListWithFab'
 import { ModalDeleteService } from '../components/Modals'
-import { fontSize } from '../theme'
 import SearchPanel from '../components/SearchPanel'
 import { servicesFilter } from '../helpers/filters'
 import isDeveloper from '../helpers/isDeveloper'
@@ -177,53 +175,42 @@ const ServicesScreen = ({ navigation, route }) => {
       services.sort((a, b) => (a.name > b.name ? 1 : -1))
   }
 
+  const onPressFab = () => {
+    navigation.navigate('CreateService')
+  }
+
   return (
     <View style={styles.container}>
       {!noServices ? (
         <SearchPanel theme={theme} filter={filter} setFilter={setFilter} />
       ) : null}
-      {services.length === 0 ? (
-        <View style={styles.center}>
-          <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
-            {showArchvedOnly ? 'Архив пуст' : 'Услуг нет'}
-          </Text>
-
-          <Fab
-            visible={!showArchvedOnly}
-            onPress={() => {
-              navigation.navigate('CreateService')
-            }}
-            label="Добавить услугу"
-          />
-        </View>
-      ) : (
-        <MainFlatListWithFab
-          data={services}
-          type="services"
-          navigation={navigation}
-          onDelete={modalDelete}
-          // getItemLayout={(data, index) => ({
-          //   length: 100,
-          //   offset: 100 * index,
-          //   index,
-          // })}
-          fabVisible={!showArchvedOnly}
-          // renderItem={({ item }) => (
-          //   <ServiceCard
-          //     navigation={navigation}
-          //     service={item}
-          //     onDelete={() => {
-          //       modalDelete(item)
-          //     }}
-          //     havePopupMenu
-          //   />
-          // )}
-          onPressFab={() => {
-            navigation.navigate('CreateService')
-          }}
-          cardsHavePopupMenu={true}
-        />
-      )}
+      <MainFlatListWithFab
+        data={services}
+        type="services"
+        textIfNoData={showArchvedOnly ? 'Архив пуст' : 'Услуг нет'}
+        navigation={navigation}
+        onDelete={modalDelete}
+        // onScrollUp={hideFab}
+        // onScrollDown={showFab}
+        // getItemLayout={(data, index) => ({
+        //   length: 100,
+        //   offset: 100 * index,
+        //   index,
+        // })}
+        fabVisible={true}
+        // renderItem={({ item }) => (
+        //   <ServiceCard
+        //     navigation={navigation}
+        //     service={item}
+        //     onDelete={() => {
+        //       modalDelete(item)
+        //     }}
+        //     havePopupMenu
+        //   />
+        // )}
+        onPressFab={onPressFab}
+        cardsHavePopupMenu={true}
+      />
       {modal}
     </View>
   )

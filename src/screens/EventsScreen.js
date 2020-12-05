@@ -1,36 +1,21 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useCallback,
-} from 'react'
+import React, { useState, useContext, useEffect, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
-  Text,
   View,
   ActivityIndicator,
   ToastAndroid,
   Dimensions,
 } from 'react-native'
-// import Button from '../components/Button'
 import { AppContext } from '../AppContext'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { addEvent, deleteAllEvents } from '../store/actions/event'
-import { EventCard } from '../components/Cards'
 import { dbGenerator } from '../db/dbTemplate'
 import { useTheme } from '@react-navigation/native'
-import Fab from '../components/Fab'
-import MainFlatListWithFab from '../components/MainFlatListWithFab'
-import { fontSize } from '../theme'
-import { addFinance } from '../store/actions/finance'
-import {
-  ModalFinanceIncome,
-  ModalFinanceOutcome,
-  ModalDeleteEvent,
-} from '../components/Modals'
+import { ModalDeleteEvent } from '../components/Modals'
+import MonthFilterFlatList from '../components/MonthFilterFlatList'
+import EventsPage from '../components/EventsPage'
 
 import SortMenu from '../components/SortMenu'
 
@@ -42,118 +27,116 @@ import {
 import isDeveloper from '../helpers/isDeveloper'
 import * as Notifications from 'expo-notifications'
 
-import Filter from '../components/Filter'
-
 const windowHeight = Dimensions.get('window').height
 
-const EventsPage = ({
-  events,
-  navigation,
-  onDelete,
-  setModal,
-  dispatch,
-  theme,
-}) => {
-  const { colors } = theme
+// const EventsPage = ({
+//   events,
+//   navigation,
+//   onDelete,
+//   setModal,
+//   dispatch,
+//   theme,
+// }) => {
+//   const { colors } = theme
 
-  return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      {events.length === 0 ? (
-        <>
-          <View style={styles.center}>
-            <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
-              Событий нет
-            </Text>
+//   return (
+//     <View
+//       style={{
+//         flex: 1,
+//       }}
+//     >
+//       {events.length === 0 ? (
+//         <>
+//           <View style={styles.center}>
+//             <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
+//               Событий нет
+//             </Text>
 
-            <Fab
-              visible={true}
-              onPress={() => {
-                navigation.navigate('CreateEvent')
-              }}
-              label="Добавить событие"
-            />
-          </View>
-        </>
-      ) : (
-        <MainFlatListWithFab
-          data={events}
-          type="events"
-          navigation={navigation}
-          // getItemLayout={(data, index) => {
-          //   const height = data[index].location_town ? 156 : 126
-          //   return {
-          //     length: height,
-          //     offset: height * index,
-          //     index,
-          //   }
-          // }}
-          renderItem={({ item }) => (
-            <EventCard
-              navigation={navigation}
-              event={item}
-              onDelete={() => onDelete(item)}
-              financeIncome={(incomeLeft) => {
-                // showModalFinanceEventIncome(item, incomeLeft)
-                setModal(
-                  <ModalFinanceIncome
-                    onOuterClick={() => setModal(null)}
-                    incomeFact={item.finance_price - incomeLeft}
-                    incomePlan={item.finance_price}
-                    onAddFinance={(income, comment, date) =>
-                      dispatch(
-                        addFinance({
-                          event: item.id,
-                          type: 'income',
-                          sum: income,
-                          comment,
-                          date: date,
-                        })
-                      )
-                    }
-                  />
-                )
-              }}
-              financeOutcome={(outcomeLeft) => {
-                const outcomePlan =
-                  item.finance_road +
-                  item.finance_organizator +
-                  item.finance_assistants +
-                  item.finance_consumables
-                // showModalFinanceEventIncome(item, incomeLeft)
-                setModal(
-                  <ModalFinanceOutcome
-                    onOuterClick={() => setModal(null)}
-                    outcomeFact={outcomePlan - outcomeLeft}
-                    outcomePlan={outcomePlan}
-                    onAddFinance={(outcome, comment, date) =>
-                      dispatch(
-                        addFinance({
-                          event: item.id,
-                          type: 'outcome',
-                          sum: outcome,
-                          comment,
-                          date: date,
-                        })
-                      )
-                    }
-                  />
-                )
-              }}
-              havePopupMenu
-            />
-          )}
-          onPressFab={() => {
-            navigation.navigate('CreateEvent')
-          }}
-        />
-      )}
-    </View>
-  )
-}
+//             <Fab
+//               visible={true}
+//               onPress={() => {
+//                 navigation.navigate('CreateEvent')
+//               }}
+//               label="Добавить событие"
+//             />
+//           </View>
+//         </>
+//       ) : (
+//         <MainFlatListWithFab
+//           data={events}
+//           type="events"
+//           navigation={navigation}
+//           // getItemLayout={(data, index) => {
+//           //   const height = data[index].location_town ? 156 : 126
+//           //   return {
+//           //     length: height,
+//           //     offset: height * index,
+//           //     index,
+//           //   }
+//           // }}
+//           renderItem={({ item }) => (
+//             <EventCard
+//               navigation={navigation}
+//               event={item}
+//               onDelete={() => onDelete(item)}
+//               financeIncome={(incomeLeft) => {
+//                 // showModalFinanceEventIncome(item, incomeLeft)
+//                 setModal(
+//                   <ModalFinanceIncome
+//                     onOuterClick={() => setModal(null)}
+//                     incomeFact={item.finance_price - incomeLeft}
+//                     incomePlan={item.finance_price}
+//                     onAddFinance={(income, comment, date) =>
+//                       dispatch(
+//                         addFinance({
+//                           event: item.id,
+//                           type: 'income',
+//                           sum: income,
+//                           comment,
+//                           date: date,
+//                         })
+//                       )
+//                     }
+//                   />
+//                 )
+//               }}
+//               financeOutcome={(outcomeLeft) => {
+//                 const outcomePlan =
+//                   item.finance_road +
+//                   item.finance_organizator +
+//                   item.finance_assistants +
+//                   item.finance_consumables
+//                 // showModalFinanceEventIncome(item, incomeLeft)
+//                 setModal(
+//                   <ModalFinanceOutcome
+//                     onOuterClick={() => setModal(null)}
+//                     outcomeFact={outcomePlan - outcomeLeft}
+//                     outcomePlan={outcomePlan}
+//                     onAddFinance={(outcome, comment, date) =>
+//                       dispatch(
+//                         addFinance({
+//                           event: item.id,
+//                           type: 'outcome',
+//                           sum: outcome,
+//                           comment,
+//                           date: date,
+//                         })
+//                       )
+//                     }
+//                   />
+//                 )
+//               }}
+//               havePopupMenu
+//             />
+//           )}
+//           onPressFab={() => {
+//             navigation.navigate('CreateEvent')
+//           }}
+//         />
+//       )}
+//     </View>
+//   )
+// }
 
 const Tutorial = ({ navigation }) => {
   return (
@@ -263,14 +246,22 @@ const sortList = [
   },
 ]
 
+const badges = [
+  { param: 'status', values: ['Выполнено'], color: '#006600' },
+  { param: 'status', values: ['Отменено'], color: 'red' },
+  {
+    param: 'status',
+    values: ['Заметка', 'Есть вопросы', 'Принято'],
+    color: 'gray',
+  },
+]
+
 const EventsScreen = ({ navigation, route }) => {
   const theme = useTheme()
   const { colors } = theme
   const dispatch = useDispatch()
   const [sorting, setSorting] = useState('dateASC')
   const [modal, setModal] = useState(null)
-  const [monthFilter, setMonthFilter] = useState(new Date().getMonth())
-  const [yearFilter, setYearFilter] = useState(new Date().getFullYear())
 
   const allEvents = useSelector((state) => state.event.events)
   const services = useSelector((state) => state.service.services)
@@ -384,66 +375,6 @@ const EventsScreen = ({ navigation, route }) => {
     })
   }, [])
 
-  // const years = [new Date().getFullYear()]
-  // const eventsInMonths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-  // events = events.filter((event) => {
-  //   const year = new Date(event.date).getFullYear()
-  //   const month = new Date(event.date).getMonth()
-  //   if (!years.includes(year)) {
-  //     years.push(year)
-  //   }
-  //   if (year === yearFilter) {
-  //     eventsInMonths[month] += 1
-  //   }
-  //   return month === monthFilter && year === yearFilter
-  // })
-
-  // years = years
-  //   .sort((a, b) => (a < b ? 1 : -1))
-  //   .map((year) => {
-  //     return { label: year + '', value: year }
-  //   })
-
-  const YearMonthFilter = useCallback(
-    () => (
-      <Filter
-        // years={years}
-        data={allEvents}
-        onChangeMonth={(i) => {
-          if (i !== monthFilter) {
-            setMonthFilter(i)
-          }
-        }}
-        // scrollWithoutAnimation={false}
-        onChangeYear={setYearFilter}
-        month={monthFilter}
-        year={yearFilter}
-        // monthBadges={eventsInMonths}
-      />
-    ),
-    [allEvents.length]
-    // [allEvents.length, monthFilter, yearFilter]
-  )
-  const events = allEvents.filter((event) => {
-    const year = new Date(event.date).getFullYear()
-    const month = new Date(event.date).getMonth()
-    return month === monthFilter && year === yearFilter
-  })
-
-  console.log('render EventsScreen Header finished')
-
-  switch (sorting) {
-    case 'dateASC':
-      events.sort((a, b) => (a.date > b.date ? 1 : -1))
-      break
-    case 'dateDESC':
-      events.sort((a, b) => (a.date < b.date ? 1 : -1))
-      break
-    default:
-      events.sort((a, b) => (a.date > b.date ? 1 : -1))
-  }
-
   if (loading) {
     console.log('render EventsScreen loading')
     return (
@@ -455,23 +386,21 @@ const EventsScreen = ({ navigation, route }) => {
 
   console.log('render EventsScreen loading skipped')
 
+  const onPressFab = () => {
+    navigation.navigate('CreateEvent')
+  }
+
   return (
     <View style={styles.container}>
-      <YearMonthFilter />
-      {/* <TabBar /> */}
-      <EventsPage
-        // tabLabel={{
-        //   label: months[0],
-        //   badge: eventsInMonths[0].length,
-        //   badgeColor: colors.accent,
-        // }}
-        events={events}
+      <MonthFilterFlatList
+        PageComponent={EventsPage}
+        datas={allEvents}
+        setModal={setModal}
+        sorting={sorting}
         navigation={navigation}
         onDelete={modalDelete}
-        setModal={setModal}
-        dispatch={dispatch}
-        theme={theme}
-        noServices={services.length === 0}
+        onPressFab={onPressFab}
+        badges={badges}
       />
       {tutorial ? <Tutorial navigation={navigation} /> : null}
       {modal}
