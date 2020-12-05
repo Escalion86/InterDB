@@ -28,7 +28,7 @@ const errorCodeToMsg = (code) => {
 const checkIfLoggedIn = (setUser) => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-      console.log('Авторизован', user)
+      // console.log('Авторизован', user)
       setUser(user)
       // firebase
       //   .database()
@@ -38,7 +38,7 @@ const checkIfLoggedIn = (setUser) => {
       //   })
     } else {
       setUser(null)
-      console.log('Не авторизован')
+      // console.log('Не авторизован')
     }
   })
 }
@@ -137,11 +137,13 @@ const AuthScreen = ({ navigation, route }) => {
         title="Логин"
         value={auth.email}
         onChangeText={(text) => setAuth({ ...auth, email: text })}
+        inputOnNextRow
       />
       <TextInputBlock
         title="Пароль"
         value={auth.password}
         onChangeText={(text) => setAuth({ ...auth, password: text })}
+        inputOnNextRow
       />
       <Button title="Создать аккаунт" onPress={() => createUser(auth)} />
       <Button
