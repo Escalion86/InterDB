@@ -429,7 +429,6 @@ const MonthFilterFlatList = ({
           value={yearFilter}
         />
       </View>
-
       <Animated.FlatList
         ref={refFlatList}
         scrollEnabled={false}
@@ -458,21 +457,20 @@ const MonthFilterFlatList = ({
         keyExtractor={(item, index) => yearFilter.toString() + index.toString()}
         renderItem={({ item, index }) => {
           return (
-            <View style={{ width: width }}>
-              <PageComponent
-                data={item}
-                navigation={navigation}
-                onDelete={onDelete}
-                setModal={setModal}
-                dispatch={dispatch}
-                theme={theme}
-                sorting={sorting}
-                onScroll={onScroll}
-                onScrollUp={hideFab}
-                onScrollDown={showFab}
-                month={index}
-              />
-            </View>
+            <PageComponent
+              data={item}
+              navigation={navigation}
+              style={{ height: '100%', width: width }}
+              onDelete={onDelete}
+              setModal={setModal}
+              dispatch={dispatch}
+              theme={theme}
+              sorting={sorting}
+              onScroll={onScroll}
+              onScrollUp={hideFab}
+              onScrollDown={showFab}
+              month={index}
+            />
           )
         }}
       />

@@ -13,6 +13,7 @@ const FinancesPage = ({
   onScrollUp,
   onScrollDown,
   month = '',
+  style = { flex: 1 },
 }) => {
   const { colors } = theme
 
@@ -20,7 +21,7 @@ const FinancesPage = ({
     return (
       <View
         style={{
-          flex: 1,
+          ...style,
           justifyContent: 'center',
           alignItems: 'center',
           height: '100%',
@@ -46,11 +47,7 @@ const FinancesPage = ({
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
+    <View style={style}>
       <MainFlatListWithFab
         data={finances}
         type="finances"

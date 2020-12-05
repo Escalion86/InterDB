@@ -18,6 +18,7 @@ const EventsPage = ({
   onScrollUp,
   onScrollDown,
   month = '',
+  style = { flex: 1 },
 }) => {
   const { colors } = theme
 
@@ -25,7 +26,7 @@ const EventsPage = ({
     return (
       <View
         style={{
-          flex: 1,
+          ...style,
           justifyContent: 'center',
           alignItems: 'center',
           height: '100%',
@@ -51,11 +52,7 @@ const EventsPage = ({
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
+    <View style={style}>
       <MainFlatListWithFab
         data={events}
         textIfNoData="Событий нет"
