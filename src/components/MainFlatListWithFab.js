@@ -1,6 +1,12 @@
-import React, { useState } from 'react'
-import { View, FlatList, StyleSheet } from 'react-native'
-import Fab from './Fab'
+import React, { useRef } from 'react'
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+  Text,
+} from 'react-native'
 import { EventCard, ServiceCard, ClientCard, FinanceCard } from './Cards'
 import {
   EVENT_CARD_HEIGHT,
@@ -9,6 +15,9 @@ import {
   CLIENT_CARD_HEIGHT,
   FINANCE_CARD_HEIGHT,
 } from '../constants'
+import { Ionicons } from '@expo/vector-icons'
+import { useTheme } from '@react-navigation/native'
+import { fontSize } from '../theme'
 
 const MainFlatListWithFab = ({
   data,
@@ -17,21 +26,77 @@ const MainFlatListWithFab = ({
   navigation,
   type,
   containerStyle = {},
-  fabStyle = {},
+  // fabStyle = {},
   fabVisible = true,
   ListEmptyComponent = null,
   getItemLayout = null,
-  initialNumToRender = 10,
+  initialNumToRender = null,
   windowSize = 5,
-  maxToRenderPerBatch = 5,
+  maxToRenderPerBatch = null,
   swipeableCards = true,
   onChoose = null,
   onDelete = () => {},
   showContacts = true, // для type = 'client'
   cardsHavePopupMenu,
+  onScroll = () => {},
+  onScrollUp = () => {},
+  onScrollDown = () => {},
+  textIfNoData = '',
 }) => {
-  const [fabIsVisible, setFabIsVisible] = useState(fabVisible)
-  const [scrollPosition, setScrollPosition] = useState(0)
+  const scrollPosition = useRef(0)
+
+  const { colors } = useTheme()
+  // const [fabIsVisible, setFabIsVisible] = useState(fabVisible)
+
+  const fabBottom = new Animated.Value(20)
+
+  const showFab = () => {
+    Animated.timing(fabBottom, {
+      toValue: 20,
+      duration: 500,
+      useNativeDriver: false,
+    }).start()
+  }
+
+  const hideFab = () => {
+    Animated.timing(fabBottom, {
+      toValue: -60,
+      duration: 500,
+      useNativeDriver: false,
+    }).start()
+  }
+
+  const Fab = () => (
+    <Animated.View
+      style={{ position: 'absolute', right: 20, bottom: fabBottom }}
+    >
+      <TouchableOpacity onPress={onPressFab}>
+        <View
+          style={{
+            backgroundColor: colors.accent,
+            borderRadius: 60,
+            width: 56,
+            height: 56,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Ionicons name="ios-add" size={30} color={'black'} />
+        </View>
+      </TouchableOpacity>
+    </Animated.View>
+  )
+
+  if (data.length === 0) {
+    return (
+      <View style={styles.center}>
+        <Text style={{ fontSize: fontSize.giant, color: colors.text }}>
+          {textIfNoData}
+        </Text>
+        {fabVisible ? <Fab /> : null}
+      </View>
+    )
+  }
 
   switch (type) {
     case 'events': {
@@ -56,6 +121,8 @@ const MainFlatListWithFab = ({
           />
         )
       }
+      initialNumToRender = initialNumToRender || 6
+      maxToRenderPerBatch = maxToRenderPerBatch || 2
       break
     }
     case 'clients': {
@@ -76,6 +143,8 @@ const MainFlatListWithFab = ({
           />
         )
       }
+      initialNumToRender = initialNumToRender || 8
+      maxToRenderPerBatch = maxToRenderPerBatch || 3
       break
     }
     case 'services': {
@@ -96,6 +165,8 @@ const MainFlatListWithFab = ({
           />
         )
       }
+      initialNumToRender = initialNumToRender || 7
+      maxToRenderPerBatch = maxToRenderPerBatch || 3
       break
     }
     case 'finances': {
@@ -115,6 +186,8 @@ const MainFlatListWithFab = ({
           />
         )
       }
+      initialNumToRender = initialNumToRender || 16
+      maxToRenderPerBatch = maxToRenderPerBatch || 5
       break
     }
     default: {
@@ -141,18 +214,24 @@ const MainFlatListWithFab = ({
         // onScrollBeginDrag={() => setFabVisible(true)}
         // onEndReachedThreshold={0.1}
         // onTouchMove={() => setFabVisible(true)}
-        onScroll={({ nativeEvent }) => {
-          if (fabVisible) {
-            const currentOffset = nativeEvent.contentOffset.y
-            setFabIsVisible(currentOffset < scrollPosition)
-            // const direction = currentOffset > scrollPosition ? "down" : "up"
-            setScrollPosition(currentOffset)
-          }
-        }}
+        onScroll={onScroll}
         scrollEventThrottle={1000}
         renderItem={renderItem}
+        onScrollBeginDrag={({ nativeEvent }) => {
+          scrollPosition.current = nativeEvent.contentOffset.y
+        }}
+        onScrollEndDrag={({ nativeEvent }) => {
+          const currentOffset = nativeEvent.contentOffset.y
+          if (currentOffset < scrollPosition.current) {
+            if (onScrollDown) onScrollDown()
+            if (fabVisible) showFab()
+          } else {
+            if (onScrollUp) onScrollUp()
+            if (fabVisible) hideFab()
+          }
+        }}
       />
-      <Fab visible={fabIsVisible} onPress={onPressFab} style={fabStyle} />
+      {fabVisible ? <Fab /> : null}
     </View>
   )
 }
