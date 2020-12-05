@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useLayoutEffect,
-} from 'react'
+import React, { useState, useRef, useMemo, useLayoutEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import {
   View,
@@ -13,8 +7,6 @@ import {
   Dimensions,
   Animated,
   TouchableOpacity,
-  ActivityIndicator,
-  ToastAndroid,
 } from 'react-native'
 
 import EventsPage from '../components/EventsPage'
@@ -176,11 +168,6 @@ const Tab = ({ item, badges, onItemPress, datas, colors }) => {
 }
 
 const Indicator = ({ scrollX, colors }) => {
-  // const inputRange = data.map((_, i) => i * width)
-  // const indicatorWidth = scrollX.interpolate({
-  //   inputRange,
-  //   outputRange: 62,
-  // })
   const translateX = scrollX.interpolate({
     inputRange: data.map((_, i) => i * width),
     outputRange: [
@@ -219,12 +206,7 @@ const Indicator = ({ scrollX, colors }) => {
 }
 
 const scrollToIndex = (scrollRef, index, animated = true) => {
-  // scrollRef.current.scrollToOffset({
-  //   offset: TAB_WIDTH * index - scrollWidth / 2 + TAB_WIDTH / 2,
-  // })
-  // console.log('measures', measures)
   scrollRef.current.scrollTo({
-    // x: measures[index].x - 12 + measures[index].width / 2 - scrollWidth / 2,
     x: TAB_WIDTH * index - scrollWidth / 2 + TAB_WIDTH / 2,
     y: 0,
     animated,
@@ -333,22 +315,11 @@ const MonthFilterFlatList = ({
   const dispatch = useDispatch()
   const theme = useTheme()
   const { colors } = theme
-  // const startRender = new Date()
 
   const monthFilter = useRef(new Date().getMonth())
   const [yearFilter, setYearFilter] = useState(new Date().getFullYear())
 
   const datasInMonths = useRef(refreshDatas(yearFilter, datas))
-
-  // const datasInMonths = useMemo(() => {
-  //   const tempDatas = [[], [], [], [], [], [], [], [], [], [], [], []]
-  //   datas.forEach((data) => {
-  //     if (new Date(data.date).getFullYear() === yearFilter) {
-  //       tempDatas[new Date(data.date).getMonth()].push(data)
-  //     }
-  //   })
-  //   return tempDatas
-  // }, [yearFilter, datas])
 
   const [datasInMonthsLoaded, setDatasInMonthsLoaded] = useState(
     updateLoadedPages(datasInMonths.current, null, new Date().getMonth())
@@ -386,31 +357,10 @@ const MonthFilterFlatList = ({
     return tempYears
   }, [datas])
 
-  // useLayoutEffect(() => {
-  //   // setDatasInMonthsLoaded(
-  //   //   updateLoadedPages(datasInMonths, null, monthFilter.current)
-  //   // )
-  //   // setDatasInMonthsLoaded(datasInMonths)
-  //   // refFlatList?.current?.scrollToOffset({
-  //   //   offset: monthFilter.current * width,
-  //   // })
-  //   // ref?.current?.scrollToIndex({
-  //   //   index: monthFilter.current,
-  //   // })
-  //   onItemPress(monthFilter.current)
-  // }, [yearFilter, datas, refFlatList.current])
-
-  // useEffect(() => {
-  //   const finishRender = new Date()
-  //   console.log('render time:', finishRender - startRender)
-  //   // ToastAndroid.show(finishRender, ToastAndroid.SHORT)
-  // }, [datasInMonthsLoaded])
-
   const onItemPress = (itemIndex) => {
     refFlatList?.current?.scrollToOffset({
       offset: itemIndex * width,
     })
-    // console.log('itemIndex * width', itemIndex * width)
     monthFilter.current = itemIndex
     if (
       !datasInMonthsLoaded[itemIndex] ||
@@ -426,24 +376,6 @@ const MonthFilterFlatList = ({
   }
 
   useLayoutEffect(() => showFab(), [yearFilter])
-
-  // console.log('MonthFilter render')
-  // console.log(datasInMonthsLoaded)
-
-  // if (loading) {
-  //   return (
-  //     <View
-  //       style={{
-  //         flex: 1,
-  //         justifyContent: 'center',
-  //         alignItems: 'center',
-  //         height: '100%',
-  //       }}
-  //     >
-  //       <ActivityIndicator size="large" color={colors.accent} />
-  //     </View>
-  //   )
-  // }
 
   const Fab = () => (
     <Animated.View
@@ -490,20 +422,6 @@ const MonthFilterFlatList = ({
                 )
               )
               setYearFilter(value)
-              // setDatasInMonthsLoaded([
-              //   null,
-              //   null,
-              //   null,
-              //   null,
-              //   null,
-              //   null,
-              //   null,
-              //   null,
-              //   null,
-              //   null,
-              //   null,
-              //   null,
-              // ])
             }
           }}
           years={years}

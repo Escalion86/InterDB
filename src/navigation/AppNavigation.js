@@ -642,7 +642,7 @@ export const AppNavigation = () => {
   const checkIfLoggedIn = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log('Авторизован', user)
+        // console.log('Авторизован', user)
         firebase
           .database()
           .ref('/users/' + user.uid)

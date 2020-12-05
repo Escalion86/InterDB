@@ -259,7 +259,7 @@ const ChartScreen = ({ navigation, route }) => {
       }
       datasets[year].data[month] += profit
     }
-    console.log('object', closedMonths)
+    // console.log('object', closedMonths)
     // datasets = datasets.sort((a, b) => (a < b ? 1 : -1))
     const years = Object.keys(datasets)
     // years = years.sort((a, b) => (a < b ? 1 : -1))
