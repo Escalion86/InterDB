@@ -93,7 +93,7 @@ const EventCard = ({
         setCardState({ ...data, loading: false })
       )
     }
-  }, [event.loading])
+  }, [event.loading, state])
 
   if (!event) {
     return (
