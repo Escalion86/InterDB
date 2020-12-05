@@ -51,12 +51,12 @@ export const addEventNotification = async (event, appStore = null) => {
     //   pushEventTurnOn = appStore.notificationTurnOn
     // }
 
-    if (!pushEventTurnOn) {
-      return ''
-    }
-
     if (event.notification_id) {
       deleteNotification(event.notification_id)
+    }
+
+    if (!pushEventTurnOn) {
+      return ''
     }
 
     // if (!notificationBeforeEvent) {
@@ -107,7 +107,7 @@ export const addEventNotification = async (event, appStore = null) => {
       return ''
     }
   } else {
-    return ''
+    return null
   }
 }
 
@@ -174,7 +174,11 @@ export const addClientNotification = async (client = null, appStore = null) => {
       return ''
     }
   } else {
-    return ''
+    if (client) {
+      return client.notification_id
+    } else {
+      return null
+    }
   }
 }
 
@@ -188,86 +192,98 @@ export const deleteCalendarEvent = async (id = '') => {
   }
 }
 
-export const addCalendarEvent = async (event, appStore = null) => {
-  if (!appStore) {
-    appStore = store.getState().app
-  }
-  const {
-    notificationBeforeEvent,
-    notificationAddPrepareRoadTime,
-    calendarEventId,
-    calendarEventTurnOn,
-  } = appStore
+export const addCalendarEvent = async (event = null, appStore = null) => {
+  if (event) {
+    if (!appStore) {
+      appStore = store.getState().app
+    }
+    const {
+      notificationBeforeEvent,
+      notificationAddPrepareRoadTime,
+      calendarEventId,
+      calendarEventTurnOn,
+    } = appStore
 
-  // const storeState = store.getState()
-  // if (!calendarEventTurnOn) {
-  //   calendarEventTurnOn = storeState.app.calendarEventTurnOn
-  // }
-  if (calendarEventTurnOn && event.date > new Date()) {
-    const { status } = await Calendar.requestCalendarPermissionsAsync()
-    // console.log('status', status)
-    if (status === 'granted') {
-      const service = store.getState().service.services.find((service) => {
-        return service.id === event.service
-      })
+    // const storeState = store.getState()
+    // if (!calendarEventTurnOn) {
+    //   calendarEventTurnOn = storeState.app.calendarEventTurnOn
+    // }
+    if (calendarEventTurnOn && event.date > new Date()) {
+      const { status } = await Calendar.requestCalendarPermissionsAsync()
+      if (status === 'granted') {
+        const service = store.getState().service.services.find((service) => {
+          return service.id === event.service
+        })
 
-      // if (!notificationBeforeEvent) {
-      //   notificationBeforeEvent = storeState.app.notificationBeforeEvent
-      // }
+        // if (!notificationBeforeEvent) {
+        //   notificationBeforeEvent = storeState.app.notificationBeforeEvent
+        // }
 
-      // if (!calendarEventId) {
-      //   calendarEventId = storeState.app.calendarEventId
-      // }
+        // if (!calendarEventId) {
+        //   calendarEventId = storeState.app.calendarEventId
+        // }
 
-      // if (!notificationAddPrepareRoadTime) {
-      //   notificationAddPrepareRoadTime =
-      //     storeState.app.notificationAddPrepareRoadTime
-      // }
+        // if (!notificationAddPrepareRoadTime) {
+        //   notificationAddPrepareRoadTime =
+        //     storeState.app.notificationAddPrepareRoadTime
+        // }
 
-      const CalendarFunc = event.calendar_id
-        ? (body) => Calendar.updateEventAsync(event.calendar_id, body)
-        : (body) => Calendar.createEventAsync(calendarEventId, body)
+        const CalendarFunc = event.calendar_id
+          ? (body) => Calendar.updateEventAsync(event.calendar_id, body)
+          : (body) => Calendar.createEventAsync(calendarEventId, body)
 
-      const location = event.location_town
-        ? `${event.location_town}, ${event.location_street} ${event.location_house}`
-        : null
+        const location = event.location_town
+          ? `${event.location_town}, ${event.location_street} ${event.location_house}`
+          : null
 
-      const newCalendarEventId = await CalendarFunc({
-        title: service ? service.name : 'Заказ неизвестной услуги',
-        startDate: +event.date,
-        endDate: +event.date + event.timing_duration * 60000, // 60 * 1000
-        location: location,
-        notes:
-          (notificationAddPrepareRoadTime ||
-            (+event.timing_road + event.timing_preparetime > 0
-              ? `Ожидаемое время на дорогу и сбор: ${
-                  +event.timing_road + event.timing_preparetime
-                } мин\n`
-              : '')) + (event.comment ? `Комментарий: ${event.comment}` : ''),
-        allDay: false,
-        alarms: [
-          {
-            relativeOffset:
-              -notificationBeforeEvent -
-              (notificationAddPrepareRoadTime
-                ? +event.timing_road + event.timing_preparetime
-                : 0),
-            method: Calendar.AlarmMethod.DEFAULT,
-          },
-          // {
-          //   relativeOffset: -event.timing_preparetime,
-          //   method: Calendar.AlarmMethod.DEFAULT,
-          // },
-        ],
-      })
-      return newCalendarEventId
+        const newCalendarEventId = await CalendarFunc({
+          title: service ? service.name : 'Заказ неизвестной услуги',
+          startDate: +event.date,
+          endDate: +event.date + event.timing_duration * 60000, // 60 * 1000
+          location: location,
+          notes:
+            (notificationAddPrepareRoadTime ||
+              (+event.timing_road + event.timing_preparetime > 0
+                ? `Ожидаемое время на дорогу и сбор: ${
+                    +event.timing_road + event.timing_preparetime
+                  } мин\n`
+                : '')) + (event.comment ? `Комментарий: ${event.comment}` : ''),
+          allDay: false,
+          alarms: [
+            {
+              relativeOffset:
+                -notificationBeforeEvent -
+                (notificationAddPrepareRoadTime
+                  ? +event.timing_road + event.timing_preparetime
+                  : 0),
+              method: Calendar.AlarmMethod.DEFAULT,
+            },
+            // {
+            //   relativeOffset: -event.timing_preparetime,
+            //   method: Calendar.AlarmMethod.DEFAULT,
+            // },
+          ],
+        })
+        return newCalendarEventId
+      } else {
+        return event.calendar_id
+      }
     } else {
-      return ''
+      // Прошлые события из календаря удалять не будем
+      // if (event.date > new Date()) {
+      //   const { status } = await Calendar.requestCalendarPermissionsAsync()
+      //   if (status === 'granted') {
+      //     await Calendar.deleteEventAsync(event.calendar_id)
+      //     return ''
+      //   }
+      // }
+      return event.calendar_id
     }
   } else {
-    return ''
+    return null
   }
 }
+
 export const addCalendarClientBirthday = async (
   client = null,
   appStore = null
@@ -347,12 +363,27 @@ export const addCalendarClientBirthday = async (
         })
         return calendarClientId
       } else {
-        return ''
+        return client.calendar_id
       }
     } else {
-      return ''
+      return client.calendar_id
     }
   } else {
-    return ''
+    if (client) {
+      return client.calendar_id
+    } else {
+      return null
+    }
   }
+}
+
+export const deleteAllCalendarEvents = () => {
+  const events = store.getState().event.events
+  events.forEach(async (event) => {
+    await deleteCalendarEvent(event.calendar_id)
+  })
+  const clients = store.getState().client.clients
+  clients.forEach(async (client) => {
+    await deleteCalendarEvent(client.calendar_id)
+  })
 }
