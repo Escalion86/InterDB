@@ -25,7 +25,7 @@ export const serviceReducer = (state = initialState, action) => {
     case LOAD_SERVICES:
       services = action.services.map((service) => {
         service.create_date = service.create_date * 1000
-
+        service.update_date = service.update_date * 1000
         service.loading = false
         return service
       })

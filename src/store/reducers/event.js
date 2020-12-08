@@ -28,6 +28,7 @@ export const eventReducer = (state = initialState, action) => {
       events = action.events.map((event) => {
         event.date = event.date * 1000
         event.create_date = event.create_date * 1000
+        event.update_date = event.update_date * 1000
         event.loading = false
         return event
       })

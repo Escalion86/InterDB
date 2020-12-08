@@ -26,6 +26,7 @@ export const clientReducer = (state = initialState, action) => {
       clients = action.clients.map((client) => {
         // client.birthday = client.birthday * 1000
         client.create_date = client.create_date * 1000
+        client.update_date = client.update_date * 1000
         client.loading = false
         return client
       })
