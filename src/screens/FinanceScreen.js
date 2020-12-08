@@ -10,10 +10,16 @@ import { useTheme } from '@react-navigation/native'
 import { TextBlock } from '../components/infoComponents'
 import { ModalDeleteFinance } from '../components/Modals'
 import { EventCard } from '../components/Cards'
-import { formatDate, formatTime } from '../helpers/date'
+import { formatDate, formatTime, formatDateTime } from '../helpers/date'
+import isDeveloper from '../helpers/isDeveloper'
 
 const FinanceScreen = ({ navigation, route }) => {
   const [modal, setModal] = useState(null)
+
+  const user = useSelector((state) => state.user)
+  const app = useSelector((state) => state.app)
+
+  const dev = isDeveloper(user, app)
 
   const finance =
     route.params !== undefined && route.params.financeId !== undefined
@@ -71,6 +77,26 @@ const FinanceScreen = ({ navigation, route }) => {
 
   return (
     <ScrollView style={styles.container}>
+      {dev ? (
+        <>
+          <TitleBlock title="Для разработчика" />
+          <TextBlock text={`ID: ${finance.id}`} />
+          <TextBlock
+            text={`Дата создания: ${
+              finance.create_date
+                ? formatDateTime(finance.create_date, true, false)
+                : '?'
+            }`}
+          />
+          <TextBlock
+            text={`Дата редактирования: ${
+              finance.update_date
+                ? formatDateTime(finance.update_date, true, false)
+                : '?'
+            }`}
+          />
+        </>
+      ) : null}
       <TitleBlock title="Основные" />
       <TextBlock
         text={`Тип: ${finance.type === 'income' ? 'Поступление' : 'Списание'}`}

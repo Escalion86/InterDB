@@ -14,7 +14,7 @@ import { TitleBlock } from '../components/createComponents'
 import { useTheme } from '@react-navigation/native'
 import { TextBlock, ContactIcon } from '../components/infoComponents'
 import { contactsIcons } from '../db/dependencies'
-import { formatBirthday } from '../helpers/date'
+import { formatBirthday, formatDateTime } from '../helpers/date'
 import {
   ModalDeleteClient,
   ModalDeleteEvent,
@@ -23,6 +23,7 @@ import {
 import { EventCard } from '../components/Cards'
 import Button from '../components/Button'
 import CardListForModal from '../components/Modals/CardListForModal'
+import isDeveloper from '../helpers/isDeveloper'
 
 const ClientScreen = ({ navigation, route }) => {
   const client =
@@ -31,6 +32,11 @@ const ClientScreen = ({ navigation, route }) => {
         (item) => item.id === route.params.clientId
       )
       : navigation.navigate('Clients')
+
+  const user = useSelector((state) => state.user)
+  const app = useSelector((state) => state.app)
+
+  const dev = isDeveloper(user, app)
 
   const { dark, colors } = useTheme()
 
@@ -154,6 +160,26 @@ const ClientScreen = ({ navigation, route }) => {
 
   return (
     <ScrollView style={styles.container}>
+      {dev ? (
+        <>
+          <TitleBlock title="Для разработчика" />
+          <TextBlock text={`ID: ${client.id}`} />
+          <TextBlock
+            text={`Дата создания: ${
+              client.create_date
+                ? formatDateTime(client.create_date, true, false)
+                : '?'
+            }`}
+          />
+          <TextBlock
+            text={`Дата редактирования: ${
+              client.update_date
+                ? formatDateTime(client.update_date, true, false)
+                : '?'
+            }`}
+          />
+        </>
+      ) : null}
       <TitleBlock title="Основные" />
       <View style={{ flexDirection: 'row', height: 120 }}>
         <Image

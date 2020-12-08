@@ -3,7 +3,12 @@ import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native'
 import { useSelector } from 'react-redux'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
-import { formatDate, formatTime, minToTime } from '../helpers/date'
+import {
+  formatDate,
+  formatTime,
+  minToTime,
+  formatDateTime,
+} from '../helpers/date'
 import { ModalDeleteEvent, ModalBottomMenu } from '../components/Modals'
 import { TextBlock } from '../components/infoComponents'
 import { TitleBlock } from '../components/createComponents'
@@ -14,6 +19,7 @@ import * as Calendar from 'expo-calendar'
 import { useTheme } from '@react-navigation/native'
 import Button from '../components/Button'
 import CardListForModal from '../components/Modals/CardListForModal'
+import isDeveloper from '../helpers/isDeveloper'
 
 const EventScreen = ({ navigation, route }) => {
   const event =
@@ -30,6 +36,11 @@ const EventScreen = ({ navigation, route }) => {
   const services = useSelector((state) => state.service.services)
   const clients = useSelector((state) => state.client.clients)
   let finances = useSelector((state) => state.finance.finances)
+
+  const user = useSelector((state) => state.user)
+  const app = useSelector((state) => state.app)
+
+  const dev = isDeveloper(user, app)
 
   const modalDelete = (event) => {
     setModal(
@@ -155,11 +166,31 @@ const EventScreen = ({ navigation, route }) => {
     )
 
   console.log('render EventScreen return start')
-
+  console.log('event.update_date', event.update_date)
   return (
     <ScrollView style={styles.container}>
-      <TitleBlock title="Описание" />
+      {dev ? (
+        <>
+          <TitleBlock title="Для разработчика" />
+          <TextBlock text={`ID: ${event.id}`} />
+          <TextBlock
+            text={`Дата создания: ${
+              event.create_date
+                ? formatDateTime(event.create_date, true, false)
+                : '?'
+            }`}
+          />
+          <TextBlock
+            text={`Дата редактирования: ${
+              event.update_date
+                ? formatDateTime(event.update_date, true, false)
+                : '?'
+            }`}
+          />
+        </>
+      ) : null}
       <TextBlock text={`Статус события: ${event.status}`} />
+      <TitleBlock title="Описание" />
       <TextBlock
         text={`Дата и время начала: ${formatDate(
           new Date(event.date),

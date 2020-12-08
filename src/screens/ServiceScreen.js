@@ -22,6 +22,8 @@ import { EventCard } from '../components/Cards'
 import { TitleBlock } from '../components/createComponents'
 import Button from '../components/Button'
 import CardListForModal from '../components/Modals/CardListForModal'
+import { formatDateTime } from '../helpers/date'
+import isDeveloper from '../helpers/isDeveloper'
 
 const ServiceScreen = ({ navigation, route }) => {
   let service = {}
@@ -32,6 +34,11 @@ const ServiceScreen = ({ navigation, route }) => {
   } else {
     navigation.navigate('Services')
   }
+
+  const user = useSelector((state) => state.user)
+  const app = useSelector((state) => state.app)
+
+  const dev = isDeveloper(user, app)
 
   const serviceId = service ? service.id : 0
 
@@ -176,6 +183,26 @@ const ServiceScreen = ({ navigation, route }) => {
 
   return (
     <ScrollView style={styles.container}>
+      {dev ? (
+        <>
+          <TitleBlock title="Для разработчика" />
+          <TextBlock text={`ID: ${service.id}`} />
+          <TextBlock
+            text={`Дата создания: ${
+              service.create_date
+                ? formatDateTime(service.create_date, true, false)
+                : '?'
+            }`}
+          />
+          <TextBlock
+            text={`Дата редактирования: ${
+              service.update_date
+                ? formatDateTime(service.update_date, true, false)
+                : '?'
+            }`}
+          />
+        </>
+      ) : null}
       <TitleBlock title="Основные" />
       <View style={{ flexDirection: 'row', height: 120, marginBottom: 10 }}>
         <Image
