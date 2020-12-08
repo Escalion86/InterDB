@@ -39,26 +39,50 @@ const jsonToAllData = (json) => {
                 sum: parseInt(event['Дорога']),
                 date: finances[finances.length - 1].date,
                 eventTempId: key,
+                comment: 'Дорога',
               })
             }
-            if (event['Ассистентка'] && event['Ассистентке'] !== '') {
+            if (
+              event['Ассистентка'] &&
+              event['Ассистентке'] !== '' &&
+              parseInt(event['Ассистентке']) !== 0
+            ) {
               finances.push({
                 ...defaultFinance,
                 type: 'outcome',
                 sum: parseInt(event['Ассистентке']),
                 date: finances[finances.length - 1].date,
                 eventTempId: key,
+                comment: 'Ассистентке',
               })
             }
-            if (event['Организатору'] !== '') {
+            if (
+              event['Организатору'] !== '' &&
+              parseInt(event['Организатору']) !== 0
+            ) {
               finances.push({
                 ...defaultFinance,
                 type: 'outcome',
                 sum: parseInt(event['Организатору']),
                 date: finances[finances.length - 1].date,
                 eventTempId: key,
+                comment: 'Организатору',
               })
             }
+
+            // if (
+            //   event['Чаевые'] !== '' &&
+            //   parseInt(event['Чаевые']) !== 0
+            // ) {
+            //   finances.push({
+            //     ...defaultFinance,
+            //     type: 'income',
+            //     sum: parseInt(event['Чаевые']),
+            //     date: finances[finances.length - 1].date,
+            //     eventTempId: key,
+            //     comment: 'Чаевые',
+            //   })
+            // }
           }
         }
 
@@ -162,24 +186,27 @@ const jsonToAllData = (json) => {
             break
         }
 
+        const createDate = new Date( // Дата создания заявки ("12.02.2017 12:08:30")
+          String(event['Дата создания заявки']).substr(6, 4), // Год
+          String(event['Дата создания заявки']).substr(3, 2) - 1, // Месяц
+          String(event['Дата создания заявки']).substr(0, 2), // День
+          String(event['Дата создания заявки']).substr(11, 2), // Час
+          String(event['Дата создания заявки']).substr(14, 2) // Мин
+        ).setMilliseconds(0)
+
         events.push({
           ...defaultEvent,
           client: null, // Имя и телефон заказчика: "Заказчик в детском доме +79135333762",
           comment: event['Комментарий'] + event['Комментарий по финансам'], // Комментарий + Комментарий по финансам
-          create_date: new Date(
-            String(event['Дата создания заявки']).substr(6, 4), // Год
-            String(event['Дата создания заявки']).substr(3, 2) - 1, // Месяц
-            String(event['Дата создания заявки']).substr(0, 2), // День
-            String(event['Дата создания заявки']).substr(11, 2), // Час
-            String(event['Дата создания заявки']).substr(14, 2) // Мин
-          ), // Дата создания заявки ("12.02.2017 12:08:30")
+          create_date: createDate,
+          update_date: createDate,
           date: new Date(
             String(event['Начало']).substr(6, 4), // Год
             String(event['Начало']).substr(3, 2) - 1, // Месяц
             String(event['Начало']).substr(0, 2), // День
             String(event['Начало']).substr(11, 2), // Час
             String(event['Начало']).substr(14, 2) // Мин
-          ), // Начало
+          ).setMilliseconds(0), // Начало
           finance_organizator:
             event['Организатору'] === '' ? 0 : parseInt(event['Организатору']), // "Организатору"
           finance_price:
@@ -187,10 +214,22 @@ const jsonToAllData = (json) => {
             (event['Организатору'] === ''
               ? 0
               : parseInt(event['Организатору'])) +
-            (event['Ассистентке'] === '' ? 0 : parseInt(event['Ассистентке'])),
+            (event['Ассистентка']
+              ? event['Ассистентке'] === ''
+                ? 0
+                : parseInt(event['Ассистентке'])
+              : 0) -
+            (event['Дали чаевые']
+              ? event['Чаевые'] === ''
+                ? 0
+                : parseInt(event['Чаевые'])
+              : 0),
           finance_road: parseInt(event['Дорога']), // Дорога
-          finance_assistants:
-            event['Ассистентке'] === '' ? 0 : parseInt(event['Ассистентке']),
+          finance_assistants: event['Ассистентка']
+            ? event['Ассистентке'] === ''
+              ? 0
+              : parseInt(event['Ассистентке'])
+            : 0,
           location_town: '', // Место (координаты "56.035033974601475,92.90810465812683")
           service: null, // "Тип выступления": "Детское Сценическое ",
           status: status, // Статус   ("Выполнен")
@@ -202,10 +241,6 @@ const jsonToAllData = (json) => {
       }
     }
   }
-  // console.log('clients', clients)
-  // console.log('events', events)
-  // console.log('services', services)
-  // console.log('finances', finances)
   return { events, services, clients, finances }
 }
 
