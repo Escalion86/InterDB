@@ -101,7 +101,9 @@ const CreateFinanceScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Сумма"
         value={newFinance.sum}
-        onChangeText={(text) => setFinanceItem({ sum: text.trim() })}
+        onChangeText={(text) =>
+          setFinanceItem({ sum: text.replace(/[^\d]/g, '') })
+        }
         keyboardType="numeric"
         postfix="&#8381;"
         placeholder="0"

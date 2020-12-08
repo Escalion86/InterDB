@@ -116,27 +116,31 @@ const CreateServiceScreen = ({ navigation, route }) => {
       <TimeInputBlock
         title="Продолжительность"
         value={newService.duration}
-        onChangeText={(text) => setServiceItem({ duration: Math.floor(text) })}
+        onChangeText={(text) =>
+          setServiceItem({ duration: text.replace(/[^\d]/g, '') })
+        }
       />
       <TimeInputBlock
         title="Время на подготовку"
         value={newService.preparetime}
         onChangeText={(text) =>
-          setServiceItem({ preparetime: Math.floor(text) })
+          setServiceItem({ preparetime: text.replace(/[^\d]/g, '') })
         }
       />
       <TimeInputBlock
         title="Время на сбор"
         value={newService.collecttime}
         onChangeText={(text) =>
-          setServiceItem({ collecttime: Math.floor(text) })
+          setServiceItem({ collecttime: text.replace(/[^\d]/g, '') })
         }
       />
       <TitleBlock title="Финансы по умолчанию" />
       <TextInputBlock
         title="Стоимость"
         value={newService.finance_price}
-        onChangeText={(text) => setServiceItem({ finance_price: text.trim() })}
+        onChangeText={(text) =>
+          setServiceItem({ finance_price: text.replace(/[^\d]/g, '') })
+        }
         keyboardType="numeric"
         postfix="&#8381;"
         placeholder="0"
@@ -145,7 +149,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
         title="Затраты на расходники"
         value={newService.finance_consumables}
         onChangeText={(text) =>
-          setServiceItem({ finance_consumables: text.trim() })
+          setServiceItem({ finance_consumables: text.replace(/[^\d]/g, '') })
         }
         keyboardType="numeric"
         prefix="-"
@@ -156,7 +160,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
         title="Затраты на ассистентов"
         value={newService.finance_assistants}
         onChangeText={(text) =>
-          setServiceItem({ finance_assistants: text.trim() })
+          setServiceItem({ finance_assistants: text.replace(/[^\d]/g, '') })
         }
         keyboardType="numeric"
         prefix="-"
