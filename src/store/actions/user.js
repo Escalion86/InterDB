@@ -16,6 +16,8 @@ import * as Device from 'expo-device'
 
 import firebase from 'firebase'
 
+import tariffs from '../../tariffs'
+
 export const signInWithGoogleAsync = async (dispatch) => {
   try {
     let result = null
@@ -154,9 +156,8 @@ export const userSignIn = () => {
 
 export const userSignedIn = (user) => {
   return async (dispatch) => {
-    if (user.tariff !== 4) {
-      dispatch(setSettings({ dev: false }))
-    }
+    const { dev } = tariffs[user.tariff]
+    dispatch(setSettings({ dev }))
     dispatch({
       type: USER_SIGNED_IN,
       user,
@@ -177,6 +178,7 @@ export const userSignOut = (uid) => {
     // } else {
     //   Google.logOutAsync()
     // }
+    dispatch(setSettings({ dev: false }))
     dispatch({
       type: USER_SIGN_OUT,
     })
