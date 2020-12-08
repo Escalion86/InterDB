@@ -155,18 +155,6 @@ export const setEventStatus = (id, status) => {
   }
 }
 
-export const setFinanceStatus = (id, status) => {
-  return async (dispatch) => {
-    await dispatch(loadingEvent(id))
-    await DB.setFinanceStatus(id, status)
-    dispatch({
-      type: SET_FINANCE_STATUS,
-      id,
-      status,
-    })
-  }
-}
-
 export const deleteEvent = (event) => {
   return async (dispatch) => {
     await dispatch(deletingEvent(event.id))
