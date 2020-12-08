@@ -120,6 +120,7 @@ export const prepareAndSendCardDataToDB = async (table, data) => {
     preparedData.date = +preparedData.date
   }
   preparedData.create_date = +preparedData.create_date
+  preparedData.update_date = +preparedData.update_date
 
   return preparedData
 }
@@ -297,6 +298,7 @@ export class DB {
     const newEvent = { ...event }
     newEvent.date = Math.floor(newEvent.date / 1000)
     newEvent.create_date = Math.floor(newEvent.create_date / 1000)
+    newEvent.update_date = Math.floor(newEvent.update_date / 1000)
 
     return new Promise((resolve, reject) => {
       const eventKeys = Object.keys(newEvent)
@@ -320,6 +322,7 @@ export class DB {
 
     eventToSend.date = Math.floor(eventToSend.date / 1000)
     eventToSend.create_date = Math.floor(eventToSend.create_date / 1000)
+    eventToSend.update_date = Math.floor(eventToSend.update_date / 1000)
 
     const eventKeys = Object.keys(eventToSend)
     const eventValues = [...Object.values(eventToSend), eventToSend.id]
@@ -437,7 +440,10 @@ export class DB {
   }
 
   static addService (service) {
-    const newService = prepareForDB('services', service)
+    const newService = { ...service }
+    // const newService = prepareForDB('services', service)
+    newService.create_date = Math.floor(newService.create_date / 1000)
+    newService.update_date = Math.floor(newService.update_date / 1000)
 
     return new Promise((resolve, reject) => {
       const serviceKeys = Object.keys(newService)
@@ -457,7 +463,11 @@ export class DB {
   }
 
   static updateService (service) {
-    const serviceToSend = prepareForDB('services', service)
+    const serviceToSend = { ...service }
+    // const serviceToSend = prepareForDB('services', service)
+    serviceToSend.create_date = Math.floor(serviceToSend.create_date / 1000)
+    serviceToSend.update_date = Math.floor(serviceToSend.update_date / 1000)
+
     const serviceKeys = Object.keys(serviceToSend)
 
     return new Promise((resolve, reject) =>
@@ -473,8 +483,11 @@ export class DB {
   }
 
   static addClient (client) {
-    const newClient = prepareForDB('clients', client)
+    const newClient = { ...client }
+    // const newClient = prepareForDB('clients', client)
     // newClient.birthday = Math.floor(newClient.birthday / 1000)
+    newClient.create_date = Math.floor(newClient.create_date / 1000)
+    newClient.update_date = Math.floor(newClient.update_date / 1000)
 
     return new Promise((resolve, reject) => {
       const clientKeys = Object.keys(newClient)
@@ -493,7 +506,10 @@ export class DB {
   }
 
   static updateClient (client) {
-    const clientToSend = prepareForDB('clients', client)
+    const clientToSend = { ...client }
+    // const clientToSend = prepareForDB('clients', client)
+    clientToSend.create_date = Math.floor(clientToSend.create_date / 1000)
+    clientToSend.update_date = Math.floor(clientToSend.update_date / 1000)
     // clientToSend.birthday = Math.floor(clientToSend.birthday / 1000)
 
     const clientKeys = Object.keys(clientToSend)
@@ -511,8 +527,11 @@ export class DB {
   }
 
   static addFinance (finance) {
-    const newFinance = prepareForDB('finances', finance)
+    const newFinance = { ...finance }
+    // const newFinance = prepareForDB('finances', finance)
     newFinance.date = Math.floor(newFinance.date / 1000)
+    newFinance.create_date = Math.floor(newFinance.create_date / 1000)
+    newFinance.update_date = Math.floor(newFinance.update_date / 1000)
 
     return new Promise((resolve, reject) => {
       const financeKeys = Object.keys(newFinance)
@@ -531,8 +550,11 @@ export class DB {
   }
 
   static updateFinance (finance) {
-    const financeToSend = prepareForDB('finances', finance)
+    const financeToSend = { ...finance }
+    // const financeToSend = prepareForDB('finances', finance)
     financeToSend.date = Math.floor(financeToSend.date / 1000)
+    financeToSend.create_date = Math.floor(financeToSend.create_date / 1000)
+    financeToSend.update_date = Math.floor(financeToSend.update_date / 1000)
 
     const financeKeys = Object.keys(financeToSend)
 
