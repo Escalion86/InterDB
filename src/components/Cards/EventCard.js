@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import {
@@ -203,7 +203,6 @@ const EventCard = ({
     )
 
     console.log('render EventCard id: ' + event.id)
-    // const height = null
 
     return (
       <CardContainer
