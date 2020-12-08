@@ -26,6 +26,8 @@ export const prepareForDB = (dbTableName, data) => {
     data.create_date = new Date().setMilliseconds(0)
   }
 
+  data.update_date = new Date().setMilliseconds(0)
+
   const preperedData = {}
   dbTemplate[dbTableName].forEach((item) => {
     if (!data[item.db_name]) {
@@ -134,6 +136,7 @@ export const dbGenerator = (
           'Выполнено',
         ]),
         create_date: '',
+        update_date: '',
       }
 
       // event.notification_id = addEventNotification(event)
@@ -224,8 +227,9 @@ export const dbGenerator = (
         vk: '',
         facebook: '',
         avatar: '',
-        create_date: '',
         town: town,
+        create_date: '',
+        update_date: '',
       }
     }
     case 'service': {
@@ -252,6 +256,7 @@ export const dbGenerator = (
         image: '',
         archive: 0,
         create_date: '',
+        update_date: '',
       }
     }
     case 'finance': {
@@ -262,6 +267,7 @@ export const dbGenerator = (
         event: eventsIds.length > 0 ? rndArray(eventsIds) : '0',
         date: Date.now(),
         create_date: '',
+        update_date: '',
       }
     }
     default:
