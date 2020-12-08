@@ -5,7 +5,9 @@ const areEqual = (prevProps, nextProps) => {
   for (let i = 0; i < prevProps.data.length; i++) {
     if (
       prevProps.data[i].id !== nextProps.data[i].id ||
-      prevProps.data[i].update_date !== nextProps.data[i].update_date
+      prevProps.data[i].update_date !== nextProps.data[i].update_date ||
+      prevProps.data[i].loading !== nextProps.data[i].loading ||
+      prevProps.data[i].status !== nextProps.data[i].status
     ) {
       return false
     }
