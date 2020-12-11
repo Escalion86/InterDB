@@ -11,6 +11,7 @@ const initialState = {
   email: '',
   avatar: '',
   name: '',
+  bases: [],
   created_at: '',
   last_logged_in: '',
   locale: 'ru',

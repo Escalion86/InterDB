@@ -643,13 +643,21 @@ export const AppNavigation = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // console.log('Авторизован', user)
-        firebase
-          .database()
-          .ref('/users/' + user.uid)
-          .on('value', function (snapshot) {
-            // console.log('snapshot.val() :>> ', snapshot.val())
-            dispatch(userSignedIn(snapshot.val()))
+        var db = firebase.firestore()
+
+        db.collection('users')
+          .doc(user.uid)
+          .onSnapshot(function (doc) {
+            console.log('Current data: ', doc.data())
+            dispatch(userSignedIn(doc.data()))
           })
+        // firebase
+        //   .database()
+        //   .ref('/users/' + user.uid)
+        //   .on('value', function (snapshot) {
+        //     console.log('snapshot.val() :>> ', snapshot.val())
+        //     dispatch(userSignedIn(snapshot.val()))
+        //   })
         // const currentUser = firebase.auth().currentUser
         // if (currentUser) {
         //   const userId = currentUser.uid
@@ -717,7 +725,6 @@ export const AppNavigation = () => {
   // После загрузки всех компонентов и state - загружаем данные БД
   useEffect(() => {
     dispatch(getSettings())
-    console.log('Загрузка данных')
     dispatch(loadAll())
   }, [dispatch])
 

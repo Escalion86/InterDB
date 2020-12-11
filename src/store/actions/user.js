@@ -107,30 +107,41 @@ const onSignIn = ({ uid, idToken, accessToken }) => {
         .signInWithCredential(credential)
         .then((result) => {
           console.log('Пользователь подключен')
-          console.log('result :>> ', result)
+          // console.log('result :>> ', result)
+          var db = firebase.firestore()
+          user = {
+            uid: result.user.uid,
+            email: result.user.email,
+            avatar: result.user.photoURL,
+            locale: result.additionalUserInfo.profile.locale,
+            name: result.user.displayName,
+            created_at: Date.now(),
+            last_logged_in: Date.now(),
+            tariff: 0,
+          }
           if (result.additionalUserInfo.isNewUser) {
-            user = {
-              uid: result.user.uid,
-              email: result.user.email,
-              avatar: result.user.photoURL,
-              locale: result.additionalUserInfo.profile.locale,
-              name: result.user.displayName,
-              created_at: Date.now(),
-              last_logged_in: Date.now(),
-              tariff: 0,
-            }
-            firebase
-              .database()
-              .ref('/users/' + result.user.uid)
-              .set(user)
+            db.collection('users').doc(result.user.uid).set(user)
+            // firebase
+            //   .database()
+            //   .ref('/users/' + result.user.uid)
+            //   .set(user)
           } else {
-            user = {
-              last_logged_in: Date.now(),
-            }
-            firebase
-              .database()
-              .ref('/users/' + result.user.uid)
-              .update(user)
+            db.collection('users')
+              .doc(result.user.uid)
+              .update({
+                last_logged_in: Date.now(),
+              })
+              .catch(function (error) {
+                // Если записи пользователя по каким-то причинам нет, то создаем новую
+                if (error.code === 'not-found') {
+                  db.collection('users').doc(result.user.uid).set(user)
+                }
+                // console.error('Error updating document: ', error.code)
+              })
+            // firebase
+            //   .database()
+            //   .ref('/users/' + result.user.uid)
+            //   .update(user)
           }
         })
         .catch((error) => {
