@@ -22,7 +22,10 @@ export const setSettings = (appStore) => {
   }
 }
 
-export const setAllNotificationSettings = (appStore) => {
+export const setAllNotificationSettings = (
+  appStore,
+  deleteCalendarEvents = false
+) => {
   return async (dispatch) => {
     if (
       appStore.pushEventTurnOn ||
@@ -39,6 +42,8 @@ export const setAllNotificationSettings = (appStore) => {
         await Notifications.cancelAllScheduledNotificationsAsync()
       }
       // TODO Возможно стоит добавить удаление календарных событий при отключении синхронизации
+      if (deleteCalendarEvents) {
+      }
     }
 
     for (var prop in appStore) {
