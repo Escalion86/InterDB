@@ -1,7 +1,7 @@
 // import { StatusBar } from "expo-status-bar"
 import React, { useState } from 'react'
 import { Provider } from 'react-redux'
-import { AppLoading } from 'expo'
+import AppLoading from 'expo-app-loading'
 import { AppNavigation } from './src/navigation/AppNavigation'
 import { bootstrap } from './src/bootstrap'
 import { MenuProvider } from 'react-native-popup-menu'
