@@ -7,7 +7,149 @@ import {
   addCalendarClientBirthday,
 } from '../helpers/notifications'
 
-const DBName = 'events26.db'
+import * as FileSystem from 'expo-file-system'
+
+// import AsyncStorage from '@react-native-community/async-storage'
+
+// const STORAGE_KEY = 'IndividualCRM'
+
+// const storeData = async (value) => {
+//   try {
+//     const jsonValue = JSON.stringify(value)
+//     await AsyncStorage.setItem(STORAGE_KEY, jsonValue)
+//     console.log('data stored')
+//   } catch (e) {
+//     // saving error
+//   }
+// }
+
+// const getData = async () => {
+//   try {
+//     const jsonValue = await AsyncStorage.getItem(STORAGE_KEY)
+//     // console.log('getData', jsonValue != null ? JSON.parse(jsonValue) : null)
+//     return jsonValue != null || jsonValue !== undefined
+//       ? JSON.parse(jsonValue)
+//       : {}
+//   } catch (e) {
+//     // error reading value
+//   }
+// }
+
+// const mergeData = async (value) => {
+//   try {
+//     await AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify(value))
+//     console.log('data merged')
+//   } catch (e) {
+//     // error reading value
+//   }
+// }
+
+// const removeKey = async () => {
+//   try {
+//     await AsyncStorage.removeItem(STORAGE_KEY)
+//     console.log('removeValue done')
+//   } catch (e) {
+//     // remove error
+//   }
+// }
+
+// const getAllKeys = async () => {
+//   let keys = []
+//   try {
+//     keys = await AsyncStorage.getAllKeys()
+//   } catch (e) {
+//     // read key error
+//   }
+//   console.log('keys', keys)
+//   return keys
+// }
+
+// const generateId = (obj) => {
+//   if (typeof obj !== 'object' || obj === null) return 0
+//   let i = 0
+//   while (true) {
+//     if (obj[i] === undefined) {
+//       return i
+//     }
+//     i++
+//   }
+//   // for (let i = 0; i <= obj.length; i++) {
+//   //   console.log('obj[i]', obj[i])
+//   //   if (obj[i] === undefined) {
+//   //     return i
+//   //   }
+//   // }
+// }
+
+// const addCard = async (type, data, baseNum = 0) => {
+//   // await removeKey()
+//   await addBase({ name: 'test base', firebaseId: null, firebaseAuthorId:  })
+//   const store = await getData()
+//   const dataId = store
+//     ? store[baseNum]
+//       ? generateId(store[baseNum][type])
+//       : 0
+//     : 0
+//   const base = {}
+//   base[baseNum] = {}
+//   base[baseNum][type] = {}
+//   base[baseNum][type][dataId] = { date: data.date } // data
+//   await mergeData(base)
+//   console.log(STORAGE_KEY, await getData())
+// }
+
+// const updateCard = async (type, data, baseNum = 0) => {
+//   const dataId = type.id
+//   const base = {}
+//   base[baseNum] = {}
+//   base[baseNum][type] = {}
+//   base[baseNum][type][dataId] = data
+//   await mergeData(base)
+//   console.log(STORAGE_KEY, await getData())
+// }
+
+// const addBase = async (settings) => {
+//   const store = await getData()
+//   const baseId = generateId(store)
+//   // console.log('baseId', baseId)
+//   const base = {}
+//   base[baseId] = {
+//     settings: settings,
+//     events: {},
+//     clients: {},
+//     finances: {},
+//     services: {},
+//   }
+//   await mergeData(base)
+// }
+
+// const deleteCard = async (type, id) => {
+//   const store = await getData()
+//   const newStore = store.map((item) => {
+//     if (item.)
+//   })
+//   const parent = {}
+//   storeData[dataId] = data
+//   parent[type] = storeData
+//   await mergeData(parent)
+//   console.log('getData()', await getData())
+// }
+
+// -
+
+// -
+
+// -
+
+// -
+
+export const getDataBaseList = async () => {
+  const sqlDir = FileSystem.documentDirectory + 'SQLite/'
+  const filesInSqlDir = await FileSystem.readDirectoryAsync(sqlDir)
+  return filesInSqlDir.filter((file) => !file.includes('-journal'))
+}
+
+const DBName = 'events28.db'
 
 let db = SQLite.openDatabase(DBName)
 
@@ -163,6 +305,7 @@ export class DB {
 
   static init () {
     const tables = Object.keys(dbTemplate)
+    // Перебираем все таблицы и загружаем
     tables.forEach(async (table) => {
       await new Promise((resolve, reject) =>
         db.transaction((tx) => {
@@ -171,6 +314,7 @@ export class DB {
           )
         })
       )
+      // Проверяем соответствие шаблону и правим если необходимо
       await this.tableToTemplate(table)
     })
 
@@ -252,6 +396,8 @@ export class DB {
   }
 
   static getTableColumns (table) {
+    // getAllKeys()
+
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
@@ -268,6 +414,7 @@ export class DB {
   }
 
   static getTables () {
+    // getAllKeys()
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
@@ -294,6 +441,7 @@ export class DB {
   }
 
   static addEvent (event) {
+    // addCard('events', event)
     // const newEvent = prepareForDB('events', event)
     const newEvent = { ...event }
     newEvent.date = Math.floor(newEvent.date / 1000)
@@ -391,19 +539,6 @@ export class DB {
       db.transaction((tx) => {
         tx.executeSql(
           'UPDATE events SET status = ? WHERE id = ?',
-          [status, id],
-          resolve,
-          (_, error) => reject(error)
-        )
-      })
-    )
-  }
-
-  static setFinanceStatus (id, status) {
-    return new Promise((resolve, reject) =>
-      db.transaction((tx) => {
-        tx.executeSql(
-          'UPDATE events SET finance_status = ? WHERE id = ?',
           [status, id],
           resolve,
           (_, error) => reject(error)
