@@ -28,7 +28,13 @@ const MenuItem = ({
       onPress={onPress}
     >
       <View style={{ flexDirection: 'row' }}>
-        <View style={{ alignItems: 'center', width: 24, marginRight: 20 }}>
+        <View
+          style={{
+            alignItems: 'center',
+            width: iconSize.medium + 4,
+            marginRight: 18,
+          }}
+        >
           <IconComponent
             name={iconName}
             size={iconSize.medium}
