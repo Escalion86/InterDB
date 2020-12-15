@@ -10,7 +10,7 @@ import {
   // Paragraph,
   Avatar,
 } from 'react-native-paper'
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons'
 import { iconSize, fontSize } from '../theme'
 // import Button from './Button'
 // import * as Google from 'expo-google-app-auth'
@@ -127,15 +127,17 @@ import tariffs from '../tariffs'
 
 const DrawerItemMenu = ({ label, iconName, onPress, IconComponent = null }) => {
   const { colors } = useTheme()
-  if (!IconComponent) IconComponent = Ionicons
+  if (!IconComponent) IconComponent = FontAwesome5 // Ionicons
   const labelStyle = {
     fontSize: fontSize.medium,
     color: colors.text,
+    marginLeft: -10,
+    marginRight: -10,
   }
   return (
     <DrawerItem
       icon={() => (
-        <View style={{ width: 22, alignItems: 'center' }}>
+        <View style={{ width: iconSize.small + 8, alignItems: 'center' }}>
           <IconComponent
             name={iconName}
             size={iconSize.small}
@@ -245,12 +247,12 @@ const DrawerContent = (props) => {
                         </Caption>
                       </View>
                       <TouchableOpacity
-                        style={{ marginLeft: 16 }}
+                        style={{ marginLeft: 20 }}
                         onPress={() => dispatch(userSignOut(user.uid))}
                       >
-                        <Ionicons
-                          name="ios-log-out"
-                          size={24}
+                        <FontAwesome5
+                          name="sign-out-alt"
+                          size={iconSize.small}
                           color={colors.icon}
                         />
                       </TouchableOpacity>
@@ -288,14 +290,22 @@ const DrawerContent = (props) => {
                       >
                         Авторизироваться
                       </Text>
-                      <Ionicons
+                      <FontAwesome5
+                        name="sign-in-alt"
+                        size={iconSize.small}
+                        color={colors.icon}
+                        style={{
+                          marginLeft: 20,
+                        }}
+                      />
+                      {/* <Ionicons
                         name="ios-log-in"
                         size={24}
                         color={colors.icon}
                         style={{
                           marginLeft: 16,
                         }}
-                      />
+                      /> */}
                     </TouchableOpacity>
                     // <Button
                     //   title="Авторизация"
@@ -338,28 +348,28 @@ const DrawerContent = (props) => {
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItemMenu
               label="События"
-              iconName="md-calendar"
+              iconName="calendar-alt"
               onPress={() => {
                 props.navigation.navigate('Events')
               }}
             />
             <DrawerItemMenu
               label="Клиенты"
-              iconName="md-people"
+              iconName="address-book"
               onPress={() => {
                 props.navigation.navigate('Clients')
               }}
             />
             <DrawerItemMenu
               label="Услуги"
-              iconName="md-briefcase"
+              iconName="briefcase"
               onPress={() => {
                 props.navigation.navigate('Services')
               }}
             />
             <DrawerItemMenu
               label="Транзакции"
-              iconName="ios-cash"
+              iconName="money-bill-alt"
               onPress={() => {
                 props.navigation.navigate('Finances')
               }}
@@ -369,7 +379,7 @@ const DrawerContent = (props) => {
             <Drawer.Section style={styles.drawerSection}>
               <DrawerItemMenu
                 label="Аналитика"
-                iconName="md-stats"
+                iconName="chart-bar"
                 onPress={() => {
                   props.navigation.navigate('Charts')
                 }}
@@ -396,7 +406,7 @@ const DrawerContent = (props) => {
         {dev || user.tariff === 4 ? (
           <DrawerItemMenu
             label="Панель разработчика"
-            iconName="md-bug"
+            iconName="bug"
             onPress={() => {
               props.navigation.navigate('Dev')
             }}
@@ -404,7 +414,7 @@ const DrawerContent = (props) => {
         ) : null}
         <DrawerItemMenu
           label="Настройки"
-          iconName="md-settings"
+          iconName="cog"
           onPress={() => {
             props.navigation.navigate('Settings')
           }}
