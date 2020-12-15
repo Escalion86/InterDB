@@ -207,7 +207,7 @@ const MainFlatListWithFab = ({
         updateCellsBatchingPeriod={1000}
         getItemLayout={getItemLayout}
         ListEmptyComponent={ListEmptyComponent}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => type + item.id.toString()}
         // scrollsToTop={false}
         // onMomentumScrollEnd={() => console.log("end")}
         // onEndReached={() => setFabVisible(false)}
