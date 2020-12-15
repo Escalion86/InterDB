@@ -1,4 +1,10 @@
-import React, { useState, useRef, useMemo, useLayoutEffect } from 'react'
+import React, {
+  useState,
+  useRef,
+  useMemo,
+  useLayoutEffect,
+  useEffect,
+} from 'react'
 import { useDispatch } from 'react-redux'
 import {
   View,
@@ -188,13 +194,30 @@ const Indicator = ({ scrollX, colors }) => {
 
   return (
     <Animated.View
+      // style={{
+      //   position: 'absolute',
+      //   height: 4,
+      //   width: TAB_WIDTH,
+      //   left: 0,
+      //   backgroundColor: colors.accent,
+      //   bottom: 7,
+      //   transform: [
+      //     {
+      //       translateX,
+      //     },
+      //   ],
+      // }}
       style={{
         position: 'absolute',
-        height: 4,
+        height: 36,
         width: TAB_WIDTH,
         left: 0,
-        backgroundColor: colors.accent,
-        bottom: 7,
+        // backgroundColor: colors.accent,
+        borderColor: colors.accent,
+        borderLeftWidth: 3,
+        borderRightWidth: 3,
+        borderRadius: 10,
+        top: 4,
         transform: [
           {
             translateX,
@@ -272,7 +295,7 @@ const updateLoadedPages = (pages, loadedPages = null, pageIndex) => {
       if (index === pageIndex) {
         return item
       } else {
-        if (pages[pageIndex].length === 0) {
+        if (pages[pageIndex] && pages[pageIndex].length === 0) {
           return []
         } else {
           return null
@@ -317,18 +340,47 @@ const MonthFilterFlatList = ({
   const { colors } = theme
 
   const monthFilter = useRef(new Date().getMonth())
-  const [yearFilter, setYearFilter] = useState(new Date().getFullYear())
+  const yearFilter = useRef(new Date().getFullYear())
 
-  const datasInMonths = useRef(refreshDatas(yearFilter, datas))
+  const datasInMonths = useMemo(() => refreshDatas(yearFilter.current, datas), [
+    yearFilter.current,
+    datas,
+  ])
 
-  const [datasInMonthsLoaded, setDatasInMonthsLoaded] = useState(
-    updateLoadedPages(datasInMonths.current, null, new Date().getMonth())
-  )
+  const [datasInMonthsLoaded, setDatasInMonthsLoaded] = useState([
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+  ])
+
+  const onChangeYear = (value) => {
+    if (value !== yearFilter.current) {
+      yearFilter.current = value
+      setDatasInMonthsLoaded(
+        updateLoadedPages(refreshDatas(value, datas), null, monthFilter.current)
+      )
+    }
+  }
 
   const scrollX = React.useRef(new Animated.Value(0)).current
   const refFlatList = React.useRef()
 
   const fabBottom = new Animated.Value(20)
+
+  useEffect(() => {
+    setDatasInMonthsLoaded(
+      updateLoadedPages(datasInMonths, null, monthFilter.current)
+    )
+  }, [datas])
 
   const showFab = () => {
     Animated.timing(fabBottom, {
@@ -339,6 +391,7 @@ const MonthFilterFlatList = ({
   }
 
   const hideFab = () => {
+    console.log('hidefab')
     Animated.timing(fabBottom, {
       toValue: -60,
       duration: 500,
@@ -364,18 +417,17 @@ const MonthFilterFlatList = ({
     monthFilter.current = itemIndex
     if (
       !datasInMonthsLoaded[itemIndex] ||
-      datasInMonthsLoaded[itemIndex].length !==
-        datasInMonths.current[itemIndex].length
+      datasInMonthsLoaded[itemIndex].length !== datasInMonths[itemIndex].length
     ) {
       setDatasInMonthsLoaded(
-        updateLoadedPages(datasInMonths.current, datasInMonthsLoaded, itemIndex)
+        updateLoadedPages(datasInMonths, datasInMonthsLoaded, itemIndex)
       )
     }
     onMonthPress()
     showFab()
   }
 
-  useLayoutEffect(() => showFab(), [yearFilter])
+  useLayoutEffect(() => showFab(), [yearFilter.current])
 
   const Fab = () => (
     <Animated.View
@@ -407,26 +459,14 @@ const MonthFilterFlatList = ({
           badges={badges}
           onItemPress={onItemPress}
           startedMonth={monthFilter.current}
-          datasInMonths={datasInMonths.current}
+          datasInMonths={datasInMonths}
           colors={colors}
         />
         <YearsDropDownList
-          onChangeYear={(value) => {
-            if (value !== yearFilter) {
-              datasInMonths.current = refreshDatas(value, datas)
-              setDatasInMonthsLoaded(
-                updateLoadedPages(
-                  datasInMonths.current,
-                  null,
-                  monthFilter.current
-                )
-              )
-              setYearFilter(value)
-            }
-          }}
+          onChangeYear={onChangeYear}
           years={years}
           colors={colors}
-          value={yearFilter}
+          value={yearFilter.current}
         />
       </View>
       <Animated.FlatList
@@ -454,7 +494,9 @@ const MonthFilterFlatList = ({
         initialNumToRender={1}
         maxToRenderPerBatch={1}
         // windowSize={1}
-        keyExtractor={(item, index) => yearFilter.toString() + index.toString()}
+        keyExtractor={(item, index) =>
+          yearFilter.current.toString() + index.toString()
+        }
         renderItem={({ item, index }) => {
           return (
             <PageComponent
