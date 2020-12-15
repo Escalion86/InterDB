@@ -18,7 +18,7 @@ import { Switch as SwitchPaper, RadioButton } from 'react-native-paper'
 import ModalSplash from './Modals/ModalSplash'
 import ModalBottomMenu from './Modals/ModalBottomMenu'
 import Button from './Button'
-import { Picker } from '@react-native-community/picker'
+import { Picker } from '@react-native-picker/picker'
 import { fontSize } from '../theme'
 import { MaskedTextInput, CustomMask } from 'rn-masked-text-input'
 import { TriangleColorPicker, fromHsv } from 'react-native-color-picker'
@@ -363,6 +363,7 @@ export const TimeInputBlock = ({
     setType(1)
   }
   const textValue = realValue / type
+
   return (
     <View>
       <View style={styles.row}>
@@ -492,6 +493,14 @@ export const TextInputBlock = ({
     ? { height: null, maxHeight: 200, minHeight: 45 }
     : {}
 
+  const onChangeTextFunc = (text) => {
+    if (keyboardType === 'numeric') {
+      onChangeText(text.replace(/[^\d]/g, ''))
+    } else {
+      onChangeText(text)
+    }
+  }
+
   return (
     <View>
       {inputOnNextRow ? <TextBlock>{title}</TextBlock> : null}
@@ -570,7 +579,7 @@ export const TextInputBlock = ({
               }}
               multiline={multiline}
               keyboardType={keyboardType}
-              onChangeText={onChangeText}
+              onChangeText={onChangeTextFunc}
               placeholder={placeholder}
               placeholderTextColor={textColor}
               value={value}
