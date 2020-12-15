@@ -6,7 +6,7 @@ import { addEvent } from '../store/actions/event'
 import dbTemplate from '../db/dbTemplate'
 import { DB } from '../db/db'
 import firebase from 'firebase'
-import firebaseConfig from '../firebaseConfig'
+import { firebaseConfig } from '../firebase'
 import { TextInputBlock } from '../components/createComponents'
 
 const errorCodeToMsg = (code) => {

@@ -47,9 +47,11 @@ import * as Calendar from 'expo-calendar'
 
 import { ThemeContext } from '../ThemeContext'
 import { fontSize } from '../theme'
+// import * as firebase from 'firebase'
 
 import firebase from 'firebase'
-import firebaseConfig from '../firebaseConfig'
+import 'firebase/firestore'
+import { firebaseConfig } from '../firebase'
 import { userSignedIn } from '../store/actions/user'
 import * as appJson from '../../app.json'
 
@@ -643,9 +645,10 @@ export const AppNavigation = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // console.log('Авторизован', user)
-        var db = firebase.firestore()
+        var firestore = firebase.firestore()
 
-        db.collection('users')
+        firestore
+          .collection('users')
           .doc(user.uid)
           .onSnapshot(function (doc) {
             console.log('Current data: ', doc.data())

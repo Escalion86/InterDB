@@ -18,7 +18,7 @@ import * as Device from 'expo-device'
 
 import tariffs from '../../tariffs'
 
-import { signInWithGoogleAsync, firebaseSignOut } from '../../firebaseAuth'
+import { signInWithGoogleAsync, firebaseSignOut } from '../../firebase'
 
 // const signInWithGoogleAsync = async (dispatch) => {
 //   try {
