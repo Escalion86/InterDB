@@ -1,7 +1,7 @@
 import * as Google from 'expo-google-app-auth'
 import * as GoogleSignIn from 'expo-google-sign-in'
 import * as Device from 'expo-device'
-import isExpo from './helpers/isExpo'
+import isExpo from '../helpers/isExpo'
 // import * as GoogleSignIn from 'expo-google-sign-in'
 
 import firebase from 'firebase'
@@ -17,7 +17,9 @@ export const signInWithGoogleAsync = async (
     onStart()
     let result = null
     let googleUser = {}
-    if (Device.isDevice && !isExpo) {
+    console.log('Device.isDevice', Device.isDevice ? 'ДА' : 'НЕТ')
+    console.log('isExpo', isExpo ? 'ДА' : 'НЕТ')
+    if (Device.isDevice) {
       await GoogleSignIn.initAsync({
         webClientId:
           '802670153747-tpb9rcteibhos52fgs8n4nmlqrbsf07v.apps.googleusercontent.com',
