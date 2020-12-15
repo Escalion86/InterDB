@@ -116,31 +116,23 @@ const CreateServiceScreen = ({ navigation, route }) => {
       <TimeInputBlock
         title="Продолжительность"
         value={newService.duration}
-        onChangeText={(text) =>
-          setServiceItem({ duration: text.replace(/[^\d]/g, '') })
-        }
+        onChangeText={(text) => setServiceItem({ duration: text })}
       />
       <TimeInputBlock
         title="Время на подготовку"
         value={newService.preparetime}
-        onChangeText={(text) =>
-          setServiceItem({ preparetime: text.replace(/[^\d]/g, '') })
-        }
+        onChangeText={(text) => setServiceItem({ preparetime: text })}
       />
       <TimeInputBlock
         title="Время на сбор"
         value={newService.collecttime}
-        onChangeText={(text) =>
-          setServiceItem({ collecttime: text.replace(/[^\d]/g, '') })
-        }
+        onChangeText={(text) => setServiceItem({ collecttime: text })}
       />
       <TitleBlock title="Финансы по умолчанию" />
       <TextInputBlock
         title="Стоимость"
         value={newService.finance_price}
-        onChangeText={(text) =>
-          setServiceItem({ finance_price: text.replace(/[^\d]/g, '') })
-        }
+        onChangeText={(text) => setServiceItem({ finance_price: text })}
         keyboardType="numeric"
         postfix="&#8381;"
         placeholder="0"
@@ -148,9 +140,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Затраты на расходники"
         value={newService.finance_consumables}
-        onChangeText={(text) =>
-          setServiceItem({ finance_consumables: text.replace(/[^\d]/g, '') })
-        }
+        onChangeText={(text) => setServiceItem({ finance_consumables: text })}
         keyboardType="numeric"
         prefix="-"
         postfix="&#8381;"
@@ -159,9 +149,7 @@ const CreateServiceScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Затраты на ассистентов"
         value={newService.finance_assistants}
-        onChangeText={(text) =>
-          setServiceItem({ finance_assistants: text.replace(/[^\d]/g, '') })
-        }
+        onChangeText={(text) => setServiceItem({ finance_assistants: text })}
         keyboardType="numeric"
         prefix="-"
         postfix="&#8381;"

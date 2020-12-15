@@ -517,9 +517,7 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Цена для клиента"
         value={newEvent.finance_price}
-        onChangeText={(text) =>
-          setEventItem({ finance_price: text.replace(/[^\d]/g, '') })
-        }
+        onChangeText={(text) => setEventItem({ finance_price: text })}
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
@@ -531,9 +529,7 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Расходные материалы"
         value={newEvent.finance_consumables}
-        onChangeText={(text) =>
-          setEventItem({ finance_consumables: text.replace(/[^\d]/g, '') })
-        }
+        onChangeText={(text) => setEventItem({ finance_consumables: text })}
         keyboardType="numeric"
         placeholder="0"
         success={
@@ -546,9 +542,7 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Ассистентам"
         value={newEvent.finance_assistants}
-        onChangeText={(text) =>
-          setEventItem({ finance_assistants: text.replace(/[^\d]/g, '') })
-        }
+        onChangeText={(text) => setEventItem({ finance_assistants: text })}
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
@@ -561,9 +555,7 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="За дорогу"
         value={newEvent.finance_road}
-        onChangeText={(text) =>
-          setEventItem({ finance_road: text.replace(/[^\d]/g, '') })
-        }
+        onChangeText={(text) => setEventItem({ finance_road: text })}
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
@@ -572,9 +564,7 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TextInputBlock
         title="Организатору"
         value={newEvent.finance_organizator}
-        onChangeText={(text) =>
-          setEventItem({ finance_organizator: text.replace(/[^\d]/g, '') })
-        }
+        onChangeText={(text) => setEventItem({ finance_organizator: text })}
         keyboardType="numeric"
         placeholder="0"
         postfix="&#8381;"
@@ -630,17 +620,13 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TimeInputBlock
         title="Продолжительность"
         value={newEvent.timing_duration}
-        onChangeText={(text) =>
-          setEventItem({ timing_duration: Math.floor(text) })
-        }
+        onChangeText={(text) => setEventItem({ timing_duration: text })}
         success={serviceObj && newEvent.timing_duration === serviceObj.duration}
       />
       <TimeInputBlock
         title="На подготовку"
         value={newEvent.timing_preparetime}
-        onChangeText={(text) =>
-          setEventItem({ timing_preparetime: Math.floor(text) })
-        }
+        onChangeText={(text) => setEventItem({ timing_preparetime: text })}
         success={
           serviceObj && newEvent.timing_preparetime === serviceObj.preparetime
         }
@@ -648,9 +634,7 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TimeInputBlock
         title="На сбор"
         value={newEvent.timing_collecttime}
-        onChangeText={(text) =>
-          setEventItem({ timing_collecttime: Math.floor(text) })
-        }
+        onChangeText={(text) => setEventItem({ timing_collecttime: text })}
         success={
           serviceObj && newEvent.timing_collecttime === serviceObj.collecttime
         }
@@ -658,7 +642,7 @@ const CreateEventScreen = ({ navigation, route }) => {
       <TimeInputBlock
         title="На транспортировку в одну сторону"
         value={newEvent.timing_road}
-        onChangeText={(text) => setEventItem({ timing_road: Math.floor(text) })}
+        onChangeText={(text) => setEventItem({ timing_road: text })}
       />
       {modal}
     </ScrollView>
