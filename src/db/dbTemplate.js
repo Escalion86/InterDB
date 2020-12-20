@@ -270,12 +270,72 @@ export const dbGenerator = (
         update_date: '',
       }
     }
+    case 'base': {
+      return {
+        uid: '',
+        users: '',
+        name: '',
+        desc: '',
+        create_date: '',
+        update_date: '',
+      }
+    }
     default:
       return {}
   }
 }
 
 export default dbTemplate = {
+  base: [
+    {
+      db_name: 'uid',
+      desc: 'UID базы в firebase',
+      db_type: 'TEXT',
+      not_null: false,
+      default: '',
+      db_default: '',
+    },
+    {
+      db_name: 'users',
+      desc: 'Пользователи и их права',
+      db_type: 'TEXT',
+      not_null: false,
+      default: null,
+      db_default: null,
+    },
+    {
+      db_name: 'name',
+      desc: 'Название программы',
+      db_type: 'TEXT',
+      not_null: true,
+      default: '',
+      db_default: '',
+    },
+    {
+      db_name: 'description',
+      desc: 'Описание программы',
+      db_type: 'TEXT',
+      not_null: false,
+      default: '',
+      db_default: '',
+    },
+    {
+      db_name: 'create_date',
+      desc: 'Дата и время создания',
+      db_type: 'TEXT',
+      not_null: true,
+      default: '',
+      db_default: '',
+    },
+    {
+      db_name: 'update_date',
+      desc: 'Дата и время последнего обновления',
+      db_type: 'TEXT',
+      not_null: true,
+      default: '',
+      db_default: '',
+    },
+  ],
   events: [
     {
       db_name: 'service',
