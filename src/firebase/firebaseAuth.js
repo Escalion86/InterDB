@@ -1,7 +1,7 @@
 import * as Google from 'expo-google-app-auth'
 import * as GoogleSignIn from 'expo-google-sign-in'
 import * as Device from 'expo-device'
-import isExpo from '../helpers/isExpo'
+import Constants from 'expo-constants'
 // import * as GoogleSignIn from 'expo-google-sign-in'
 
 import firebase from 'firebase'
@@ -17,21 +17,9 @@ export const signInWithGoogleAsync = async (
     onStart()
     let result = null
     let googleUser = {}
-    console.log('Device.isDevice', Device.isDevice ? 'ДА' : 'НЕТ')
-    console.log('isExpo', isExpo ? 'ДА' : 'НЕТ')
-    if (Device.isDevice) {
-      await GoogleSignIn.initAsync({
-        webClientId:
-          '802670153747-tpb9rcteibhos52fgs8n4nmlqrbsf07v.apps.googleusercontent.com',
-      })
-      await GoogleSignIn.askForPlayServicesAsync()
-      result = await GoogleSignIn.signInAsync()
-      googleUser = {
-        uid: result.user.uid,
-        idToken: result.user.auth.idToken,
-        accessToken: result.user.auth.accessToken,
-      }
-    } else {
+    // console.log('Device.isDevice', Device.isDevice ? 'ДА' : 'НЕТ')
+    // console.log('isExpo', isExpo ? 'ДА' : 'НЕТ')
+    if (Constants.appOwnership === 'expo') {
       result = await Google.logInAsync({
         // behavior: 'web',
         androidClientId:
@@ -43,6 +31,18 @@ export const signInWithGoogleAsync = async (
         uid: result.user.uid,
         idToken: result.idToken,
         accessToken: result.accessToken,
+      }
+    } else {
+      await GoogleSignIn.initAsync({
+        webClientId:
+          '802670153747-tpb9rcteibhos52fgs8n4nmlqrbsf07v.apps.googleusercontent.com',
+      })
+      await GoogleSignIn.askForPlayServicesAsync()
+      result = await GoogleSignIn.signInAsync()
+      googleUser = {
+        uid: result.user.uid,
+        idToken: result.user.auth.idToken,
+        accessToken: result.user.auth.accessToken,
       }
     }
 
