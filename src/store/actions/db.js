@@ -4,9 +4,11 @@ import { loadEvents } from './event'
 import { loadServices } from './service'
 import { loadClients } from './client'
 import { loadFinances } from './finance'
+import { loadBase } from './base'
 
 export const loadAll = () => {
   return async (dispatch) => {
+    await dispatch(loadBase())
     await dispatch(loadServices())
     await dispatch(loadClients())
     await dispatch(loadEvents())

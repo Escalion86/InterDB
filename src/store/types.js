@@ -1,3 +1,8 @@
+// BESE
+export const LOAD_BASE = 'LOAD_BASE'
+export const UPDATE_BASE = 'UPDATE_BASE'
+export const UPDATE_BASE_PARTIALLY = 'UPDATE_BASE_PARTIALLY'
+
 // EVENTS
 export const LOAD_EVENTS = 'LOAD_EVENTS'
 export const ADD_EVENT = 'ADD_EVENT'

@@ -6,6 +6,7 @@ import { serviceReducer } from './reducers/service'
 import { clientReducer } from './reducers/client'
 import { financeReducer } from './reducers/finance'
 import { userReducer } from './reducers/user'
+import { baseReducer } from './reducers/base'
 
 const rootReducer = combineReducers({
   app: appReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   client: clientReducer,
   finance: financeReducer,
   user: userReducer,
+  base: baseReducer,
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
