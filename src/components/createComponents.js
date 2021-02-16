@@ -299,8 +299,8 @@ export const ImagePickerBlock = ({
       />
     </ModalBottomMenu>
   )
-
-  const imageDemention = (Dimensions.get('window').width / 5) * 3 - 8
+  const imageDemention =
+    (Dimensions.get('window').width / (image === '' ? 8 : 5)) * 3 - 8
 
   return (
     <View style={{ ...styles.row, height: null }}>
@@ -313,7 +313,7 @@ export const ImagePickerBlock = ({
         {title}
       </TextBlock>
       <TouchableOpacity
-        style={styles.block}
+        // style={styles.block}
         onPress={async () => setModalVisible(true)}
       >
         <View style={{ height: imageDemention, width: imageDemention }}>
