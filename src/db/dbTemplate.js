@@ -27,10 +27,9 @@ export const prepareForDB = (dbTableName, data) => {
   }
 
   data.update_date = new Date().setMilliseconds(0)
-
   const preperedData = {}
   dbTemplate[dbTableName].forEach((item) => {
-    if (!data[item.db_name]) {
+    if (!data[item.db_name] && data[item.db_name] !== 0) {
       preperedData[item.db_name] = item.db_default
     } else if (item.db_type === 'TEXT') {
       preperedData[item.db_name] = String(data[item.db_name]).trim()
@@ -135,8 +134,8 @@ export const dbGenerator = (
           'Отменено',
           'Выполнено',
         ]),
-        create_date: '',
-        update_date: '',
+        create_date: new Date().setMilliseconds(0),
+        update_date: new Date().setMilliseconds(0),
       }
 
       // event.notification_id = addEventNotification(event)
@@ -228,8 +227,8 @@ export const dbGenerator = (
         facebook: '',
         avatar: '',
         town: town,
-        create_date: '',
-        update_date: '',
+        create_date: new Date().setMilliseconds(0),
+        update_date: new Date().setMilliseconds(0),
       }
     }
     case 'service': {
@@ -266,8 +265,8 @@ export const dbGenerator = (
         comment: '',
         event: eventsIds.length > 0 ? rndArray(eventsIds) : '0',
         date: Date.now(),
-        create_date: '',
-        update_date: '',
+        create_date: new Date().setMilliseconds(0),
+        update_date: new Date().setMilliseconds(0),
       }
     }
     case 'base': {
@@ -275,9 +274,9 @@ export const dbGenerator = (
         uid: '',
         users: '',
         name: '',
-        desc: '',
-        create_date: '',
-        update_date: '',
+        description: '',
+        create_date: new Date().setMilliseconds(0),
+        update_date: new Date().setMilliseconds(0),
       }
     }
     default:
