@@ -1,6 +1,6 @@
 import * as Google from 'expo-google-app-auth'
 import * as GoogleSignIn from 'expo-google-sign-in'
-import * as Device from 'expo-device'
+// import * as Device from 'expo-device'
 import Constants from 'expo-constants'
 // import * as GoogleSignIn from 'expo-google-sign-in'
 
@@ -147,7 +147,8 @@ export const firebaseSignOut = (uid) => {
     .ref('/users/' + uid)
     .off('value')
   firebase.auth().signOut()
-  if (Device.isDevice) {
+  if (Constants.appOwnership !== 'expo') {
+    // if (Device.isDevice) {
     GoogleSignIn.signOutAsync()
   }
 }
